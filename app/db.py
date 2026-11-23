@@ -302,8 +302,9 @@ def get_client(engine: Engine, client_id: UUID) -> dict[str, Any] | None:
 
 
 def client_exists(engine: Engine, client_id: UUID) -> bool:
+    statement = select(exists().where(ClientRow.id == client_id))
     with _connection(engine) as conn:
-        return bool(conn.execute(select(exists().where(ClientRow.id == client_id))).scalar())
+        return conn.execute(statement).scalar_one()
 
 
 def search_clients(engine: Engine, q: str, limit: int) -> list[dict[str, Any]]:
@@ -414,7 +415,7 @@ def insert_document(
 ) -> dict[str, Any]:
     """Insert the document and its chunk vectors (chunk_no, vector) in one transaction and return the
     document's row. Committed before it returns, so a 201 is never sent before the document can be read."""
-    document = (
+    statement = (
         insert(DocumentRow)
         .values(
             client_id=client_id,
@@ -428,14 +429,12 @@ def insert_document(
         .returning(*_DOCUMENT_COLUMNS)
     )
     with _connection(engine) as conn:
-        row = dict(conn.execute(document).mappings().one())
-        conn.execute(
-            insert(DocumentChunkRow),
-            [
-                {'document_id': row['id'], 'chunk_no': chunk_no, 'embedding': vector}
-                for chunk_no, vector in chunks
-            ],
-        )
+        row = dict(conn.execute(statement).mappings().one())
+        chunk_rows = [
+            {'document_id': row['id'], 'chunk_no': chunk_no, 'embedding': vector}
+            for chunk_no, vector in chunks
+        ]
+        conn.execute(insert(DocumentChunkRow), chunk_rows)
     return row
 
 

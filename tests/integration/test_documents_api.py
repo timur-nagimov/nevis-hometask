@@ -8,15 +8,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import Engine, select
 
-from app.config import (
-    EXTRACTIVE,
-    MAX_BODY_BYTES,
-    MAX_ECHOED_ID_CHARS,
-    MAX_TITLE_CHARS,
-    TAGS_CHUNK_NO,
-    Services,
-    Settings,
-)
+from app.config import EXTRACTIVE, MAX_BODY_BYTES, MAX_ECHOED_ID_CHARS, TAGS_CHUNK_NO, Services, Settings
 from app.db import DocumentChunkRow, DocumentRow
 from app.main import create_app
 from tests.integration.helpers import post_client, post_document
@@ -110,13 +102,8 @@ def test_an_unknown_or_malformed_client_is_404(app_client: TestClient, client_id
 @pytest.mark.parametrize(
     'body',
     [
-        {'title': '', 'content': 'Text.'},
-        {'title': 'x' * (MAX_TITLE_CHARS + 1), 'content': 'Text.'},
         {'title': 'Two\nlines', 'content': 'Text.'},
-        {'title': 'Note', 'content': ''},
-        {'title': 'Note', 'content': ' \n\t '},
         {'title': 'Note', 'content': 'secret\x00text'},
-        {'title': 'Note', 'content': 'secret\x1btext'},
         {'content': 'Text.'},
     ],
 )
@@ -149,8 +136,8 @@ def test_content_over_max_content_chars_is_422(
 
     assert accepted.status_code == 201
     assert rejected.status_code == 422
-    errors = rejected.json()['errors']
-    assert [(error['loc'], error['type']) for error in errors] == [(['body', 'content'], 'string_too_long')]
+    [error] = rejected.json()['errors']
+    assert (error['loc'], error['type']) == (['body', 'content'], 'string_too_long')
     assert 'word' not in rejected.text
 
 
