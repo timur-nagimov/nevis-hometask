@@ -1,0 +1,13 @@
+# Local environments and tool caches (.cache/ receives the model download of step 3)
+.venv/
+.cache/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+# Local settings (.env.example is the committed template)
+.env
+# Research material: stays on this machine (FINAL_PLAN.md section 12, item 4)
+research/
