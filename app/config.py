@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     concepts_file: str = str(Path(__file__).parent / 'data' / 'concepts.yaml')  # "" disables concept tagging
     max_content_chars: int = Field(default=50_000, ge=1)
     log_level: Literal['DEBUG', 'INFO', 'WARNING', 'ERROR'] = 'INFO'
+    host: str = '127.0.0.1'  # the container image sets 0.0.0.0
+    port: int = Field(default=8000, ge=1, le=65535)
 
     @field_validator('database_url')
     @classmethod

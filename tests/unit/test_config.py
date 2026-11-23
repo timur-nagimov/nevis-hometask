@@ -85,6 +85,7 @@ def test_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
     assert Path(settings.concepts_file) == Path(config.__file__).parent / 'data' / 'concepts.yaml'
     assert settings.max_content_chars == 50_000
     assert settings.log_level == 'INFO'
+    assert (settings.host, settings.port) == ('127.0.0.1', 8000)
     database = (
         settings.db_pool_size,
         settings.db_pool_timeout_seconds,
@@ -105,6 +106,8 @@ def test_every_setting_is_read_from_its_nevis_variable(monkeypatch: pytest.Monke
     monkeypatch.setenv('NEVIS_DB_POOL_TIMEOUT_SECONDS', '0.5')
     monkeypatch.setenv('NEVIS_DB_CONNECT_TIMEOUT_SECONDS', '10')
     monkeypatch.setenv('NEVIS_DB_STATEMENT_TIMEOUT_MS', '300')
+    monkeypatch.setenv('NEVIS_HOST', '0.0.0.0')
+    monkeypatch.setenv('NEVIS_PORT', '9000')
 
     assert Settings().model_dump() == {
         'database_url': SecretStr('postgresql://other/db'),
@@ -117,6 +120,8 @@ def test_every_setting_is_read_from_its_nevis_variable(monkeypatch: pytest.Monke
         'concepts_file': '/etc/concepts.yaml',
         'max_content_chars': 1000,
         'log_level': 'DEBUG',
+        'host': '0.0.0.0',
+        'port': 9000,
     }
 
 
@@ -136,6 +141,7 @@ def test_invalid_values_are_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv('NEVIS_DB_STATEMENT_TIMEOUT_MS', '0')  # PostgreSQL reads 0 as no limit
     monkeypatch.setenv('NEVIS_EMBED_THREADS', '0')
     monkeypatch.setenv('NEVIS_LOG_LEVEL', 'LOUD')
+    monkeypatch.setenv('NEVIS_PORT', '0')
 
     with pytest.raises(ValidationError) as error:
         Settings()
@@ -147,6 +153,7 @@ def test_invalid_values_are_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
         ('db_statement_timeout_ms',),
         ('embed_threads',),
         ('log_level',),
+        ('port',),
     ]
 
 

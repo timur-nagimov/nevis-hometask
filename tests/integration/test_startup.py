@@ -1,6 +1,6 @@
 """Start-up through the lifespan: create the schema on an empty database, open the connection pool, log one
-start-up line; refuse to start when the database cannot be reached; answer 503 when the database goes away
-while /health keeps answering."""
+line at start and one at stop; refuse to start when the database cannot be reached; answer 503 when the
+database goes away while /health keeps answering."""
 
 import dataclasses
 import logging
@@ -10,6 +10,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 
+from app import __version__
 from app.config import RETRY_AFTER_SECONDS, Services, Settings
 from app.db import _connection, open_engine
 from app.main import ServicesDep, create_app
@@ -18,7 +19,7 @@ from tests.integration.helpers import new_database
 UNREACHABLE = 'postgresql://nevis:nevis@127.0.0.1:1/nevis'  # nothing listens on port 1
 
 
-def test_start_creates_the_schema_once_and_logs_one_startup_line(
+def test_start_creates_the_schema_once_and_logs_one_line_at_start_and_stop(
     admin_dsn: str, caplog: pytest.LogCaptureFixture
 ) -> None:
     caplog.set_level(logging.INFO, logger='app')
@@ -27,13 +28,16 @@ def test_start_creates_the_schema_once_and_logs_one_startup_line(
             with TestClient(create_app(Settings(database_url=dsn))) as client:
                 assert client.get('/health').json() == {'status': 'ok'}
 
-    started = [r.getMessage() for r in caplog.records if r.getMessage().startswith('started:')]
-    assert [line.split(' | ')[0] for line in started] == [
+    lines = [r.getMessage() for r in caplog.records if r.name == 'app.main']
+    assert [line.split(' | ')[0] for line in lines] == [
         'started: schema: created',
+        'stopped',
         'started: schema: present',
+        'stopped',
     ]
-    assert 'request body 2097152 bytes, content 50000 characters, q 200 characters' in started[0]
-    assert 'database: pool 8, wait 5 s, connect timeout 3 s, statement timeout 5000 ms' in started[0]
+    assert 'request body 2097152 bytes, content 50000 characters, q 200 characters' in lines[0]
+    assert 'database: pool 8, wait 5 s, connect timeout 3 s, statement timeout 5000 ms' in lines[0]
+    assert lines[0].endswith(f' | version {__version__}')
 
 
 @pytest.mark.usefixtures('admin_dsn')  # runs in compose only, like every integration test

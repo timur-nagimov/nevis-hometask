@@ -72,5 +72,7 @@ CMD ["pytest", "-p", "no:cacheprovider"]
 
 # ------------------------------------------------------------------------------------------- runtime
 FROM app AS runtime
+# every interface inside the container; compose publishes the port on 127.0.0.1 only
+ENV NEVIS_HOST=0.0.0.0
 EXPOSE 8000
 CMD ["python", "-m", "app"]

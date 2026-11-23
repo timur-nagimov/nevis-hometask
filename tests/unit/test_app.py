@@ -4,14 +4,18 @@
 import inspect
 import logging
 import re
+import tomllib
+from pathlib import Path
 from typing import Any
 
 import pytest
 import uvicorn
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
 import app.__main__ as entry_point
+from app import __version__
 from app.config import MAX_BODY_BYTES
 from app.main import _configure_logging, create_app, health
 
@@ -127,17 +131,26 @@ def test_settings_are_read_when_the_app_starts_not_when_it_is_created(
         pass  # entering the client runs the lifespan, which reads the settings
 
 
-def test_entry_point_runs_the_factory_with_one_worker_and_no_uvicorn_access_log(
-    monkeypatch: pytest.MonkeyPatch,
+@pytest.mark.parametrize(
+    ('environment', 'host', 'port'),
+    [({}, '127.0.0.1', 8000), ({'NEVIS_HOST': '0.0.0.0', 'NEVIS_PORT': '9000'}, '0.0.0.0', 9000)],
+)
+def test_entry_point_serves_the_app_with_one_worker_and_the_app_logging(
+    monkeypatch: pytest.MonkeyPatch, environment: dict[str, str], host: str, port: int
 ) -> None:
     calls: list[tuple[Any, dict[str, Any]]] = []
     monkeypatch.setattr(uvicorn, 'run', lambda app, **options: calls.append((app, options)))
+    monkeypatch.setenv('NEVIS_DATABASE_URL', 'postgresql://u:p@db:5432/nevis')
+    for name, value in environment.items():
+        monkeypatch.setenv(name, value)
 
     entry_point.main()
 
-    assert calls == [
-        (
-            'app.main:create_app',
-            {'factory': True, 'host': '0.0.0.0', 'port': 8000, 'workers': 1, 'access_log': False},
-        )
-    ]
+    [(app, options)] = calls
+    assert isinstance(app, FastAPI)
+    assert options == {'host': host, 'port': port, 'workers': 1, 'access_log': False, 'log_config': None}
+
+
+def test_api_version_is_the_project_version() -> None:
+    pyproject = tomllib.loads((Path(__file__).parents[2] / 'pyproject.toml').read_text(encoding='utf-8'))
+    assert pyproject['project']['version'] == __version__ == create_app().version

@@ -16,7 +16,7 @@ from sqlalchemy.exc import StatementError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-from app import db
+from app import __version__, db
 from app.config import (
     DEFAULT_LIMIT,
     EXACT_SCORE_MIN,
@@ -386,7 +386,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             log.info(
                 'started: schema: %s | concepts: not loaded | model: not loaded | limits:'
                 ' request body %d bytes, content %d characters, q %d characters, limit 1-%d (default %d)'
-                ' | database: pool %d, wait %g s, connect timeout %d s, statement timeout %d ms',
+                ' | database: pool %d, wait %g s, connect timeout %d s, statement timeout %d ms | version %s',
                 'created' if created else 'present',
                 MAX_BODY_BYTES,
                 active.max_content_chars,
@@ -397,14 +397,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 active.db_pool_timeout_seconds,
                 active.db_connect_timeout_seconds,
                 active.db_statement_timeout_ms,
+                __version__,
             )
             yield
         finally:
             close_services(services)
+            log.info('stopped')
 
     app = FastAPIWithAccessLog(
         title='Nevis Search API',
-        version='0.1.0',
+        version=__version__,
         lifespan=lifespan,
         max_body_size=MAX_BODY_BYTES,
         dependencies=[Depends(require_json)],
