@@ -2,11 +2,12 @@
 
 import uuid
 from types import SimpleNamespace
-from typing import Any
+from typing import Any, cast
 
 import pytest
 
 from app import db
+from app.config import Services
 from app.search import merge, prepare, search
 
 
@@ -78,7 +79,7 @@ def test_search_tags_client_rows_and_merges(monkeypatch: pytest.MonkeyPatch) -> 
         ]
 
     monkeypatch.setattr(db, 'search_clients', fake_search_clients)
-    result = search(SimpleNamespace(engine='engine'), 'NevisWealth', None, 10)
+    result = search(cast(Services, SimpleNamespace(engine='engine')), 'NevisWealth', None, 10)
     assert calls == [('engine', 'NevisWealth', 10)]
     assert [(i['type'], i['id'], i['score']) for i in result] == [
         ('client', 'b', 0.85),
@@ -91,4 +92,4 @@ def test_type_document_skips_the_client_search(monkeypatch: pytest.MonkeyPatch) 
         raise AssertionError('the client search must not run for type=document')
 
     monkeypatch.setattr(db, 'search_clients', fail)
-    assert search(SimpleNamespace(engine='engine'), 'NevisWealth', 'document', 10) == []
+    assert search(cast(Services, SimpleNamespace(engine='engine')), 'NevisWealth', 'document', 10) == []

@@ -23,7 +23,7 @@ jobs:
       - name: Lint and type-check inside the tests image
         run: >-
           docker compose --profile test run --rm --no-deps -T tests
-          sh -c "ruff check --no-cache . && ruff format --no-cache --check . && mypy --cache-dir=/dev/null app"
+          sh -c "ruff check --no-cache . && ruff format --no-cache --check . && mypy --cache-dir=/dev/null"
 
       - name: Start the database and the API
         run: docker compose up -d

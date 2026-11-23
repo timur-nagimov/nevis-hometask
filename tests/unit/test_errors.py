@@ -7,7 +7,7 @@ The lifespan is not started (no `with TestClient(...)`), so no database is neede
 
 import json
 from collections.abc import Iterator
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, get_args
 
 import pytest
 from fastapi import FastAPI, HTTPException, Query
@@ -16,8 +16,8 @@ from httpx2 import Response
 from pydantic import BaseModel, StringConstraints
 
 from app.config import MAX_BODY_BYTES
-from app.db import DatabaseUnavailable
-from app.main import create_app, problem_doc
+from app.db import DatabaseUnavailable, Reason
+from app.main import UNAVAILABLE_DETAIL, create_app, problem_doc
 
 JSON = {'content-type': 'application/json'}
 
@@ -47,7 +47,7 @@ def make_app() -> FastAPI:
         raise RuntimeError('secret internals')
 
     @app.get('/unavailable/{reason}')
-    def unavailable(reason: Literal['unreachable', 'busy', 'timeout']) -> None:
+    def unavailable(reason: Reason) -> None:
         raise DatabaseUnavailable(reason)
 
     return app
@@ -230,3 +230,8 @@ def test_problem_doc_declares_a_problem_json_response_with_an_example() -> None:
             }
         },
     }
+
+
+def test_every_reason_has_a_503_detail() -> None:
+    # a reason without a text would be a KeyError inside the 503 handler, that is a 500
+    assert set(UNAVAILABLE_DETAIL) == set(get_args(Reason))

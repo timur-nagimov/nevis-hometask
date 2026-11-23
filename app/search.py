@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Literal
 
 from app import db
 from app.config import Services
@@ -26,7 +26,10 @@ def merge(items: list[dict[str, Any]], limit: int) -> list[dict[str, Any]]:
     return rounded[:limit]
 
 
-def search(services: Services, q: str, type_: str | None, limit: int) -> list[dict[str, Any]]:
+ResultType = Literal['client', 'document']  # the type of a search item
+
+
+def search(services: Services, q: str, type_: ResultType | None, limit: int) -> list[dict[str, Any]]:
     """Ask each engine for `limit` rows with unrounded scores, then merge.
 
     `q` is prepared and validated already (QueryText). Each result is a flat dict: the API fields plus

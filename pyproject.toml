@@ -50,6 +50,8 @@ select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
 [tool.mypy]
 python_version = "3.14"
 strict = true
+files = ["app", "tests"]
+explicit_package_bases = true  # tests/ has no __init__.py; the repository root is the base
 plugins = ["pydantic.mypy"]
 
 [tool.pytest.ini_options]

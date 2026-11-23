@@ -3,9 +3,11 @@
 import dataclasses
 import os
 from pathlib import Path
+from typing import cast
 
 import pytest
 from pydantic import ValidationError
+from sqlalchemy import Engine
 
 from app import config
 from app.config import Services, Settings
@@ -93,7 +95,7 @@ def test_constants_have_the_values_of_the_spec() -> None:
 
 def test_services_is_a_frozen_bundle_of_four() -> None:
     settings = Settings(database_url='postgresql://u:p@db:5432/nevis')
-    services = Services(settings=settings, engine=None, embedder=None, concepts=None)
+    services = Services(settings=settings, engine=cast(Engine, None), embedder=None, concepts=None)
 
     assert [field.name for field in dataclasses.fields(Services)] == [
         'settings',
@@ -102,4 +104,4 @@ def test_services_is_a_frozen_bundle_of_four() -> None:
         'concepts',
     ]
     with pytest.raises(dataclasses.FrozenInstanceError):
-        services.embedder = object()
+        services.embedder = object()  # type: ignore[misc]

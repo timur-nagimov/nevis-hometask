@@ -3,7 +3,7 @@ import time
 from collections.abc import AsyncIterator, Mapping
 from contextlib import asynccontextmanager
 from http import HTTPStatus
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any
 from urllib.parse import quote, unquote_to_bytes
 from uuid import UUID
 
@@ -24,8 +24,9 @@ from app.config import (
     Services,
     Settings,
 )
-from app.db import DatabaseUnavailable, create_schema, open_engine
+from app.db import DatabaseUnavailable, Reason, create_schema, open_engine
 from app.schemas import Client, ClientCreate, FieldError, Problem, QueryText, SearchItem
+from app.search import ResultType
 from app.search import search as run_search
 
 log = logging.getLogger(__name__)
@@ -33,7 +34,7 @@ access_log = logging.getLogger('app.access')
 router = APIRouter()
 
 PROBLEM_JSON = 'application/problem+json'
-UNAVAILABLE_DETAIL = {  # DatabaseUnavailable.reason -> `detail` of the 503
+UNAVAILABLE_DETAIL: dict[Reason, str] = {  # DatabaseUnavailable.reason -> `detail` of the 503
     'unreachable': 'The database is unreachable; retry shortly.',
     'busy': 'The service is busy; retry shortly.',
     'timeout': 'The database did not answer within 5 seconds; retry shortly.',
@@ -53,9 +54,11 @@ def problem(
     )
 
 
-def problem_doc(description: str, example_detail: str, status: int, **extra: Any) -> dict[str, Any]:
+def problem_doc(
+    description: str, example_detail: str, status: int, errors: list[FieldError] | None = None
+) -> dict[str, Any]:
     """OpenAPI entry for one problem+json status of an operation."""
-    example = Problem(title=HTTPStatus(status).phrase, status=status, detail=example_detail, **extra)
+    example = Problem(title=HTTPStatus(status).phrase, status=status, detail=example_detail, errors=errors)
     return {
         'description': description,
         'content': {
@@ -233,7 +236,14 @@ def parse_id(raw: str) -> UUID | None:
 )
 def create_client(body: ClientCreate, response: Response, services: ServicesDep) -> dict[str, Any]:
     """Creates a new client on every call: e-mail addresses are not unique, and POST is not idempotent."""
-    client = db.insert_client(services.engine, **body.model_dump())
+    client = db.insert_client(
+        services.engine,
+        first_name=body.first_name,
+        last_name=body.last_name,
+        email=body.email,
+        description=body.description,
+        social_links=body.social_links,
+    )
     response.headers['Location'] = f'/clients/{client["id"]}'
     return client
 
@@ -306,7 +316,7 @@ def search(
         ),
     ],
     type_: Annotated[
-        Literal['client', 'document'] | None,
+        ResultType | None,
         Query(alias='type', description='Return only this kind of result'),
     ] = None,
     limit: Annotated[

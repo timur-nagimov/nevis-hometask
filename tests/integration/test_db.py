@@ -14,6 +14,7 @@ from psycopg import sql
 from psycopg.conninfo import conninfo_to_dict
 from sqlalchemy import Engine, cast, func, select, text
 from sqlalchemy.exc import DBAPIError
+from sqlalchemy.pool import QueuePool
 
 from app.db import DatabaseUnavailable, _connection, open_engine
 
@@ -39,7 +40,9 @@ def test_pooled_connections_carry_the_guardrails(engine: Engine) -> None:
     with _connection(engine) as conn:
         timeout = conn.execute(text('SHOW statement_timeout')).scalar()
         threshold = conn.execute(text('SHOW pg_trgm.word_similarity_threshold')).scalar()
-        parameters = conn.connection.driver_connection.info.get_parameters()
+        driver = conn.connection.driver_connection
+        assert driver is not None
+        parameters = driver.info.get_parameters()
         dims = conn.execute(select(func.vector_dims(cast(np.array([0.25, -1.0, 3.5]), Vector(3))))).scalar()
 
     assert timeout == '5s'
@@ -47,6 +50,7 @@ def test_pooled_connections_carry_the_guardrails(engine: Engine) -> None:
     assert parameters['connect_timeout'] == '3'
     assert parameters['keepalives_idle'] == '30'
     assert dims == 3  # numpy arrays are sent as `vector`
+    assert isinstance(engine.pool, QueuePool)
     assert (engine.pool.size(), engine.pool.timeout()) == (8, 5)
 
 
@@ -120,14 +124,15 @@ def test_database_that_cannot_be_reached_is_unavailable_unreachable() -> None:
 
 
 def test_the_first_request_after_an_outage_succeeds(engine: Engine, fresh_dsn: str, admin_dsn: str) -> None:
-    name = sql.Identifier(conninfo_to_dict(fresh_dsn)['dbname'])
+    dbname = str(conninfo_to_dict(fresh_dsn)['dbname'])
+    name = sql.Identifier(dbname)
     with _connection(engine) as conn:
         conn.execute(text('SELECT 1'))  # the pool now holds one connection
     with psycopg.connect(admin_dsn, autocommit=True) as admin:
         admin.execute(sql.SQL('ALTER DATABASE {} WITH ALLOW_CONNECTIONS false').format(name))
         admin.execute(
             sql.SQL('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = {}').format(
-                sql.Literal(conninfo_to_dict(fresh_dsn)['dbname'])
+                sql.Literal(dbname)
             )
         )
     try:

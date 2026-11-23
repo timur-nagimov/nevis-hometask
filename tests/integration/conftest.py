@@ -9,9 +9,11 @@ database the API serves (`nevis`) is never touched. Without NEVIS_DATABASE_URL t
 import os
 import time
 from collections.abc import Iterator
+from typing import cast
 
 import psycopg
 import pytest
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from psycopg.conninfo import make_conninfo
 
@@ -66,5 +68,5 @@ def app_client(app_dsn: str) -> Iterator[TestClient]:
 def services(app_client: TestClient) -> Services:
     """The bundle `build_services` made in app_client's lifespan: same database, same pool. Reused rather
     than built twice."""
-    built: Services = app_client.app.state.services
+    built: Services = cast(FastAPI, app_client.app).state.services
     return built
