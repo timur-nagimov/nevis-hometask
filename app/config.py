@@ -36,6 +36,11 @@ CLIENT_TYPO_SIMILARITY = 0.6
 NAME_WEIGHT = 1.0
 EMAIL_WEIGHT = 0.7
 DESCRIPTION_WEIGHT = 0.5
+# The score scale of clients: exact matches score from EXACT_SCORE_MIN to 1, typo matches from 0 to
+# FUZZY_SCORE_MAX. So every exact match ranks above every typo match, and a caller can read a score of at
+# least EXACT_SCORE_MIN as "the query words were found".
+EXACT_SCORE_MIN = 0.5
+FUZZY_SCORE_MAX = 0.49
 
 # Ingest
 SHORT_DOC_WORDS = 200  # in a document up to this length a concept found anywhere counts like one in the title

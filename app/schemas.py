@@ -4,7 +4,7 @@ from uuid import UUID
 import email_validator
 from pydantic import AfterValidator, BaseModel, BeforeValidator, ConfigDict, Field, StringConstraints
 
-from app.config import MAX_Q_CHARS
+from app.config import EXACT_SCORE_MIN, MAX_Q_CHARS
 from app.search import prepare
 
 # email-validator rejects special-use domains (.test, .local, .invalid, ...) by default; this API accepts
@@ -123,7 +123,8 @@ def _prepare_query(value: Any) -> Any:
     return prepare(value) if isinstance(value, str) else value
 
 
-# `q` of /search: whitespace collapsed and trimmed first (prepare), then 1-200 characters without category Cc.
+# `q` of /search: whitespace collapsed and trimmed first (prepare), then 1 to MAX_Q_CHARS characters without
+# category Cc.
 QueryText = Annotated[
     str,
     StringConstraints(min_length=1, max_length=MAX_Q_CHARS, pattern=NO_CONTROL),
@@ -138,8 +139,8 @@ class _ClientMatch(BaseModel):
     score: float = Field(
         ge=0,
         le=1,
-        description='Ordering key, 4 decimals, not a probability. >= 0.5: the query words occur in '
-        'the record; below 0.5: a typo match',
+        description=f'Ordering key, 4 decimals, not a probability. >= {EXACT_SCORE_MIN}: the query words '
+        f'occur in the record; below {EXACT_SCORE_MIN}: a typo match',
     )
     match_type: Literal['exact', 'fuzzy'] = Field(
         description='`exact`: every query word occurs in name, e-mail or description; `fuzzy`: a typo match'

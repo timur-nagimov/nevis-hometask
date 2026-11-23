@@ -88,6 +88,7 @@ def test_constants_have_the_values_of_the_spec() -> None:
     assert (config.MAX_Q_CHARS, config.DEFAULT_LIMIT, config.MAX_LIMIT) == (200, 10, 50)
     assert (config.CLIENT_TYPO_SIMILARITY, config.NAME_WEIGHT, config.EMAIL_WEIGHT) == (0.6, 1.0, 0.7)
     assert config.DESCRIPTION_WEIGHT == 0.5
+    assert (config.EXACT_SCORE_MIN, config.FUZZY_SCORE_MAX) == (0.5, 0.49)
 
 
 def test_services_is_a_frozen_bundle_of_four() -> None:

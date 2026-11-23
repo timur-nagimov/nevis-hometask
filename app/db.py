@@ -43,6 +43,8 @@ from app.config import (
     CLIENT_TYPO_SIMILARITY,
     DESCRIPTION_WEIGHT,
     EMAIL_WEIGHT,
+    EXACT_SCORE_MIN,
+    FUZZY_SCORE_MAX,
     MIN_FUZZY_CHARS,
     NAME_WEIGHT,
 )
@@ -271,8 +273,8 @@ def search_clients(engine: Engine, q: str, limit: int) -> list[dict[str, Any]]:
 
     Rows: id, match_type ('exact' or 'fuzzy'), score (unrounded), first_name, last_name, email, description,
     social_links. `exact`: every word of the normalised query occurs in the client's search_text, even inside
-    a longer word; score 0.5-1. `fuzzy`, only when nothing is exact and the query has at least MIN_FUZZY_CHARS
-    letters and digits: a typo match by trigram word similarity; score below 0.5.
+    a longer word; score EXACT_SCORE_MIN to 1. `fuzzy`, only when nothing is exact and the query has at least
+    MIN_FUZZY_CHARS letters and digits: a typo match by trigram word similarity; score 0 to FUZZY_SCORE_MAX.
     """
     # The words of the query: normalised like search_text, split on spaces, commas and semicolons
     tok = (
@@ -326,7 +328,9 @@ def search_clients(engine: Engine, q: str, limit: int) -> list[dict[str, Any]]:
         DESCRIPTION_WEIGHT
         * func.word_similarity(query.c.norm, func.public.search_normalize(found.c.description)),
     )
-    score = case((found.c.exact, 0.5 + 0.5 * best), else_=0.49 * best).label('score')
+    score = case(
+        (found.c.exact, EXACT_SCORE_MIN + (1 - EXACT_SCORE_MIN) * best), else_=FUZZY_SCORE_MAX * best
+    ).label('score')
     statement = (
         select(
             found.c.id,
