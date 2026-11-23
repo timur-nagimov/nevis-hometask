@@ -15,6 +15,7 @@ if TYPE_CHECKING:  # for the type checker only: app.embedding and app.ingest imp
 
 PACKAGED_CONCEPTS_FILE = str(Path(__file__).parent / 'data' / 'concepts.yaml')  # the shipped concept map
 DEFAULT_MODEL_DIR = '/opt/models/leaf-ir'  # where the image keeps the embedding model
+DEFAULT_MAX_CONTENT_CHARS = 50_000  # document content limit when NEVIS_MAX_CONTENT_CHARS is not set
 
 
 class Settings(BaseSettings):
@@ -31,7 +32,7 @@ class Settings(BaseSettings):
 
     embed_threads: int = Field(default_factory=lambda: min(4, os.process_cpu_count() or 1), ge=1)
     concepts_file: str = PACKAGED_CONCEPTS_FILE  # "" disables concept tagging
-    max_content_chars: int = Field(default=50_000, ge=1)
+    max_content_chars: int = Field(default=DEFAULT_MAX_CONTENT_CHARS, ge=1)
     log_level: Literal['DEBUG', 'INFO', 'WARNING', 'ERROR'] = 'INFO'
     host: str = '127.0.0.1'  # the container image sets 0.0.0.0
     port: int = Field(default=8000, ge=1, le=65535)
@@ -81,6 +82,8 @@ SHORT_DOC_WORDS = 200  # in a document up to this length a concept found anywher
 CHUNK_WORDS = 200  # words per embedded chunk
 SUMMARY_CHARS = 300  # length of the lead summary
 ELLIPSIS = '\u2026'  # ends a lead summary that had to cut its first sentence
+SummaryMethod = Literal['extractive']  # how a document's summary was made: `summary.method` in the API
+EXTRACTIVE: SummaryMethod = 'extractive'  # the lead summary, taken from the content as written
 
 # Embedding model, pinned to a Hugging Face commit so the files behind it cannot change.
 # scripts/fetch_model.py downloads the same repository, revision and files; it cannot import this module, so a
@@ -122,6 +125,7 @@ MAX_EMAIL_CHARS = 254
 MAX_DESCRIPTION_CHARS = 2000
 MAX_SOCIAL_LINKS = 20
 MAX_SOCIAL_LINK_CHARS = 2048  # each link, after trimming
+MAX_TITLE_CHARS = 300  # document title, after trimming
 SCORE_DECIMALS = 4  # scores in responses are rounded to this many decimals
 RETRY_AFTER_SECONDS = 5  # Retry-After of every 503
 MAX_ECHOED_ID_CHARS = 64  # an unknown id is quoted in the 404 detail up to this length

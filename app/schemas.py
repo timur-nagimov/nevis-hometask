@@ -1,3 +1,5 @@
+from collections.abc import Mapping
+from datetime import UTC, datetime
 from typing import Annotated, Any, Literal
 from uuid import UUID
 
@@ -5,6 +7,7 @@ import email_validator
 from pydantic import AfterValidator, BaseModel, BeforeValidator, ConfigDict, Field, StringConstraints
 
 from app.config import (
+    DEFAULT_MAX_CONTENT_CHARS,
     EXACT_SCORE_MIN,
     MAX_DESCRIPTION_CHARS,
     MAX_EMAIL_CHARS,
@@ -12,7 +15,9 @@ from app.config import (
     MAX_Q_CHARS,
     MAX_SOCIAL_LINK_CHARS,
     MAX_SOCIAL_LINKS,
+    MAX_TITLE_CHARS,
     SCORE_DECIMALS,
+    SummaryMethod,
 )
 from app.search import prepare
 
@@ -24,6 +29,7 @@ email_validator.SPECIAL_USE_DOMAIN_NAMES.clear()
 # space, soft hyphen, ...) is allowed. tests/unit/test_client_schemas.py checks the ranges against Cc.
 NO_CONTROL = r'^[^\x00-\x1f\x7f-\x9f]+$'  # single-line text
 NO_CONTROL_EXCEPT_TAB_LF = r'^[^\x00-\x08\x0b-\x1f\x7f-\x9f]*$'  # description: tab and newline allowed
+NO_CONTROL_EXCEPT_TAB_LF_CR = r'^[^\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]*$'  # document content: also CR
 
 
 class FieldError(BaseModel):
@@ -136,6 +142,77 @@ class Client(BaseModel):
     email: str
     description: str
     social_links: list[str]
+
+
+def _not_blank(value: str) -> str:
+    if not value.strip():
+        raise ValueError('must not be blank')
+    return value
+
+
+DocumentTitle = Annotated[
+    str,
+    StringConstraints(strip_whitespace=True, min_length=1, max_length=MAX_TITLE_CHARS, pattern=NO_CONTROL),
+]
+# The upper limit of the content is a setting, so the route checks it.
+DocumentContent = Annotated[
+    str, StringConstraints(min_length=1, pattern=NO_CONTROL_EXCEPT_TAB_LF_CR), AfterValidator(_not_blank)
+]
+
+
+class DocumentCreate(BaseModel):
+    """Body of POST /clients/{client_id}/documents. Unknown members are ignored."""
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'examples': [
+                {
+                    'title': 'Utility bill',
+                    'content': 'British Gas utility bill for March 2025. '
+                    'Account holder John Doe, 14 Larkspur Close, Harrogate. Amount due £84.20.',
+                }
+            ]
+        }
+    )
+
+    title: DocumentTitle = Field(
+        description=f'Trimmed; 1-{MAX_TITLE_CHARS} characters; no control characters'
+    )
+    content: DocumentContent = Field(
+        description=f'Stored as sent; 1 to NEVIS_MAX_CONTENT_CHARS (default {DEFAULT_MAX_CONTENT_CHARS:,}) '
+        'characters; not blank; control characters other than tab, line feed and carriage return are rejected'
+    )
+
+
+class Summary(BaseModel):
+    text: str
+    method: SummaryMethod
+
+
+class Document(BaseModel):
+    """A document as the API returns it."""
+
+    id: UUID
+    client_id: UUID
+    title: str
+    content: str
+    created_at: datetime = Field(description='RFC 3339, UTC')
+    tags: list[str] = Field(description='Concepts the document matched at upload, in concept-map order')
+    summary: Summary
+
+    @classmethod
+    def from_row(cls, row: Mapping[Any, Any]) -> Document:
+        """From a row of `documents`: a dict or a RowMapping (its keys may also be columns, hence `Any`).
+        `created_at` is returned in UTC, not in the database session's time zone."""
+        return cls(
+            id=row['id'],
+            client_id=row['client_id'],
+            title=row['title'],
+            content=row['content'],
+            created_at=row['created_at'].astimezone(UTC),
+            tags=row['tags'],
+            summary=Summary(text=row['summary'], method=row['summary_method']),
+        )
 
 
 def _prepare_query(value: Any) -> Any:

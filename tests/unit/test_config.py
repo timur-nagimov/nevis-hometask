@@ -165,6 +165,7 @@ def test_constants_keep_their_values() -> None:
     assert (config.TAU_TITLE, config.MIN_FUZZY_CHARS, config.SPELL_CUTOFF) == (0.60, 5, 0.90)
     assert (config.SHORT_DOC_WORDS, config.CHUNK_WORDS, config.SUMMARY_CHARS) == (200, 200, 300)
     assert config.ELLIPSIS == '…'  # one character, not three full stops
+    assert config.EXTRACTIVE == 'extractive'
     assert config.EMBED_BATCH == 4
     assert config.QUERY_PREFIX == 'Represent this sentence for searching relevant passages: '
     assert config.MAX_BODY_BYTES == 2 * 1024 * 1024
@@ -174,11 +175,11 @@ def test_constants_keep_their_values() -> None:
     assert (config.EXACT_SCORE_MIN, config.FUZZY_SCORE_MAX) == (0.5, 0.49)
     limits = (config.MAX_NAME_CHARS, config.MAX_EMAIL_CHARS, config.MAX_DESCRIPTION_CHARS)
     assert limits == (100, 254, 2000)
-    assert (config.MAX_SOCIAL_LINKS, config.MAX_SOCIAL_LINK_CHARS) == (20, 2048)
+    assert (config.MAX_SOCIAL_LINKS, config.MAX_SOCIAL_LINK_CHARS, config.MAX_TITLE_CHARS) == (20, 2048, 300)
     assert (config.SCORE_DECIMALS, config.RETRY_AFTER_SECONDS, config.MAX_ECHOED_ID_CHARS) == (4, 5, 64)
     assert (config.EMBEDDING_DIM, config.FTS_CONFIG) == (768, 'english')
     assert Path(config.PACKAGED_CONCEPTS_FILE) == Path(config.__file__).parent / 'data' / 'concepts.yaml'
-    assert config.DEFAULT_MODEL_DIR == '/opt/models/leaf-ir'
+    assert (config.DEFAULT_MODEL_DIR, config.DEFAULT_MAX_CONTENT_CHARS) == ('/opt/models/leaf-ir', 50_000)
     model = (config.MODEL_REPO, config.MODEL_REVISION, config.MODEL_FILE, config.TOKENIZER_FILE)
     assert model == (
         'MongoDB/mdbr-leaf-ir',
