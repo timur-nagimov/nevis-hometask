@@ -9,6 +9,8 @@ from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import Engine
 
+PACKAGED_CONCEPTS_FILE = str(Path(__file__).parent / 'data' / 'concepts.yaml')  # the shipped concept map
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -23,7 +25,7 @@ class Settings(BaseSettings):
     model_dir: str = '/opt/models/leaf-ir'
 
     embed_threads: int = Field(default_factory=lambda: min(4, os.process_cpu_count() or 1), ge=1)
-    concepts_file: str = str(Path(__file__).parent / 'data' / 'concepts.yaml')  # "" disables concept tagging
+    concepts_file: str = PACKAGED_CONCEPTS_FILE  # "" disables concept tagging
     max_content_chars: int = Field(default=50_000, ge=1)
     log_level: Literal['DEBUG', 'INFO', 'WARNING', 'ERROR'] = 'INFO'
     host: str = '127.0.0.1'  # the container image sets 0.0.0.0

@@ -173,6 +173,7 @@ def test_constants_keep_their_values() -> None:
     assert (config.MAX_SOCIAL_LINKS, config.MAX_SOCIAL_LINK_CHARS) == (20, 2048)
     assert (config.SCORE_DECIMALS, config.RETRY_AFTER_SECONDS, config.MAX_ECHOED_ID_CHARS) == (4, 5, 64)
     assert (config.EMBEDDING_DIM, config.FTS_CONFIG) == (768, 'english')
+    assert Path(config.PACKAGED_CONCEPTS_FILE) == Path(config.__file__).parent / 'data' / 'concepts.yaml'
     # every exact match ranks above every typo match, also after rounding
     assert round(config.FUZZY_SCORE_MAX, config.SCORE_DECIMALS) < config.EXACT_SCORE_MIN
 
