@@ -1,4 +1,5 @@
-"""scripts/fetch_model.py: download URL, sha256 check, retries, usage; no network (urlopen is replaced)."""
+"""scripts/fetch_model.py: download URL, sha256 check, retries, usage, the app's model; no network (urlopen is
+replaced)."""
 
 import hashlib
 import importlib.util
@@ -8,6 +9,8 @@ from pathlib import Path
 from types import ModuleType
 
 import pytest
+
+from app import config
 
 SCRIPT = Path(__file__).resolve().parents[2] / 'scripts' / 'fetch_model.py'
 
@@ -74,3 +77,11 @@ def test_without_a_target_directory_the_script_prints_its_usage(
 
     assert stop.value.code == 2
     assert 'target-dir' in capsys.readouterr().err
+
+
+def test_the_app_and_the_script_pin_the_same_model(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The script cannot import the app, so the pinned model is written twice."""
+    script = load_script(monkeypatch, None)
+
+    assert (script.REPO, script.REVISION) == (config.MODEL_REPO, config.MODEL_REVISION)
+    assert {config.MODEL_FILE, config.TOKENIZER_FILE} <= script.FILES.keys()  # the files the embedder opens

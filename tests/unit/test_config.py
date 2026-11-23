@@ -174,6 +174,16 @@ def test_constants_keep_their_values() -> None:
     assert (config.SCORE_DECIMALS, config.RETRY_AFTER_SECONDS, config.MAX_ECHOED_ID_CHARS) == (4, 5, 64)
     assert (config.EMBEDDING_DIM, config.FTS_CONFIG) == (768, 'english')
     assert Path(config.PACKAGED_CONCEPTS_FILE) == Path(config.__file__).parent / 'data' / 'concepts.yaml'
+    assert config.DEFAULT_MODEL_DIR == '/opt/models/leaf-ir'
+    model = (config.MODEL_REPO, config.MODEL_REVISION, config.MODEL_FILE, config.TOKENIZER_FILE)
+    assert model == (
+        'MongoDB/mdbr-leaf-ir',
+        '4262131b32c3182bd06e67e92ae69d7bd66e0c5c',
+        'onnx/model.onnx',
+        'tokenizer.json',
+    )
+    assert (config.MAX_TOKENS, config.RUNS_PER_LANE, config.EMBED_INTER_OP_THREADS) == (512, 1, 1)
+    assert config.TOKENIZER_SETTINGS == {'truncation': 512, 'padding': 'batch_longest'}
     # every exact match ranks above every typo match, also after rounding
     assert round(config.FUZZY_SCORE_MAX, config.SCORE_DECIMALS) < config.EXACT_SCORE_MIN
 

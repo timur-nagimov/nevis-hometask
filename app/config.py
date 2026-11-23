@@ -10,6 +10,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import Engine
 
 PACKAGED_CONCEPTS_FILE = str(Path(__file__).parent / 'data' / 'concepts.yaml')  # the shipped concept map
+DEFAULT_MODEL_DIR = '/opt/models/leaf-ir'  # where the image keeps the embedding model
 
 
 class Settings(BaseSettings):
@@ -22,7 +23,7 @@ class Settings(BaseSettings):
     db_pool_timeout_seconds: float = Field(default=5.0, gt=0)  # wait for a free connection, then 503 busy
     db_connect_timeout_seconds: int = Field(default=3, ge=2)  # libpq counts less than 2 as 2
     db_statement_timeout_ms: int = Field(default=5000, ge=1)  # then 503 timeout; 0 would mean no limit
-    model_dir: str = '/opt/models/leaf-ir'
+    model_dir: str = DEFAULT_MODEL_DIR
 
     embed_threads: int = Field(default_factory=lambda: min(4, os.process_cpu_count() or 1), ge=1)
     concepts_file: str = PACKAGED_CONCEPTS_FILE  # "" disables concept tagging
@@ -75,9 +76,22 @@ FUZZY_SCORE_MAX = 0.49
 SHORT_DOC_WORDS = 200  # in a document up to this length a concept found anywhere counts like one in the title
 CHUNK_WORDS = 200  # words per embedded chunk
 SUMMARY_CHARS = 300  # length of the lead summary
-EMBED_BATCH = 4  # texts per model call
-QUERY_PREFIX = 'Represent this sentence for searching relevant passages: '  # queries only, never documents
+
+# Embedding model, pinned to a Hugging Face commit so the files behind it cannot change.
+# scripts/fetch_model.py downloads the same repository, revision and files; it cannot import this module, so a
+# unit test compares them.
+MODEL_REPO = 'MongoDB/mdbr-leaf-ir'
+MODEL_REVISION = '4262131b32c3182bd06e67e92ae69d7bd66e0c5c'
+MODEL_FILE = 'onnx/model.onnx'  # in the model directory; its weights sit beside it in model.onnx_data
+TOKENIZER_FILE = 'tokenizer.json'
 EMBEDDING_DIM = 768  # length of every embedding vector: the model's output and the column type
+QUERY_PREFIX = 'Represent this sentence for searching relevant passages: '  # queries only, never documents
+MAX_TOKENS = 512  # tokens read per text; the shipped tokenizer.json would stop at 128
+# how the embedder cuts and pads texts: at MAX_TOKENS, and to the longest text of each call
+TOKENIZER_SETTINGS: dict[str, int | str] = {'truncation': MAX_TOKENS, 'padding': 'batch_longest'}
+EMBED_BATCH = 4  # texts per model call
+RUNS_PER_LANE = 1  # model calls at once per lane; document batches and queries each have a lane of their own
+EMBED_INTER_OP_THREADS = 1  # the model's nodes run one at a time, so a call uses NEVIS_EMBED_THREADS threads
 
 # HTTP contract
 MAX_BODY_BYTES = 2 * 1024 * 1024  # larger request bodies are answered with 413
