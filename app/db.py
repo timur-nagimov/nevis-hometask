@@ -66,6 +66,9 @@ def open_pool(database_url: str) -> Pool:
         max_size=8,
         max_idle=60,  # close connections idle for a minute
         timeout=5,  # wait at most 5 s for a free connection, then PoolTimeout
+        # give up a failed reconnect after 5 s, so the next request tries at once; the default 300 s backs off
+        # to 64 s and more between attempts, and requests stay at 503 long after the database is back
+        reconnect_timeout=5,
         check=ConnectionPool.check_connection,  # test a connection before handing it out
         open=True,
         name="nevis",

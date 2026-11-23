@@ -41,6 +41,9 @@ def test_pooled_connections_carry_the_guardrails(pool: Pool) -> None:
     assert parameters["connect_timeout"] == "3"
     assert parameters["keepalives_idle"] == "30"
     assert dims == (3,)  # register_vector ran: a numpy array is sent as a `vector`
+    # A failed reconnect gives up after 5 s and the next request tries again. With the library default of
+    # 300 s the retries back off to 64 s and more, and the API stays at 503 long after the database is back.
+    assert pool.reconnect_timeout == 5
 
 
 def test_connection_block_commits_when_it_ends_and_rolls_back_when_it_raises(

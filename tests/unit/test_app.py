@@ -12,6 +12,7 @@ from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
 import app.__main__ as entry_point
+from app.config import MAX_BODY_BYTES
 from app.main import _configure_logging, create_app, health
 
 
@@ -77,6 +78,25 @@ def test_access_log_records_errors_too(client: TestClient, caplog: pytest.LogCap
         "GET /nope 404",
         "POST /health 405",
         "GET /broken 500",
+    ]
+
+
+def test_access_log_has_the_413_the_client_gets_for_a_body_over_the_cap(
+    client: TestClient, caplog: pytest.LogCaptureFixture
+) -> None:
+    caplog.set_level(logging.INFO, logger="app")
+    oversized = b"x" * (MAX_BODY_BYTES + 1)
+
+    # No route reads this body: the framework's body limit answers 413 itself (B3), not the route (405, 200)
+    responses = [
+        client.post("/health", content=oversized, headers={"content-type": "application/json"}),
+        client.request("GET", "/health", content=oversized),
+    ]
+
+    assert [response.status_code for response in responses] == [413, 413]
+    assert [re.sub(r" \d+\.\d ms$", "", line) for line in access_lines(caplog)] == [
+        "POST /health 413",
+        "GET /health 413",
     ]
 
 

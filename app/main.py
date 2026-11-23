@@ -12,7 +12,6 @@ from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from starlette.middleware import Middleware
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app.config import DEFAULT_LIMIT, MAX_BODY_BYTES, MAX_LIMIT, MAX_Q_CHARS, Services, Settings
@@ -127,6 +126,15 @@ class AccessLogMiddleware:
             access_log.info("%s %s %d %.1f ms", scope["method"], quote(scope["path"]), status, elapsed_ms)
 
 
+class FastAPIWithAccessLog(FastAPI):
+    """FastAPI with the access log as the outermost layer, so that it logs the status the client receives.
+    The framework's body limit sits outside every middleware passed to FastAPI and may replace a route's
+    answer by 413 (a body over 2 MiB that the route never reads)."""
+
+    def build_middleware_stack(self) -> ASGIApp:
+        return AccessLogMiddleware(super().build_middleware_stack())
+
+
 # --------------------------------------------------------------------------------------- routes
 @router.get("/health", tags=["ops"], summary="Liveness check; does not touch the database")
 async def health() -> dict[str, str]:
@@ -191,13 +199,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         finally:
             close_services(services)
 
-    app = FastAPI(
+    app = FastAPIWithAccessLog(
         title="Nevis Search API",
         version="0.1.0",
         lifespan=lifespan,
         max_body_size=MAX_BODY_BYTES,  # 413 above 2 MiB (B3: text/plain when Content-Length says so)
         dependencies=[Depends(require_json)],
-        middleware=[Middleware(AccessLogMiddleware)],
         exception_handlers={
             StarletteHTTPException: on_http_error,
             RequestValidationError: on_validation_error,
