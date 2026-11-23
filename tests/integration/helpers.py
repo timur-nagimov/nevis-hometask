@@ -31,3 +31,11 @@ def post_client(client: TestClient, **fields: Any) -> dict[str, Any]:
     assert response.status_code == 201, response.text
     created: dict[str, Any] = response.json()
     return created
+
+
+def post_document(client: TestClient, client_id: str, title: str, content: str) -> dict[str, Any]:
+    """POST a document to this client; assert 201 and return the created document."""
+    response = client.post(f'/clients/{client_id}/documents', json={'title': title, 'content': content})
+    assert response.status_code == 201, response.text
+    created: dict[str, Any] = response.json()
+    return created

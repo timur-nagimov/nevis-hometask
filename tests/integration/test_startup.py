@@ -116,6 +116,13 @@ def test_database_gone_is_503_on_every_route_while_health_keeps_answering(fresh_
                     '/clients', json={'first_name': 'Ann', 'last_name': 'Lee', 'email': 'ann@example.com'}
                 ),
                 'get': client.get('/clients/019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11'),
+                'add document': client.post(
+                    '/clients/019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11/documents',
+                    json={'title': 'Note', 'content': 'Text.'},
+                ),
+                'get document': client.get(
+                    '/clients/019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11/documents/019aa0c6-01a2-7e3f-8a44-9b7d5c2e6f30'
+                ),
                 'search': client.get('/search', params={'q': 'john'}),
             }
             health = client.get('/health')

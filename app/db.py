@@ -4,6 +4,8 @@ from datetime import datetime
 from typing import Any, Literal
 from uuid import UUID
 
+import numpy as np
+import numpy.typing as npt
 import psycopg
 from pgvector.sqlalchemy import Vector
 from psycopg.conninfo import conninfo_to_dict, make_conninfo
@@ -140,7 +142,7 @@ class DocumentChunkRow(Base):
     )
     chunk_no: Mapped[int] = mapped_column(
         Integer, primary_key=True, autoincrement=False
-    )  # -1: the tags chunk
+    )  # TAGS_CHUNK_NO: the tags chunk
     embedding: Mapped[Any] = mapped_column(Vector(EMBEDDING_DIM))
 
 
@@ -299,6 +301,11 @@ def get_client(engine: Engine, client_id: UUID) -> dict[str, Any] | None:
     return None if row is None else dict(row)
 
 
+def client_exists(engine: Engine, client_id: UUID) -> bool:
+    with _connection(engine) as conn:
+        return bool(conn.execute(select(exists().where(ClientRow.id == client_id))).scalar())
+
+
 def search_clients(engine: Engine, q: str, limit: int) -> list[dict[str, Any]]:
     """Clients for a prepared query, best first, at most `limit`.
 
@@ -379,6 +386,67 @@ def search_clients(engine: Engine, q: str, limit: int) -> list[dict[str, Any]]:
     )
     with _connection(engine) as conn:
         return [dict(row) for row in conn.execute(statement).mappings()]
+
+
+_DOCUMENT_COLUMNS = (
+    DocumentRow.id,
+    DocumentRow.client_id,
+    DocumentRow.title,
+    DocumentRow.content,
+    DocumentRow.created_at,
+    DocumentRow.tags,
+    DocumentRow.summary,
+    DocumentRow.summary_method,
+)
+
+
+def insert_document(
+    engine: Engine,
+    *,
+    client_id: UUID,
+    title: str,
+    content: str,
+    tags: list[str],
+    tags_text: str,
+    summary: str,
+    summary_method: str,
+    chunks: list[tuple[int, npt.NDArray[np.float32]]],
+) -> dict[str, Any]:
+    """Insert the document and its chunk vectors (chunk_no, vector) in one transaction and return the
+    document's row. Committed before it returns, so a 201 is never sent before the document can be read."""
+    document = (
+        insert(DocumentRow)
+        .values(
+            client_id=client_id,
+            title=title,
+            content=content,
+            tags=tags,
+            tags_text=tags_text,
+            summary=summary,
+            summary_method=summary_method,
+        )
+        .returning(*_DOCUMENT_COLUMNS)
+    )
+    with _connection(engine) as conn:
+        row = dict(conn.execute(document).mappings().one())
+        conn.execute(
+            insert(DocumentChunkRow),
+            [
+                {'document_id': row['id'], 'chunk_no': chunk_no, 'embedding': vector}
+                for chunk_no, vector in chunks
+            ],
+        )
+    return row
+
+
+def get_document(engine: Engine, client_id: UUID, document_id: UUID) -> dict[str, Any] | None:
+    """The document's row if it exists and belongs to this client; None otherwise."""
+    statement = select(*_DOCUMENT_COLUMNS).where(
+        DocumentRow.id == document_id, DocumentRow.client_id == client_id
+    )
+    with _connection(engine) as conn:
+        row = conn.execute(statement).mappings().first()
+    return None if row is None else dict(row)
 
 
 def _match_concepts_statement() -> Select[int, bool, bool]:

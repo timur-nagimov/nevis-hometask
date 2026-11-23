@@ -166,6 +166,7 @@ def test_constants_keep_their_values() -> None:
     assert (config.SHORT_DOC_WORDS, config.CHUNK_WORDS, config.SUMMARY_CHARS) == (200, 200, 300)
     assert config.ELLIPSIS == '…'  # one character, not three full stops
     assert config.EXTRACTIVE == 'extractive'
+    assert (config.TAGS_CHUNK_NO, config.MAX_CONCURRENT_UPLOADS) == (-1, 4)
     assert config.EMBED_BATCH == 4
     assert config.QUERY_PREFIX == 'Represent this sentence for searching relevant passages: '
     assert config.MAX_BODY_BYTES == 2 * 1024 * 1024

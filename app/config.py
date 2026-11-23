@@ -84,6 +84,8 @@ SUMMARY_CHARS = 300  # length of the lead summary
 ELLIPSIS = '\u2026'  # ends a lead summary that had to cut its first sentence
 SummaryMethod = Literal['extractive']  # how a document's summary was made: `summary.method` in the API
 EXTRACTIVE: SummaryMethod = 'extractive'  # the lead summary, taken from the content as written
+TAGS_CHUNK_NO = -1  # chunk_no of the embedded tags; the content chunks are numbered from 0
+MAX_CONCURRENT_UPLOADS = 4  # documents processed at once; further uploads wait without holding a thread
 
 # Embedding model, pinned to a Hugging Face commit so the files behind it cannot change.
 # scripts/fetch_model.py downloads the same repository, revision and files; it cannot import this module, so a

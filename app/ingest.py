@@ -10,11 +10,21 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import TypedDict
 from urllib.parse import urlsplit
+from uuid import UUID
 
 import yaml
 
 from app import db
-from app.config import CHUNK_WORDS, ELLIPSIS, SHORT_DOC_WORDS, SUMMARY_CHARS, Services
+from app.config import (
+    CHUNK_WORDS,
+    ELLIPSIS,
+    EXTRACTIVE,
+    SHORT_DOC_WORDS,
+    SUMMARY_CHARS,
+    TAGS_CHUNK_NO,
+    Services,
+)
+from app.schemas import Document, DocumentCreate
 
 _SENTENCE_END = re.compile(r'(?<=[.!?])\s+')  # the summary takes whole sentences
 
@@ -230,3 +240,28 @@ def tag_document(services: Services, title: str, content: str) -> Tagging:
     entries, phrases = services.concepts.phrase_arrays()
     matches = db.match_concepts(services.engine, title, content, entries, phrases)
     return tagging_from_matches(services.concepts, matches, content)
+
+
+def create_document(services: Services, client_id: UUID, payload: DocumentCreate) -> Document:
+    """Tag, summarise, chunk, embed and store one document. The caller has validated the payload and checked
+    that the client exists."""
+    tagging = tag_document(services, payload.title, payload.content)
+    summary = lead_summary(payload.content)
+    texts = chunk_document(payload.title, payload.content)
+    chunk_numbers = list(range(len(texts)))
+    if tagging.head_text:  # the tags are embedded only when there are head entries
+        texts.append(f'{payload.title}\n{tagging.head_text}')
+        chunk_numbers.append(TAGS_CHUNK_NO)
+    vectors = services.embedder.embed_documents(texts)
+    row = db.insert_document(
+        services.engine,
+        client_id=client_id,
+        title=payload.title,
+        content=payload.content,
+        tags=tagging.tags,
+        tags_text=tagging.tags_text,
+        summary=summary,
+        summary_method=EXTRACTIVE,
+        chunks=list(zip(chunk_numbers, vectors, strict=True)),
+    )
+    return Document.from_row(row)

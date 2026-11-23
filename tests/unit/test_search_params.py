@@ -111,6 +111,9 @@ def test_openapi_declares_the_statuses_of_the_routes() -> None:
     paths = spec['paths']
     assert {'201', '400', '413', '415', '422'} <= set(paths['/clients']['post']['responses'])
     assert '404' in paths['/clients/{client_id}']['get']['responses']
+    documents = paths['/clients/{client_id}/documents']['post']['responses']
+    assert {'201', '400', '404', '413', '415', '422'} <= set(documents)
+    assert '404' in paths['/clients/{client_id}/documents/{document_id}']['get']['responses']
     assert {'200', '400', '422'} <= set(paths['/search']['get']['responses'])
     assert [p['name'] for p in paths['/search']['get']['parameters']] == ['q', 'type', 'limit']
     assert 'Problem' in spec['components']['schemas']
@@ -119,7 +122,8 @@ def test_openapi_declares_the_statuses_of_the_routes() -> None:
 def test_openapi_errors_are_problem_json_also_after_a_late_route() -> None:
     app = create_app(Settings(database_url='postgresql://unused/x'))
     spec = app.openapi()
-    assert '422' not in spec['paths']['/clients/{client_id}']['get']['responses']  # a string id cannot fail
+    for path in ('/clients/{client_id}', '/clients/{client_id}/documents/{document_id}'):
+        assert '422' not in spec['paths'][path]['get']['responses']  # a string id cannot fail
     for operations in spec['paths'].values():
         for operation in operations.values():
             if '422' in operation['responses']:

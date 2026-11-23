@@ -1,7 +1,7 @@
 import logging
 import time
 import traceback
-from collections.abc import AsyncIterator, Mapping
+from collections.abc import AsyncIterator, Iterator, Mapping
 from contextlib import asynccontextmanager
 from http import HTTPStatus
 from typing import Annotated, Any
@@ -16,11 +16,12 @@ from sqlalchemy.exc import StatementError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-from app import __version__, db
+from app import __version__, db, ingest
 from app.config import (
     DEFAULT_LIMIT,
     EXACT_SCORE_MIN,
     MAX_BODY_BYTES,
+    MAX_CONCURRENT_UPLOADS,
     MAX_ECHOED_ID_CHARS,
     MAX_LIMIT,
     MAX_Q_CHARS,
@@ -34,7 +35,16 @@ from app.config import (
 from app.db import DatabaseUnavailable, Reason, create_schema, open_engine
 from app.embedding import Embedder
 from app.ingest import load_concepts
-from app.schemas import Client, ClientCreate, FieldError, Problem, QueryText, SearchItem
+from app.schemas import (
+    Client,
+    ClientCreate,
+    Document,
+    DocumentCreate,
+    FieldError,
+    Problem,
+    QueryText,
+    SearchItem,
+)
 from app.search import ResultType
 from app.search import search as run_search
 
@@ -338,6 +348,64 @@ def get_client(client_id: str, services: ServicesDep) -> dict[str, Any]:
     if client is None:
         raise HTTPException(404, f"Client '{client_id[:MAX_ECHOED_ID_CHARS]}' does not exist.")
     return client
+
+
+def _upload_slot() -> Iterator[None]:
+    """Held while an upload is processed. Callers beyond MAX_CONCURRENT_UPLOADS wait on the event loop, not in
+    a worker thread; scope='function' frees the slot when the route returns, before the response is sent."""
+    yield
+
+
+UploadSlot = Annotated[None, Depends(_upload_slot, max_concurrency=MAX_CONCURRENT_UPLOADS, scope='function')]
+
+
+@router.post(
+    '/clients/{client_id}/documents',
+    status_code=201,
+    tags=['documents'],
+    summary='Add a document to a client',
+    responses={
+        **_created(
+            'Document',
+            '/clients/019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11/documents/019aa0c6-01a2-7e3f-8a44-9b7d5c2e6f30',
+        ),
+        **_not_found('Client'),
+        **_WRITE_ERRORS,
+    },
+)
+def create_document(
+    client_id: str, body: DocumentCreate, response: Response, services: ServicesDep, _slot: UploadSlot
+) -> Document:
+    """Tags, summarises, chunks and embeds the document; it is stored when the 201 is sent."""
+    limit = services.settings.max_content_chars
+    if len(body.content) > limit:  # a setting, so the schema cannot check it; worded like the schema's errors
+        msg = f'String should have at most {limit} characters'
+        raise RequestValidationError([{'type': 'string_too_long', 'loc': ('body', 'content'), 'msg': msg}])
+    parsed = parse_id(client_id)
+    if parsed is None or not db.client_exists(services.engine, parsed):
+        raise HTTPException(404, f"Client '{client_id[:MAX_ECHOED_ID_CHARS]}' does not exist.")
+    document = ingest.create_document(services, parsed, body)
+    response.headers['Location'] = router.url_path_for(
+        'get_document', client_id=str(parsed), document_id=str(document.id)
+    )
+    return document
+
+
+@router.get(
+    '/clients/{client_id}/documents/{document_id}',
+    tags=['documents'],
+    summary='Get a document',
+    responses=_not_found('Document'),
+)
+def get_document(client_id: str, document_id: str, services: ServicesDep) -> Document:
+    """A document of this client. A document of another client is a 404, like an unknown id."""
+    parsed_client, parsed_document = parse_id(client_id), parse_id(document_id)
+    row = None
+    if parsed_client is not None and parsed_document is not None:
+        row = db.get_document(services.engine, parsed_client, parsed_document)
+    if row is None:
+        raise HTTPException(404, f"Document '{document_id[:MAX_ECHOED_ID_CHARS]}' does not exist.")
+    return Document.from_row(row)
 
 
 async def require_utf8_query(request: Request) -> None:
