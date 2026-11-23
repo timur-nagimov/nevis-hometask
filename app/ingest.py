@@ -1,12 +1,19 @@
 """Document ingest: what is stored and embedded for an uploaded document.
 
-The lead summary and the chunker are the code the search quality was measured with: change what they
-return only together with a new measurement.
+The lead summary, the chunker and the tagging rules are the code the search quality was measured with:
+change what they return only together with a new measurement.
 """
 
+import hashlib
 import re
+from dataclasses import dataclass
+from pathlib import Path
+from typing import TypedDict
+from urllib.parse import urlsplit
 
-from app.config import CHUNK_WORDS, ELLIPSIS, SUMMARY_CHARS
+import yaml
+
+from app.config import CHUNK_WORDS, ELLIPSIS, SHORT_DOC_WORDS, SUMMARY_CHARS
 
 _SENTENCE_END = re.compile(r'(?<=[.!?])\s+')  # the summary takes whole sentences
 
@@ -91,3 +98,125 @@ def _content_chunks(content: str, max_words: int = CHUNK_WORDS) -> list[str]:
 def chunk_document(title: str, content: str) -> list[str]:
     """The texts to embed for the content, in chunk order (chunk_no 0, 1, ...): title + newline + chunk."""
     return [f'{title}\n{chunk}' for chunk in _content_chunks(content)]
+
+
+class ConceptEntry(TypedDict):
+    concept: str  # the tag shown in the API; also matched against the document
+    triggers: list[str]  # how people ask for it; written into tags_text, never matched
+    expands_to: list[str]  # the documents that are evidence of it; matched against the document
+    sources: list[str]  # official lists stating the relation; not used for matching
+
+
+# the keys of ConceptEntry: the only ones an entry in the file may have
+_ENTRY_KEYS = tuple(ConceptEntry.__annotations__)
+
+
+class Concepts:
+    """The concept map, loaded once at start-up: its entries in file order and the phrases they match."""
+
+    def __init__(self, entries: list[ConceptEntry], sha256: str) -> None:
+        self.entries = entries
+        self.sha256 = sha256  # of the file's bytes; stored in app_meta
+        self._entry_numbers: list[int] = []
+        self._phrases: list[str] = []
+        for number, entry in enumerate(entries):
+            for phrase in [entry['concept'], *entry['expands_to']]:
+                self._entry_numbers.append(number)
+                self._phrases.append(phrase)
+
+    @classmethod
+    def load(cls, path: str | Path) -> Concepts:
+        """Read and check a concept file. Errors name the file and the entry, never the file's text."""
+        data = Path(path).read_bytes()
+        raw = _parse_yaml(path, data)
+        if not isinstance(raw, list) or not raw:
+            raise ValueError(f'{path}: expected a non-empty list of concept entries')
+        entries = [_entry(path, number, item) for number, item in enumerate(raw)]
+        return cls(entries, hashlib.sha256(data).hexdigest())
+
+    def phrase_arrays(self) -> tuple[list[int], list[str]]:
+        """Parallel arrays for the concept match: the entry number of every phrase, and the phrase.
+
+        An entry's phrases are its concept name and its expands_to phrases, not its triggers.
+        """
+        return self._entry_numbers, self._phrases
+
+    def sentence(self, number: int) -> str:
+        """`concept, trigger, trigger, ... .` (a trigger equal to the concept name is not repeated)."""
+        entry = self.entries[number]
+        parts = [entry['concept']]
+        parts += [trigger for trigger in entry['triggers'] if trigger not in parts]
+        return ', '.join(parts) + '.'
+
+
+def _parse_yaml(path: str | Path, data: bytes) -> object:
+    try:
+        return yaml.safe_load(data)
+    except yaml.YAMLError as exc:
+        mark = exc.problem_mark if isinstance(exc, yaml.MarkedYAMLError) else None
+        where = f' (line {mark.line + 1}, column {mark.column + 1})' if mark is not None else ''
+    # PyYAML's message quotes the lines around the problem: raised here, not in `except`, so it is not chained
+    raise ValueError(f'{path}: not a valid YAML file{where}')
+
+
+def _strings(path: str | Path, number: int, key: str, value: object) -> list[str]:
+    if not isinstance(value, list) or not all(isinstance(v, str) and v.strip() for v in value):
+        raise ValueError(f"{path}: entry {number}: '{key}' must be a list of non-empty strings")
+    return [str(v) for v in value]
+
+
+def _is_https_url(text: str) -> bool:
+    try:
+        parts = urlsplit(text)
+    except ValueError:  # e.g. a bracketed host that is no IP address; the message would quote it
+        return False
+    return parts.scheme == 'https' and bool(parts.hostname)
+
+
+def _entry(path: str | Path, number: int, item: object) -> ConceptEntry:
+    if not isinstance(item, dict):
+        raise ValueError(f'{path}: entry {number} is not a mapping')
+    if any(key not in _ENTRY_KEYS for key in item):
+        raise ValueError(f'{path}: entry {number}: unknown keys; an entry has only {", ".join(_ENTRY_KEYS)}')
+    concept = item.get('concept')
+    if not isinstance(concept, str) or not concept.strip():
+        raise ValueError(f"{path}: entry {number}: 'concept' must be a non-empty string")
+    sources = _strings(path, number, 'sources', item.get('sources', []))
+    for index, url in enumerate(sources):
+        if not _is_https_url(url):
+            raise ValueError(f'{path}: entry {number}: source {index} is not an https URL')
+    return ConceptEntry(
+        concept=concept,
+        triggers=_strings(path, number, 'triggers', item.get('triggers')),
+        expands_to=_strings(path, number, 'expands_to', item.get('expands_to')),
+        sources=sources,
+    )
+
+
+def load_concepts(path: str) -> Concepts | None:
+    """The map named by NEVIS_CONCEPTS_FILE; None when the setting is empty (no tags at all)."""
+    return Concepts.load(path) if path else None
+
+
+@dataclass(frozen=True)
+class Tagging:
+    tags: list[str]  # concept names of all matched entries, file order, no duplicates (in the API)
+    tags_text: str  # one sentence per matched entry (searched through documents.fts)
+    head_text: str  # sentences of the head entries only; '' means no tags chunk (chunk -1)
+
+
+def tagging_from_matches(concepts: Concepts, matches: list[tuple[int, bool, bool]], content: str) -> Tagging:
+    """Tags from the matched entries, in entry order: (entry number, in the title, in title or content).
+
+    Head entries: matched in the title, or matched anywhere when the content has at most SHORT_DOC_WORDS
+    words. Only head entries are embedded (chunk -1): otherwise a long letter that mentions a bill in
+    passing would look like proof of address.
+    """
+    short = len(content.split()) <= SHORT_DOC_WORDS
+    matched = [entry for entry, _, _ in matches]
+    head = [entry for entry, in_title, anywhere in matches if in_title or (anywhere and short)]
+    return Tagging(
+        tags=list(dict.fromkeys(concepts.entries[number]['concept'] for number in matched)),
+        tags_text=' '.join(concepts.sentence(number) for number in matched),
+        head_text=' '.join(concepts.sentence(number) for number in head),
+    )

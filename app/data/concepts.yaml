@@ -1,0 +1,108 @@
+# Concept map: relations of the form "document X is accepted as evidence of / belongs to Y".
+# `concept` is the tag, `triggers` are the ways people ask for it, and `expands_to` lists the documents that
+# are evidence of it or belong to it.
+# At upload, a document whose title or text contains the concept name or an expands_to phrase gets the concept
+# as a tag, and the concept with its triggers goes into the document's searchable tag text. Phrases match
+# stemmed and without punctuation; a phrase that starts or ends with a stop word ("in", "will") never matches.
+# A language model drafted the map from general domain knowledge (UK-centric wealth management); `sources`
+# names official lists that state a relation and is not used for matching.
+- concept: proof of identity
+  triggers: [proof of identity, proof of id, identity proof, evidence of identity, identity document, photo id, identity verification, electronic identity check]
+  expands_to: [passport, driving licence, national identity card, biometric residence permit, photocard driving licence, driver's license, residence permit, state id card, electronic verification report, identity check result]
+  sources:
+    - "https://www.gov.uk/government/publications/proof-of-identity-checklist/proof-of-identity-checklist"
+    - "https://www.gov.uk/government/publications/dbs-identity-checking-guidelines/id-checking-guidelines-for-standardenhanced-dbs-check-applications-from-22-april-2025"
+- concept: proof of address
+  triggers: [proof of address, address proof, proof of residence, proof of residency, address verification, evidence of address, proof of home address]
+  expands_to: [utility bill, council tax bill, gas bill, electricity bill, water bill, bank statement, mortgage statement, tenancy agreement, driving licence, hmrc tax notification]
+  sources:
+    - "https://www.gov.uk/jobseekers-allowance/your-jsa-interview"
+    - "https://www.gov.uk/government/publications/proof-of-identity-checklist/proof-of-identity-checklist"
+- concept: customer due diligence
+  triggers: [customer due diligence, client due diligence, enhanced due diligence, know your customer, know your client, kyc documents, aml checks, anti money laundering]
+  expands_to: [client risk assessment, electronic verification report, aml search report, sanctions screening, adverse media, politically exposed person, senior management approval, mlro approval, passport, driving licence, utility bill]
+  sources:
+    - "https://www.jmlsg.org.uk/wp-content/uploads/2026/10/JMLSG-Guidance-Part-I_Oct-2026.pdf"  # paragraphs 5.3.75-5.3.76
+- concept: source of funds
+  triggers: [source of funds, origin of funds, proof of funds, evidence of funds, source of deposit, proof of deposit]
+  expands_to: [bank statement, savings statement, completion statement, gift letter, gifted deposit letter, grant of probate, payslip, bonus letter, share sale agreement, policy maturity statement]
+- concept: source of wealth
+  triggers: [source of wealth, origin of wealth, source of wealth evidence, wealth corroboration, proof of inheritance, evidence of inheritance, inherited funds, inheritance received]
+  expands_to: [source of wealth declaration, grant of probate, estate accounts, business sale agreement, company accounts, tax return, p60, payslip, completion statement, divorce settlement, portfolio valuation, letter from executors]
+- concept: proof of assets
+  triggers: [proof of assets, evidence of assets, asset verification, proof of wealth]
+  expands_to: [bank statement, portfolio valuation, savings account statement, pension statement, property valuation, title register, share certificate, statement of assets and liabilities, net worth statement]
+- concept: evidence of name change
+  triggers: [evidence of name change, proof of name change, name change, change of name, maiden name, former name]
+  expands_to: [marriage certificate, deed poll, change of name deed, decree absolute, civil partnership certificate, statutory declaration]
+- concept: immigration status
+  triggers: [immigration status, proof of immigration status, visa status, right to reside, right to remain, leave to remain, uk visa]
+  expands_to: [biometric residence permit, share code, evisa, indefinite leave to remain, settled status, pre-settled status, entry clearance, residence card, green card, permanent resident card]
+- concept: personal tax return
+  triggers: [personal tax return, tax return, income tax return, self assessment, self assessment return, federal tax return, irs tax return, payment on account]
+  expands_to: [self assessment tax return, sa100, sa302, tax calculation, tax year overview, tax computation, supplementary pages, form 1040, irs tax transcript]
+- concept: tax residency
+  triggers: [tax residency, tax residence, tax residency status, proof of tax residency, tax self-certification, tax residency declaration, crs form, fatca form]
+  expands_to: [certificate of residence, tax residency certificate, self-certification form, w-8ben, w-9, statutory residence test, p85, sa109, form 6166, certificate of foreign status, split year treatment]
+- concept: proof of income
+  triggers: [proof of income, income proof, proof of earnings, evidence of income, income evidence, income verification, self-employed income, director income]
+  expands_to: [payslip, p60, sa302, tax year overview, accountant's certificate, employer reference, profit and loss account, sole trader accounts, dividend voucher, pension income statement, w-2, bank statement]
+  sources:
+    - "https://www.gov.uk/uk-family-visa/provide-information"  # Family visas: proof of your finances
+- concept: leaving employment
+  triggers: [leaving employment, left employment, redundancy payment, severance package, termination payment]
+  expands_to: [p45, details of employee leaving work, settlement agreement, redundancy letter, compromise agreement, severance agreement, payment in lieu of notice, ex gratia payment, final payslip]
+- concept: proof of employment
+  triggers: [proof of employment, evidence of employment, employment proof, employment verification]
+  expands_to: [employment contract, contract of employment, offer letter, offer of employment, written statement of particulars, employer reference, letter from employer, employment verification letter, payslip]
+- concept: divorce and separation
+  triggers: [divorce settlement, financial settlement, financial remedy, financial order, pension sharing]
+  expands_to: [consent order, financial remedy order, decree absolute, final order, pension sharing order, clean break order, separation agreement, spousal maintenance, d81]
+- concept: bank details and mandates
+  triggers: [bank details, bank account details, proof of bank account, bank account verification, direct debit, standing order]
+  expands_to: [voided cheque, void check, bank confirmation letter, direct debit mandate, direct debit instruction, standing order mandate, paying-in slip, bank statement]
+- concept: loans and liabilities
+  triggers: [existing borrowing, outstanding debts, existing liabilities, credit commitments, credit card debt, personal loan, car finance]
+  expands_to: [loan agreement, credit agreement, facility letter, loan statement, credit card statement, hire purchase agreement, personal contract purchase, student loan statement, overdraft facility, settlement figure]
+- concept: mortgage application
+  triggers: [mortgage application, mortgage documents, mortgage paperwork, mortgage submission, remortgage application, mortgage pre-approval, mortgage approval]
+  expands_to: [mortgage application form, agreement in principle, decision in principle, mortgage in principle, mortgage illustration, key facts illustration, european standardised information sheet, mortgage offer, offer of loan, loan estimate, payslip, sa302]
+- concept: property ownership
+  triggers: [property ownership, proof of property ownership, property deeds, title deeds, property purchase, house purchase, property sale, house sale]
+  expands_to: [title register, official copy of register, title plan, hm land registry, transfer deed, tr1, land certificate, completion statement, contract of sale, memorandum of sale, stamp duty land tax return]
+- concept: pension transfer
+  triggers: [pension transfer, pension transfer value, transfer value, transfer quote, defined benefit transfer, db transfer, final salary transfer]
+  expands_to: [cash equivalent transfer value, cetv, transfer value quotation, statement of entitlement, guaranteed transfer value, transfer discharge form, appropriate pension transfer analysis, apta, transfer value comparator]
+- concept: protection cover
+  triggers: [protection cover, protection policies, protection insurance, insurance cover, existing cover, existing policies, life cover]
+  expands_to: [life assurance, life insurance, term assurance, whole of life, critical illness cover, income protection, permanent health insurance, family income benefit, death in service, policy schedule, sum assured, certificate of insurance]
+- concept: business protection
+  triggers: [business protection, key person cover, keyman insurance]
+  expands_to: [key person insurance, shareholder protection, relevant life policy, cross option agreement, double option agreement, business loan protection, partnership protection, executive income protection, relevant life trust]
+- concept: probate and estate administration
+  triggers: [estate administration, administration of estate, probate documents, personal representative]
+  expands_to: [grant of probate, letters of administration, grant of representation, estate accounts, deed of variation, letters testamentary, certificate of confirmation]
+- concept: evidence of death
+  triggers: [evidence of death, proof of death, death of client, client deceased, deceased client]
+  expands_to: [death certificate, certified copy of an entry of death, interim death certificate, coroner's certificate, notification of death, bereavement notification, date of death valuation, grant of probate]
+- concept: estate planning documents
+  triggers: [estate planning documents, estate planning, estate plan, succession planning, legacy planning, intergenerational planning]
+  expands_to: [last will and testament, codicil, lasting power of attorney, enduring power of attorney, durable power of attorney, trust deed, declaration of trust, deed of appointment, letter of wishes, expression of wish form, nomination of beneficiaries, life policy in trust]
+- concept: business ownership
+  triggers: [business ownership, beneficial ownership, ultimate beneficial owner, ownership structure, company documents, corporate documents, constitutional documents, incorporation documents]
+  expands_to: [psc register, register of members, shareholder register, share certificate, ownership structure chart, certificate of incorporation, articles of association, memorandum of association, confirmation statement, shareholders' agreement, partnership agreement, partnership deed]
+- concept: client onboarding
+  triggers: [client onboarding, onboarding documents, onboarding pack, new client pack, new client documents, account opening, account opening documents]
+  expands_to: [client agreement, terms of business, engagement letter, letter of engagement, client service agreement, initial disclosure document, fact find, factfind, confidential financial questionnaire, account opening form, discretionary management agreement, investment management agreement]
+- concept: risk profile
+  triggers: [risk profile, risk profiling, attitude to risk, risk tolerance, risk appetite, capacity for loss]
+  expands_to: [attitude to risk questionnaire, risk profile report, risk questionnaire]
+- concept: advice records
+  triggers: [advice records, advice report, advice letter, recommendation report]
+  expands_to: [suitability report, suitability letter, statement of suitability, reasons why letter, financial planning report, summary of recommendations, investment proposal, annual review report, annual suitability report, periodic suitability assessment, review meeting notes]
+- concept: retirement planning documents
+  triggers: [retirement planning, retirement options, retirement income planning, retirement review, pension review, pension planning]
+  expands_to: [pension statement, state pension forecast, retirement options pack, drawdown illustration, annuity quotation, pension commencement lump sum, cashflow forecast]
+- concept: investor classification
+  triggers: [investor classification, client categorisation, client classification, sophisticated investor, high net worth investor, professional client, elective professional, accredited investor]
+  expands_to: [high net worth investor statement, self-certified sophisticated investor statement, certified sophisticated investor, restricted investor statement, elective professional client, appropriateness assessment, qualified purchaser]
