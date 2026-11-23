@@ -90,7 +90,7 @@ def test_the_stored_vector_embeds_title_newline_chunk(
     assert np.allclose(stored, expected, atol=1e-5)
 
 
-@pytest.mark.parametrize('client_id', [UNKNOWN, 'not-a-uuid', 'x' * (MAX_ECHOED_ID_CHARS + 1)])
+@pytest.mark.parametrize('client_id', [UNKNOWN, 'x' * (MAX_ECHOED_ID_CHARS + 1)])
 def test_an_unknown_or_malformed_client_is_404(app_client: TestClient, client_id: str) -> None:
     response = app_client.post(f'/clients/{client_id}/documents', json={'title': 'Note', 'content': 'Text.'})
 

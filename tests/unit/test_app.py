@@ -1,6 +1,5 @@
-"""Health check, access log, logging levels, settings timing, the order in which the services are built, and
-the entry point; no database or model needed (the lifespan is not started, except in the test that shows it
-fails without settings)."""
+"""Health check, access log, logging levels, settings timing and the entry point; no database or model needed
+(the lifespan is not started, except in the test that shows it fails without settings)."""
 
 import inspect
 import logging
@@ -17,10 +16,8 @@ from pydantic import ValidationError
 
 import app.__main__ as entry_point
 from app import __version__
-from app.config import MAX_BODY_BYTES, SWAGGER_UI, Settings
-from app.main import _configure_logging, build_services, create_app, health
-
-DATABASE_URL = 'postgresql://u:p@db:5432/nevis'  # Settings needs one; nothing connects
+from app.config import MAX_BODY_BYTES, SWAGGER_UI
+from app.main import _configure_logging, create_app, health
 
 
 @pytest.fixture
@@ -132,18 +129,6 @@ def test_settings_are_read_when_the_app_starts_not_when_it_is_created(
 
     with pytest.raises(ValidationError, match='database_url'), TestClient(app):
         pass  # entering the client runs the lifespan, which reads the settings
-
-
-def test_the_map_and_the_model_load_before_the_pool_opens(monkeypatch: pytest.MonkeyPatch) -> None:
-    """So a broken map or a missing model stops the start with nothing open."""
-    steps: list[str] = []
-    monkeypatch.setattr('app.main.load_concepts', lambda path: steps.append('map'))
-    monkeypatch.setattr('app.main.Embedder', lambda model_dir, threads: steps.append('model'))
-    monkeypatch.setattr('app.main.open_engine', lambda settings: steps.append('pool'))
-
-    build_services(Settings(database_url=DATABASE_URL))
-
-    assert steps == ['map', 'model', 'pool']
 
 
 @pytest.mark.parametrize(

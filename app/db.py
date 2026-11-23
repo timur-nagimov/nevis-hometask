@@ -532,17 +532,16 @@ class AppMeta:
     concepts_sha256: str | None  # None: concept tagging is off
 
 
-def read_app_meta(engine: Engine) -> AppMeta | None:
-    """The stored row; None until the first start has written it."""
+def read_app_meta(engine: Engine) -> AppMeta:
+    """The stored row, written by write_app_meta at the first start."""
     statement = select(AppMetaRow.model_revision, AppMetaRow.tokenizer_settings, AppMetaRow.concepts_sha256)
     with _connection(engine) as conn:
-        row = conn.execute(statement).first()
-    return None if row is None else AppMeta(*row)
+        row = conn.execute(statement).one()
+    return AppMeta(*row)
 
 
 def write_app_meta(engine: Engine, meta: AppMeta) -> None:
-    """Store the running configuration when the table is empty. An existing row is kept: two first starts can
-    both find the table empty, and the later write then does nothing."""
+    """Store the running configuration when the table is empty; an existing row is kept."""
     statement = (
         pg_insert(AppMetaRow)
         .values(

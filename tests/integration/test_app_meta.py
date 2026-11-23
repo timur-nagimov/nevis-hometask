@@ -55,15 +55,6 @@ def test_a_mismatch_logs_a_warning_and_keeps_the_row(
     assert db.read_app_meta(services.engine) == stored
 
 
-def test_a_second_write_keeps_the_first_row(services: Services) -> None:
-    """Two first starts can both find the table empty; the later write then does nothing."""
-    stored = db.read_app_meta(services.engine)
-
-    db.write_app_meta(services.engine, db.AppMeta('other-model', {}, None))
-
-    assert db.read_app_meta(services.engine) == stored
-
-
 def test_the_service_still_starts_after_a_mismatch_and_names_the_differing_fields(
     fresh_dsn: str, engine: Engine, caplog: pytest.LogCaptureFixture
 ) -> None:

@@ -235,8 +235,7 @@ async def health() -> dict[str, str]:
 
 
 def build_services(settings: Settings) -> Services:
-    """Load the concept map and the model, then open the connection pool: in this order, a broken map or a
-    missing model stops the start before the pool is opened."""
+    """Load the concept map and the model, then open the connection pool."""
     concepts = load_concepts(settings.concepts_file)
     embedder = Embedder(settings.model_dir, settings.embed_threads)
     return Services(settings=settings, engine=open_engine(settings), embedder=embedder, concepts=concepts)
@@ -260,10 +259,8 @@ def check_app_meta(services: Services) -> list[str]:
         tokenizer_settings=info['tokenizer'],
         concepts_sha256=services.concepts.sha256 if services.concepts is not None else None,
     )
+    db.write_app_meta(services.engine, current)  # keeps the row of an earlier start
     stored = db.read_app_meta(services.engine)
-    if stored is None:
-        db.write_app_meta(services.engine, current)
-        return []
     differing = [
         field.name
         for field in dataclasses.fields(db.AppMeta)
@@ -292,13 +289,7 @@ _R422: dict[int | str, dict[str, Any]] = {
         'A field or parameter failed validation',
         '1 validation error(s).',
         422,
-        errors=[
-            FieldError(
-                loc=['body', 'email'],
-                msg='value is not a valid email address: An email address must have an @-sign.',
-                type='value_error',
-            )
-        ],
+        errors=[FieldError(loc=['body'], msg='Field required', type='missing')],
     )
 }
 _WRITE_ERRORS: dict[int | str, dict[str, Any]] = {
@@ -526,16 +517,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         try:
             check_app_meta(services)
             app.state.services = services
-            model = services.embedder.info()
+            info = services.embedder.info()
             log.info(
                 'started: schema: %s | concepts: %s | model: %s@%s, threads %d | limits:'
                 ' request body %d bytes, content %d characters, q %d characters, limit 1-%d (default %d)'
                 ' | database: pool %d, wait %g s, connect timeout %d s, statement timeout %d ms | version %s',
                 'created' if created else 'present',
                 f'{len(services.concepts.entries)} entries' if services.concepts is not None else 'disabled',
-                model['model'],
-                model['revision'][:SHORT_REVISION_CHARS],
-                model['threads'],
+                info['model'],
+                info['revision'][:SHORT_REVISION_CHARS],
+                info['threads'],
                 MAX_BODY_BYTES,
                 active.max_content_chars,
                 MAX_Q_CHARS,
