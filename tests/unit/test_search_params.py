@@ -1,5 +1,7 @@
 """The /search parameters, the client search item and OpenAPI; no database."""
 
+import asyncio
+import inspect
 import unicodedata
 
 import pytest
@@ -62,10 +64,14 @@ def request_with(query_string: bytes) -> Request:
     return Request(scope)
 
 
+def test_utf8_check_needs_no_worker_thread() -> None:
+    assert inspect.iscoroutinefunction(require_utf8_query)
+
+
 @pytest.mark.parametrize('query_string', [b'q=%FF', b'q=%ED%A0%BD', b'q=John%C3', b'q=ok&type=%FF'])
 def test_query_string_not_utf8_is_400(query_string: bytes) -> None:
     with pytest.raises(HTTPException) as info:
-        require_utf8_query(request_with(query_string))
+        asyncio.run(require_utf8_query(request_with(query_string)))
     assert (info.value.status_code, info.value.detail) == (400, 'The query string is not valid UTF-8.')
 
 
@@ -73,7 +79,7 @@ def test_query_string_not_utf8_is_400(query_string: bytes) -> None:
     'query_string', [b'q=NevisWealth', b'q=Zo%C3%AB+M%C3%BCller', b'q=%25', b'q=100%', b'']
 )
 def test_utf8_query_string_passes(query_string: bytes) -> None:
-    require_utf8_query(request_with(query_string))
+    asyncio.run(require_utf8_query(request_with(query_string)))
 
 
 def test_client_search_item_is_flat_with_the_metadata_first() -> None:

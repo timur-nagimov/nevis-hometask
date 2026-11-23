@@ -1,8 +1,8 @@
 """Every error is an RFC 9457 problem document.
 
-The API has no resource endpoints yet, so `make_app` adds test-only routes to the real application:
-a JSON body model, a query parameter, a route that crashes, one that raises DatabaseUnavailable.
-The lifespan is not started (no `with TestClient(...)`), so no database is needed.
+`make_app` adds test-only routes to the real application, so that every error can be produced without a
+database: a JSON body model, a query parameter, and routes that crash, raise database errors or return an
+invalid response. The lifespan is not started (no `with TestClient(...)`).
 """
 
 import json

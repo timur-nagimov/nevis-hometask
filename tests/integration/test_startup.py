@@ -13,7 +13,7 @@ from sqlalchemy.exc import OperationalError
 from app import __version__
 from app.config import RETRY_AFTER_SECONDS, Services, Settings
 from app.db import _connection, open_engine
-from app.main import ServicesDep, create_app
+from app.main import create_app
 from tests.integration.helpers import new_database
 
 UNREACHABLE = 'postgresql://nevis:nevis@127.0.0.1:1/nevis'  # nothing listens on port 1
@@ -59,29 +59,29 @@ def test_app_client_and_services_share_one_throwaway_database_with_the_schema(
     assert has_schema is True
 
 
-def test_database_gone_is_503_while_health_keeps_answering(fresh_dsn: str) -> None:
+def test_database_gone_is_503_on_every_route_while_health_keeps_answering(fresh_dsn: str) -> None:
     app = create_app(Settings(database_url=fresh_dsn))
-
-    @app.get('/ping')  # test-only route that uses the database the way the routes of later steps will
-    def ping(services: ServicesDep) -> dict[str, int]:
-        with _connection(services.engine) as conn:
-            one: int = conn.execute(text('SELECT 1')).scalar_one()
-        return {'one': one}
-
     with TestClient(app) as client:
-        assert client.get('/ping').json() == {'one': 1}
+        assert client.get('/search', params={'q': 'john'}).status_code == 200
         healthy = app.state.services
         dead_engine = open_engine(Settings(database_url=UNREACHABLE))  # as if the database had gone away
         app.state.services = dataclasses.replace(healthy, engine=dead_engine)
         try:
-            response = client.get('/ping')
+            responses = {
+                'create': client.post(
+                    '/clients', json={'first_name': 'Ann', 'last_name': 'Lee', 'email': 'ann@example.com'}
+                ),
+                'get': client.get('/clients/019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11'),
+                'search': client.get('/search', params={'q': 'john'}),
+            }
             health = client.get('/health')
         finally:
             app.state.services = healthy
             dead_engine.dispose()
 
-    assert response.status_code == 503
-    assert response.headers['content-type'] == 'application/problem+json'
-    assert response.headers['retry-after'] == str(RETRY_AFTER_SECONDS)
-    assert response.json()['detail'] == 'The database is unreachable; retry shortly.'
+    for route, response in responses.items():
+        assert response.status_code == 503, route
+        assert response.headers['content-type'] == 'application/problem+json', route
+        assert response.headers['retry-after'] == str(RETRY_AFTER_SECONDS), route
+        assert response.json()['detail'] == 'The database is unreachable; retry shortly.', route
     assert health.json() == {'status': 'ok'}

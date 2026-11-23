@@ -195,7 +195,7 @@ def close_services(services: Services) -> None:
 
 
 async def get_services(request: Request) -> Services:
-    """Dependency for the routes of later steps. `async`: reading app.state needs no worker thread."""
+    """The services the lifespan built. `async`: reading app.state needs no worker thread."""
     services: Services = request.app.state.services
     return services
 
@@ -298,8 +298,8 @@ def get_client(client_id: str, services: ServicesDep) -> dict[str, Any]:
     return client
 
 
-def require_utf8_query(request: Request) -> None:
-    """400 when the percent-decoded query string is not UTF-8.
+async def require_utf8_query(request: Request) -> None:
+    """400 when the percent-decoded query string is not UTF-8. `async`: no worker thread.
 
     Starlette would quietly turn such bytes into U+FFFD. As a route dependency this runs before FastAPI
     validates q, type and limit, so `?q=%FF&limit=abc` is a 400, not a 422.
