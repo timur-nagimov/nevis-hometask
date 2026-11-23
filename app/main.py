@@ -351,7 +351,7 @@ async def require_utf8_query(request: Request) -> None:
     tags=['search'],
     summary='Search clients and documents',
     description=(
-        f'Results matching `q`, best first. Order: `score` descending ({SCORE_DECIMALS} decimals), '
+        f'Results matching `q`, best first.\n\nOrder: `score` descending ({SCORE_DECIMALS} decimals), '
         'then `type`, then `id`. '
         f'`score` >= {EXACT_SCORE_MIN}: every query word occurs in the record (`exact`); '
         f'below {EXACT_SCORE_MIN}: a typo match (`fuzzy`).'
