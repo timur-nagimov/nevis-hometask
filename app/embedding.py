@@ -100,12 +100,10 @@ class Embedder:
         self._session = ort.InferenceSession(
             str(path / MODEL_FILE), sess_options=options, providers=['CPUExecutionProvider']
         )
-        self._input_names: set[str] = {i.name for i in self._session.get_inputs()}
         self._tokenizer = Tokenizer.from_file(str(path / TOKENIZER_FILE))
         self._tokenizer.enable_truncation(max_length=MAX_TOKENS)  # the shipped file stops at 128
-        pad_id = self._tokenizer.token_to_id(PAD_TOKEN) or 0
         # to the longest text of each call; the shipped file pads every text to 128 tokens
-        self._tokenizer.enable_padding(pad_id=pad_id, pad_token=PAD_TOKEN)
+        self._tokenizer.enable_padding(pad_id=self._tokenizer.token_to_id(PAD_TOKEN), pad_token=PAD_TOKEN)
         self._threads = threads
         self._document_lane = threading.BoundedSemaphore(RUNS_PER_LANE)
         self._query_lane = threading.BoundedSemaphore(RUNS_PER_LANE)
@@ -134,11 +132,11 @@ class Embedder:
     def _run(self, texts: list[str], lane: threading.BoundedSemaphore) -> list[Vector]:
         encodings = self._tokenizer.encode_batch(texts)
         input_ids = np.array([e.ids for e in encodings], dtype=np.int64)
-        feed = {'input_ids': input_ids}
-        if 'attention_mask' in self._input_names:
-            feed['attention_mask'] = np.array([e.attention_mask for e in encodings], dtype=np.int64)
-        if 'token_type_ids' in self._input_names:
-            feed['token_type_ids'] = np.zeros_like(input_ids)
+        feed = {
+            'input_ids': input_ids,
+            'attention_mask': np.array([e.attention_mask for e in encodings], dtype=np.int64),
+            'token_type_ids': np.zeros_like(input_ids),
+        }
         with lane:  # the model call only; tokenizing runs outside the lane
             outputs = self._session.run([OUTPUT], feed)
         matrix = np.asarray(outputs[0], dtype=np.float32)
@@ -176,11 +174,11 @@ def selfcheck(model_dir: str | Path | None = None) -> float:
     return cosine
 
 
-def main(argv: list[str] | None = None) -> int:
+def main() -> int:
     parser = argparse.ArgumentParser(prog='python -m app.embedding')
     parser.add_argument('--selfcheck', action='store_true', help='load the model and check it')
     parser.add_argument('--model-dir', help=f'default: $NEVIS_MODEL_DIR if set, else {DEFAULT_MODEL_DIR}')
-    args = parser.parse_args(argv)
+    args = parser.parse_args()
     if not args.selfcheck:
         parser.print_help(sys.stderr)
         return 2

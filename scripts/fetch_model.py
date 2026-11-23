@@ -31,22 +31,22 @@ ENDPOINT = (os.environ.get('HF_ENDPOINT') or DEFAULT_ENDPOINT).rstrip('/')
 ATTEMPTS = 5  # per file
 TIMEOUT_SECONDS = 60  # to connect and for each read, so a stalled transfer fails instead of hanging
 READ_BYTES = 1 << 20  # files go to disk in pieces of this size, never whole through memory
-MAX_WAIT_SECONDS = 20  # the wait before the next attempt doubles from 2 seconds up to this
 USER_AGENT = 'model-fetch/1.0'
 BYTES_PER_MB = 1_000_000  # the progress lines count decimal megabytes
 
 
-def fetch(rel: str, sha256: str, size: int, target: Path, attempts: int = ATTEMPTS) -> float:
+def fetch(rel: str, sha256: str, size: int, target: Path) -> float:
     """Download one file to `target / rel` and verify it; returns the seconds the good attempt took."""
     url = f'{ENDPOINT}/{REPO}/resolve/{REVISION}/{rel}'
     dest = target / rel
     dest.parent.mkdir(parents=True, exist_ok=True)
     headers = {'User-Agent': USER_AGENT}
     last: Exception | None = None
-    for attempt in range(1, attempts + 1):
+    for attempt in range(1, ATTEMPTS + 1):
         started = time.perf_counter()
         try:
             digest = hashlib.sha256()
+            # a new request per attempt: behind a proxy, urlopen alters the one it is given
             request = urllib.request.Request(url, headers=headers)
             with urllib.request.urlopen(request, timeout=TIMEOUT_SECONDS) as resp, open(dest, 'wb') as out:
                 while chunk := resp.read(READ_BYTES):
@@ -61,11 +61,11 @@ def fetch(rel: str, sha256: str, size: int, target: Path, attempts: int = ATTEMP
         except (urllib.error.URLError, TimeoutError, ConnectionError, ValueError) as exc:
             last = exc
             print(
-                f'  attempt {attempt}/{attempts} for {rel} failed: {type(exc).__name__}: {exc}',
+                f'  attempt {attempt}/{ATTEMPTS} for {rel} failed: {type(exc).__name__}: {exc}',
                 file=sys.stderr,
             )
-            if attempt < attempts:  # the last failure ends the build without waiting
-                time.sleep(min(2**attempt, MAX_WAIT_SECONDS))
+            if attempt < ATTEMPTS:  # the last failure ends the build without waiting
+                time.sleep(2**attempt)
     raise SystemExit(
         f'\nERROR: could not download {url}\n  last error: {last}\n'
         '  The image build needs HTTPS access to huggingface.co and its CDN (*.hf.co).\n'
@@ -85,9 +85,7 @@ def main(argv: list[str] | None = None) -> None:
         took = fetch(rel, sha256, size, target)
         total += took
         megabytes = size / BYTES_PER_MB
-        print(
-            f'ok {rel:{width}} {megabytes:6.1f} MB in {took:5.1f}s ({megabytes / max(took, 1e-9):5.1f} MB/s)'
-        )
+        print(f'ok {rel:{width}} {megabytes:6.1f} MB in {took:5.1f}s ({megabytes / took:5.1f} MB/s)')
     print(f'total {total:.1f}s')
 
 

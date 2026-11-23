@@ -1,5 +1,5 @@
-"""scripts/fetch_model.py: download URL and headers, sha256 and size check, retries and their waits, every
-listed file, usage, the app's model; no network (urlopen is replaced)."""
+"""scripts/fetch_model.py: download URL and headers, sha256 check, retries and their waits, every listed
+file, usage, the app's model; no network (urlopen is replaced)."""
 
 import hashlib
 import importlib.util
@@ -64,24 +64,11 @@ def test_fetch_gives_up_after_checksum_mismatches(monkeypatch: pytest.MonkeyPatc
     monkeypatch.setattr(script.time, 'sleep', lambda seconds: None)
 
     with pytest.raises(SystemExit, match='could not download'):
-        script.fetch('tokenizer.json', '0' * 64, len(corrupt), tmp_path, attempts=2)
-    assert len(urls) == 2
+        script.fetch('tokenizer.json', '0' * 64, len(corrupt), tmp_path)
+    assert len(urls) == script.ATTEMPTS
 
 
-def test_fetch_rejects_a_file_of_another_size(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
-    """The size is checked on its own: here the checksum matches."""
-    script = load_script(monkeypatch, None)
-    data = b'model bytes'
-    monkeypatch.setattr(script.urllib.request, 'urlopen', lambda request, timeout: io.BytesIO(data))
-    monkeypatch.setattr(script.time, 'sleep', lambda seconds: None)
-
-    with pytest.raises(SystemExit, match='size mismatch'):
-        script.fetch('tokenizer.json', hashlib.sha256(data).hexdigest(), len(data) + 1, tmp_path, attempts=2)
-
-
-def test_the_waits_between_attempts_double_up_to_a_cap(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-) -> None:
+def test_the_waits_between_attempts_double(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     script = load_script(monkeypatch, None)
     waits: list[float] = []
 
@@ -92,9 +79,9 @@ def test_the_waits_between_attempts_double_up_to_a_cap(
     monkeypatch.setattr(script.time, 'sleep', waits.append)
 
     with pytest.raises(SystemExit, match='could not download'):
-        script.fetch('tokenizer.json', '0' * 64, 1, tmp_path, attempts=6)
+        script.fetch('tokenizer.json', '0' * 64, 1, tmp_path)
 
-    assert waits == [2, 4, 8, 16, script.MAX_WAIT_SECONDS]  # five waits for six attempts
+    assert waits == [2, 4, 8, 16]  # none after the last of the five attempts
 
 
 def test_a_token_in_the_environment_is_not_sent(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:

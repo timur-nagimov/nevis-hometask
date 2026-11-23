@@ -8,7 +8,6 @@ Needs the model, not the database. On the host, with the model downloaded to .ca
 import os
 import subprocess
 import sys
-import threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from types import SimpleNamespace
@@ -89,15 +88,7 @@ def test_the_query_prefix_changes_the_vector(embedder: Embedder) -> None:
     assert float(query @ plain) < 0.99
 
 
-def test_text_after_the_128th_token_changes_the_vector(embedder: Embedder, raw_tokenizer: Tokenizer) -> None:
-    filler = 'The client met the adviser to review the portfolio. ' * 20
-    count = len(raw_tokenizer.encode(filler).ids)
-    assert 150 < count < 480  # the tails below sit after token 128, before 512
-    a, b = embedder.embed_documents([filler + 'Utility bill.', filler + 'Passport.'])
-    assert float(np.max(np.abs(a - b))) > 1e-4  # with the shipped truncation at 128 they would be equal
-
-
-def test_text_after_the_512th_token_is_not_read(embedder: Embedder, raw_tokenizer: Tokenizer) -> None:
+def test_texts_are_cut_at_the_512th_token(embedder: Embedder, raw_tokenizer: Tokenizer) -> None:
     # MAX_TOKENS includes [CLS] and [SEP]; 'word' is one token
     room_for_one = 'word ' * (MAX_TOKENS - 3)  # the first token of a tail is the last one read
     no_room = 'word ' * (MAX_TOKENS - 2)  # the tails start right after the cut
@@ -108,7 +99,7 @@ def test_text_after_the_512th_token_is_not_read(embedder: Embedder, raw_tokenize
     a, b = embedder.embed_documents([room_for_one + tail for tail in tails])
     c, d = embedder.embed_documents([no_room + tail for tail in tails])  # too long for the model if not cut
 
-    assert float(np.max(np.abs(a - b))) > 1e-4
+    assert float(np.max(np.abs(a - b))) > 1e-4  # with the shipped truncation at 128 they would be equal
     assert float(np.max(np.abs(c - d))) < 1e-6
 
 
@@ -164,26 +155,19 @@ def test_sixteen_threads_share_one_embedder(embedder: Embedder) -> None:
     texts = [f'Statement {i}: interest paid on the savings account.' for i in range(16)]
     expected_documents = embedder.embed_documents(texts)
     expected_queries = [embedder.embed_query(text) for text in texts]
-    errors: list[str] = []
 
     def work(i: int) -> None:
-        try:
-            for call in range(20):
-                if (i + call) % 2:
-                    got, want = embedder.embed_query(texts[i]), expected_queries[i]
-                else:
-                    got, want = embedder.embed_documents([texts[i]])[0], expected_documents[i]
-                if float(np.max(np.abs(got - want))) > 1e-5:
-                    errors.append(f'thread {i}, call {call}: another vector')
-        except Exception as exc:
-            errors.append(f'thread {i}: {exc!r}')
+        for call in range(20):
+            if (i + call) % 2:
+                got, want = embedder.embed_query(texts[i]), expected_queries[i]
+            else:
+                got, want = embedder.embed_documents([texts[i]])[0], expected_documents[i]
+            assert float(np.max(np.abs(got - want))) <= 1e-5, f'thread {i}, call {call}: another vector'
 
-    threads = [threading.Thread(target=work, args=(i,)) for i in range(16)]
-    for thread in threads:
-        thread.start()
-    for thread in threads:
-        thread.join()
-    assert errors == []
+    with ThreadPoolExecutor(max_workers=16) as pool:
+        futures = [pool.submit(work, i) for i in range(16)]
+    for future in futures:
+        future.result()  # raises what its thread raised
 
 
 def test_the_session_runs_on_the_given_threads(embedder: Embedder) -> None:
