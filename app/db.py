@@ -154,6 +154,7 @@ class AppMetaRow(Base):
 
 # What the tables need before they can be created: the extensions, and the two text functions that their
 # generated columns and the searches use. SQLAlchemy has no construct for SQL functions, so this is plain DDL.
+# psycopg receives these statements with an empty parameter list: a literal % must be written %%.
 _EXTENSIONS_AND_FUNCTIONS = (
     'CREATE EXTENSION IF NOT EXISTS vector',
     'CREATE EXTENSION IF NOT EXISTS pg_trgm',
@@ -181,6 +182,7 @@ def create_schema(database_url: str) -> bool:
         'postgresql+psycopg://',
         creator=lambda: psycopg.connect(database_url, connect_timeout=3),
         poolclass=NullPool,
+        hide_parameters=True,
     )
     try:
         with engine.begin() as conn:
@@ -188,7 +190,7 @@ def create_schema(database_url: str) -> bool:
                 return False
             for statement in _EXTENSIONS_AND_FUNCTIONS:
                 conn.exec_driver_sql(statement)
-            Base.metadata.create_all(conn)
+            Base.metadata.create_all(conn, checkfirst=False)  # a table name taken already is an error
         return True
     finally:
         engine.dispose()
@@ -204,6 +206,7 @@ def open_engine(database_url: str) -> Engine:
         max_overflow=0,  # at most 8 connections
         pool_timeout=5,  # wait at most 5 s for a free connection, then 503 busy
         pool_pre_ping=True,  # test a connection before handing it out: replaces those a restart dropped
+        hide_parameters=True,  # error texts must not carry names, e-mails or search terms into the log
     )
 
 

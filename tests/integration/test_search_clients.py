@@ -1,4 +1,4 @@
-"""The client search statement (app/sql/search_clients.sql) through db.search_clients, on a real database.
+"""The client search (db.search_clients) on a real database.
 
 Scores are unrounded here: the API rounds them (app.search.merge).
 """

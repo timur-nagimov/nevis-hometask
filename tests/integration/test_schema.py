@@ -1,4 +1,4 @@
-"""What app/sql/schema.sql promises: it is created once, on an empty database;
+"""What create_schema promises: the schema is created once, on an empty database;
 text functions that ignore the database locale; the generated search columns; uuid v7 ids; and an app_meta
 table that holds at most one row."""
 
@@ -6,6 +6,7 @@ from collections.abc import Iterator
 
 import psycopg
 import pytest
+from sqlalchemy.exc import ProgrammingError
 
 from app.db import create_schema
 from tests.integration.helpers import new_database
@@ -47,6 +48,17 @@ def test_empty_database_gets_the_whole_schema(admin_dsn: str) -> None:
             'document_chunks',
             'documents',
         ]
+
+
+def test_a_table_name_taken_already_stops_the_creation_and_leaves_nothing(admin_dsn: str) -> None:
+    with new_database(admin_dsn) as dsn:
+        with psycopg.connect(dsn) as conn:
+            conn.execute('CREATE TABLE app_meta (other text)')  # someone else's table under one of our names
+
+        with pytest.raises(ProgrammingError):
+            create_schema(dsn)
+
+        assert column(dsn, "SELECT tablename FROM pg_tables WHERE schemaname = 'public'") == ['app_meta']
 
 
 def test_later_starts_create_nothing_and_keep_the_data(fresh_dsn: str) -> None:

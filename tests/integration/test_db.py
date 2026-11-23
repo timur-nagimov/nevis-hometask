@@ -13,6 +13,7 @@ from pgvector.sqlalchemy import Vector
 from psycopg import sql
 from psycopg.conninfo import conninfo_to_dict
 from sqlalchemy import Engine, cast, func, select, text
+from sqlalchemy.exc import DBAPIError
 
 from app.db import DatabaseUnavailable, _connection, open_engine
 
@@ -141,3 +142,12 @@ def test_the_first_request_after_an_outage_succeeds(engine: Engine, fresh_dsn: s
     with _connection(engine) as conn:
         assert conn.execute(text('SELECT 3')).scalar() == 3
     assert time.monotonic() - began < 2  # no back-off: the pool connects again at once
+
+
+def test_errors_do_not_carry_the_query_parameters(engine: Engine) -> None:
+    # An error the API does not expect becomes a 500, and its traceback goes to the server log: it must not
+    # carry names, e-mail addresses or search terms.
+    with pytest.raises(DBAPIError) as error, _connection(engine) as conn:
+        conn.execute(text('SELECT 1 / 0 WHERE :email IS NOT NULL'), {'email': 'ann.lee@private.example'})
+
+    assert 'ann.lee@private.example' not in str(error.value)

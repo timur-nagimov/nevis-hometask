@@ -109,7 +109,7 @@ def test_libraries_log_at_warning_and_the_application_at_its_level() -> None:
         assert logging.getLogger().level == logging.WARNING
         assert logging.getLogger('uvicorn').level == logging.WARNING
         assert logging.getLogger('uvicorn.error').level == logging.WARNING
-        assert logging.getLogger('psycopg.pool').getEffectiveLevel() == logging.WARNING
+        assert logging.getLogger('sqlalchemy.engine').getEffectiveLevel() == logging.WARNING
         assert logging.getLogger('app').level == logging.DEBUG
     finally:
         for name, level in saved.items():
