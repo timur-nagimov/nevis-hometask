@@ -1,4 +1,4 @@
-"""A document can be read as soon as its 201 has arrived, checked through a real server: TestClient hands
+"""A document can be read as soon as its 201 has arrived. The check needs a real server: TestClient hands
 back a response only after the application has finished, so it cannot see work that still runs once the
 response is sent, such as a late commit."""
 
@@ -26,7 +26,7 @@ def base_url(fresh_dsn: str) -> Iterator[str]:
     server = uvicorn.Server(uvicorn.Config(app, access_log=False, log_config=None))
     with socket.create_server(('127.0.0.1', 0)) as listener:
         # daemon: a server that does not stop in time must not keep pytest from exiting
-        thread = threading.Thread(target=server.run, args=([listener],), daemon=True)
+        thread = threading.Thread(target=server.run, kwargs={'sockets': [listener]}, daemon=True)
         thread.start()
         try:
             deadline = time.monotonic() + 60  # the start loads the model
@@ -49,7 +49,7 @@ def call(method: str, url: str, body: dict[str, str] | None = None) -> tuple[int
     )
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
-            return response.status, json.loads(response.read())
+            return response.status, json.load(response)
     except urllib.error.HTTPError as error:
         error.close()
         return error.code, None
@@ -63,10 +63,10 @@ def test_get_right_after_post_finds_the_document_200_times(base_url: str) -> Non
     )
     assert status == 201
     url = f'{base_url}/clients/{john["id"]}/documents'
+    note = {'title': 'Call note', 'content': 'The client asked about the pension statement.'}
     misses = 0
-    for i in range(200):
-        title, content = f'Call note {i}', f'Call {i}: the client asked about the pension statement.'
-        status, document = call('POST', url, {'title': title, 'content': content})
+    for _ in range(200):
+        status, document = call('POST', url, note)
         assert status == 201
         status, _ = call('GET', f'{url}/{document["id"]}')
         if status != 200:
