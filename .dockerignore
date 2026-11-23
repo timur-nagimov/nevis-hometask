@@ -1,0 +1,15 @@
+# Kept out of every image build: version control, local environments, caches, secrets, and the research
+# and planning material no image needs. testset/ and eval/ stay in: step 5 copies them into the test image.
+.git
+.github
+.venv
+.cache
+**/__pycache__
+**/*.py[cod]
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.DS_Store
+.env
+research
+dev-plan

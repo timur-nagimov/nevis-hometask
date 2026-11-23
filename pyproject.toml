@@ -1,0 +1,53 @@
+[project]
+name = "nevis-search"
+version = "0.1.0"
+description = "Search API over clients and their documents"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "fastapi==0.165.0",
+    "uvicorn==0.54.0",
+    "pydantic==2.14.4",
+    "pydantic-settings==2.16.3",
+    "email-validator==2.4.0",
+    "psycopg[binary,pool]==3.3.9",
+    "pgvector==0.5.1",
+    "onnxruntime==1.32.0",
+    "tokenizers==0.23.3",
+    "numpy==2.5.5",
+    "pyyaml==6.0.3",
+]
+
+[dependency-groups]
+dev = [
+    "pytest==9.2.0",
+    "httpx2==2.16.2",  # required by fastapi.testclient (Starlette >= 1.x prefers httpx2)
+    "ruff==0.17.6",
+    "mypy==2.4.1",
+    "types-PyYAML==6.0.12.20261122",
+]
+
+[tool.uv]
+package = false  # an application, not a library: nothing to build; code is imported from the repo root
+environments = ["sys_platform == 'linux'", "sys_platform == 'darwin'"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py314"
+# research scripts and the test set's tools: not application code. *.md: ruff 0.17 also formats the Python
+# blocks inside Markdown, and the plan's snippets are partial code on purpose.
+extend-exclude = ["research", "testset", "*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+# No -q here: a -q on the command line would add up to -qq, and pytest then prints no "N passed" line.
+addopts = "--import-mode=importlib"
+filterwarnings = ["error"]
