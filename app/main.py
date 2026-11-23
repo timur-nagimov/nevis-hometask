@@ -5,16 +5,19 @@ from contextlib import asynccontextmanager
 from http import HTTPStatus
 from typing import Annotated, Any
 from urllib.parse import quote
+from uuid import UUID
 
-from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request, Response
 from fastapi.exceptions import RequestValidationError
+from fastapi.openapi.utils import get_openapi
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
+from app import db
 from app.config import DEFAULT_LIMIT, MAX_BODY_BYTES, MAX_LIMIT, MAX_Q_CHARS, Services, Settings
 from app.db import DatabaseUnavailable, create_schema, open_pool
-from app.schemas import FieldError, Problem
+from app.schemas import Client, ClientCreate, FieldError, Problem
 
 log = logging.getLogger(__name__)
 access_log = logging.getLogger('app.access')
@@ -151,6 +154,94 @@ async def get_services(request: Request) -> Services:
 
 ServicesDep = Annotated[Services, Depends(get_services)]  # in a route: `def route(services: ServicesDep)`
 
+# OpenAPI documentation shared by the routes
+_R422: dict[int | str, dict[str, Any]] = {
+    422: problem_doc(
+        'A field or parameter failed validation',
+        '1 validation error(s).',
+        422,
+        errors=[
+            FieldError(
+                loc=['body', 'email'],
+                msg='value is not a valid email address: An email address must have an @-sign.',
+                type='value_error',
+            )
+        ],
+    )
+}
+_WRITE_ERRORS: dict[int | str, dict[str, Any]] = {
+    400: problem_doc(
+        'Body is not parseable JSON',
+        "Request body is not valid JSON: Expecting ',' delimiter (character 41).",
+        400,
+    ),
+    413: {
+        **problem_doc(f'Body larger than {MAX_BODY_BYTES:,} bytes (rejected before parsing)', '', 413),
+        'content': {
+            'text/plain': {'schema': {'type': 'string'}, 'example': 'Content Too Large'},
+            PROBLEM_JSON: {'schema': {'$ref': '#/components/schemas/Problem'}},
+        },
+    },
+    415: problem_doc('`Content-Type` is not `application/json`', 'Send the body as application/json.', 415),
+    **_R422,
+}
+
+
+def _created(what: str, example_location: str) -> dict[int | str, dict[str, Any]]:
+    location = {
+        'description': f'URI reference of the new {what.lower()}',
+        'schema': {'type': 'string', 'format': 'uri-reference', 'example': example_location},
+    }
+    return {201: {'description': f'{what} created', 'headers': {'Location': location}}}
+
+
+def _not_found(what: str) -> dict[int | str, dict[str, Any]]:
+    return {
+        404: problem_doc(
+            f'{what} does not exist (unknown or malformed id)', f"{what} '123' does not exist.", 404
+        )
+    }
+
+
+def parse_id(raw: str) -> UUID | None:
+    """Ids are opaque strings for API clients: anything that is not a canonical UUID does not exist."""
+    try:
+        value = UUID(raw)
+    except ValueError:
+        return None
+    return value if str(value) == raw.lower() else None
+
+
+@router.post(
+    '/clients',
+    status_code=201,
+    response_model=Client,
+    tags=['clients'],
+    summary='Create a client',
+    responses={**_created('Client', '/clients/019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11'), **_WRITE_ERRORS},
+)
+def create_client(body: ClientCreate, response: Response, services: ServicesDep) -> dict[str, Any]:
+    """Creates a new client on every call: e-mail addresses are not unique, and POST is not idempotent."""
+    client = db.insert_client(services.pool, **body.model_dump())
+    response.headers['Location'] = f'/clients/{client["id"]}'
+    return client
+
+
+@router.get(
+    '/clients/{client_id}',
+    response_model=Client,
+    tags=['clients'],
+    summary='Get a client',
+    responses=_not_found('Client'),
+)
+def get_client(client_id: str, services: ServicesDep) -> dict[str, Any]:
+    """A client by id. An id that is not a UUID is answered like an unknown one: 404."""
+    parsed = parse_id(client_id)
+    client = db.get_client(services.pool, parsed) if parsed is not None else None
+    if client is None:
+        raise HTTPException(404, f"Client '{client_id[:64]}' does not exist.")
+    return client
+
 
 def _configure_logging(level: str) -> None:
     """The application's loggers at `level`; uvicorn, psycopg and every other library at WARNING."""
@@ -201,4 +292,25 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         },
     )
     app.include_router(router)
+
+    def openapi() -> dict[str, Any]:
+        if app.openapi_schema is None:
+            spec = get_openapi(
+                title=app.title,
+                version=app.version,
+                description=app.description,
+                routes=app.routes,
+                tags=app.openapi_tags,
+            )
+            schemas = spec['components']['schemas']
+            schemas['Problem'] = Problem.model_json_schema(ref_template='#/components/schemas/{model}')
+            schemas['FieldError'] = schemas['Problem'].pop('$defs')['FieldError']
+            # A string id cannot fail validation: GET /clients/{client_id} never answers 422.
+            del spec['paths']['/clients/{client_id}']['get']['responses']['422']
+            for name in ('HTTPValidationError', 'ValidationError'):
+                schemas.pop(name, None)
+            app.openapi_schema = spec
+        return app.openapi_schema
+
+    app.openapi = openapi  # type: ignore[method-assign]
     return app

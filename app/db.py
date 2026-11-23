@@ -1,11 +1,12 @@
 from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
+from uuid import UUID
 
 import psycopg
 from pgvector.psycopg import register_vector
-from psycopg.rows import TupleRow
+from psycopg.rows import TupleRow, dict_row
 from psycopg_pool import ConnectionPool, PoolTimeout
 
 SCHEMA_FILE = Path(__file__).parent / 'sql' / 'schema.sql'
@@ -84,3 +85,36 @@ def _why_no_connection(pool: Pool) -> Reason:
     except psycopg.OperationalError:
         return 'unreachable'
     return 'busy'
+
+
+def insert_client(
+    pool: Pool,
+    *,
+    first_name: str,
+    last_name: str,
+    email: str,
+    description: str,
+    social_links: list[str],
+) -> dict[str, Any]:
+    """Insert one client and return it as the API shows it. Committed before it returns."""
+    with _connection(pool) as conn, conn.cursor(row_factory=dict_row) as cur:
+        cur.execute(
+            'INSERT INTO clients (first_name, last_name, email, description, social_links)'
+            ' VALUES (%s, %s, %s, %s, %s)'
+            ' RETURNING id, first_name, last_name, email, description, social_links',
+            (first_name, last_name, email, description, social_links),
+        )
+        row = cur.fetchone()
+    if row is None:  # INSERT ... RETURNING always yields the row; the check is for mypy
+        raise RuntimeError('INSERT ... RETURNING returned no row')
+    return row
+
+
+def get_client(pool: Pool, client_id: UUID) -> dict[str, Any] | None:
+    """The client with this id as the API shows it, or None."""
+    with _connection(pool) as conn, conn.cursor(row_factory=dict_row) as cur:
+        cur.execute(
+            'SELECT id, first_name, last_name, email, description, social_links FROM clients WHERE id = %s',
+            (client_id,),
+        )
+        return cur.fetchone()

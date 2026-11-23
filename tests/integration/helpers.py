@@ -3,8 +3,10 @@
 import uuid
 from collections.abc import Iterator
 from contextlib import contextmanager
+from typing import Any
 
 import psycopg
+from fastapi.testclient import TestClient
 from psycopg import sql
 from psycopg.conninfo import make_conninfo
 
@@ -21,3 +23,11 @@ def new_database(admin_dsn: str, options: str = '') -> Iterator[str]:
     finally:
         with psycopg.connect(admin_dsn, autocommit=True) as admin:
             admin.execute(sql.SQL('DROP DATABASE {} WITH (FORCE)').format(sql.Identifier(name)))
+
+
+def post_client(client: TestClient, **fields: Any) -> dict[str, Any]:
+    """POST /clients with exactly these fields; assert 201 and return the created client."""
+    response = client.post('/clients', json=fields)
+    assert response.status_code == 201, response.text
+    created: dict[str, Any] = response.json()
+    return created
