@@ -1,0 +1,61 @@
+# Start the API:   docker compose up --build -d          -> http://127.0.0.1:8000 (API_PORT changes the port)
+# Run all tests:   docker compose --profile test run --rm --no-deps tests   (start the db first: up -d db)
+# Stop:            docker compose down                    (add -v to delete the database volume as well)
+#
+# Only the subset that Docker Compose v2 and podman-compose 1.4 run the same way
+# (research/_reports/containers-spike.md section 3): fully qualified images, CMD-SHELL health checks,
+# no start_interval, no service_completed_successfully, no `up --wait`, no nested variable defaults.
+# Optional overrides (shell or .env, see .env.example): API_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB.
+
+name: nevis-search
+
+services:
+  db:
+    image: docker.io/pgvector/pgvector:0.8.7-pg18
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-nevis}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nevis}
+      POSTGRES_DB: ${POSTGRES_DB:-nevis}
+    volumes:
+      # PostgreSQL 18 images keep their data in /var/lib/postgresql/18/docker: mount the parent directory
+      - pgdata:/var/lib/postgresql
+    # no `ports:` on purpose: only the api and tests containers reach the database (host 5432 is taken)
+    healthcheck:
+      # -h 127.0.0.1 asks over TCP: the socket-only server that runs during the first initialisation must not
+      # count as ready. $$ leaves the variables to the shell inside the container.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  api:
+    build:
+      context: .
+      target: runtime
+    environment:
+      NEVIS_DATABASE_URL: postgresql://${POSTGRES_USER:-nevis}:${POSTGRES_PASSWORD:-nevis}@db:5432/${POSTGRES_DB:-nevis}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request as u; u.urlopen('http://127.0.0.1:8000/health', timeout=2)\""]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  # Not started by `up`. The tests create their own throw-away databases on the db server.
+  tests:
+    profiles: ["test"]
+    build:
+      context: .
+      target: test
+    environment:
+      NEVIS_DATABASE_URL: postgresql://${POSTGRES_USER:-nevis}:${POSTGRES_PASSWORD:-nevis}@db:5432/${POSTGRES_DB:-nevis}
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
