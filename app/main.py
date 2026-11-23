@@ -1,3 +1,4 @@
+import dataclasses
 import logging
 import time
 import traceback
@@ -246,6 +247,37 @@ def close_services(services: Services) -> None:
     services.engine.dispose()
 
 
+def check_app_meta(services: Services) -> list[str]:
+    """Compare the running model revision, tokenizer settings and concept map with the row of app_meta.
+
+    Writes the row when the table is empty. A difference is logged as one warning, because vectors or tags
+    built by another model or map would otherwise mix silently; the stored row is kept and the start goes on.
+    Returns the names of the differing fields.
+    """
+    info = services.embedder.info()
+    current = db.AppMeta(
+        model_revision=info['revision'],
+        tokenizer_settings=info['tokenizer'],
+        concepts_sha256=services.concepts.sha256 if services.concepts is not None else None,
+    )
+    stored = db.read_app_meta(services.engine)
+    if stored is None:
+        db.write_app_meta(services.engine, current)
+        return []
+    differing = [
+        field.name
+        for field in dataclasses.fields(db.AppMeta)
+        if getattr(stored, field.name) != getattr(current, field.name)
+    ]
+    if differing:
+        log.warning(
+            'app_meta differs in %s: stored documents were built by another model or concept map; '
+            'start from an empty database (docker compose down -v) to rebuild them',
+            ', '.join(differing),
+        )
+    return differing
+
+
 async def get_services(request: Request) -> Services:
     """The services the lifespan built. `async`: reading app.state needs no worker thread."""
     services: Services = request.app.state.services
@@ -492,6 +524,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         created = create_schema(active)
         services = build_services(active)
         try:
+            check_app_meta(services)
             app.state.services = services
             model = services.embedder.info()
             log.info(

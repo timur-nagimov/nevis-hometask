@@ -1,5 +1,6 @@
 from collections.abc import Iterator
 from contextlib import contextmanager
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Literal
 from uuid import UUID
@@ -38,6 +39,7 @@ from sqlalchemy import (
     union_all,
 )
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB, TSVECTOR, aggregate_order_by
+from sqlalchemy.dialects.postgresql import insert as pg_insert  # with ON CONFLICT
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.exc import TimeoutError as PoolExhausted
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -519,3 +521,36 @@ def match_concepts(
     with _connection(engine) as conn:
         rows = conn.execute(_MATCH_CONCEPTS, params).all()
     return [(int(entry), bool(in_title), bool(anywhere)) for entry, in_title, anywhere in rows]
+
+
+@dataclass(frozen=True)
+class AppMeta:
+    """What stored vectors and tags are built with: the row of app_meta."""
+
+    model_revision: str
+    tokenizer_settings: dict[str, Any]
+    concepts_sha256: str | None  # None: concept tagging is off
+
+
+def read_app_meta(engine: Engine) -> AppMeta | None:
+    """The stored row; None until the first start has written it."""
+    statement = select(AppMetaRow.model_revision, AppMetaRow.tokenizer_settings, AppMetaRow.concepts_sha256)
+    with _connection(engine) as conn:
+        row = conn.execute(statement).first()
+    return None if row is None else AppMeta(*row)
+
+
+def write_app_meta(engine: Engine, meta: AppMeta) -> None:
+    """Store the running configuration when the table is empty. An existing row is kept: two first starts can
+    both find the table empty, and the later write then does nothing."""
+    statement = (
+        pg_insert(AppMetaRow)
+        .values(
+            model_revision=meta.model_revision,
+            tokenizer_settings=meta.tokenizer_settings,
+            concepts_sha256=meta.concepts_sha256,
+        )
+        .on_conflict_do_nothing(index_elements=[AppMetaRow.id])
+    )
+    with _connection(engine) as conn:
+        conn.execute(statement)

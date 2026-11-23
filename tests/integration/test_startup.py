@@ -43,7 +43,8 @@ def test_start_creates_the_schema_once_and_logs_one_line_at_start_and_stop(
                 assert client.get('/health').json() == {'status': 'ok'}
         threads = Settings(database_url=dsn).embed_threads
 
-    lines = [r.getMessage() for r in caplog.records if r.name == 'app.main']
+    # INFO only: the start without the map also warns that app_meta differs
+    lines = [r.getMessage() for r in caplog.records if r.name == 'app.main' and r.levelno == logging.INFO]
     assert [line.split(' | ')[0] for line in lines] == [
         'started: schema: created',
         'stopped',
