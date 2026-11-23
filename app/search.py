@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 from app import db
-from app.config import Services
+from app.config import SCORE_DECIMALS, Services
 
 # app.schemas imports prepare() from this module, so this module must not import app.schemas: that would be
 # an import cycle. The database is called through `db.<function>`, so unit tests can replace those functions.
@@ -17,11 +17,11 @@ def prepare(q: str) -> str:
 
 
 def merge(items: list[dict[str, Any]], limit: int) -> list[dict[str, Any]]:
-    """Round scores to 4 decimals, sort by (score desc, type asc, id asc), keep the first `limit`.
+    """Round scores to SCORE_DECIMALS decimals, sort by (score desc, type asc, id asc), keep `limit`.
 
     Rounding comes first, so scores that round to the same value are ordered by type and id.
     """
-    rounded = [{**item, 'score': round(float(item['score']), 4)} for item in items]
+    rounded = [{**item, 'score': round(float(item['score']), SCORE_DECIMALS)} for item in items]
     rounded.sort(key=lambda item: (-item['score'], item['type'], str(item['id'])))
     return rounded[:limit]
 

@@ -6,6 +6,7 @@ import unicodedata
 import pytest
 from pydantic import ValidationError
 
+from app.config import MAX_DESCRIPTION_CHARS, MAX_NAME_CHARS, MAX_SOCIAL_LINK_CHARS, MAX_SOCIAL_LINKS
 from app.schemas import ClientCreate
 
 JOHN = {'first_name': 'John', 'last_name': 'Doe', 'email': 'john.doe@neviswealth.com'}
@@ -65,7 +66,7 @@ def test_names_are_trimmed() -> None:
     assert (body.first_name, body.last_name) == ('Mary', 'Major')
 
 
-@pytest.mark.parametrize('value', ['', '   ', '\u00a0', 'x' * 101, None, 123, ['John']])
+@pytest.mark.parametrize('value', ['', '   ', '\u00a0', 'x' * (MAX_NAME_CHARS + 1), None, 123, ['John']])
 def test_bad_first_name_is_rejected(value: object) -> None:
     assert rejected(first_name=value) == {'first_name'}
 
@@ -81,7 +82,7 @@ def test_format_characters_are_allowed(char: str) -> None:
     assert (body.first_name, body.description) == (f'Zero{char}Width', f'a{char}b')
 
 
-@pytest.mark.parametrize('value', ['  ', 'Line one\nLine two\tTabbed', 'x' * 2000])
+@pytest.mark.parametrize('value', ['  ', 'Line one\nLine two\tTabbed', 'x' * MAX_DESCRIPTION_CHARS])
 def test_description_is_stored_verbatim(value: str) -> None:
     assert ClientCreate.model_validate({**JOHN, 'description': value}).description == value
 
@@ -91,7 +92,7 @@ def test_other_control_characters_in_description_are_rejected(char: str) -> None
     assert rejected(description=f'a{char}b') == {'description'}
 
 
-@pytest.mark.parametrize('value', ['x' * 2001, 12345, {'text': 'x'}])
+@pytest.mark.parametrize('value', ['x' * (MAX_DESCRIPTION_CHARS + 1), 12345, {'text': 'x'}])
 def test_bad_description_is_rejected(value: object) -> None:
     assert rejected(description=value) == {'description'}
 
@@ -103,7 +104,16 @@ def test_social_links_are_trimmed_and_kept_in_order() -> None:
 
 
 @pytest.mark.parametrize(
-    'links', [[''], ['   '], ['x' * 2049], ['ok'] * 21, ['a\nb'], [42], 'https://x.example']
+    'links',
+    [
+        [''],
+        ['   '],
+        ['x' * (MAX_SOCIAL_LINK_CHARS + 1)],
+        ['ok'] * (MAX_SOCIAL_LINKS + 1),
+        ['a\nb'],
+        [42],
+        'https://x.example',
+    ],
 )
 def test_bad_social_links_are_rejected(links: object) -> None:
     assert rejected(social_links=links) == {'social_links'}
@@ -112,3 +122,9 @@ def test_bad_social_links_are_rejected(links: object) -> None:
 def test_unknown_members_are_ignored() -> None:
     body = ClientCreate.model_validate({**JOHN, 'id': '123', 'created_at': 'yesterday'})
     assert set(body.model_dump()) == {'first_name', 'last_name', 'email', 'description', 'social_links'}
+
+
+def test_longest_values_are_accepted() -> None:
+    links = ['x' * MAX_SOCIAL_LINK_CHARS] * MAX_SOCIAL_LINKS
+    body = ClientCreate.model_validate({**JOHN, 'first_name': 'x' * MAX_NAME_CHARS, 'social_links': links})
+    assert (len(body.first_name), len(body.social_links)) == (MAX_NAME_CHARS, MAX_SOCIAL_LINKS)

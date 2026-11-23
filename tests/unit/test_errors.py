@@ -18,7 +18,7 @@ from httpx2 import Response
 from pydantic import BaseModel, StringConstraints
 from sqlalchemy.exc import IntegrityError
 
-from app.config import MAX_BODY_BYTES
+from app.config import MAX_BODY_BYTES, RETRY_AFTER_SECONDS
 from app.db import DatabaseUnavailable, Reason
 from app.main import UNAVAILABLE_DETAIL, create_app, problem_doc
 from app.schemas import Client
@@ -236,7 +236,7 @@ def test_database_unavailable_is_503_with_retry_after(client: TestClient, reason
 
     body = assert_problem(response, 503, 'Service Unavailable')
     assert body['detail'] == detail
-    assert response.headers['retry-after'] == '5'
+    assert response.headers['retry-after'] == str(RETRY_AFTER_SECONDS)
 
 
 def test_problem_doc_declares_a_problem_json_response_with_an_example() -> None:
@@ -271,7 +271,7 @@ def test_the_503_log_line_names_the_cause_and_quotes_the_path(
     response = client.get('/down/a%1Bb')  # an escape character in the path
 
     assert_problem(response, 503, 'Service Unavailable')
-    assert response.headers['retry-after'] == '5'
+    assert response.headers['retry-after'] == str(RETRY_AFTER_SECONDS)
     [line] = [r.getMessage() for r in caplog.records if r.name == 'app.main']
     assert line == (
         'database unavailable (unreachable) on GET /down/a%1Bb: '

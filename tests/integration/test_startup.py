@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 
-from app.config import Services, Settings
+from app.config import RETRY_AFTER_SECONDS, Services, Settings
 from app.db import _connection, open_engine
 from app.main import ServicesDep, create_app
 from tests.integration.helpers import new_database
@@ -78,6 +78,6 @@ def test_database_gone_is_503_while_health_keeps_answering(fresh_dsn: str) -> No
 
     assert response.status_code == 503
     assert response.headers['content-type'] == 'application/problem+json'
-    assert response.headers['retry-after'] == '5'
+    assert response.headers['retry-after'] == str(RETRY_AFTER_SECONDS)
     assert response.json()['detail'] == 'The database is unreachable; retry shortly.'
     assert health.json() == {'status': 'ok'}

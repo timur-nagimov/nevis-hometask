@@ -43,7 +43,9 @@ from app.config import (
     CLIENT_TYPO_SIMILARITY,
     DESCRIPTION_WEIGHT,
     EMAIL_WEIGHT,
+    EMBEDDING_DIM,
     EXACT_SCORE_MIN,
+    FTS_CONFIG,
     FUZZY_SCORE_MAX,
     MIN_FUZZY_CHARS,
     NAME_WEIGHT,
@@ -117,12 +119,12 @@ class DocumentRow(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     fts_text: Mapped[str | None] = mapped_column(
         TSVECTOR,
-        Computed("to_tsvector('english', public.strip_punct(title || ' ' || content))", persisted=True),
+        Computed(f"to_tsvector('{FTS_CONFIG}', public.strip_punct(title || ' ' || content))", persisted=True),
     )
     fts: Mapped[str | None] = mapped_column(  # tags first
         TSVECTOR,
         Computed(
-            "to_tsvector('english', public.strip_punct(tags_text || ' ' || title || ' ' || content))",
+            f"to_tsvector('{FTS_CONFIG}', public.strip_punct(tags_text || ' ' || title || ' ' || content))",
             persisted=True,
         ),
     )
@@ -137,7 +139,7 @@ class DocumentChunkRow(Base):
     chunk_no: Mapped[int] = mapped_column(
         Integer, primary_key=True, autoincrement=False
     )  # -1: the tags chunk
-    embedding: Mapped[Any] = mapped_column(Vector(768))
+    embedding: Mapped[Any] = mapped_column(Vector(EMBEDDING_DIM))
 
 
 class AppMetaRow(Base):
@@ -189,7 +191,7 @@ def create_schema(settings: Settings) -> bool:
     )
     try:
         with engine.begin() as conn:
-            if inspect(conn).has_table('clients', schema='public'):
+            if inspect(conn).has_table(ClientRow.__tablename__, schema='public'):
                 return False
             for statement in _EXTENSIONS_AND_FUNCTIONS:
                 conn.exec_driver_sql(statement)

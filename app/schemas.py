@@ -4,7 +4,16 @@ from uuid import UUID
 import email_validator
 from pydantic import AfterValidator, BaseModel, BeforeValidator, ConfigDict, Field, StringConstraints
 
-from app.config import EXACT_SCORE_MIN, MAX_Q_CHARS
+from app.config import (
+    EXACT_SCORE_MIN,
+    MAX_DESCRIPTION_CHARS,
+    MAX_EMAIL_CHARS,
+    MAX_NAME_CHARS,
+    MAX_Q_CHARS,
+    MAX_SOCIAL_LINK_CHARS,
+    MAX_SOCIAL_LINKS,
+    SCORE_DECIMALS,
+)
 from app.search import prepare
 
 # email-validator rejects special-use domains (.test, .local, .invalid, ...) by default; this API accepts
@@ -57,23 +66,29 @@ def _check_email(value: str) -> str:
 # In every Annotated below the constraints come before BeforeValidator: in the other order pydantic drops
 # `pattern` from the JSON schema. The BeforeValidator still runs first.
 Name = Annotated[
-    str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100, pattern=NO_CONTROL)
+    str, StringConstraints(strip_whitespace=True, min_length=1, max_length=MAX_NAME_CHARS, pattern=NO_CONTROL)
 ]
 Email = Annotated[
     str,
-    StringConstraints(strip_whitespace=True, max_length=254),
+    StringConstraints(strip_whitespace=True, max_length=MAX_EMAIL_CHARS),
     AfterValidator(_check_email),
     Field(json_schema_extra={'format': 'email'}),
 ]
 Description = Annotated[
     str,
-    StringConstraints(max_length=2000, pattern=NO_CONTROL_EXCEPT_TAB_LF),
+    StringConstraints(max_length=MAX_DESCRIPTION_CHARS, pattern=NO_CONTROL_EXCEPT_TAB_LF),
     BeforeValidator(_none_to_empty_str),
 ]
 SocialLink = Annotated[
-    str, StringConstraints(strip_whitespace=True, min_length=1, max_length=2048, pattern=NO_CONTROL)
+    str,
+    StringConstraints(
+        strip_whitespace=True, min_length=1, max_length=MAX_SOCIAL_LINK_CHARS, pattern=NO_CONTROL
+    ),
 ]
-SocialLinks = Annotated[list[SocialLink], Field(max_length=20), BeforeValidator(_none_to_empty_list)]
+SocialLinks = Annotated[
+    list[SocialLink], Field(max_length=MAX_SOCIAL_LINKS), BeforeValidator(_none_to_empty_list)
+]
+_NAME_RULES = f'Trimmed; 1-{MAX_NAME_CHARS} characters; no control characters'
 
 
 class ClientCreate(BaseModel):
@@ -93,16 +108,20 @@ class ClientCreate(BaseModel):
         }
     )
 
-    first_name: Name = Field(description='Trimmed; 1-100 characters; no control characters')
-    last_name: Name = Field(description='Trimmed; 1-100 characters; no control characters')
-    email: Email = Field(description='Trimmed; at most 254 characters; syntax check only; stored as sent')
+    first_name: Name = Field(description=_NAME_RULES)
+    last_name: Name = Field(description=_NAME_RULES)
+    email: Email = Field(
+        description=f'Trimmed; at most {MAX_EMAIL_CHARS} characters; syntax check only; stored as sent'
+    )
     description: Description = Field(
         default='',
-        description='At most 2,000 characters, verbatim; tab and newline allowed; null or absent: empty',
+        description=f'At most {MAX_DESCRIPTION_CHARS:,} characters, verbatim; tab and newline allowed; '
+        'null or absent: empty',
     )
     social_links: SocialLinks = Field(
         default_factory=list,
-        description='At most 20 strings, each trimmed, 1-2,048 characters, not validated as URLs; null: none',
+        description=f'At most {MAX_SOCIAL_LINKS} strings, each trimmed, '
+        f'1-{MAX_SOCIAL_LINK_CHARS:,} characters, not validated as URLs; null: none',
     )
 
 
@@ -139,8 +158,8 @@ class _ClientMatch(BaseModel):
     score: float = Field(
         ge=0,
         le=1,
-        description=f'Ordering key, 4 decimals, not a probability. >= {EXACT_SCORE_MIN}: the query words '
-        f'occur in the record; below {EXACT_SCORE_MIN}: a typo match',
+        description=f'Ordering key, {SCORE_DECIMALS} decimals, not a probability. '
+        f'>= {EXACT_SCORE_MIN}: the query words occur in the record; below {EXACT_SCORE_MIN}: a typo match',
     )
     match_type: Literal['exact', 'fuzzy'] = Field(
         description='`exact`: every query word occurs in name, e-mail or description; `fuzzy`: a typo match'

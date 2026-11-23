@@ -150,7 +150,7 @@ def test_invalid_values_are_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
     ]
 
 
-def test_constants_have_the_values_of_the_spec() -> None:
+def test_constants_keep_their_values() -> None:
     assert (config.T_STRONG, config.DELTA, config.T_FALLBACK, config.K_FALLBACK) == (0.40, 0.08, 0.32, 3)
     assert (config.TAU_TITLE, config.MIN_FUZZY_CHARS, config.SPELL_CUTOFF) == (0.60, 5, 0.90)
     assert (config.SHORT_DOC_WORDS, config.CHUNK_WORDS, config.SUMMARY_CHARS) == (200, 200, 300)
@@ -161,6 +161,13 @@ def test_constants_have_the_values_of_the_spec() -> None:
     assert (config.CLIENT_TYPO_SIMILARITY, config.NAME_WEIGHT, config.EMAIL_WEIGHT) == (0.6, 1.0, 0.7)
     assert config.DESCRIPTION_WEIGHT == 0.5
     assert (config.EXACT_SCORE_MIN, config.FUZZY_SCORE_MAX) == (0.5, 0.49)
+    limits = (config.MAX_NAME_CHARS, config.MAX_EMAIL_CHARS, config.MAX_DESCRIPTION_CHARS)
+    assert limits == (100, 254, 2000)
+    assert (config.MAX_SOCIAL_LINKS, config.MAX_SOCIAL_LINK_CHARS) == (20, 2048)
+    assert (config.SCORE_DECIMALS, config.RETRY_AFTER_SECONDS) == (4, 5)
+    assert (config.EMBEDDING_DIM, config.FTS_CONFIG) == (768, 'english')
+    # every exact match ranks above every typo match, also after rounding
+    assert round(config.FUZZY_SCORE_MAX, config.SCORE_DECIMALS) < config.EXACT_SCORE_MIN
 
 
 def test_services_is_a_frozen_bundle_of_four() -> None:

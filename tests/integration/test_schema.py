@@ -8,7 +8,7 @@ import psycopg
 import pytest
 from sqlalchemy.exc import ProgrammingError
 
-from app.config import Settings
+from app.config import FTS_CONFIG, Settings
 from app.db import create_schema
 from tests.integration.helpers import new_database
 
@@ -104,7 +104,7 @@ def test_generated_columns_and_uuid7_ids(fresh_dsn: str) -> None:
 
         def matches(column: str, query: str) -> bool:
             hit = conn.execute(
-                f"SELECT {column} @@ plainto_tsquery('english', public.strip_punct(%s)) FROM documents",
+                f"SELECT {column} @@ plainto_tsquery('{FTS_CONFIG}', public.strip_punct(%s)) FROM documents",
                 (query,),
             ).fetchone()
             assert hit is not None

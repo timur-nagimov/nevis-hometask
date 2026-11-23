@@ -23,6 +23,8 @@ from app.config import (
     MAX_BODY_BYTES,
     MAX_LIMIT,
     MAX_Q_CHARS,
+    RETRY_AFTER_SECONDS,
+    SCORE_DECIMALS,
     Services,
     Settings,
 )
@@ -99,7 +101,7 @@ async def on_database_unavailable(request: Request, exc: DatabaseUnavailable) ->
         quote(request.scope['path']),
         exc.cause or '-',
     )
-    return problem(503, UNAVAILABLE_DETAIL[exc.reason], {'Retry-After': '5'})
+    return problem(503, UNAVAILABLE_DETAIL[exc.reason], {'Retry-After': str(RETRY_AFTER_SECONDS)})
 
 
 async def on_unexpected_error(request: Request, exc: Exception) -> JSONResponse:
@@ -313,7 +315,8 @@ def require_utf8_query(request: Request) -> None:
     tags=['search'],
     summary='Search clients and documents',
     description=(
-        'Results matching `q`, best first. Order: `score` descending (4 decimals), then `type`, then `id`. '
+        f'Results matching `q`, best first. Order: `score` descending ({SCORE_DECIMALS} decimals), '
+        'then `type`, then `id`. '
         f'`score` >= {EXACT_SCORE_MIN}: every query word occurs in the record (`exact`); '
         f'below {EXACT_SCORE_MIN}: a typo match (`fuzzy`).'
     ),

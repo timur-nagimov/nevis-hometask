@@ -52,6 +52,7 @@ K_FALLBACK = 3  # ... at most this many
 TAU_TITLE = 0.60  # word similarity of query and title from which a title is a typo match
 MIN_FUZZY_CHARS = 5  # letters and digits a query needs before typo matching is tried
 SPELL_CUTOFF = 0.90  # similarity from which a query is read as a misspelt concept phrase
+FTS_CONFIG = 'english'  # text search configuration of the documents' tsvector columns and of queries on them
 
 # Client search: a client is `exact` when every query word occurs in it; otherwise, for queries of at least
 # MIN_FUZZY_CHARS letters and digits, a typo match from this word similarity on. The weights say how much a
@@ -72,12 +73,20 @@ CHUNK_WORDS = 200  # words per embedded chunk
 SUMMARY_CHARS = 300  # length of the lead summary
 EMBED_BATCH = 4  # texts per model call
 QUERY_PREFIX = 'Represent this sentence for searching relevant passages: '  # queries only, never documents
+EMBEDDING_DIM = 768  # length of every embedding vector: the model's output and the column type
 
 # HTTP contract
 MAX_BODY_BYTES = 2 * 1024 * 1024  # larger request bodies are answered with 413
 MAX_Q_CHARS = 200  # `q` after whitespace collapsing
 DEFAULT_LIMIT = 10
 MAX_LIMIT = 50
+MAX_NAME_CHARS = 100  # first_name and last_name, after trimming
+MAX_EMAIL_CHARS = 254
+MAX_DESCRIPTION_CHARS = 2000
+MAX_SOCIAL_LINKS = 20
+MAX_SOCIAL_LINK_CHARS = 2048  # each link, after trimming
+SCORE_DECIMALS = 4  # scores in responses are rounded to this many decimals
+RETRY_AFTER_SECONDS = 5  # Retry-After of every 503
 
 
 @dataclass(frozen=True)

@@ -6,6 +6,7 @@ import uuid
 import pytest
 from fastapi.testclient import TestClient
 
+from app.config import MAX_BODY_BYTES
 from tests.integration.helpers import post_client
 
 JOHN = {'first_name': 'John', 'last_name': 'Doe', 'email': 'john.doe@neviswealth.com'}
@@ -107,7 +108,7 @@ def test_malformed_json_is_400(app_client: TestClient) -> None:
 
 def test_body_over_2_mib_is_413(app_client: TestClient) -> None:
     response = app_client.post(
-        '/clients', content=b'x' * (2 * 1024 * 1024 + 1), headers={'Content-Type': 'application/json'}
+        '/clients', content=b'x' * (MAX_BODY_BYTES + 1), headers={'Content-Type': 'application/json'}
     )
     # The framework may answer in text/plain, so only the status is checked.
     assert response.status_code == 413
