@@ -161,6 +161,7 @@ def test_constants_keep_their_values() -> None:
     assert (config.T_STRONG, config.DELTA, config.T_FALLBACK, config.K_FALLBACK) == (0.40, 0.08, 0.32, 3)
     assert (config.TAU_TITLE, config.MIN_FUZZY_CHARS, config.SPELL_CUTOFF) == (0.60, 5, 0.90)
     assert (config.SHORT_DOC_WORDS, config.CHUNK_WORDS, config.SUMMARY_CHARS) == (200, 200, 300)
+    assert config.ELLIPSIS == '…'  # one character, not three full stops
     assert config.EMBED_BATCH == 4
     assert config.QUERY_PREFIX == 'Represent this sentence for searching relevant passages: '
     assert config.MAX_BODY_BYTES == 2 * 1024 * 1024

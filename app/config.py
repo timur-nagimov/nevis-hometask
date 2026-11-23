@@ -76,6 +76,7 @@ FUZZY_SCORE_MAX = 0.49
 SHORT_DOC_WORDS = 200  # in a document up to this length a concept found anywhere counts like one in the title
 CHUNK_WORDS = 200  # words per embedded chunk
 SUMMARY_CHARS = 300  # length of the lead summary
+ELLIPSIS = '\u2026'  # ends a lead summary that had to cut its first sentence
 
 # Embedding model, pinned to a Hugging Face commit so the files behind it cannot change.
 # scripts/fetch_model.py downloads the same repository, revision and files; it cannot import this module, so a
