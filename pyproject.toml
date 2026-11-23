@@ -33,9 +33,12 @@ environments = ["sys_platform == 'linux'", "sys_platform == 'darwin'"]
 [tool.ruff]
 line-length = 110
 target-version = "py314"
-# research scripts and the test set's tools: not application code. *.md: ruff 0.17 also formats the Python
-# blocks inside Markdown, and the plan's snippets are partial code on purpose.
+# Local material that is not application code. *.md: ruff 0.17 also formats the Python blocks inside
+# Markdown files, and their snippets are often partial on purpose.
 extend-exclude = ["research", "testset", "*.md"]
+
+[tool.ruff.format]
+quote-style = "single"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]

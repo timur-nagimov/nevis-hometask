@@ -1,4 +1,4 @@
-"""What app/sql/schema.sql promises (spec section 4, 13.2 B5): it is created once, on an empty database;
+"""What app/sql/schema.sql promises: it is created once, on an empty database;
 text functions that ignore the database locale; the generated search columns; uuid v7 ids; and an app_meta
 table that holds at most one row."""
 
@@ -12,7 +12,7 @@ from tests.integration.helpers import new_database
 
 
 @pytest.fixture(
-    scope="module", params=["", "TEMPLATE template0 LOCALE 'C'"], ids=["default locale", "LOCALE C"]
+    scope='module', params=['', "TEMPLATE template0 LOCALE 'C'"], ids=['default locale', 'LOCALE C']
 )
 def locale_dsn(request: pytest.FixtureRequest, admin_dsn: str) -> Iterator[str]:
     with new_database(admin_dsn, request.param) as dsn:
@@ -37,15 +37,15 @@ def test_empty_database_gets_the_whole_schema(admin_dsn: str) -> None:
         assert create_schema(dsn) is True
 
         assert column(dsn, "SELECT extname FROM pg_extension WHERE extname <> 'plpgsql' ORDER BY 1") == [
-            "pg_trgm",
-            "unaccent",
-            "vector",
+            'pg_trgm',
+            'unaccent',
+            'vector',
         ]
         assert column(dsn, "SELECT tablename FROM pg_tables WHERE schemaname = 'public' ORDER BY 1") == [
-            "app_meta",
-            "clients",
-            "document_chunks",
-            "documents",
+            'app_meta',
+            'clients',
+            'document_chunks',
+            'documents',
         ]
 
 
@@ -57,33 +57,33 @@ def test_later_starts_create_nothing_and_keep_the_data(fresh_dsn: str) -> None:
 
     assert create_schema(fresh_dsn) is False
     assert create_schema(fresh_dsn) is False
-    assert column(fresh_dsn, "SELECT email FROM clients") == ["ann@example.com"]
+    assert column(fresh_dsn, 'SELECT email FROM clients') == ['ann@example.com']
 
 
 def test_text_functions_do_not_depend_on_the_database_locale(locale_dsn: str) -> None:
-    # spec section 4: in a LOCALE 'C' database [[:alnum:]] alone would turn "ü" into a space
-    text = "Zürich Versicherung: Łódź (LV-7734-0921-KX)"
+    # In a LOCALE 'C' database [[:alnum:]] alone would turn "ü" into a space
+    text = 'Zürich Versicherung: Łódź (LV-7734-0921-KX)'
     assert (
-        value(locale_dsn, "SELECT public.strip_punct(%s)", text)
-        == "Zürich Versicherung Łódź LV 7734 0921 KX "
+        value(locale_dsn, 'SELECT public.strip_punct(%s)', text)
+        == 'Zürich Versicherung Łódź LV 7734 0921 KX '
     )
-    assert value(locale_dsn, "SELECT public.search_normalize(%s)", "José MÜLLER-Østergård") == (
-        "jose muller-ostergard"
+    assert value(locale_dsn, 'SELECT public.search_normalize(%s)', 'José MÜLLER-Østergård') == (
+        'jose muller-ostergard'
     )
-    assert value(locale_dsn, "SELECT public.search_normalize(%s)", "Straße") == "strasse"
+    assert value(locale_dsn, 'SELECT public.search_normalize(%s)', 'Straße') == 'strasse'
 
 
 def test_generated_columns_and_uuid7_ids(fresh_dsn: str) -> None:
     with psycopg.connect(fresh_dsn) as conn:
         row = conn.execute(
-            "INSERT INTO clients (first_name, last_name, email)"
+            'INSERT INTO clients (first_name, last_name, email)'
             " VALUES ('José', 'Müller', 'Jose.Mueller@NevisWealth.com')"
-            " RETURNING id, search_text, uuid_extract_version(id)"
+            ' RETURNING id, search_text, uuid_extract_version(id)'
         ).fetchone()
         assert row is not None
         client_id, search_text, version = row
         conn.execute(
-            "INSERT INTO documents (client_id, title, content, tags_text, summary, summary_method)"
+            'INSERT INTO documents (client_id, title, content, tags_text, summary, summary_method)'
             " VALUES (%s, 'Zürich Versicherung', 'Police LV-7734-0921-KX', 'proof of address, utility bill.',"
             " 'Police LV-7734-0921-KX', 'extractive')",
             (client_id,),
@@ -97,18 +97,18 @@ def test_generated_columns_and_uuid7_ids(fresh_dsn: str) -> None:
             assert hit is not None
             return bool(hit[0])
 
-        assert search_text == "jose muller jose.mueller@neviswealth.com "
+        assert search_text == 'jose muller jose.mueller@neviswealth.com '
         assert version == 7
-        assert matches("fts_text", "zürich")
-        assert matches("fts_text", "7734")
-        assert not matches("fts_text", "utility bill")  # tags are searched through `fts` only
-        assert matches("fts", "utility bill")
+        assert matches('fts_text', 'zürich')
+        assert matches('fts_text', '7734')
+        assert not matches('fts_text', 'utility bill')  # tags are searched through `fts` only
+        assert matches('fts', 'utility bill')
 
 
 def test_app_meta_holds_at_most_one_row(fresh_dsn: str) -> None:
     with psycopg.connect(fresh_dsn, autocommit=True) as conn:
         conn.execute(
-            "INSERT INTO app_meta (model_revision, tokenizer_settings, concepts_sha256)"
+            'INSERT INTO app_meta (model_revision, tokenizer_settings, concepts_sha256)'
             " VALUES ('r1', '{}', NULL)"
         )
         with pytest.raises(psycopg.errors.UniqueViolation):

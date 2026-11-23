@@ -2,9 +2,9 @@
 # Run all tests:   docker compose --profile test run --rm --no-deps tests   (start the db first: up -d db)
 # Stop:            docker compose down                    (add -v to delete the database volume as well)
 #
-# Only the subset that Docker Compose v2 and podman-compose 1.4 run the same way
-# (research/_reports/containers-spike.md section 3): fully qualified images, CMD-SHELL health checks,
-# no start_interval, no service_completed_successfully, no `up --wait`, no nested variable defaults.
+# Only the subset that Docker Compose v2 and podman-compose 1.4 run the same way: fully qualified images,
+# CMD-SHELL health checks, no start_interval, no service_completed_successfully, no `up --wait`, no nested
+# variable defaults.
 # Optional overrides (shell or .env, see .env.example): API_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB.
 
 name: nevis-search

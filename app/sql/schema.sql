@@ -1,7 +1,3 @@
--- The database schema: spec section 4, plus the app_meta table of section 13.2 B5.
--- app.db.create_schema runs this file at start-up, in one transaction, when the database has no tables yet;
--- on every later start it runs nothing. There are no migrations: after a change to this file, start from an
--- empty database (docker compose down -v).
 CREATE EXTENSION IF NOT EXISTS vector;
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE EXTENSION IF NOT EXISTS unaccent;
@@ -47,8 +43,7 @@ CREATE TABLE document_chunks (
   PRIMARY KEY (document_id, chunk_no)
 );
 
--- What the stored vectors and tags were built with (13.2 B5). At most one row: `id` can only be 1.
--- Step 3 writes the row at start-up when the table is empty and logs a warning when it differs.
+-- What the stored vectors and tags were built with. At most one row: `id` can only be 1.
 CREATE TABLE app_meta (
   id int PRIMARY KEY DEFAULT 1 CHECK (id = 1),
   model_revision text NOT NULL,         -- Hugging Face revision of the embedding model

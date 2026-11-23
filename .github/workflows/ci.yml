@@ -1,6 +1,6 @@
-# CI (spec section 11 and 13.2 B10): build both images, start the stack, wait for /health, run every test
-# in the tests container, show the logs when something failed, remove everything. ubuntu-latest is x86_64,
-# so this is also the linux/amd64 check of the image.
+# CI: build both images, start the stack, wait for /health, run every test in the tests container, show the
+# logs when something failed, remove everything. ubuntu-latest is x86_64, so this is also the linux/amd64
+# check of the image.
 name: ci
 
 on:
