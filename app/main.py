@@ -1,5 +1,6 @@
 import logging
 import time
+import traceback
 from collections.abc import AsyncIterator, Mapping
 from contextlib import asynccontextmanager
 from http import HTTPStatus
@@ -8,9 +9,10 @@ from urllib.parse import quote, unquote_to_bytes
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Query, Request, Response
-from fastapi.exceptions import RequestValidationError
+from fastapi.exceptions import RequestValidationError, ResponseValidationError
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import JSONResponse
+from sqlalchemy.exc import StatementError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
@@ -34,6 +36,7 @@ access_log = logging.getLogger('app.access')
 router = APIRouter()
 
 PROBLEM_JSON = 'application/problem+json'
+INTERNAL_ERROR_DETAIL = 'Unexpected server error.'
 UNAVAILABLE_DETAIL: dict[Reason, str] = {  # DatabaseUnavailable.reason -> `detail` of the 503
     'unreachable': 'The database is unreachable; retry shortly.',
     'busy': 'The service is busy; retry shortly.',
@@ -102,7 +105,31 @@ async def on_database_unavailable(request: Request, exc: DatabaseUnavailable) ->
 async def on_unexpected_error(request: Request, exc: Exception) -> JSONResponse:
     # One line here; uvicorn logs the traceback, because Starlette re-raises after sending this response.
     log.error('unexpected %s on %s %s', type(exc).__name__, request.method, quote(request.scope['path']))
-    return problem(500, 'Unexpected server error.')
+    return problem(500, INTERNAL_ERROR_DETAIL)
+
+
+async def on_database_error(request: Request, exc: StatementError) -> JSONResponse:
+    """A database error's message can quote row values (PostgreSQL's DETAIL): log names and frames only."""
+    diag = getattr(exc.orig, 'diag', None)
+    log.error(
+        'database error %s (SQLSTATE %s, table %s, column %s, constraint %s) on %s %s\n%s',
+        type(exc).__name__,
+        getattr(exc.orig, 'sqlstate', None),
+        getattr(diag, 'table_name', None),
+        getattr(diag, 'column_name', None),
+        getattr(diag, 'constraint_name', None),
+        request.method,
+        quote(request.scope['path']),
+        ''.join(traceback.format_tb(exc.__traceback__)),  # now: Starlette drops the traceback afterwards
+    )
+    return problem(500, INTERNAL_ERROR_DETAIL)
+
+
+async def on_response_validation_error(request: Request, exc: ResponseValidationError) -> JSONResponse:
+    """Its text would print the invalid response, a client's data: log locations and types only."""
+    errors = [(e['loc'], e['type']) for e in exc.errors()]
+    log.error('invalid response %s on %s %s', errors, request.method, quote(request.scope['path']))
+    return problem(500, INTERNAL_ERROR_DETAIL)
 
 
 async def require_json(request: Request) -> None:
@@ -381,6 +408,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             StarletteHTTPException: on_http_error,
             RequestValidationError: on_validation_error,
             DatabaseUnavailable: on_database_unavailable,
+            StatementError: on_database_error,
+            ResponseValidationError: on_response_validation_error,
             Exception: on_unexpected_error,
         },
     )

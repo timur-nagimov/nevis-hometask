@@ -159,8 +159,7 @@ def test_the_first_request_after_an_outage_succeeds(engine: Engine, fresh_dsn: s
 
 
 def test_errors_do_not_carry_the_query_parameters(engine: Engine) -> None:
-    # An error the API does not expect becomes a 500, and its traceback goes to the server log: it must not
-    # carry names, e-mail addresses or search terms.
+    # Errors are logged: the statement's bound parameters must not appear in their text.
     with pytest.raises(DBAPIError) as error, _connection(engine) as conn:
         conn.execute(text('SELECT 1 / 0 WHERE :email IS NOT NULL'), {'email': 'ann.lee@private.example'})
 

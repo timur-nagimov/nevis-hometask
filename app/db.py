@@ -227,7 +227,8 @@ def open_engine(settings: Settings) -> Engine:
         max_overflow=0,  # never more than db_pool_size connections
         pool_timeout=settings.db_pool_timeout_seconds,  # then 503 busy
         pool_pre_ping=True,  # test a connection before handing it out: replaces those a restart dropped
-        hide_parameters=True,  # error texts must not carry names, e-mails or search terms into the log
+        # bound values stay out of error texts; PostgreSQL's DETAIL can still quote row values
+        hide_parameters=True,
     )
 
 

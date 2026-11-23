@@ -10,17 +10,26 @@ import logging
 from collections.abc import Iterator
 from typing import Annotated, Any, get_args
 
+import psycopg
 import pytest
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.testclient import TestClient
 from httpx2 import Response
 from pydantic import BaseModel, StringConstraints
+from sqlalchemy.exc import IntegrityError
 
 from app.config import MAX_BODY_BYTES
 from app.db import DatabaseUnavailable, Reason
 from app.main import UNAVAILABLE_DETAIL, create_app, problem_doc
+from app.schemas import Client
 
 JSON = {'content-type': 'application/json'}
+# Private data in error texts. Module constants, because a traceback prints the source line of the raise.
+PRIVATE_ROW = (
+    'null value in column "email" of relation "clients" violates not-null constraint\n'
+    'DETAIL:  Failing row contains (Ann, Private-Surname).'
+)
+PRIVATE_CLIENT = {'id': 'not-a-uuid', 'last_name': 'Private-Surname'}
 
 
 class Item(BaseModel):
@@ -50,6 +59,16 @@ def make_app() -> FastAPI:
     @app.get('/unavailable/{reason}')
     def unavailable(reason: Reason) -> None:
         raise DatabaseUnavailable(reason)
+
+    @app.get('/db-error')
+    def db_error() -> None:
+        raise IntegrityError(
+            'INSERT INTO clients ...', {}, psycopg.errors.NotNullViolation(PRIVATE_ROW), hide_parameters=True
+        )
+
+    @app.get('/bad-response', response_model=Client)
+    def bad_response() -> dict[str, str]:
+        return PRIVATE_CLIENT
 
     @app.get('/down/{name}')
     def down(name: str) -> None:
@@ -258,3 +277,18 @@ def test_the_503_log_line_names_the_cause_and_quotes_the_path(
         'database unavailable (unreachable) on GET /down/a%1Bb: '
         'InvalidPassword 28P01 password authentication failed for user "nevis"'
     )
+
+
+@pytest.mark.parametrize('path', ['/db-error', '/bad-response'])
+def test_database_and_response_errors_are_500_and_logged_without_private_values(
+    path: str, caplog: pytest.LogCaptureFixture
+) -> None:
+    caplog.set_level(logging.INFO)
+
+    response = TestClient(make_app()).get(path)  # raise_server_exceptions on: the handler must answer itself
+
+    body = assert_problem(response, 500, 'Internal Server Error')
+    assert body['detail'] == 'Unexpected server error.'
+    assert 'Private-Surname' not in caplog.text
+    if path == '/db-error':
+        assert 'SQLSTATE 23502' in caplog.text
