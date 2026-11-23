@@ -2,8 +2,8 @@
 #
 #   uv       the pinned uv binary, a COPY source only
 #   deps     locked runtime dependencies in /opt/venv                 (uv sync --locked --no-dev)
-#   model    the embedding model in /opt/models                       (an empty stub for now)
-#   app      Python + venv + model + code, non-root user, build-time check
+#   model    the embedding model in /opt/models                       (scripts/fetch_model.py)
+#   app      Python + venv + model + code, non-root user, build-time checks
 #   test     app + dev dependencies + tests + scripts   docker compose --profile test run --rm --no-deps tests
 #   runtime  app + start command; LAST, so it is the default target   docker compose up --build -d
 #
@@ -32,8 +32,12 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # --------------------------------------------------------------------------------------------- model
 FROM ${PYTHON_IMAGE} AS model
-# Stub: an empty model directory, until the embedding model is added.
-RUN mkdir -p /opt/models/leaf-ir
+# The embedding model from a pinned Hugging Face commit, sha256-checked (scripts/fetch_model.py, stdlib only).
+# Own stage: changing dependencies or code does not download the model again.
+# A mirror: docker compose build --build-arg HF_ENDPOINT=https://<mirror> (unset or empty: Hugging Face).
+ARG HF_ENDPOINT
+COPY scripts/fetch_model.py /tmp/fetch_model.py
+RUN python -I /tmp/fetch_model.py /opt/models/leaf-ir && chmod -R a+rX /opt/models
 
 # ----------------------------------------------------------------------------------------------- app
 FROM ${PYTHON_IMAGE} AS app
@@ -51,9 +55,12 @@ COPY --from=model /opt/models /opt/models
 WORKDIR /app
 COPY app ./app
 USER 10001:10001
-# Build-time check as the user the service runs as:
-# the code imports, and the application can be created without any settings.
+# Build-time checks as the user the service runs as:
+# the code imports, and the application can be created without any settings;
 RUN python -c "from app.main import create_app; create_app()"
+# the model loads offline and this user can read it; its vectors have the right length and unit norm, and the
+# pinned query and passage give the cosine measured on the pinned revision.
+RUN python -m app.embedding --selfcheck
 
 # ---------------------------------------------------------------------------------------------- test
 FROM app AS test

@@ -92,6 +92,20 @@ TOKENIZER_SETTINGS: dict[str, int | str] = {'truncation': MAX_TOKENS, 'padding':
 EMBED_BATCH = 4  # texts per model call
 RUNS_PER_LANE = 1  # model calls at once per lane; document batches and queries each have a lane of their own
 EMBED_INTER_OP_THREADS = 1  # the model's nodes run one at a time, so a call uses NEVIS_EMBED_THREADS threads
+SHORT_REVISION_CHARS = 7  # MODEL_REVISION is shown by its first characters, like a short git hash
+
+# Model self-check (python -m app.embedding --selfcheck; the image build runs it). The cosine of this query
+# and this passage, a short document as it is embedded (title, newline, content), was measured once with the
+# pinned model; another model or other tokenizer settings give another value.
+SELFCHECK_QUERY = 'address proof'
+SELFCHECK_PASSAGE = (
+    'Utility bill\nBritish Gas utility bill for March 2025. '
+    'Account holder John Doe, 14 Larkspur Close, Harrogate. Amount due £84.20.'
+)
+GOLDEN_COSINE = 0.1403  # the measured value, to four decimals
+GOLDEN_TOLERANCE = 1e-3  # allowed difference from GOLDEN_COSINE: numeric noise across CPUs and thread counts
+NORM_TOLERANCE = 1e-4  # allowed difference of a self-check vector's length from 1
+SELFCHECK_THREADS = 1  # two short texts need no more
 
 # HTTP contract
 MAX_BODY_BYTES = 2 * 1024 * 1024  # larger request bodies are answered with 413

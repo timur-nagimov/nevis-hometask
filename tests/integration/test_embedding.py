@@ -1,10 +1,13 @@
-"""The embedder: vector shape and norm, batches, the query prefix, the token limit, the two lanes, threads.
+"""The embedder: vector shape and norm, batches, the query prefix, the token limit, the two lanes, threads;
+the self-check the image build runs.
 
 Needs the model, not the database. On the host, with the model downloaded to .cache/models/leaf-ir:
     NEVIS_MODEL_DIR=.cache/models/leaf-ir uv run pytest tests/integration/test_embedding.py
 """
 
 import os
+import subprocess
+import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -15,9 +18,22 @@ import numpy.typing as npt
 import pytest
 from tokenizers import Tokenizer
 
+from app import embedding
 from app.config import EMBED_BATCH, EMBED_INTER_OP_THREADS, QUERY_PREFIX, TOKENIZER_FILE
-from app.embedding import DEFAULT_MODEL_DIR, DIM, MAX_TOKENS, MODEL_REPO, MODEL_REVISION, Embedder
+from app.embedding import (
+    DEFAULT_MODEL_DIR,
+    DIM,
+    GOLDEN_COSINE,
+    GOLDEN_TOLERANCE,
+    MAX_TOKENS,
+    MODEL_REPO,
+    MODEL_REVISION,
+    Embedder,
+    SelfCheckError,
+    selfcheck,
+)
 
+ROOT = Path(__file__).resolve().parents[2]
 MODEL_DIR = os.environ.get('NEVIS_MODEL_DIR', DEFAULT_MODEL_DIR)
 THREADS = 2
 
@@ -184,3 +200,33 @@ def test_info_names_the_pinned_model(embedder: Embedder) -> None:
         THREADS,
     )
     assert info['tokenizer'] == {'truncation': 512, 'padding': 'batch_longest'}
+
+
+def test_selfcheck_passes_on_the_pinned_model() -> None:
+    assert abs(selfcheck(MODEL_DIR) - GOLDEN_COSINE) <= GOLDEN_TOLERANCE
+
+
+def test_selfcheck_fails_when_the_cosine_is_off(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(embedding, 'GOLDEN_COSINE', GOLDEN_COSINE + 10 * GOLDEN_TOLERANCE)
+    with pytest.raises(SelfCheckError, match='cosine'):
+        selfcheck(MODEL_DIR)
+
+
+def test_selfcheck_command_exits_0() -> None:
+    command = [sys.executable, '-m', 'app.embedding', '--selfcheck', '--model-dir', MODEL_DIR]
+    result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, check=False)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.startswith('selfcheck ok: MongoDB/mdbr-leaf-ir@4262131 dim=768')
+
+
+def test_selfcheck_command_exits_1_when_the_check_fails(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A non-zero exit is what stops the image build."""
+    monkeypatch.setattr(embedding, 'GOLDEN_COSINE', GOLDEN_COSINE + 10 * GOLDEN_TOLERANCE)
+
+    assert embedding.main(['--selfcheck', '--model-dir', MODEL_DIR]) == 1
+
+    output = capsys.readouterr()
+    assert output.out == ''
+    assert output.err.startswith('selfcheck FAILED: ') and 'cosine' in output.err

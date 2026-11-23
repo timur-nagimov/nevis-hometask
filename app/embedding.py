@@ -1,9 +1,12 @@
 """The embedding model, run with onnxruntime: passages and search queries become unit vectors.
 
 The model directory holds MODEL_FILE with its weights and TOKENIZER_FILE; nothing is downloaded at run time.
+`python -m app.embedding --selfcheck` loads the model and checks it; the image build runs it.
 """
 
+import argparse
 import os
+import sys
 import threading
 from pathlib import Path
 from typing import TypedDict
@@ -15,12 +18,19 @@ from app.config import (
     DEFAULT_MODEL_DIR,
     EMBED_BATCH,
     EMBED_INTER_OP_THREADS,
+    GOLDEN_COSINE,
+    GOLDEN_TOLERANCE,
     MAX_TOKENS,
     MODEL_FILE,
     MODEL_REPO,
     MODEL_REVISION,
+    NORM_TOLERANCE,
     QUERY_PREFIX,
     RUNS_PER_LANE,
+    SELFCHECK_PASSAGE,
+    SELFCHECK_QUERY,
+    SELFCHECK_THREADS,
+    SHORT_REVISION_CHARS,
     TOKENIZER_FILE,
     TOKENIZER_SETTINGS,
 )
@@ -30,13 +40,20 @@ from app.config import EMBEDDING_DIM as DIM
 __all__ = [
     'DEFAULT_MODEL_DIR',
     'DIM',
+    'GOLDEN_COSINE',
+    'GOLDEN_TOLERANCE',
     'MAX_TOKENS',
     'MODEL_REPO',
     'MODEL_REVISION',
+    'SELFCHECK_PASSAGE',
+    'SELFCHECK_QUERY',
     'TOKENIZER_SETTINGS',
     'Embedder',
     'EmbedderInfo',
+    'SelfCheckError',
     'Vector',
+    'main',
+    'selfcheck',
 ]
 
 # onnxruntime sends usage data to Microsoft unless ORT_DISABLE_TELEMETRY is set before it starts, and the
@@ -123,3 +140,52 @@ class Embedder:
         matrix = np.asarray(outputs[0], dtype=np.float32)
         norms = np.maximum(np.linalg.norm(matrix, axis=1, keepdims=True), MIN_NORM)
         return list((matrix / norms).astype(np.float32))
+
+
+class SelfCheckError(RuntimeError):
+    """The model in the model directory does not behave like the pinned revision."""
+
+
+def selfcheck(model_dir: str | Path | None = None) -> float:
+    """Load the model offline; check the dimension, the unit norm and the golden cosine. Returns the cosine.
+
+    Without `model_dir` it opens the model the service would: NEVIS_MODEL_DIR, else DEFAULT_MODEL_DIR.
+    The comparisons are written as `not (... <= ...)` so that NaN fails them.
+    """
+    path = Path(model_dir or os.environ.get('NEVIS_MODEL_DIR') or DEFAULT_MODEL_DIR)
+    embedder = Embedder(path, threads=SELFCHECK_THREADS)
+    query = embedder.embed_query(SELFCHECK_QUERY)
+    (passage,) = embedder.embed_documents([SELFCHECK_PASSAGE])
+    if query.shape != (DIM,) or passage.shape != (DIM,):
+        raise SelfCheckError(f'{path}: dimension {query.shape} / {passage.shape}, expected ({DIM},)')
+    norms = [float(np.linalg.norm(vector)) for vector in (query, passage)]
+    if not all(abs(norm - 1.0) <= NORM_TOLERANCE for norm in norms):
+        raise SelfCheckError(f'{path}: norms {norms}, expected 1.0 +/- {NORM_TOLERANCE}')
+    cosine = float(query @ passage)
+    if not abs(cosine - GOLDEN_COSINE) <= GOLDEN_TOLERANCE:
+        raise SelfCheckError(f'{path}: cosine {cosine:.4f}, expected {GOLDEN_COSINE} +/- {GOLDEN_TOLERANCE}')
+    return cosine
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(prog='python -m app.embedding')
+    parser.add_argument('--selfcheck', action='store_true', help='load the model and check it')
+    parser.add_argument('--model-dir', help=f'default: $NEVIS_MODEL_DIR or {DEFAULT_MODEL_DIR}')
+    args = parser.parse_args(argv)
+    if not args.selfcheck:
+        parser.print_help(sys.stderr)
+        return 2
+    try:
+        cosine = selfcheck(args.model_dir)
+    except SelfCheckError as exc:
+        print(f'selfcheck FAILED: {exc}', file=sys.stderr)
+        return 1
+    print(
+        f'selfcheck ok: {MODEL_REPO}@{MODEL_REVISION[:SHORT_REVISION_CHARS]} dim={DIM} cosine={cosine:.4f} '
+        f'(expected {GOLDEN_COSINE} +/- {GOLDEN_TOLERANCE})'
+    )
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

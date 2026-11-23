@@ -31,7 +31,7 @@ ENDPOINT = (os.environ.get('HF_ENDPOINT') or DEFAULT_ENDPOINT).rstrip('/')
 ATTEMPTS = 5  # per file
 TIMEOUT_SECONDS = 60  # to connect and for each read, so a stalled transfer fails instead of hanging
 READ_BYTES = 1 << 20  # files go to disk in pieces of this size, never whole through memory
-MAX_WAIT_SECONDS = 20  # the wait after a failed attempt doubles from 2 seconds up to this
+MAX_WAIT_SECONDS = 20  # the wait before the next attempt doubles from 2 seconds up to this
 USER_AGENT = 'model-fetch/1.0'
 BYTES_PER_MB = 1_000_000  # the progress lines count decimal megabytes
 
@@ -64,7 +64,8 @@ def fetch(rel: str, sha256: str, size: int, target: Path, attempts: int = ATTEMP
                 f'  attempt {attempt}/{attempts} for {rel} failed: {type(exc).__name__}: {exc}',
                 file=sys.stderr,
             )
-            time.sleep(min(2**attempt, MAX_WAIT_SECONDS))
+            if attempt < attempts:  # the last failure ends the build without waiting
+                time.sleep(min(2**attempt, MAX_WAIT_SECONDS))
     raise SystemExit(
         f'\nERROR: could not download {url}\n  last error: {last}\n'
         '  The image build needs HTTPS access to huggingface.co and its CDN (*.hf.co).\n'

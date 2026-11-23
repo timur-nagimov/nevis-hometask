@@ -184,6 +184,13 @@ def test_constants_keep_their_values() -> None:
     )
     assert (config.MAX_TOKENS, config.RUNS_PER_LANE, config.EMBED_INTER_OP_THREADS) == (512, 1, 1)
     assert config.TOKENIZER_SETTINGS == {'truncation': 512, 'padding': 'batch_longest'}
+    assert config.SELFCHECK_QUERY == 'address proof'
+    assert config.SELFCHECK_PASSAGE == (
+        'Utility bill\nBritish Gas utility bill for March 2025. '
+        'Account holder John Doe, 14 Larkspur Close, Harrogate. Amount due £84.20.'
+    )
+    assert (config.GOLDEN_COSINE, config.GOLDEN_TOLERANCE, config.NORM_TOLERANCE) == (0.1403, 1e-3, 1e-4)
+    assert (config.SELFCHECK_THREADS, config.SHORT_REVISION_CHARS) == (1, 7)
     # every exact match ranks above every typo match, also after rounding
     assert round(config.FUZZY_SCORE_MAX, config.SCORE_DECIMALS) < config.EXACT_SCORE_MIN
 
