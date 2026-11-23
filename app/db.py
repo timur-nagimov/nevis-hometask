@@ -201,7 +201,7 @@ def create_schema(settings: Settings) -> bool:
 def connection_info(settings: Settings) -> str:
     """libpq parameters of every connection, at start-up and in the pool: the URL's own, then the options
     above and the timeouts. `options` from the URL are kept; the flags added after them win."""
-    url = settings.database_url
+    url = settings.database_url.get_secret_value()
     flags = (
         f'-c statement_timeout={settings.db_statement_timeout_ms} '
         # the trigram threshold of the client typo search, so the search does not depend on the server default

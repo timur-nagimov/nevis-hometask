@@ -3,15 +3,19 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field
+import psycopg
+from psycopg.conninfo import conninfo_to_dict
+from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import Engine
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix='NEVIS_')
+    model_config = SettingsConfigDict(
+        env_prefix='NEVIS_', hide_input_in_errors=True
+    )  # errors never print values
 
-    database_url: str
+    database_url: SecretStr = Field(min_length=1)  # repr and model_dump print **********
     db_pool_size: int = Field(default=8, ge=1)  # connections; SQLAlchemy reads 0 as no limit
     db_pool_timeout_seconds: float = Field(default=5.0, gt=0)  # wait for a free connection, then 503 busy
     db_connect_timeout_seconds: int = Field(default=3, ge=2)  # libpq counts less than 2 as 2
@@ -22,6 +26,22 @@ class Settings(BaseSettings):
     concepts_file: str = str(Path(__file__).parent / 'data' / 'concepts.yaml')  # "" disables concept tagging
     max_content_chars: int = Field(default=50_000, ge=1)
     log_level: Literal['DEBUG', 'INFO', 'WARNING', 'ERROR'] = 'INFO'
+
+    @field_validator('database_url')
+    @classmethod
+    def _readable_by_libpq(cls, value: SecretStr) -> SecretStr:
+        """libpq's own errors quote the part they cannot read, and that part may be the password."""
+        try:
+            parts = conninfo_to_dict(value.get_secret_value())
+            # an unencoded @ or / in the password leaves an @ in the host or the database name
+            readable = not any('@' in str(parts.get(key) or '') for key in ('host', 'dbname'))
+        except psycopg.ProgrammingError:
+            readable = False
+        if not readable:  # raised here, not in `except`, so libpq's message is not chained to it
+            raise ValueError(
+                'not a valid PostgreSQL URL: percent-encode @ : / % and spaces in user and password'
+            )
+        return value
 
 
 # Document search

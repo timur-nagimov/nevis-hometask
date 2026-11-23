@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import cast
 
 import pytest
-from pydantic import ValidationError
+from pydantic import SecretStr, ValidationError
 from sqlalchemy import Engine
 
 from app import config
@@ -22,12 +22,64 @@ def test_database_url_is_required(monkeypatch: pytest.MonkeyPatch) -> None:
     assert [e['loc'] for e in error.value.errors()] == [('database_url',)]
 
 
+@pytest.mark.parametrize(
+    'url',
+    [
+        'postgresql+psycopg://u:Zq9xW@db/nevis',  # a SQLAlchemy URL, not one libpq reads
+        'postgresql://u:Zq9%xW@db/nevis',  # a bad percent escape
+        'postgresql://u:Zq9@xW@db/nevis',  # an unencoded @ in the password
+        'postgresql://u:Zq9/xW@db/nevis',  # an unencoded / in the password
+        'postgresql://u:Zq9 xW@db/nevis',  # a space in the password
+        '',
+    ],
+)
+def test_database_url_libpq_cannot_read_is_refused_without_quoting_it(
+    monkeypatch: pytest.MonkeyPatch, url: str
+) -> None:
+    monkeypatch.setenv('NEVIS_DATABASE_URL', url)
+
+    with pytest.raises(ValidationError) as error:
+        Settings()
+
+    assert [e['loc'] for e in error.value.errors()] == [('database_url',)]
+    assert 'Zq9' not in str(error.value)
+    assert 'xW' not in str(error.value)
+
+
+@pytest.mark.parametrize(
+    'url',
+    [
+        'host=db port=5432 dbname=nevis user=u password=p@ss',
+        'postgresql://u:p@db:5432/nevis?options=-c%20search_path%3Dapp',
+    ],
+)
+def test_url_and_key_value_forms_are_accepted(url: str) -> None:
+    assert Settings(database_url=url).database_url.get_secret_value() == url
+
+
+def test_settings_and_services_never_print_the_database_url() -> None:
+    settings = Settings(database_url='postgresql://u:S3cret@db/nevis')
+    services = Services(settings=settings, engine=cast(Engine, None), embedder=None, concepts=None)
+
+    for text in (repr(settings), str(settings.model_dump()), repr(services)):
+        assert 'S3cret' not in text
+
+
+def test_a_settings_error_prints_no_values(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv('NEVIS_MODEL_DIR', '/planted')  # NEVIS_DATABASE_URL is missing
+
+    with pytest.raises(ValidationError) as error:
+        Settings()
+
+    assert 'planted' not in str(error.value)
+
+
 def test_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv('NEVIS_DATABASE_URL', 'postgresql://u:p@db:5432/nevis')
 
     settings = Settings()
 
-    assert settings.database_url == 'postgresql://u:p@db:5432/nevis'
+    assert settings.database_url.get_secret_value() == 'postgresql://u:p@db:5432/nevis'
     assert settings.model_dir == '/opt/models/leaf-ir'
     assert settings.embed_threads == min(4, os.process_cpu_count() or 1)
     assert Path(settings.concepts_file) == Path(config.__file__).parent / 'data' / 'concepts.yaml'
@@ -55,7 +107,7 @@ def test_every_setting_is_read_from_its_nevis_variable(monkeypatch: pytest.Monke
     monkeypatch.setenv('NEVIS_DB_STATEMENT_TIMEOUT_MS', '300')
 
     assert Settings().model_dump() == {
-        'database_url': 'postgresql://other/db',
+        'database_url': SecretStr('postgresql://other/db'),
         'db_pool_size': 2,
         'db_pool_timeout_seconds': 0.5,
         'db_connect_timeout_seconds': 10,
