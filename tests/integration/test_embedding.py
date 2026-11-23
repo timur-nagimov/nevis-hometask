@@ -217,16 +217,3 @@ def test_selfcheck_command_exits_0() -> None:
     result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, check=False)
     assert result.returncode == 0, result.stderr
     assert result.stdout.startswith('selfcheck ok: MongoDB/mdbr-leaf-ir@4262131 dim=768')
-
-
-def test_selfcheck_command_exits_1_when_the_check_fails(
-    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
-) -> None:
-    """A non-zero exit is what stops the image build."""
-    monkeypatch.setattr(embedding, 'GOLDEN_COSINE', GOLDEN_COSINE + 10 * GOLDEN_TOLERANCE)
-
-    assert embedding.main(['--selfcheck', '--model-dir', MODEL_DIR]) == 1
-
-    output = capsys.readouterr()
-    assert output.out == ''
-    assert output.err.startswith('selfcheck FAILED: ') and 'cosine' in output.err

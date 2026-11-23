@@ -137,5 +137,5 @@ def test_a_directory_without_the_model_fails_the_selfcheck_in_one_line(tmp_path:
     assert result.returncode == 1
     assert result.stdout == ''
     assert result.stderr.splitlines() == [
-        f'selfcheck FAILED: {tmp_path}: model files not found: {MODEL_FILE}, {TOKENIZER_FILE}'
+        f'selfcheck FAILED: {tmp_path}: model files not found or not readable: {MODEL_FILE}, {TOKENIZER_FILE}'
     ]

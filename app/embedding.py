@@ -88,7 +88,7 @@ class Embedder:
         path = Path(model_dir)
         missing = [name for name in (MODEL_FILE, TOKENIZER_FILE) if not (path / name).is_file()]
         if missing:  # a wrong directory: a plain error, before onnxruntime is even loaded
-            raise FileNotFoundError(f'{path}: model files not found: {", ".join(missing)}')
+            raise FileNotFoundError(f'{path}: model files not found or not readable: {", ".join(missing)}')
 
         import onnxruntime as ort  # here, after the environment variables above are set
         from tokenizers import Tokenizer
