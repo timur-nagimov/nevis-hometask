@@ -213,15 +213,15 @@ def load_concepts(path: str) -> Concepts | None:
 class Tagging:
     tags: list[str]  # concept names of all matched entries, file order, no duplicates (in the API)
     tags_text: str  # one sentence per matched entry (searched through documents.fts)
-    head_text: str  # sentences of the head entries only; '' means no tags chunk (chunk -1)
+    head_text: str  # sentences of the head entries only; '' means no tags chunk (TAGS_CHUNK_NO)
 
 
 def tagging_from_matches(concepts: Concepts, matches: list[tuple[int, bool, bool]], content: str) -> Tagging:
     """Tags from the matched entries, in entry order: (entry number, in the title, in title or content).
 
     Head entries: matched in the title, or matched anywhere when the content has at most SHORT_DOC_WORDS
-    words. Only head entries are embedded (chunk -1): otherwise a long letter that mentions a bill in
-    passing would look like proof of address.
+    words. Only head entries are embedded (the tags chunk, TAGS_CHUNK_NO): otherwise a long letter that
+    mentions a bill in passing would look like proof of address.
     """
     short = len(content.split()) <= SHORT_DOC_WORDS
     matched = [entry for entry, _, _ in matches]
