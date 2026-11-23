@@ -10,7 +10,6 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Query, Request, Response
 from fastapi.exceptions import RequestValidationError, ResponseValidationError
-from fastapi.openapi.utils import get_openapi
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import StatementError
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -172,11 +171,33 @@ class AccessLogMiddleware:
             access_log.info('%s %s %d %.1f ms', scope['method'], quote(scope['path']), status, elapsed_ms)
 
 
-class FastAPIWithAccessLog(FastAPI):
-    """FastAPI with the access log as the outermost layer, so that it logs the status the client receives."""
+class SearchAPI(FastAPI):
+    """FastAPI with the access log as the outermost layer, so that it logs the status the client receives,
+    and an OpenAPI document whose errors are problem+json."""
 
     def build_middleware_stack(self) -> ASGIApp:
         return AccessLogMiddleware(super().build_middleware_stack())
+
+    def openapi(self) -> dict[str, Any]:
+        previous = self.openapi_schema
+        spec = super().openapi()
+        if spec is not previous:  # built anew; FastAPI rebuilds it after a route is added
+            _problem_json_only(spec)
+        return spec
+
+
+def _problem_json_only(spec: dict[str, Any]) -> None:
+    """Errors of this API are problem+json: declare Problem and FieldError, and drop FastAPI's own 422
+    (application/json); routes that can answer 422 declare the problem+json one themselves."""
+    schemas = spec['components']['schemas']
+    schemas['Problem'] = Problem.model_json_schema(ref_template='#/components/schemas/{model}')
+    schemas['FieldError'] = schemas['Problem'].pop('$defs')['FieldError']
+    for operations in spec['paths'].values():
+        for operation in operations.values():
+            if 'application/json' in operation['responses'].get('422', {}).get('content', {}):
+                del operation['responses']['422']
+    for name in ('HTTPValidationError', 'ValidationError'):
+        schemas.pop(name, None)
 
 
 @router.get('/health', tags=['ops'], summary='Liveness check; does not touch the database')
@@ -224,7 +245,7 @@ _WRITE_ERRORS: dict[int | str, dict[str, Any]] = {
         400,
     ),
     413: {
-        **problem_doc(f'Body larger than {MAX_BODY_BYTES:,} bytes (rejected before parsing)', '', 413),
+        'description': f'Body larger than {MAX_BODY_BYTES:,} bytes (rejected before parsing)',
         'content': {
             'text/plain': {'schema': {'type': 'string'}, 'example': 'Content Too Large'},
             PROBLEM_JSON: {'schema': {'$ref': '#/components/schemas/Problem'}},
@@ -404,7 +425,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             close_services(services)
             log.info('stopped')
 
-    app = FastAPIWithAccessLog(
+    app = SearchAPI(
         title='Nevis Search API',
         version=__version__,
         lifespan=lifespan,
@@ -420,25 +441,4 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         },
     )
     app.include_router(router)
-
-    def openapi() -> dict[str, Any]:
-        if app.openapi_schema is None:
-            spec = get_openapi(
-                title=app.title,
-                version=app.version,
-                description=app.description,
-                routes=app.routes,
-                tags=app.openapi_tags,
-            )
-            schemas = spec['components']['schemas']
-            schemas['Problem'] = Problem.model_json_schema(ref_template='#/components/schemas/{model}')
-            schemas['FieldError'] = schemas['Problem'].pop('$defs')['FieldError']
-            # A string id cannot fail validation: GET /clients/{client_id} never answers 422.
-            del spec['paths']['/clients/{client_id}']['get']['responses']['422']
-            for name in ('HTTPValidationError', 'ValidationError'):
-                schemas.pop(name, None)
-            app.openapi_schema = spec
-        return app.openapi_schema
-
-    app.openapi = openapi  # type: ignore[method-assign]
     return app

@@ -114,3 +114,21 @@ def test_openapi_declares_the_statuses_of_the_routes() -> None:
     assert {'200', '400', '422'} <= set(paths['/search']['get']['responses'])
     assert [p['name'] for p in paths['/search']['get']['parameters']] == ['q', 'type', 'limit']
     assert 'Problem' in spec['components']['schemas']
+
+
+def test_openapi_errors_are_problem_json_also_after_a_late_route() -> None:
+    app = create_app(Settings(database_url='postgresql://unused/x'))
+    spec = app.openapi()
+    assert '422' not in spec['paths']['/clients/{client_id}']['get']['responses']  # a string id cannot fail
+    for operations in spec['paths'].values():
+        for operation in operations.values():
+            if '422' in operation['responses']:
+                assert set(operation['responses']['422']['content']) == {'application/problem+json'}
+    assert not {'HTTPValidationError', 'ValidationError'} & set(spec['components']['schemas'])
+
+    @app.get('/later/{item_id}')
+    def later(item_id: str) -> None: ...
+
+    spec = app.openapi()
+    assert '422' not in spec['paths']['/later/{item_id}']['get']['responses']
+    assert 'HTTPValidationError' not in spec['components']['schemas']
