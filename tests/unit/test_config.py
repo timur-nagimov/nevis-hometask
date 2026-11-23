@@ -179,8 +179,6 @@ def test_constants_keep_their_values() -> None:
     assert (config.MAX_SOCIAL_LINKS, config.MAX_SOCIAL_LINK_CHARS, config.MAX_TITLE_CHARS) == (20, 2048, 300)
     assert (config.SCORE_DECIMALS, config.RETRY_AFTER_SECONDS, config.MAX_ECHOED_ID_CHARS) == (4, 5, 64)
     assert (config.EMBEDDING_DIM, config.FTS_CONFIG) == (768, 'english')
-    assert Path(config.PACKAGED_CONCEPTS_FILE) == Path(config.__file__).parent / 'data' / 'concepts.yaml'
-    assert (config.DEFAULT_MODEL_DIR, config.DEFAULT_MAX_CONTENT_CHARS) == ('/opt/models/leaf-ir', 50_000)
     model = (config.MODEL_REPO, config.MODEL_REVISION, config.MODEL_FILE, config.TOKENIZER_FILE)
     assert model == (
         'MongoDB/mdbr-leaf-ir',

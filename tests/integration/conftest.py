@@ -59,8 +59,7 @@ def app_dsn(admin_dsn: str) -> Iterator[str]:
 
 @pytest.fixture(scope='module')
 def app_client(app_dsn: str) -> Iterator[TestClient]:
-    """The real application on its own database with the lifespan running (schema, concept map, model,
-    pool)."""
+    """The real application on its own database, its lifespan running (schema, concept map, model, pool)."""
     with TestClient(create_app(Settings(database_url=app_dsn))) as client:
         yield client
 

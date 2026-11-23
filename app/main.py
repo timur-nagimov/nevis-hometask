@@ -246,12 +246,11 @@ def close_services(services: Services) -> None:
     services.engine.dispose()
 
 
-def check_app_meta(services: Services) -> list[str]:
+def check_app_meta(services: Services) -> None:
     """Compare the running model revision, tokenizer settings and concept map with the row of app_meta.
 
     Writes the row when the table is empty. A difference is logged as one warning, because vectors or tags
     built by another model or map would otherwise mix silently; the stored row is kept and the start goes on.
-    Returns the names of the differing fields.
     """
     info = services.embedder.info()
     current = db.AppMeta(
@@ -272,7 +271,6 @@ def check_app_meta(services: Services) -> list[str]:
             'start from an empty database (docker compose down -v) to rebuild them',
             ', '.join(differing),
         )
-    return differing
 
 
 async def get_services(request: Request) -> Services:
@@ -379,14 +377,12 @@ def _upload_slot() -> Iterator[None]:
     yield
 
 
-UploadSlot = Annotated[None, Depends(_upload_slot, max_concurrency=MAX_CONCURRENT_UPLOADS, scope='function')]
-
-
 @router.post(
     '/clients/{client_id}/documents',
     status_code=201,
     tags=['documents'],
     summary='Add a document to a client',
+    dependencies=[Depends(_upload_slot, max_concurrency=MAX_CONCURRENT_UPLOADS, scope='function')],
     responses={
         **_created(
             'Document',
@@ -397,7 +393,7 @@ UploadSlot = Annotated[None, Depends(_upload_slot, max_concurrency=MAX_CONCURREN
     },
 )
 def create_document(
-    client_id: str, body: DocumentCreate, response: Response, services: ServicesDep, _slot: UploadSlot
+    client_id: str, body: DocumentCreate, response: Response, services: ServicesDep
 ) -> Document:
     """Tags, summarises, chunks and embeds the document; it is stored when the 201 is sent."""
     limit = services.settings.max_content_chars

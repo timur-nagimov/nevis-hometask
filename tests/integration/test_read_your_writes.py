@@ -64,11 +64,8 @@ def test_get_right_after_post_finds_the_document_200_times(base_url: str) -> Non
     assert status == 201
     url = f'{base_url}/clients/{john["id"]}/documents'
     note = {'title': 'Call note', 'content': 'The client asked about the pension statement.'}
-    misses = 0
     for _ in range(200):
         status, document = call('POST', url, note)
         assert status == 201
         status, _ = call('GET', f'{url}/{document["id"]}')
-        if status != 200:
-            misses += 1
-    assert misses == 0
+        assert status == 200

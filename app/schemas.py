@@ -1,4 +1,3 @@
-from collections.abc import Mapping
 from datetime import UTC, datetime
 from typing import Annotated, Any, Literal
 from uuid import UUID
@@ -201,8 +200,8 @@ class Document(BaseModel):
     summary: Summary
 
     @classmethod
-    def from_row(cls, row: Mapping[Any, Any]) -> Document:
-        """From a row of `documents`: a dict or a RowMapping (its keys may also be columns, hence `Any`).
+    def from_row(cls, row: dict[str, Any]) -> Document:
+        """From a row of `documents` as app.db returns it.
         `created_at` is returned in UTC, not in the database session's time zone."""
         return cls(
             id=row['id'],

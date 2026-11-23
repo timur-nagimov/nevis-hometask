@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy import Engine, select
 
 from app.config import EXTRACTIVE, MAX_BODY_BYTES, MAX_ECHOED_ID_CHARS, TAGS_CHUNK_NO, Services, Settings
-from app.db import DocumentChunkRow, DocumentRow
+from app.db import DocumentChunkRow, DocumentRow, _connection
 from app.main import create_app
 from tests.integration.helpers import post_client, post_document
 
@@ -33,7 +33,7 @@ def chunk_numbers(engine: Engine, document_id: str) -> list[int]:
         .where(DocumentChunkRow.document_id == UUID(document_id))
         .order_by(DocumentChunkRow.chunk_no)
     )
-    with engine.connect() as conn:
+    with _connection(engine) as conn:
         return list(conn.execute(statement).scalars())
 
 
@@ -84,7 +84,7 @@ def test_the_stored_vector_embeds_title_newline_chunk(
         DocumentChunkRow.document_id == UUID(document['id']), DocumentChunkRow.chunk_no == 0
     )
 
-    with services.engine.connect() as conn:
+    with _connection(services.engine) as conn:
         stored = conn.execute(statement).scalar_one()
 
     assert np.allclose(stored, expected, atol=1e-5)
@@ -179,7 +179,7 @@ def test_an_empty_concepts_file_setting_disables_tagging(fresh_dsn: str) -> None
         engine = app.state.services.engine
         chunks = chunk_numbers(engine, document['id'])
         statement = select(DocumentRow.tags_text).where(DocumentRow.id == UUID(document['id']))
-        with engine.connect() as conn:
+        with _connection(engine) as conn:
             tags_text = conn.execute(statement).scalar_one()
 
     assert document['tags'] == []
