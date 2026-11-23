@@ -382,8 +382,7 @@ def search_clients(engine: Engine, q: str, limit: int) -> list[dict[str, Any]]:
 
 
 def _match_concepts_statement() -> Select[int, bool, bool]:
-    """The concept match. Parameters: title, content, and the parallel arrays entries (int[]) and phrases
-    (text[]), where entries[i] owns phrases[i]."""
+    """The statement of match_concepts, with the bound parameters title, content, entries and phrases."""
     title = cast(bindparam('title'), Text)
     content = cast(bindparam('content'), Text)
     # MATERIALIZED: the two search vectors are built once, not once per phrase
@@ -443,7 +442,7 @@ _MATCH_CONCEPTS = _match_concepts_statement()
 def match_concepts(
     engine: Engine, title: str, content: str, entries: list[int], phrases: list[str]
 ) -> list[tuple[int, bool, bool]]:
-    """The concept entries a phrase of which occurs in the document, in entry order, each once: (entry
+    """The concept entries with a phrase that occurs in the document, each once and in entry order: (entry
     number, matched in the title, matched in title + content). One round trip.
 
     `entries` and `phrases` are parallel: entries[i] owns phrases[i]. Phrases match as whole phrases, stemmed

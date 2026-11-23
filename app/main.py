@@ -224,11 +224,8 @@ async def health() -> dict[str, str]:
 
 
 def build_services(settings: Settings) -> Services:
-    """Load the concept map and the model, then open the connection pool.
-
-    In this order, a broken map or a missing model stops the start before the pool is opened. Their errors
-    name the file or directory and quote nothing from it.
-    """
+    """Load the concept map and the model, then open the connection pool: in this order, a broken map or a
+    missing model stops the start before the pool is opened."""
     concepts = load_concepts(settings.concepts_file)
     embedder = Embedder(settings.model_dir, settings.embed_threads)
     return Services(settings=settings, engine=open_engine(settings), embedder=embedder, concepts=concepts)

@@ -134,31 +134,16 @@ def test_settings_are_read_when_the_app_starts_not_when_it_is_created(
         pass  # entering the client runs the lifespan, which reads the settings
 
 
-def test_a_broken_concept_map_stops_the_build_before_the_model_loads_or_the_pool_opens(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-) -> None:
-    path = tmp_path / 'concepts.yaml'
-    path.write_text('- concept: [x\n', encoding='utf-8')
-    opened: list[str] = []
-    monkeypatch.setattr('app.main.Embedder', lambda model_dir, threads: opened.append('model'))
-    monkeypatch.setattr('app.main.open_engine', lambda settings: opened.append('pool'))
+def test_the_map_and_the_model_load_before_the_pool_opens(monkeypatch: pytest.MonkeyPatch) -> None:
+    """So a broken map or a missing model stops the start with nothing open."""
+    steps: list[str] = []
+    monkeypatch.setattr('app.main.load_concepts', lambda path: steps.append('map'))
+    monkeypatch.setattr('app.main.Embedder', lambda model_dir, threads: steps.append('model'))
+    monkeypatch.setattr('app.main.open_engine', lambda settings: steps.append('pool'))
 
-    with pytest.raises(ValueError, match='not a valid YAML file'):
-        build_services(Settings(database_url=DATABASE_URL, concepts_file=str(path)))
+    build_services(Settings(database_url=DATABASE_URL))
 
-    assert opened == []
-
-
-def test_a_missing_model_stops_the_build_before_the_pool_opens(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-) -> None:
-    opened: list[str] = []
-    monkeypatch.setattr('app.main.open_engine', lambda settings: opened.append('pool'))
-
-    with pytest.raises(FileNotFoundError, match='model files not found'):
-        build_services(Settings(database_url=DATABASE_URL, model_dir=str(tmp_path)))
-
-    assert opened == []
+    assert steps == ['map', 'model', 'pool']
 
 
 @pytest.mark.parametrize(

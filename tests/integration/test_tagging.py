@@ -16,7 +16,7 @@ UTILITY = (
     'Account holder John Doe, 14 Larkspur Close, Harrogate. Amount due £84.20.'
 )
 SENTENCE = 'The adviser and the client discussed the portfolio allocation.'  # matches no phrase of the map
-FILLER = ' '.join([SENTENCE] * (SHORT_DOC_WORDS // len(SENTENCE.split()) + 1))  # just over SHORT_DOC_WORDS
+FILLER = ' '.join([SENTENCE] * SHORT_DOC_WORDS)  # a long document: far over SHORT_DOC_WORDS words
 BILL = ['proof of address', 'customer due diligence']
 EDGE = """
 - concept: trust deeds
@@ -37,7 +37,6 @@ def tagger(services: Services) -> Services:
 
 
 def test_a_short_bill_gets_both_concepts_as_head_entries(tagger: Services) -> None:
-    assert len(UTILITY.split()) <= SHORT_DOC_WORDS
     tagging = tag_document(tagger, 'Utility bill', UTILITY)
     assert tagging.tags == BILL
     assert tagging.tags_text.startswith('proof of address, address proof, proof of residence, ')
@@ -45,12 +44,12 @@ def test_a_short_bill_gets_both_concepts_as_head_entries(tagger: Services) -> No
 
 
 def test_a_title_match_makes_a_long_document_head(tagger: Services) -> None:
-    assert len(FILLER.split()) > SHORT_DOC_WORDS
     tagging = tag_document(tagger, 'Utility bill', FILLER)
     assert tagging.tags == BILL and tagging.head_text == tagging.tags_text
 
 
 def test_a_short_document_is_head_when_the_phrase_is_only_in_the_text(tagger: Services) -> None:
+    assert len(UTILITY.split()) <= SHORT_DOC_WORDS
     tagging = tag_document(tagger, 'Scan 0042', UTILITY)
     assert tagging.tags == BILL and tagging.head_text == tagging.tags_text
 
