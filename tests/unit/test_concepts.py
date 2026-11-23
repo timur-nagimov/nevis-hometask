@@ -1,6 +1,7 @@
 """The concept map: the shipped file, loading and checking a map, its phrases, sentences and head entries."""
 
 import hashlib
+import sys
 from pathlib import Path
 
 import pytest
@@ -124,8 +125,11 @@ def test_an_empty_setting_disables_the_map() -> None:
         ("- concept: ''\n  triggers: []\n  expands_to: []\n", 'concept'),
         ("- concept: ' '\n  triggers: []\n  expands_to: []\n", 'concept'),
         ("- concept: x\n  triggers: [ok, '']\n  expands_to: []\n", 'triggers'),
+        ("- concept: x\n  triggers: ['  ']\n  expands_to: []\n", 'triggers'),
         ('- concept: x\n  triggers: []\n', 'expands_to'),
         ('- concept: x\n  triggers: []\n  expands_to: [1040]\n', 'expands_to'),  # YAML reads 1040 as a number
+        ("- concept: x\n  triggers: []\n  expands_to: [ok, ' ']\n", 'expands_to'),
+        ("- concept: x\n  triggers: []\n  expands_to: []\n  sources: [' ']\n", "'sources' must be"),
         ('- just a phrase\n', 'not a mapping'),
         ('{}', 'non-empty list'),
         ('[]', 'non-empty list'),
@@ -134,6 +138,9 @@ def test_an_empty_setting_disables_the_map() -> None:
             '- concept: x\n  triggers: [a]\n  expands_to: b: c\n',
             r'not a valid YAML file \(line 3, column 16\)',
         ),
+        # PyYAML gives no position for these: a value its tag does not fit, and nesting too deep to read
+        ('- concept: !!int x\n  triggers: []\n  expands_to: []\n', 'not a valid YAML file$'),
+        ('[' * sys.getrecursionlimit() + ']' * sys.getrecursionlimit(), 'not a valid YAML file$'),
     ],
     # explicit ids: the default ids are the YAML texts, and the first one would match `-k sources`
     ids=[
@@ -143,13 +150,18 @@ def test_an_empty_setting_disables_the_map() -> None:
         'empty-concept',
         'blank-concept',
         'empty-trigger',
+        'blank-trigger',
         'no-expands-to',
         'number-phrase',
+        'blank-expands-to',
+        'blank-source',
         'not-a-mapping',
         'not-a-list',
         'empty-list',
         'empty-file',
         'not-yaml',
+        'tag-value-mismatch',
+        'too-deep',
     ],
 )
 def test_invalid_files_are_rejected(tmp_path: Path, text: str, message: str) -> None:
@@ -168,8 +180,26 @@ def test_invalid_files_are_rejected(tmp_path: Path, text: str, message: str) -> 
         f'- concept: x\n  triggers: []\n  expands_to: []\n  {PLANTED}: y\n',
         f"- concept: x\n  triggers: []\n  expands_to: []\n  sources: ['http://{PLANTED}.example']\n",
         f"- concept: x\n  triggers: []\n  expands_to: []\n  sources: ['https://[{PLANTED}]/']\n",
+        # values their explicit tags do not fit, and an impossible date: PyYAML raises plain exceptions
+        f'- concept: !!int {PLANTED}\n',
+        f'- concept: !!float {PLANTED}\n',
+        f'- concept: !!bool {PLANTED}\n',
+        f'- concept: !!timestamp {PLANTED}\n',
+        f'- concept: {PLANTED}\n  triggers: [2020-13-45]\n',
     ],
-    ids=['unclosed-list', 'colon-in-value', 'not-a-list', 'unknown-key', 'http-url', 'bracketed-host'],
+    ids=[
+        'unclosed-list',
+        'colon-in-value',
+        'not-a-list',
+        'unknown-key',
+        'http-url',
+        'bracketed-host',
+        'int-tag',
+        'float-tag',
+        'bool-tag',
+        'timestamp-tag',
+        'impossible-date',
+    ],
 )
 def test_errors_name_the_file_and_quote_nothing_from_it(tmp_path: Path, text: str) -> None:
     """A wrong NEVIS_CONCEPTS_FILE may point at a file with secrets: the error must not show them."""
@@ -178,5 +208,5 @@ def test_errors_name_the_file_and_quote_nothing_from_it(tmp_path: Path, text: st
     with pytest.raises(ValueError) as error:
         Concepts.load(path)
     assert str(error.value).startswith(f'{path}: ')
-    assert PLANTED not in str(error.value)
+    assert PLANTED.lower() not in str(error.value).lower()  # some messages quote a value in lower case
     assert error.value.__context__ is None  # PyYAML's and urllib's own messages quote the file

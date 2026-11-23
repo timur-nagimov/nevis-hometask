@@ -35,7 +35,8 @@ FROM ${PYTHON_IMAGE} AS model
 # The embedding model from a pinned Hugging Face commit, sha256-checked (scripts/fetch_model.py, stdlib only).
 # Own stage: changing dependencies or code does not download the model again.
 # A mirror: docker compose build --build-arg HF_ENDPOINT=https://<mirror> (unset or empty: Hugging Face).
-ARG HF_ENDPOINT
+# Empty by default: without a default, podman/buildah warn on every build that the argument is missing.
+ARG HF_ENDPOINT=
 COPY scripts/fetch_model.py /tmp/fetch_model.py
 RUN python -I /tmp/fetch_model.py /opt/models/leaf-ir && chmod -R a+rX /opt/models
 

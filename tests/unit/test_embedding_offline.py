@@ -1,5 +1,6 @@
 """Without the model: importing app.embedding switches telemetry and the model hub off before onnxruntime is
-loaded; the self-check looks for the model where the service does and refuses vectors unlike the model's."""
+loaded; the self-check looks for the model where the service does and refuses vectors unlike the model's;
+the command's exit status, which is what stops the image build."""
 
 import math
 import os
@@ -12,8 +13,8 @@ import numpy as np
 import pytest
 
 from app import embedding
-from app.config import Settings
-from app.embedding import DIM, GOLDEN_COSINE, SelfCheckError, Vector
+from app.config import MODEL_FILE, TOKENIZER_FILE, Settings
+from app.embedding import DIM, GOLDEN_COSINE, Embedder, SelfCheckError, Vector
 
 ROOT = Path(__file__).resolve().parents[2]
 VARIABLES = ('ORT_DISABLE_TELEMETRY', 'HF_HUB_OFFLINE', 'HF_HUB_DISABLE_TELEMETRY')
@@ -64,7 +65,7 @@ class ModelOpened(Exception):
     """Ends the self-check once it has chosen the model directory."""
 
 
-@pytest.mark.parametrize('model_dir', [None, '/srv/models/leaf-ir'])
+@pytest.mark.parametrize('model_dir', [None, '/srv/models/leaf-ir', ''], ids=['unset', 'set', 'empty'])
 def test_the_selfcheck_opens_the_model_directory_of_the_service(
     monkeypatch: pytest.MonkeyPatch, model_dir: str | None
 ) -> None:
@@ -109,10 +110,43 @@ def test_the_selfcheck_returns_the_cosine_it_accepted(monkeypatch: pytest.Monkey
     assert embedding.selfcheck('/models') == pytest.approx(GOLDEN_COSINE)
 
 
-def test_without_selfcheck_the_command_prints_its_usage_and_fails(capsys: pytest.CaptureFixture[str]) -> None:
-    """Without the flag nothing is checked, so an image build that forgot it must fail."""
-    assert embedding.main([]) == 2
+def run_command(*arguments: str) -> subprocess.CompletedProcess[str]:
+    """`python -m app.embedding ...` in a new process, the way the image build runs it."""
+    return subprocess.run(
+        [sys.executable, '-m', 'app.embedding', *arguments],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
 
-    output = capsys.readouterr()
-    assert output.out == ''
-    assert '--selfcheck' in output.err
+
+def test_without_selfcheck_the_command_prints_its_usage_and_fails() -> None:
+    """Without the flag nothing is checked, so an image build that forgot it must fail."""
+    result = run_command()
+
+    assert result.returncode == 2
+    assert result.stdout == ''
+    assert '--selfcheck' in result.stderr
+
+
+def test_a_directory_without_the_model_fails_the_selfcheck_in_one_line(tmp_path: Path) -> None:
+    """A wrong --model-dir or NEVIS_MODEL_DIR: exit status 1 stops the build, and the line names the cause."""
+    result = run_command('--selfcheck', '--model-dir', str(tmp_path))
+
+    assert result.returncode == 1
+    assert result.stdout == ''
+    assert result.stderr.splitlines() == [
+        f'selfcheck FAILED: {tmp_path}: model files not found: {MODEL_FILE}, {TOKENIZER_FILE}'
+    ]
+
+
+def test_the_embedder_names_the_model_files_it_cannot_find(tmp_path: Path) -> None:
+    model = tmp_path / MODEL_FILE
+    model.parent.mkdir(parents=True)
+    model.touch()  # present, so only the tokenizer is missing
+
+    with pytest.raises(FileNotFoundError) as error:
+        Embedder(tmp_path, threads=1)
+
+    assert str(error.value) == f'{tmp_path}: model files not found: {TOKENIZER_FILE}'

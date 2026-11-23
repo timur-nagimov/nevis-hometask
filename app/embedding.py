@@ -85,10 +85,14 @@ class Embedder:
     """
 
     def __init__(self, model_dir: str | Path, threads: int) -> None:
+        path = Path(model_dir)
+        missing = [name for name in (MODEL_FILE, TOKENIZER_FILE) if not (path / name).is_file()]
+        if missing:  # a wrong directory: a plain error, before onnxruntime is even loaded
+            raise FileNotFoundError(f'{path}: model files not found: {", ".join(missing)}')
+
         import onnxruntime as ort  # here, after the variables above are set
         from tokenizers import Tokenizer
 
-        path = Path(model_dir)
         options = ort.SessionOptions()
         options.log_severity_level = LOG_ERRORS_ONLY
         options.intra_op_num_threads = threads
@@ -143,17 +147,22 @@ class Embedder:
 
 
 class SelfCheckError(RuntimeError):
-    """The model in the model directory does not behave like the pinned revision."""
+    """The model directory holds no model, or one that does not behave like the pinned revision."""
 
 
 def selfcheck(model_dir: str | Path | None = None) -> float:
     """Load the model offline; check the dimension, the unit norm and the golden cosine. Returns the cosine.
 
-    Without `model_dir` it opens the model the service would: NEVIS_MODEL_DIR, else DEFAULT_MODEL_DIR.
-    The comparisons are written as `not (... <= ...)` so that NaN fails them.
+    Without `model_dir` it opens the model the service would: NEVIS_MODEL_DIR when it is set, even to '',
+    else DEFAULT_MODEL_DIR. The comparisons are written as `not (... <= ...)` so that NaN fails them.
     """
-    path = Path(model_dir or os.environ.get('NEVIS_MODEL_DIR') or DEFAULT_MODEL_DIR)
-    embedder = Embedder(path, threads=SELFCHECK_THREADS)
+    if model_dir is None:
+        model_dir = os.environ.get('NEVIS_MODEL_DIR', DEFAULT_MODEL_DIR)
+    path = Path(model_dir)
+    try:
+        embedder = Embedder(path, threads=SELFCHECK_THREADS)
+    except FileNotFoundError as exc:  # no model there: a failed check, one line like the others
+        raise SelfCheckError(str(exc)) from exc
     query = embedder.embed_query(SELFCHECK_QUERY)
     (passage,) = embedder.embed_documents([SELFCHECK_PASSAGE])
     if query.shape != (DIM,) or passage.shape != (DIM,):
@@ -170,7 +179,7 @@ def selfcheck(model_dir: str | Path | None = None) -> float:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog='python -m app.embedding')
     parser.add_argument('--selfcheck', action='store_true', help='load the model and check it')
-    parser.add_argument('--model-dir', help=f'default: $NEVIS_MODEL_DIR or {DEFAULT_MODEL_DIR}')
+    parser.add_argument('--model-dir', help=f'default: $NEVIS_MODEL_DIR if set, else {DEFAULT_MODEL_DIR}')
     args = parser.parse_args(argv)
     if not args.selfcheck:
         parser.print_help(sys.stderr)

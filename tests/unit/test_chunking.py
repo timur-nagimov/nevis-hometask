@@ -64,6 +64,13 @@ def test_a_long_paragraph_is_split_at_sentence_ends(mark: str) -> None:
     assert chunks == ['T\n' + ' '.join([sentence] * 6), 'T\n' + ' '.join([sentence] * 4)]
 
 
+def test_a_line_break_after_a_sentence_end_also_ends_a_sentence() -> None:
+    sentence = words(30, 'money') + '.'
+    chunks = chunk_document('T', '\n'.join([sentence] * 10))  # one paragraph of 300 words, a sentence a line
+    # the sentences of a chunk are joined by single spaces
+    assert chunks == ['T\n' + ' '.join([sentence] * 6), 'T\n' + ' '.join([sentence] * 4)]
+
+
 def test_whole_sentences_fill_a_chunk_up_to_exactly_200_words() -> None:
     sentence = words(40, 'money') + '.'  # five sentences are exactly 200 words
     chunks = chunk_document('T', ' '.join([sentence] * 6))  # one paragraph of 240 words
