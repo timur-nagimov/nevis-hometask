@@ -32,8 +32,8 @@ _SENTENCE_END = re.compile(r'(?<=[.!?])\s+')  # the summary takes whole sentence
 def lead_summary(content: str, limit: int = SUMMARY_CHARS) -> str:
     """The first sentences of the content, as many as fit into `limit` characters, whitespace collapsed.
 
-    A longer first sentence is cut at its last space within `limit` characters (at `limit` if it has
-    none), loses a comma, semicolon or colon before the cut, and ends with ELLIPSIS.
+    A longer first sentence is cut at its last space within `limit` characters (at `limit` if it has none),
+    loses a comma, semicolon or colon before the cut, and ends with ELLIPSIS.
     """
     text = ' '.join(content.split())
     out = ''
@@ -155,9 +155,8 @@ class Concepts:
     def sentence(self, number: int) -> str:
         """`concept, trigger, trigger, ... .` (a trigger equal to the concept name is not repeated)."""
         entry = self.entries[number]
-        parts = [entry['concept']]
-        parts += [trigger for trigger in entry['triggers'] if trigger not in parts]
-        return ', '.join(parts) + '.'
+        triggers = [trigger for trigger in entry['triggers'] if trigger != entry['concept']]
+        return ', '.join([entry['concept'], *triggers]) + '.'
 
 
 def _parse_yaml(path: str | Path, data: bytes) -> object:
@@ -173,7 +172,7 @@ def _parse_yaml(path: str | Path, data: bytes) -> object:
 def _strings(path: str | Path, number: int, key: str, value: object) -> list[str]:
     if not isinstance(value, list) or not all(isinstance(v, str) and v.strip() for v in value):
         raise ValueError(f"{path}: entry {number}: '{key}' must be a list of non-empty strings")
-    return [str(v) for v in value]
+    return value
 
 
 def _is_https_url(text: str) -> bool:

@@ -10,13 +10,6 @@ def words(n: int, word: str = 'word') -> str:
     return ' '.join([word] * n)
 
 
-def body(text: str) -> str:
-    """The chunk without its title line."""
-    title, newline, rest = text.partition('\n')
-    assert (title, newline) == ('T', '\n')
-    return rest
-
-
 def test_content_of_at_most_200_words_is_one_verbatim_chunk() -> None:
     content = '  Line one.\n\n\tLine two   with  spaces.  '
     assert chunk_document('T', content) == ['T\n' + content]
@@ -103,8 +96,8 @@ def test_every_word_lands_in_exactly_one_chunk_in_text_order() -> None:
             words(60, 'beta') + '. ' + words(90, 'gamma') + '.',
         ]
     )
-    chunks = chunk_document('T', content)
-    assert [word for chunk in chunks for word in body(chunk).split()] == content.split()
+    bodies = [chunk.removeprefix('T\n') for chunk in chunk_document('T', content)]
+    assert ' '.join(bodies).split() == content.split()
 
 
 def test_the_text_to_embed_is_title_newline_chunk() -> None:

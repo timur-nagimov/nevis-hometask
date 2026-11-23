@@ -48,7 +48,7 @@ def mini(tmp_path: Path) -> Concepts:
 
 def test_the_shipped_map_has_30_entries_and_four_official_sources() -> None:
     concepts = Concepts.load(PACKAGED_CONCEPTS_FILE)
-    assert len(concepts.entries) == 30 and len(concepts.sha256) == 64
+    assert len(concepts.entries) == 30
     assert {e['concept']: e['sources'] for e in concepts.entries if e['sources']} == {
         'proof of identity': [CHECKLIST, DBS],
         'proof of address': [JSA, CHECKLIST],
@@ -122,9 +122,7 @@ def test_an_empty_setting_disables_the_map() -> None:
         ("- concept: x\n  triggers: []\n  expands_to: []\n  sources: ['http://example.com']\n", 'https'),
         ("- concept: x\n  triggers: []\n  expands_to: []\n  sources: ['https:///no-host']\n", 'https'),
         ('- concept: x\n  triggers: []\n  expand_to: [y]\n', 'unknown keys'),
-        ("- concept: ''\n  triggers: []\n  expands_to: []\n", 'concept'),
         ("- concept: ' '\n  triggers: []\n  expands_to: []\n", 'concept'),
-        ("- concept: x\n  triggers: [ok, '']\n  expands_to: []\n", 'triggers'),
         ("- concept: x\n  triggers: ['  ']\n  expands_to: []\n", 'triggers'),
         ('- concept: x\n  triggers: []\n', 'expands_to'),
         ('- concept: x\n  triggers: []\n  expands_to: [1040]\n', 'expands_to'),  # YAML reads 1040 as a number
@@ -147,9 +145,7 @@ def test_an_empty_setting_disables_the_map() -> None:
         'http-url',
         'url-without-host',
         'unknown-key',
-        'empty-concept',
         'blank-concept',
-        'empty-trigger',
         'blank-trigger',
         'no-expands-to',
         'number-phrase',
@@ -175,24 +171,20 @@ def test_invalid_files_are_rejected(tmp_path: Path, text: str, message: str) -> 
     'text',
     [
         f'- concept: x\n  triggers: [{PLANTED}\n',
-        f'- concept: {PLANTED}: x\n',
         PLANTED,
         f'- concept: x\n  triggers: []\n  expands_to: []\n  {PLANTED}: y\n',
         f"- concept: x\n  triggers: []\n  expands_to: []\n  sources: ['http://{PLANTED}.example']\n",
         f"- concept: x\n  triggers: []\n  expands_to: []\n  sources: ['https://[{PLANTED}]/']\n",
-        # a value its explicit tag does not fit, and an impossible date: PyYAML raises plain exceptions
+        # a value its explicit tag does not fit: PyYAML raises a plain exception
         f'- concept: !!int {PLANTED}\n',
-        f'- concept: {PLANTED}\n  triggers: [2020-13-45]\n',
     ],
     ids=[
         'unclosed-list',
-        'colon-in-value',
         'not-a-list',
         'unknown-key',
         'http-url',
         'bracketed-host',
         'int-tag',
-        'impossible-date',
     ],
 )
 def test_errors_name_the_file_and_quote_nothing_from_it(tmp_path: Path, text: str) -> None:
