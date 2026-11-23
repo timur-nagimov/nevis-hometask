@@ -1,8 +1,11 @@
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 from uuid import UUID
 
 import email_validator
 from pydantic import AfterValidator, BaseModel, BeforeValidator, ConfigDict, Field, StringConstraints
+
+from app.config import MAX_Q_CHARS
+from app.search import prepare
 
 # email-validator rejects special-use domains (.test, .local, .invalid, ...) by default; this API accepts
 # them. The list is part of the library's public API and is cleared when this module is imported.
@@ -114,3 +117,37 @@ class Client(BaseModel):
     email: str
     description: str
     social_links: list[str]
+
+
+def _prepare_query(value: Any) -> Any:
+    return prepare(value) if isinstance(value, str) else value
+
+
+# `q` of /search: whitespace collapsed and trimmed first (prepare), then 1-200 characters without category Cc.
+QueryText = Annotated[
+    str,
+    StringConstraints(min_length=1, max_length=MAX_Q_CHARS, pattern=NO_CONTROL),
+    BeforeValidator(_prepare_query),
+]
+
+
+class _ClientMatch(BaseModel):
+    """Search metadata of a client hit. As the second base class below, its fields come first in the JSON."""
+
+    type: Literal['client'] = 'client'
+    score: float = Field(
+        ge=0,
+        le=1,
+        description='Ordering key, 4 decimals, not a probability. >= 0.5: the query words occur in '
+        'the record; below 0.5: a typo match',
+    )
+    match_type: Literal['exact', 'fuzzy'] = Field(
+        description='`exact`: every query word occurs in name, e-mail or description; `fuzzy`: a typo match'
+    )
+
+
+class ClientSearchItem(Client, _ClientMatch):
+    """A Client plus search metadata, flat: `item['email']` works."""
+
+
+SearchItem = ClientSearchItem

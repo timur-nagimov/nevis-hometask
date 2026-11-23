@@ -3,11 +3,11 @@ import time
 from collections.abc import AsyncIterator, Mapping
 from contextlib import asynccontextmanager
 from http import HTTPStatus
-from typing import Annotated, Any
-from urllib.parse import quote
+from typing import Annotated, Any, Literal
+from urllib.parse import quote, unquote_to_bytes
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request, Response
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, Query, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import JSONResponse
@@ -17,7 +17,8 @@ from starlette.types import ASGIApp, Message, Receive, Scope, Send
 from app import db
 from app.config import DEFAULT_LIMIT, MAX_BODY_BYTES, MAX_LIMIT, MAX_Q_CHARS, Services, Settings
 from app.db import DatabaseUnavailable, create_schema, open_pool
-from app.schemas import Client, ClientCreate, FieldError, Problem
+from app.schemas import Client, ClientCreate, FieldError, Problem, QueryText, SearchItem
+from app.search import search as run_search
 
 log = logging.getLogger(__name__)
 access_log = logging.getLogger('app.access')
@@ -241,6 +242,69 @@ def get_client(client_id: str, services: ServicesDep) -> dict[str, Any]:
     if client is None:
         raise HTTPException(404, f"Client '{client_id[:64]}' does not exist.")
     return client
+
+
+def require_utf8_query(request: Request) -> None:
+    """400 when the percent-decoded query string is not UTF-8.
+
+    Starlette would quietly turn such bytes into U+FFFD. As a route dependency this runs before FastAPI
+    validates q, type and limit, so `?q=%FF&limit=abc` is a 400, not a 422.
+    """
+    try:
+        unquote_to_bytes(request.scope['query_string']).decode('utf-8', errors='strict')
+    except UnicodeDecodeError:
+        raise HTTPException(400, 'The query string is not valid UTF-8.') from None
+
+
+@router.get(
+    '/search',
+    response_model=list[SearchItem],
+    tags=['search'],
+    summary='Search clients and documents',
+    dependencies=[Depends(require_utf8_query)],
+    responses={
+        200: {'description': 'Matches, best first; an empty array when nothing matches'},
+        400: problem_doc('The query string is not valid UTF-8', 'The query string is not valid UTF-8.', 400),
+        422: problem_doc(
+            'A parameter failed validation',
+            '1 validation error(s).',
+            422,
+            errors=[
+                FieldError(
+                    loc=['query', 'q'], msg='String should have at least 1 character', type='string_too_short'
+                )
+            ],
+        ),
+    },
+)
+def search(
+    services: ServicesDep,
+    q: Annotated[
+        QueryText,
+        Query(
+            description='Search text. Whitespace runs collapse to one space and the ends are trimmed; '
+            'then 1-200 characters, no control characters.',
+            openapi_examples={
+                'client': {'summary': 'Client by part of an e-mail domain', 'value': 'NevisWealth'},
+                'document': {'summary': 'Document by meaning', 'value': 'address proof'},
+            },
+        ),
+    ],
+    type_: Annotated[
+        Literal['client', 'document'] | None,
+        Query(alias='type', description='Return only this kind of result'),
+    ] = None,
+    limit: Annotated[
+        int,
+        Query(ge=1, le=MAX_LIMIT, description='Maximum number of results, clients and documents together'),
+    ] = DEFAULT_LIMIT,
+) -> list[dict[str, Any]]:
+    """Results matching `q`, best first.
+
+    Order: `score` descending (4 decimals), then `type`, then `id`. `score` >= 0.5: every query word
+    occurs in the record (`exact`); below 0.5: a typo match (`fuzzy`).
+    """
+    return run_search(services, q, type_, limit)
 
 
 def _configure_logging(level: str) -> None:

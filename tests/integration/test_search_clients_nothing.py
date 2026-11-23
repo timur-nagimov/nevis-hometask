@@ -27,3 +27,9 @@ def test_injection_and_wildcards_find_nothing(
 def test_short_typo_is_not_searched_for_typos(services: Services) -> None:
     # "jhon" is not a substring of the record, and the typo tier needs at least 5 letters or digits.
     assert db.search_clients(services.pool, 'jhon', 10) == []
+
+
+def test_http_search_for_injection_returns_empty_array(app_client: TestClient) -> None:
+    response = app_client.get('/search', params={'q': "' OR 1=1 --"})
+    assert response.status_code == 200
+    assert response.json() == []
