@@ -90,7 +90,7 @@ class Embedder:
         if missing:  # a wrong directory: a plain error, before onnxruntime is even loaded
             raise FileNotFoundError(f'{path}: model files not found: {", ".join(missing)}')
 
-        import onnxruntime as ort  # here, after the variables above are set
+        import onnxruntime as ort  # here, after the environment variables above are set
         from tokenizers import Tokenizer
 
         options = ort.SessionOptions()

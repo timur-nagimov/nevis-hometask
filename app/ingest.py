@@ -156,8 +156,7 @@ def _parse_yaml(path: str | Path, data: bytes) -> object:
     except Exception as exc:  # also plain errors, e.g. for a value its explicit tag does not fit (!!int x)
         mark = exc.problem_mark if isinstance(exc, yaml.MarkedYAMLError) else None
         where = f' (line {mark.line + 1}, column {mark.column + 1})' if mark is not None else ''
-    # The messages quote the lines around the problem or the value: raised here, not in `except`, so none of
-    # them is chained
+    # PyYAML's messages may quote the file: raised here, not in `except`, so they are not chained
     raise ValueError(f'{path}: not a valid YAML file{where}')
 
 

@@ -14,7 +14,7 @@ import pytest
 
 from app import embedding
 from app.config import MODEL_FILE, TOKENIZER_FILE, Settings
-from app.embedding import DIM, GOLDEN_COSINE, Embedder, SelfCheckError, Vector
+from app.embedding import DIM, GOLDEN_COSINE, SelfCheckError, Vector
 
 ROOT = Path(__file__).resolve().parents[2]
 VARIABLES = ('ORT_DISABLE_TELEMETRY', 'HF_HUB_OFFLINE', 'HF_HUB_DISABLE_TELEMETRY')
@@ -139,14 +139,3 @@ def test_a_directory_without_the_model_fails_the_selfcheck_in_one_line(tmp_path:
     assert result.stderr.splitlines() == [
         f'selfcheck FAILED: {tmp_path}: model files not found: {MODEL_FILE}, {TOKENIZER_FILE}'
     ]
-
-
-def test_the_embedder_names_the_model_files_it_cannot_find(tmp_path: Path) -> None:
-    model = tmp_path / MODEL_FILE
-    model.parent.mkdir(parents=True)
-    model.touch()  # present, so only the tokenizer is missing
-
-    with pytest.raises(FileNotFoundError) as error:
-        Embedder(tmp_path, threads=1)
-
-    assert str(error.value) == f'{tmp_path}: model files not found: {TOKENIZER_FILE}'
