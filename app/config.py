@@ -91,6 +91,9 @@ SCORE_DECIMALS = 4  # scores in responses are rounded to this many decimals
 RETRY_AFTER_SECONDS = 5  # Retry-After of every 503
 MAX_ECHOED_ID_CHARS = 64  # an unknown id is quoted in the 404 detail up to this length
 
+# /docs loads Swagger UI from this exact release, so the script it runs cannot change by itself
+SWAGGER_UI = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.36.0'
+
 
 @dataclass(frozen=True)
 class Services:

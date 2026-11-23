@@ -16,7 +16,7 @@ from pydantic import ValidationError
 
 import app.__main__ as entry_point
 from app import __version__
-from app.config import MAX_BODY_BYTES
+from app.config import MAX_BODY_BYTES, SWAGGER_UI
 from app.main import _configure_logging, create_app, health
 
 
@@ -154,3 +154,23 @@ def test_entry_point_serves_the_app_with_one_worker_and_the_app_logging(
 def test_api_version_is_the_project_version() -> None:
     pyproject = tomllib.loads((Path(__file__).parents[2] / 'pyproject.toml').read_text(encoding='utf-8'))
     assert pyproject['project']['version'] == __version__ == create_app().version
+
+
+def test_docs_load_a_pinned_swagger_ui_and_the_unused_pages_are_gone() -> None:
+    app = create_app()
+    client = TestClient(app)
+    for path in ('/redoc', '/docs/oauth2-redirect'):
+        response = client.get(path)
+        assert response.status_code == 404, path
+        assert response.headers['content-type'] == 'application/problem+json', path
+
+    docs = client.get('/docs')
+
+    assert docs.status_code == 200
+    assert docs.headers['content-type'].startswith('text/html')
+    assert re.fullmatch(r'https://cdn\.jsdelivr\.net/npm/swagger-ui-dist@\d+\.\d+\.\d+', SWAGGER_UI)  # exact
+    assert f'"{SWAGGER_UI}/swagger-ui-bundle.js"' in docs.text
+    assert f'"{SWAGGER_UI}/swagger-ui.css"' in docs.text
+    assert "url: '/openapi.json'" in docs.text
+    assert 'swagger-ui-dist@5/' not in docs.text
+    assert '/docs' not in app.openapi()['paths']

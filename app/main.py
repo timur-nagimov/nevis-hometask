@@ -10,7 +10,8 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Query, Request, Response
 from fastapi.exceptions import RequestValidationError, ResponseValidationError
-from fastapi.responses import JSONResponse
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.responses import HTMLResponse, JSONResponse
 from sqlalchemy.exc import StatementError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
@@ -25,6 +26,7 @@ from app.config import (
     MAX_Q_CHARS,
     RETRY_AFTER_SECONDS,
     SCORE_DECIMALS,
+    SWAGGER_UI,
     Services,
     Settings,
 )
@@ -38,6 +40,7 @@ access_log = logging.getLogger('app.access')
 router = APIRouter()
 
 PROBLEM_JSON = 'application/problem+json'
+OPENAPI_URL = '/openapi.json'
 INTERNAL_ERROR_DETAIL = 'Unexpected server error.'
 UNAVAILABLE_DETAIL: dict[Reason, str] = {  # DatabaseUnavailable.reason -> `detail` of the 503
     'unreachable': 'The database is unreachable; retry shortly.',
@@ -198,6 +201,17 @@ def _problem_json_only(spec: dict[str, Any]) -> None:
                 del operation['responses']['422']
     for name in ('HTTPValidationError', 'ValidationError'):
         schemas.pop(name, None)
+
+
+@router.get('/docs', include_in_schema=False)
+async def docs(request: Request) -> HTMLResponse:
+    """Swagger UI from a pinned release; FastAPI's own page would load the latest 5.x."""
+    return get_swagger_ui_html(
+        openapi_url=request.scope.get('root_path', '').rstrip('/') + OPENAPI_URL,
+        title=f'{request.app.title} - Swagger UI',
+        swagger_js_url=f'{SWAGGER_UI}/swagger-ui-bundle.js',
+        swagger_css_url=f'{SWAGGER_UI}/swagger-ui.css',
+    )
 
 
 @router.get('/health', tags=['ops'], summary='Liveness check; does not touch the database')
@@ -428,6 +442,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app = SearchAPI(
         title='Nevis Search API',
         version=__version__,
+        openapi_url=OPENAPI_URL,
+        docs_url=None,  # served by the `docs` route instead, from a pinned Swagger UI release
+        redoc_url=None,  # unused: it would load redoc@2 and Google Fonts
+        swagger_ui_oauth2_redirect_url=None,  # the API has no OAuth2
         lifespan=lifespan,
         max_body_size=MAX_BODY_BYTES,
         dependencies=[Depends(require_json)],
