@@ -1,20 +1,26 @@
 """The HTTP application: app factory, lifespan, routes, error handlers and the access log."""
 
 import logging
+import time
 from collections.abc import Mapping
 from http import HTTPStatus
 from typing import Any
+from urllib.parse import quote
 
-from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from starlette.middleware import Middleware
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app.config import MAX_BODY_BYTES, Settings
 from app.db import DatabaseUnavailable
 from app.schemas import FieldError, Problem
 
 log = logging.getLogger(__name__)
+access_log = logging.getLogger("app.access")
+router = APIRouter()
 
 PROBLEM_JSON = "application/problem+json"
 UNAVAILABLE_DETAIL = {  # DatabaseUnavailable.reason -> `detail` of the 503 (spec 13.2 B5)
@@ -92,6 +98,51 @@ async def require_json(request: Request) -> None:
         raise HTTPException(415, "Send the body as application/json.", headers={"Accept": "application/json"})
 
 
+class AccessLogMiddleware:
+    """One line per request: method, path WITHOUT the query string, status, duration (spec section 9).
+    The query string is left out because search terms are names and e-mail addresses."""
+
+    def __init__(self, app: ASGIApp) -> None:
+        self.app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+        started = time.perf_counter()
+        status = 500  # what the client gets when the application raises instead of answering
+
+        async def send_and_note_status(message: Message) -> None:
+            nonlocal status
+            if message["type"] == "http.response.start":
+                status = message["status"]
+            await send(message)
+
+        try:
+            await self.app(scope, receive, send_and_note_status)
+        finally:
+            elapsed_ms = (time.perf_counter() - started) * 1000
+            # quote(): the path arrives decoded, and a line break in it must not start a forged log line
+            access_log.info("%s %s %d %.1f ms", scope["method"], quote(scope["path"]), status, elapsed_ms)
+
+
+# --------------------------------------------------------------------------------------- routes
+@router.get("/health", tags=["ops"], summary="Liveness check; does not touch the database")
+async def health() -> dict[str, str]:
+    """`async def` without I/O: answered on the event loop even when every worker thread is busy (B4)."""
+    return {"status": "ok"}
+
+
+# ---------------------------------------------------------------------------------- application
+def _configure_logging(level: str) -> None:
+    """The application's loggers at `level`; uvicorn, psycopg and every other library at WARNING."""
+    logging.basicConfig(format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+    logging.getLogger().setLevel(logging.WARNING)
+    for name in ("uvicorn", "uvicorn.error"):  # uvicorn sets these two to INFO itself
+        logging.getLogger(name).setLevel(logging.WARNING)
+    logging.getLogger("app").setLevel(level)
+
+
 def create_app(settings: Settings | None = None) -> FastAPI:
     """The application. Without `settings`, they are read from NEVIS_* variables when it starts (in the
     lifespan, task 1.8), never at import or here: importing and creating the app needs no configuration."""
@@ -100,6 +151,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         version="0.1.0",
         max_body_size=MAX_BODY_BYTES,  # 413 above 2 MiB (B3: text/plain when Content-Length says so)
         dependencies=[Depends(require_json)],
+        middleware=[Middleware(AccessLogMiddleware)],
         exception_handlers={
             StarletteHTTPException: on_http_error,
             RequestValidationError: on_validation_error,
@@ -107,4 +159,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             Exception: on_unexpected_error,
         },
     )
+    app.include_router(router)
     return app
