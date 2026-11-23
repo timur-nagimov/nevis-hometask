@@ -6,12 +6,14 @@
 # CMD-SHELL health checks, no start_interval, no service_completed_successfully, no `up --wait`, no nested
 # variable defaults.
 # Optional overrides (shell or .env, see .env.example): API_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB.
+# NEVIS_* settings of the API come from .env only: a shell variable does not reach the container.
 
 name: nevis-search
 
 services:
   db:
     image: docker.io/pgvector/pgvector:0.8.7-pg18
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-nevis}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nevis}
@@ -32,8 +34,14 @@ services:
     build:
       context: .
       target: runtime
+    restart: unless-stopped
+    env_file:  # NEVIS_* settings from .env, when the file exists; `environment` below wins
+      - path: .env
+        required: false
     environment:
       NEVIS_DATABASE_URL: postgresql://${POSTGRES_USER:-nevis}:${POSTGRES_PASSWORD:-nevis}@db:5432/${POSTGRES_DB:-nevis}
+      NEVIS_HOST: 0.0.0.0  # fixed: the port mapping and the health check below expect them
+      NEVIS_PORT: "8000"
     depends_on:
       db:
         condition: service_healthy

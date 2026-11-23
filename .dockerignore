@@ -1,5 +1,5 @@
 # Kept out of every image build: version control, local environments, caches, secrets, and local working
-# material no image needs. testset/ and eval/ stay in: the test image copies them for the evaluation.
+# material no image needs.
 .git
 .github
 .venv
@@ -13,3 +13,4 @@
 .env
 research
 dev-plan
+testset

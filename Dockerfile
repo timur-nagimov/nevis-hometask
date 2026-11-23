@@ -44,7 +44,8 @@ ENV PATH="/opt/venv/bin:${PATH}" \
     PYTHONDONTWRITEBYTECODE=1 \
     ORT_DISABLE_TELEMETRY=1 \
     HF_HUB_OFFLINE=1 \
-    HF_HUB_DISABLE_TELEMETRY=1
+    HF_HUB_DISABLE_TELEMETRY=1 \
+    PYTHONFAULTHANDLER=1
 COPY --from=deps /opt/venv /opt/venv
 COPY --from=model /opt/models /opt/models
 WORKDIR /app
