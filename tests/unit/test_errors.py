@@ -1,0 +1,232 @@
+"""Every error is an RFC 9457 problem document (spec section 3, 13.2 B3 and B5).
+
+The API has no resource endpoints yet, so `make_app` adds test-only routes to the real application:
+a JSON body model, a query parameter, a route that crashes, one that raises DatabaseUnavailable.
+The lifespan is not started (no `with TestClient(...)`), so no database is needed.
+"""
+
+import json
+from collections.abc import Iterator
+from typing import Annotated, Any, Literal
+
+import pytest
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.testclient import TestClient
+from httpx2 import Response
+from pydantic import BaseModel, StringConstraints
+
+from app.config import MAX_BODY_BYTES
+from app.db import DatabaseUnavailable
+from app.main import create_app, problem_doc
+
+JSON = {"content-type": "application/json"}
+
+
+class Item(BaseModel):
+    name: Annotated[str, StringConstraints(max_length=100)]
+    size: int = 0
+
+
+def make_app() -> FastAPI:
+    app = create_app()
+
+    @app.post("/items")
+    def create_item(item: Item) -> Item:
+        return item
+
+    @app.get("/items/{item_id}")
+    def get_item(item_id: str) -> Item:
+        raise HTTPException(404, f"Item '{item_id}' does not exist.")
+
+    @app.get("/find")
+    def find(q: str, limit: Annotated[int, Query(ge=1, le=50)] = 10) -> list[str]:
+        return []
+
+    @app.get("/broken")
+    def broken() -> None:
+        raise RuntimeError("secret internals")
+
+    @app.get("/unavailable/{reason}")
+    def unavailable(reason: Literal["unreachable", "busy", "timeout"]) -> None:
+        raise DatabaseUnavailable(reason)
+
+    return app
+
+
+@pytest.fixture
+def client() -> TestClient:
+    # raise_server_exceptions=False: the 500 is returned to the test instead of re-raised in it
+    return TestClient(make_app(), raise_server_exceptions=False)
+
+
+def assert_problem(response: Response, status: int, title: str) -> dict[str, Any]:
+    """The parts every problem document shares; returns the body."""
+    assert response.status_code == status
+    assert response.headers["content-type"] == "application/problem+json"
+    body: dict[str, Any] = response.json()
+    assert (body["type"], body["title"], body["status"]) == ("about:blank", title, status)
+    return body
+
+
+def item_of_size(size: int) -> bytes:
+    """A valid JSON item of exactly `size` bytes, padded with a member the model ignores."""
+    frame = len(json.dumps({"name": "x", "padding": ""}))
+    return json.dumps({"name": "x", "padding": "x" * (size - frame)}).encode()
+
+
+def test_unknown_path_is_404(client: TestClient) -> None:
+    body = assert_problem(client.get("/nope"), 404, "Not Found")
+
+    assert body == {"type": "about:blank", "title": "Not Found", "status": 404}
+
+
+def test_404_raised_by_a_route_keeps_its_detail(client: TestClient) -> None:
+    body = assert_problem(client.get("/items/123"), 404, "Not Found")
+
+    assert body["detail"] == "Item '123' does not exist."
+
+
+def test_wrong_method_is_405_and_names_the_allowed_one(client: TestClient) -> None:
+    response = client.delete("/items")
+
+    assert_problem(response, 405, "Method Not Allowed")
+    assert response.headers["allow"] == "POST"
+
+
+def test_invalid_body_is_422_and_never_echoes_the_input(client: TestClient) -> None:
+    response = client.post("/items", json={"name": "a" * 101, "size": "a-secret-value"})
+
+    body = assert_problem(response, 422, "Unprocessable Content")
+    assert [(e["loc"], e["type"]) for e in body["errors"]] == [
+        (["body", "name"], "string_too_long"),
+        (["body", "size"], "int_parsing"),
+    ]
+    assert all(set(e) == {"loc", "msg", "type"} for e in body["errors"])
+    assert "a-secret-value" not in response.text
+    assert "a" * 101 not in response.text
+
+
+def test_invalid_query_is_422(client: TestClient) -> None:
+    missing = assert_problem(client.get("/find"), 422, "Unprocessable Content")
+    too_big = assert_problem(client.get("/find?q=x&limit=51"), 422, "Unprocessable Content")
+
+    assert missing["errors"] == [{"loc": ["query", "q"], "msg": "Field required", "type": "missing"}]
+    assert [(e["loc"], e["type"]) for e in too_big["errors"]] == [(["query", "limit"], "less_than_equal")]
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [b'{"name": NaN}', b'{"name": "ok", "size": Infinity}', b'{"name": "Jo\\ud800hn"}'],
+    ids=["NaN", "Infinity", "lone surrogate"],
+)
+def test_values_json_cannot_echo_are_422_not_500(client: TestClient, payload: bytes) -> None:
+    body = assert_problem(client.post("/items", content=payload, headers=JSON), 422, "Unprocessable Content")
+
+    assert body["errors"][0]["loc"][0] == "body"
+
+
+@pytest.mark.parametrize(
+    ("payload", "reason"),
+    [
+        (b'{"name": "x",', "Expecting property name enclosed in double quotes (character 13)"),
+        (b"name=x", "Expecting value (character 0)"),
+    ],
+)
+def test_malformed_json_is_400(client: TestClient, payload: bytes, reason: str) -> None:
+    body = assert_problem(client.post("/items", content=payload, headers=JSON), 400, "Bad Request")
+
+    assert body["detail"] == f"Request body is not valid JSON: {reason}."
+    assert "errors" not in body
+
+
+@pytest.mark.parametrize("content_type", ["application/x-www-form-urlencoded", "text/plain", None])
+def test_post_without_json_media_type_is_415(client: TestClient, content_type: str | None) -> None:
+    headers = {"content-type": content_type} if content_type else {}
+
+    response = client.post("/items", content=b'{"name": "x"}', headers=headers)
+
+    body = assert_problem(response, 415, "Unsupported Media Type")
+    assert body["detail"] == "Send the body as application/json."
+    assert response.headers["accept"] == "application/json"
+
+
+@pytest.mark.parametrize(
+    "content_type", ["application/json", "application/json; charset=utf-8", "Application/JSON"]
+)
+def test_json_media_type_is_accepted(client: TestClient, content_type: str) -> None:
+    response = client.post("/items", content=b'{"name": "x"}', headers={"content-type": content_type})
+
+    assert response.status_code == 200
+    assert response.json() == {"name": "x", "size": 0}
+
+
+def test_body_of_exactly_2_mib_is_accepted(client: TestClient) -> None:
+    payload = item_of_size(MAX_BODY_BYTES)
+
+    response = client.post("/items", content=payload, headers=JSON)
+
+    assert len(payload) == 2 * 1024 * 1024
+    assert response.status_code == 200
+
+
+def test_body_over_2_mib_is_413(client: TestClient) -> None:
+    response = client.post("/items", content=item_of_size(MAX_BODY_BYTES + 1), headers=JSON)
+
+    # B3: with Content-Length over the cap the framework answers before any handler, possibly as text/plain
+    assert response.status_code == 413
+
+
+def test_chunked_body_over_2_mib_is_413(client: TestClient) -> None:
+    def pieces() -> Iterator[bytes]:  # no Content-Length: the server counts while it reads
+        yield b'{"name": "x", "padding": "'
+        for _ in range(40):
+            yield b"x" * 65536
+        yield b'"}'
+
+    response = client.post("/items", content=pieces(), headers=JSON)
+
+    assert response.status_code == 413
+
+
+def test_unexpected_error_is_500_without_internals(client: TestClient) -> None:
+    response = client.get("/broken")
+
+    body = assert_problem(response, 500, "Internal Server Error")
+    assert body["detail"] == "Unexpected server error."
+    assert "secret" not in response.text
+    assert "RuntimeError" not in response.text
+
+
+@pytest.mark.parametrize(
+    ("reason", "detail"),
+    [
+        ("unreachable", "The database is unreachable; retry shortly."),
+        ("busy", "The service is busy; retry shortly."),
+        ("timeout", "The database did not answer within 5 seconds; retry shortly."),
+    ],
+)
+def test_database_unavailable_is_503_with_retry_after(client: TestClient, reason: str, detail: str) -> None:
+    response = client.get(f"/unavailable/{reason}")
+
+    body = assert_problem(response, 503, "Service Unavailable")
+    assert body["detail"] == detail
+    assert response.headers["retry-after"] == "5"
+
+
+def test_problem_doc_declares_a_problem_json_response_with_an_example() -> None:
+    doc = problem_doc("Client does not exist", "Client '123' does not exist.", 404)
+
+    assert doc == {
+        "description": "Client does not exist",
+        "content": {
+            "application/problem+json": {
+                "schema": {"$ref": "#/components/schemas/Problem"},
+                "example": {
+                    "type": "about:blank",
+                    "title": "Not Found",
+                    "status": 404,
+                    "detail": "Client '123' does not exist.",
+                },
+            }
+        },
+    }
