@@ -4,7 +4,7 @@
 #   deps     locked runtime dependencies in /opt/venv                 (uv sync --locked --no-dev)
 #   model    the embedding model in /opt/models                       (an empty stub for now)
 #   app      Python + venv + model + code, non-root user, build-time check
-#   test     app + dev dependencies + tests       docker compose --profile test run --rm --no-deps tests
+#   test     app + dev dependencies + tests + scripts   docker compose --profile test run --rm --no-deps tests
 #   runtime  app + start command; LAST, so it is the default target   docker compose up --build -d
 #
 # Portable between Docker BuildKit and podman/buildah: fully qualified image names; files are COPYed, never bind-mounted; no HEALTHCHECK instruction (podman drops
@@ -67,6 +67,7 @@ COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project
 COPY tests ./tests
+COPY scripts ./scripts
 USER 10001:10001
 # /app is not writable for this user: no pytest cache directory
 CMD ["pytest", "-p", "no:cacheprovider"]
