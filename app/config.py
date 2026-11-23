@@ -12,6 +12,10 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix='NEVIS_')
 
     database_url: str
+    db_pool_size: int = Field(default=8, ge=1)  # connections; SQLAlchemy reads 0 as no limit
+    db_pool_timeout_seconds: float = Field(default=5.0, gt=0)  # wait for a free connection, then 503 busy
+    db_connect_timeout_seconds: int = Field(default=3, ge=2)  # libpq counts less than 2 as 2
+    db_statement_timeout_ms: int = Field(default=5000, ge=1)  # then 503 timeout; 0 would mean no limit
     model_dir: str = '/opt/models/leaf-ir'
 
     embed_threads: int = Field(default_factory=lambda: min(4, os.process_cpu_count() or 1), ge=1)

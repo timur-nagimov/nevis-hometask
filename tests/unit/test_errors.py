@@ -202,7 +202,7 @@ def test_unexpected_error_is_500_without_internals(client: TestClient) -> None:
     [
         ('unreachable', 'The database is unreachable; retry shortly.'),
         ('busy', 'The service is busy; retry shortly.'),
-        ('timeout', 'The database did not answer within 5 seconds; retry shortly.'),
+        ('timeout', 'The database did not answer in time; retry shortly.'),
     ],
 )
 def test_database_unavailable_is_503_with_retry_after(client: TestClient, reason: str, detail: str) -> None:

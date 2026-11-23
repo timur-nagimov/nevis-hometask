@@ -33,6 +33,7 @@ def test_start_creates_the_schema_once_and_logs_one_startup_line(
         'started: schema: present',
     ]
     assert 'request body 2097152 bytes, content 50000 characters, q 200 characters' in started[0]
+    assert 'database: pool 8, wait 5 s, connect timeout 3 s, statement timeout 5000 ms' in started[0]
 
 
 @pytest.mark.usefixtures('admin_dsn')  # runs in compose only, like every integration test
@@ -66,7 +67,7 @@ def test_database_gone_is_503_while_health_keeps_answering(fresh_dsn: str) -> No
     with TestClient(app) as client:
         assert client.get('/ping').json() == {'one': 1}
         healthy = app.state.services
-        dead_engine = open_engine(UNREACHABLE)  # as if the database had gone away
+        dead_engine = open_engine(Settings(database_url=UNREACHABLE))  # as if the database had gone away
         app.state.services = dataclasses.replace(healthy, engine=dead_engine)
         try:
             response = client.get('/ping')

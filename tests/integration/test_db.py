@@ -16,6 +16,7 @@ from sqlalchemy import Engine, cast, func, select, text
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.pool import QueuePool
 
+from app.config import Settings
 from app.db import DatabaseUnavailable, _connection, open_engine
 
 UNREACHABLE = 'postgresql://nevis:nevis@127.0.0.1:1/nevis'  # nothing listens on port 1
@@ -23,7 +24,11 @@ UNREACHABLE = 'postgresql://nevis:nevis@127.0.0.1:1/nevis'  # nothing listens on
 
 @pytest.fixture
 def engine(fresh_dsn: str) -> Iterator[Engine]:
-    opened = open_engine(fresh_dsn)
+    # small and fast on purpose: the tests below wait for the pool and the statement timeout
+    settings = Settings(
+        database_url=fresh_dsn, db_pool_size=2, db_pool_timeout_seconds=1, db_statement_timeout_ms=300
+    )
+    opened = open_engine(settings)
     yield opened
     opened.dispose()
 
@@ -39,19 +44,20 @@ def count_clients(dsn: str, email: str) -> int:
 def test_pooled_connections_carry_the_guardrails(engine: Engine) -> None:
     with _connection(engine) as conn:
         timeout = conn.execute(text('SHOW statement_timeout')).scalar()
+        name = conn.execute(text('SHOW application_name')).scalar()
         threshold = conn.execute(text('SHOW pg_trgm.word_similarity_threshold')).scalar()
         driver = conn.connection.driver_connection
         assert driver is not None
         parameters = driver.info.get_parameters()
         dims = conn.execute(select(func.vector_dims(cast(np.array([0.25, -1.0, 3.5]), Vector(3))))).scalar()
 
-    assert timeout == '5s'
+    assert (timeout, name) == ('300ms', 'nevis-search')
     assert threshold == '0.6'  # the typo tier of the client search: set here, not left to the server default
     assert parameters['connect_timeout'] == '3'
-    assert parameters['keepalives_idle'] == '30'
+    assert (parameters['keepalives_idle'], parameters['tcp_user_timeout']) == ('30', '10000')
     assert dims == 3  # numpy arrays are sent as `vector`
     assert isinstance(engine.pool, QueuePool)
-    assert (engine.pool.size(), engine.pool.timeout()) == (8, 5)
+    assert (engine.pool.size(), engine.pool.timeout()) == (2, 1)
 
 
 def test_connection_block_commits_when_it_ends_and_rolls_back_when_it_raises(
@@ -87,8 +93,7 @@ def test_pool_replaces_connections_the_server_dropped(engine: Engine, fresh_dsn:
 
 def test_statement_over_the_timeout_is_unavailable_timeout(engine: Engine) -> None:
     with pytest.raises(DatabaseUnavailable) as error, _connection(engine) as conn:
-        conn.execute(text('SET LOCAL statement_timeout = 200'))  # the pool's 5 s, shortened for the test
-        conn.execute(text('SELECT pg_sleep(2)'))
+        conn.execute(text('SELECT pg_sleep(1)'))  # longer than the 300 ms of the fixture
 
     assert error.value.reason == 'timeout'
     cause = error.value.__cause__
@@ -97,7 +102,8 @@ def test_statement_over_the_timeout_is_unavailable_timeout(engine: Engine) -> No
 
 
 def test_exhausted_pool_is_unavailable_busy(engine: Engine) -> None:
-    held = [engine.connect() for _ in range(8)]  # every connection the pool may open
+    assert isinstance(engine.pool, QueuePool)
+    held = [engine.connect() for _ in range(engine.pool.size())]  # every connection the pool may open
     try:
         began = time.monotonic()
         with pytest.raises(DatabaseUnavailable) as error, _connection(engine):
@@ -108,12 +114,12 @@ def test_exhausted_pool_is_unavailable_busy(engine: Engine) -> None:
             conn.close()
 
     assert error.value.reason == 'busy'
-    assert 4.5 < waited < 10  # the pool's 5 s, not the library default of 30 s
+    assert 0.8 < waited < 3  # the fixture's 1 s, not the library default of 30 s
 
 
 @pytest.mark.usefixtures('admin_dsn')  # runs in compose only, like every integration test
 def test_database_that_cannot_be_reached_is_unavailable_unreachable() -> None:
-    dead = open_engine(UNREACHABLE)
+    dead = open_engine(Settings(database_url=UNREACHABLE))
     try:
         with pytest.raises(DatabaseUnavailable) as error, _connection(dead):
             pass

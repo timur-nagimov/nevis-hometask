@@ -6,7 +6,7 @@ from uuid import UUID
 
 import psycopg
 from pgvector.sqlalchemy import Vector
-from psycopg.conninfo import make_conninfo
+from psycopg.conninfo import conninfo_to_dict, make_conninfo
 from sqlalchemy import (
     CheckConstraint,
     Computed,
@@ -47,18 +47,17 @@ from app.config import (
     FUZZY_SCORE_MAX,
     MIN_FUZZY_CHARS,
     NAME_WEIGHT,
+    Settings,
 )
 
-# libpq options of every pooled connection
+# libpq options of every connection; the timeouts come from Settings (connection_info)
 CONNECTION_OPTIONS: dict[str, str | int] = {
-    'connect_timeout': 3,  # seconds to open a connection
-    # The server cancels a statement after 5 s (QueryCanceled). The trigram threshold of the client typo
-    # search is set here, so the search does not depend on the server's default.
-    'options': f'-c statement_timeout=5000 -c pg_trgm.word_similarity_threshold={CLIENT_TYPO_SIMILARITY}',
-    'keepalives': 1,  # TCP keepalives notice a server or a network that went away
+    'keepalives': 1,  # an idle connection to a server that went away is dropped within about 40 s
     'keepalives_idle': 30,
     'keepalives_interval': 10,
     'keepalives_count': 3,
+    'tcp_user_timeout': 10_000,  # ms: a request the server stops acknowledging fails after 10 s (Linux)
+    'fallback_application_name': 'nevis-search',  # names the sessions in pg_stat_activity
 }
 
 Reason = Literal['unreachable', 'busy', 'timeout']
@@ -174,15 +173,16 @@ _EXTENSIONS_AND_FUNCTIONS = (
 )
 
 
-def create_schema(database_url: str) -> bool:
+def create_schema(settings: Settings) -> bool:
     """Create the extensions, functions and tables if the database has none yet.
 
     Returns True when it created them, False when they were there already. One transaction: a failure leaves
     nothing behind. There are no migrations: after a change to the models, start from an empty database.
     """
+    info = connection_info(settings)
     engine = create_engine(
         'postgresql+psycopg://',
-        creator=lambda: psycopg.connect(database_url, connect_timeout=3),
+        creator=lambda: psycopg.connect(info),
         poolclass=NullPool,
         hide_parameters=True,
     )
@@ -198,15 +198,33 @@ def create_schema(database_url: str) -> bool:
         engine.dispose()
 
 
-def open_engine(database_url: str) -> Engine:
+def connection_info(settings: Settings) -> str:
+    """libpq parameters of every connection, at start-up and in the pool: the URL's own, then the options
+    above and the timeouts. `options` from the URL are kept; the flags added after them win."""
+    url = settings.database_url
+    flags = (
+        f'-c statement_timeout={settings.db_statement_timeout_ms} '
+        # the trigram threshold of the client typo search, so the search does not depend on the server default
+        f'-c pg_trgm.word_similarity_threshold={CLIENT_TYPO_SIMILARITY}'
+    )
+    given = conninfo_to_dict(url).get('options')
+    return make_conninfo(
+        url,
+        **CONNECTION_OPTIONS,
+        connect_timeout=settings.db_connect_timeout_seconds,
+        options=f'{given} {flags}' if given else flags,
+    )
+
+
+def open_engine(settings: Settings) -> Engine:
     """The connection pool of the service."""
-    conninfo = make_conninfo(database_url, **CONNECTION_OPTIONS)
+    info = connection_info(settings)
     return create_engine(
         'postgresql+psycopg://',
-        creator=lambda: psycopg.connect(conninfo),
-        pool_size=8,
-        max_overflow=0,  # at most 8 connections
-        pool_timeout=5,  # wait at most 5 s for a free connection, then 503 busy
+        creator=lambda: psycopg.connect(info),
+        pool_size=settings.db_pool_size,
+        max_overflow=0,  # never more than db_pool_size connections
+        pool_timeout=settings.db_pool_timeout_seconds,  # then 503 busy
         pool_pre_ping=True,  # test a connection before handing it out: replaces those a restart dropped
         hide_parameters=True,  # error texts must not carry names, e-mails or search terms into the log
     )

@@ -12,14 +12,6 @@ from sqlalchemy import Engine
 from app import config
 from app.config import Services, Settings
 
-NAMES = ('DATABASE_URL', 'MODEL_DIR', 'EMBED_THREADS', 'CONCEPTS_FILE', 'MAX_CONTENT_CHARS', 'LOG_LEVEL')
-
-
-@pytest.fixture(autouse=True)
-def clean_environment(monkeypatch: pytest.MonkeyPatch) -> None:
-    for name in NAMES:
-        monkeypatch.delenv(f'NEVIS_{name}', raising=False)
-
 
 def test_database_url_is_required(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv('DATABASE_URL', 'postgresql://ignored/unprefixed')  # only NEVIS_* names are read
@@ -41,6 +33,13 @@ def test_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
     assert Path(settings.concepts_file) == Path(config.__file__).parent / 'data' / 'concepts.yaml'
     assert settings.max_content_chars == 50_000
     assert settings.log_level == 'INFO'
+    database = (
+        settings.db_pool_size,
+        settings.db_pool_timeout_seconds,
+        settings.db_connect_timeout_seconds,
+        settings.db_statement_timeout_ms,
+    )
+    assert database == (8, 5.0, 3, 5000)
 
 
 def test_every_setting_is_read_from_its_nevis_variable(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -50,9 +49,17 @@ def test_every_setting_is_read_from_its_nevis_variable(monkeypatch: pytest.Monke
     monkeypatch.setenv('NEVIS_CONCEPTS_FILE', '/etc/concepts.yaml')
     monkeypatch.setenv('NEVIS_MAX_CONTENT_CHARS', '1000')
     monkeypatch.setenv('NEVIS_LOG_LEVEL', 'DEBUG')
+    monkeypatch.setenv('NEVIS_DB_POOL_SIZE', '2')
+    monkeypatch.setenv('NEVIS_DB_POOL_TIMEOUT_SECONDS', '0.5')
+    monkeypatch.setenv('NEVIS_DB_CONNECT_TIMEOUT_SECONDS', '10')
+    monkeypatch.setenv('NEVIS_DB_STATEMENT_TIMEOUT_MS', '300')
 
     assert Settings().model_dump() == {
         'database_url': 'postgresql://other/db',
+        'db_pool_size': 2,
+        'db_pool_timeout_seconds': 0.5,
+        'db_connect_timeout_seconds': 10,
+        'db_statement_timeout_ms': 300,
         'model_dir': '/models',
         'embed_threads': 1,
         'concepts_file': '/etc/concepts.yaml',
@@ -71,13 +78,24 @@ def test_empty_concepts_file_switches_concept_tagging_off(monkeypatch: pytest.Mo
 
 def test_invalid_values_are_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv('NEVIS_DATABASE_URL', 'postgresql://u:p@db:5432/nevis')
+    monkeypatch.setenv('NEVIS_DB_POOL_SIZE', '0')  # SQLAlchemy would read 0 as no limit
+    monkeypatch.setenv('NEVIS_DB_POOL_TIMEOUT_SECONDS', '0')
+    monkeypatch.setenv('NEVIS_DB_CONNECT_TIMEOUT_SECONDS', '1')  # libpq counts less than 2 as 2
+    monkeypatch.setenv('NEVIS_DB_STATEMENT_TIMEOUT_MS', '0')  # PostgreSQL reads 0 as no limit
     monkeypatch.setenv('NEVIS_EMBED_THREADS', '0')
     monkeypatch.setenv('NEVIS_LOG_LEVEL', 'LOUD')
 
     with pytest.raises(ValidationError) as error:
         Settings()
 
-    assert [e['loc'] for e in error.value.errors()] == [('embed_threads',), ('log_level',)]
+    assert [e['loc'] for e in error.value.errors()] == [
+        ('db_pool_size',),
+        ('db_pool_timeout_seconds',),
+        ('db_connect_timeout_seconds',),
+        ('db_statement_timeout_ms',),
+        ('embed_threads',),
+        ('log_level',),
+    ]
 
 
 def test_constants_have_the_values_of_the_spec() -> None:

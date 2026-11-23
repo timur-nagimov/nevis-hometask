@@ -37,7 +37,7 @@ PROBLEM_JSON = 'application/problem+json'
 UNAVAILABLE_DETAIL: dict[Reason, str] = {  # DatabaseUnavailable.reason -> `detail` of the 503
     'unreachable': 'The database is unreachable; retry shortly.',
     'busy': 'The service is busy; retry shortly.',
-    'timeout': 'The database did not answer within 5 seconds; retry shortly.',
+    'timeout': 'The database did not answer in time; retry shortly.',
 }
 
 
@@ -151,9 +151,7 @@ async def health() -> dict[str, str]:
 
 def build_services(settings: Settings) -> Services:
     """Open what request handling needs."""
-    return Services(
-        settings=settings, engine=open_engine(settings.database_url), embedder=None, concepts=None
-    )
+    return Services(settings=settings, engine=open_engine(settings), embedder=None, concepts=None)
 
 
 def close_services(services: Services) -> None:
@@ -344,19 +342,24 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         active = settings if settings is not None else Settings()
         _configure_logging(active.log_level)
-        created = create_schema(active.database_url)
+        created = create_schema(active)
         services = build_services(active)
         try:
             app.state.services = services
             log.info(
                 'started: schema: %s | concepts: not loaded | model: not loaded | limits:'
-                ' request body %d bytes, content %d characters, q %d characters, limit 1-%d (default %d)',
+                ' request body %d bytes, content %d characters, q %d characters, limit 1-%d (default %d)'
+                ' | database: pool %d, wait %g s, connect timeout %d s, statement timeout %d ms',
                 'created' if created else 'present',
                 MAX_BODY_BYTES,
                 active.max_content_chars,
                 MAX_Q_CHARS,
                 MAX_LIMIT,
                 DEFAULT_LIMIT,
+                active.db_pool_size,
+                active.db_pool_timeout_seconds,
+                active.db_connect_timeout_seconds,
+                active.db_statement_timeout_ms,
             )
             yield
         finally:

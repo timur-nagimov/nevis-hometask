@@ -8,6 +8,7 @@ import psycopg
 import pytest
 from sqlalchemy.exc import ProgrammingError
 
+from app.config import Settings
 from app.db import create_schema
 from tests.integration.helpers import new_database
 
@@ -17,7 +18,7 @@ from tests.integration.helpers import new_database
 )
 def locale_dsn(request: pytest.FixtureRequest, admin_dsn: str) -> Iterator[str]:
     with new_database(admin_dsn, request.param) as dsn:
-        create_schema(dsn)
+        create_schema(Settings(database_url=dsn))
         yield dsn
 
 
@@ -35,7 +36,7 @@ def column(dsn: str, query: str) -> list[object]:
 
 def test_empty_database_gets_the_whole_schema(admin_dsn: str) -> None:
     with new_database(admin_dsn) as dsn:
-        assert create_schema(dsn) is True
+        assert create_schema(Settings(database_url=dsn)) is True
 
         assert column(dsn, "SELECT extname FROM pg_extension WHERE extname <> 'plpgsql' ORDER BY 1") == [
             'pg_trgm',
@@ -56,7 +57,7 @@ def test_a_table_name_taken_already_stops_the_creation_and_leaves_nothing(admin_
             conn.execute('CREATE TABLE app_meta (other text)')  # someone else's table under one of our names
 
         with pytest.raises(ProgrammingError):
-            create_schema(dsn)
+            create_schema(Settings(database_url=dsn))
 
         assert column(dsn, "SELECT tablename FROM pg_tables WHERE schemaname = 'public'") == ['app_meta']
 
@@ -67,8 +68,8 @@ def test_later_starts_create_nothing_and_keep_the_data(fresh_dsn: str) -> None:
             "INSERT INTO clients (first_name, last_name, email) VALUES ('Ann', 'Lee', 'ann@example.com')"
         )
 
-    assert create_schema(fresh_dsn) is False
-    assert create_schema(fresh_dsn) is False
+    assert create_schema(Settings(database_url=fresh_dsn)) is False
+    assert create_schema(Settings(database_url=fresh_dsn)) is False
     assert column(fresh_dsn, 'SELECT email FROM clients') == ['ann@example.com']
 
 

@@ -46,7 +46,7 @@ def admin_dsn() -> str:
 def fresh_dsn(admin_dsn: str) -> Iterator[str]:
     """A new database `nevis_t_<hex>` with the schema; dropped after the test."""
     with new_database(admin_dsn) as dsn:
-        create_schema(dsn)
+        create_schema(Settings(database_url=dsn))
         yield dsn
 
 
