@@ -87,6 +87,7 @@ MAX_SOCIAL_LINKS = 20
 MAX_SOCIAL_LINK_CHARS = 2048  # each link, after trimming
 SCORE_DECIMALS = 4  # scores in responses are rounded to this many decimals
 RETRY_AFTER_SECONDS = 5  # Retry-After of every 503
+MAX_ECHOED_ID_CHARS = 64  # an unknown id is quoted in the 404 detail up to this length
 
 
 @dataclass(frozen=True)

@@ -21,6 +21,7 @@ from app.config import (
     DEFAULT_LIMIT,
     EXACT_SCORE_MIN,
     MAX_BODY_BYTES,
+    MAX_ECHOED_ID_CHARS,
     MAX_LIMIT,
     MAX_Q_CHARS,
     RETRY_AFTER_SECONDS,
@@ -277,7 +278,7 @@ def create_client(body: ClientCreate, response: Response, services: ServicesDep)
         description=body.description,
         social_links=body.social_links,
     )
-    response.headers['Location'] = f'/clients/{client["id"]}'
+    response.headers['Location'] = router.url_path_for('get_client', client_id=str(client['id']))
     return client
 
 
@@ -293,7 +294,7 @@ def get_client(client_id: str, services: ServicesDep) -> dict[str, Any]:
     parsed = parse_id(client_id)
     client = db.get_client(services.engine, parsed) if parsed is not None else None
     if client is None:
-        raise HTTPException(404, f"Client '{client_id[:64]}' does not exist.")
+        raise HTTPException(404, f"Client '{client_id[:MAX_ECHOED_ID_CHARS]}' does not exist.")
     return client
 
 

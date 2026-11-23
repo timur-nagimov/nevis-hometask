@@ -6,7 +6,7 @@ import uuid
 import pytest
 from fastapi.testclient import TestClient
 
-from app.config import MAX_BODY_BYTES
+from app.config import MAX_BODY_BYTES, MAX_ECHOED_ID_CHARS
 from tests.integration.helpers import post_client
 
 JOHN = {'first_name': 'John', 'last_name': 'Doe', 'email': 'john.doe@neviswealth.com'}
@@ -26,6 +26,7 @@ def test_create_returns_201_with_location(app_client: TestClient) -> None:
     assert created == {'id': created['id'], **body}
     assert str(uuid.UUID(created['id'])) == created['id']
     assert response.headers['location'] == f'/clients/{created["id"]}'
+    assert app_client.get(response.headers['location']).json() == created
 
 
 def test_get_returns_the_created_client(app_client: TestClient) -> None:
@@ -33,6 +34,13 @@ def test_get_returns_the_created_client(app_client: TestClient) -> None:
     response = app_client.get(f'/clients/{created["id"]}')
     assert response.status_code == 200
     assert response.json() == created
+
+
+def test_upper_case_id_finds_the_client(app_client: TestClient) -> None:
+    created = post_client(app_client, **JOHN)
+    response = app_client.get(f'/clients/{created["id"].upper()}')
+    assert response.status_code == 200
+    assert response.json()['id'] == created['id']
 
 
 def test_optional_fields_default_to_empty(app_client: TestClient) -> None:
@@ -73,6 +81,12 @@ def test_unknown_or_malformed_id_is_404(app_client: TestClient, client_id: str) 
     assert response.status_code == 404
     assert response.headers['content-type'].startswith('application/problem+json')
     assert response.json()['detail'] == f"Client '{client_id}' does not exist."
+
+
+def test_long_unknown_id_is_cut_in_the_detail(app_client: TestClient) -> None:
+    response = app_client.get('/clients/' + 'x' * 300)
+    assert response.status_code == 404
+    assert response.json()['detail'] == "Client '" + 'x' * MAX_ECHOED_ID_CHARS + "' does not exist."
 
 
 @pytest.mark.parametrize(

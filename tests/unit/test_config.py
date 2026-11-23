@@ -164,7 +164,7 @@ def test_constants_keep_their_values() -> None:
     limits = (config.MAX_NAME_CHARS, config.MAX_EMAIL_CHARS, config.MAX_DESCRIPTION_CHARS)
     assert limits == (100, 254, 2000)
     assert (config.MAX_SOCIAL_LINKS, config.MAX_SOCIAL_LINK_CHARS) == (20, 2048)
-    assert (config.SCORE_DECIMALS, config.RETRY_AFTER_SECONDS) == (4, 5)
+    assert (config.SCORE_DECIMALS, config.RETRY_AFTER_SECONDS, config.MAX_ECHOED_ID_CHARS) == (4, 5, 64)
     assert (config.EMBEDDING_DIM, config.FTS_CONFIG) == (768, 'english')
     # every exact match ranks above every typo match, also after rounding
     assert round(config.FUZZY_SCORE_MAX, config.SCORE_DECIMALS) < config.EXACT_SCORE_MIN
