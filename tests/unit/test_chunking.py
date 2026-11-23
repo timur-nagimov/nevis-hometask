@@ -46,6 +46,17 @@ def test_whitespace_around_paragraphs_is_dropped() -> None:
     assert chunk_document('T', f'\n\n  {p1} \n\n\t{p2}\n\n') == [f'T\n{p1}', f'T\n{p2}']
 
 
+def test_windows_line_endings_also_separate_paragraphs() -> None:
+    p1, p2 = words(150, 'alpha'), words(150, 'beta')
+    assert chunk_document('T', f'{p1}\r\n\r\n{p2}') == [f'T\n{p1}', f'T\n{p2}']
+
+
+def test_an_indented_line_does_not_start_a_paragraph() -> None:
+    p1 = words(150, 'gamma')
+    paragraph = words(100, 'alpha') + '\n    ' + words(100, 'beta')  # 200 words: one paragraph
+    assert chunk_document('T', f'{p1}\n\n{paragraph}') == [f'T\n{p1}', f'T\n{paragraph}']
+
+
 @pytest.mark.parametrize('mark', ['.', '!', '?'])
 def test_a_long_paragraph_is_split_at_sentence_ends(mark: str) -> None:
     sentence = words(30, 'money') + mark  # six whole sentences fill 180 of a chunk's 200 words
@@ -53,11 +64,23 @@ def test_a_long_paragraph_is_split_at_sentence_ends(mark: str) -> None:
     assert chunks == ['T\n' + ' '.join([sentence] * 6), 'T\n' + ' '.join([sentence] * 4)]
 
 
+def test_whole_sentences_fill_a_chunk_up_to_exactly_200_words() -> None:
+    sentence = words(40, 'money') + '.'  # five sentences are exactly 200 words
+    chunks = chunk_document('T', ' '.join([sentence] * 6))  # one paragraph of 240 words
+    assert chunks == ['T\n' + ' '.join([sentence] * 5), 'T\n' + sentence]
+
+
 @pytest.mark.parametrize('mark', [';', ':'])
 def test_semicolons_and_colons_also_end_a_sentence(mark: str) -> None:
     clause = words(30, 'item') + mark
     chunks = chunk_document('T', ' '.join([clause] * 9))  # one paragraph of 270 words, no full stop
     assert chunks == ['T\n' + ' '.join([clause] * 6), 'T\n' + ' '.join([clause] * 3)]
+
+
+def test_a_comma_does_not_end_a_sentence() -> None:
+    content = ' '.join([words(30, 'item') + ','] * 9)  # one paragraph of 270 words, commas only
+    tokens = content.split()
+    assert chunk_document('T', content) == ['T\n' + ' '.join(tokens[:200]), 'T\n' + ' '.join(tokens[200:])]
 
 
 def test_a_sentence_over_200_words_is_cut_at_word_boundaries() -> None:
