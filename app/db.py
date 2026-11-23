@@ -9,7 +9,9 @@ from pgvector.psycopg import register_vector
 from psycopg.rows import TupleRow, dict_row
 from psycopg_pool import ConnectionPool, PoolTimeout
 
-SCHEMA_FILE = Path(__file__).parent / 'sql' / 'schema.sql'
+_SQL_DIR = Path(__file__).parent / 'sql'
+SCHEMA_FILE = _SQL_DIR / 'schema.sql'
+_SEARCH_CLIENTS_SQL = (_SQL_DIR / 'search_clients.sql').read_text(encoding='utf-8')
 
 # libpq options of every pooled connection
 POOL_CONNECTION_OPTIONS: dict[str, str | int] = {
@@ -118,3 +120,14 @@ def get_client(pool: Pool, client_id: UUID) -> dict[str, Any] | None:
             (client_id,),
         )
         return cur.fetchone()
+
+
+def search_clients(pool: Pool, q: str, limit: int) -> list[dict[str, Any]]:
+    """Run app/sql/search_clients.sql for a prepared query.
+
+    Rows, best first, at most `limit`: id, match_type ('exact' or 'fuzzy'), score (unrounded), first_name,
+    last_name, email, description, social_links.
+    """
+    with _connection(pool) as conn, conn.cursor(row_factory=dict_row) as cur:
+        cur.execute(_SEARCH_CLIENTS_SQL, {'q': q, 'limit': limit})
+        return cur.fetchall()
