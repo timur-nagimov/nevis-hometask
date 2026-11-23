@@ -6,6 +6,7 @@ The lifespan is not started (no `with TestClient(...)`), so no database is neede
 """
 
 import json
+import logging
 from collections.abc import Iterator
 from typing import Annotated, Any, get_args
 
@@ -49,6 +50,12 @@ def make_app() -> FastAPI:
     @app.get('/unavailable/{reason}')
     def unavailable(reason: Reason) -> None:
         raise DatabaseUnavailable(reason)
+
+    @app.get('/down/{name}')
+    def down(name: str) -> None:
+        raise DatabaseUnavailable(
+            'unreachable', 'InvalidPassword 28P01 password authentication failed for user "nevis"'
+        )
 
     return app
 
@@ -235,3 +242,19 @@ def test_problem_doc_declares_a_problem_json_response_with_an_example() -> None:
 def test_every_reason_has_a_503_detail() -> None:
     # a reason without a text would be a KeyError inside the 503 handler, that is a 500
     assert set(UNAVAILABLE_DETAIL) == set(get_args(Reason))
+
+
+def test_the_503_log_line_names_the_cause_and_quotes_the_path(
+    client: TestClient, caplog: pytest.LogCaptureFixture
+) -> None:
+    caplog.set_level(logging.WARNING, logger='app')
+
+    response = client.get('/down/a%1Bb')  # an escape character in the path
+
+    assert_problem(response, 503, 'Service Unavailable')
+    assert response.headers['retry-after'] == '5'
+    [line] = [r.getMessage() for r in caplog.records if r.name == 'app.main']
+    assert line == (
+        'database unavailable (unreachable) on GET /down/a%1Bb: '
+        'InvalidPassword 28P01 password authentication failed for user "nevis"'
+    )

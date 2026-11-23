@@ -96,6 +96,7 @@ def test_statement_over_the_timeout_is_unavailable_timeout(engine: Engine) -> No
         conn.execute(text('SELECT pg_sleep(1)'))  # longer than the 300 ms of the fixture
 
     assert error.value.reason == 'timeout'
+    assert error.value.cause.startswith('QueryCanceled 57014')
     cause = error.value.__cause__
     assert cause is not None
     assert isinstance(getattr(cause, 'orig', None), psycopg.errors.QueryCanceled)
@@ -114,6 +115,7 @@ def test_exhausted_pool_is_unavailable_busy(engine: Engine) -> None:
             conn.close()
 
     assert error.value.reason == 'busy'
+    assert error.value.cause.startswith('TimeoutError')
     assert 0.8 < waited < 3  # the fixture's 1 s, not the library default of 30 s
 
 
@@ -127,6 +129,7 @@ def test_database_that_cannot_be_reached_is_unavailable_unreachable() -> None:
         dead.dispose()
 
     assert error.value.reason == 'unreachable'
+    assert 'Connection refused' in error.value.cause
 
 
 def test_the_first_request_after_an_outage_succeeds(engine: Engine, fresh_dsn: str, admin_dsn: str) -> None:

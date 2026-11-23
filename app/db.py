@@ -64,9 +64,10 @@ Reason = Literal['unreachable', 'busy', 'timeout']
 
 
 class DatabaseUnavailable(Exception):
-    def __init__(self, reason: Reason) -> None:
+    def __init__(self, reason: Reason, cause: str = '') -> None:
         super().__init__(reason)
         self.reason: Reason = reason
+        self.cause = cause  # what the driver or the pool reported, for the log
 
 
 class Base(DeclarativeBase):
@@ -237,11 +238,18 @@ def _connection(engine: Engine) -> Iterator[Connection]:
         with engine.begin() as conn:
             yield conn
     except PoolExhausted as exc:  # every connection is in use
-        raise DatabaseUnavailable('busy') from exc
+        raise DatabaseUnavailable('busy', _cause(exc)) from exc
     except OperationalError as exc:
         if isinstance(exc.orig, psycopg.errors.QueryCanceled):  # statement_timeout expired
-            raise DatabaseUnavailable('timeout') from exc
-        raise DatabaseUnavailable('unreachable') from exc  # connection refused, lost or reset
+            raise DatabaseUnavailable('timeout', _cause(exc)) from exc
+        raise DatabaseUnavailable('unreachable', _cause(exc)) from exc  # connection refused, lost or reset
+
+
+def _cause(exc: Exception) -> str:
+    """Error class, SQLSTATE and the first line of the message, for the log: no DETAIL, no parameters."""
+    error = getattr(exc, 'orig', None) or exc  # the driver's error inside SQLAlchemy's wrapper
+    parts = (type(error).__name__, getattr(error, 'sqlstate', None), str(error).partition('\n')[0])
+    return ' '.join(part for part in parts if part)
 
 
 _CLIENT_COLUMNS = (

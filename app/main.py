@@ -89,13 +89,19 @@ async def on_validation_error(request: Request, exc: RequestValidationError) -> 
 
 
 async def on_database_unavailable(request: Request, exc: DatabaseUnavailable) -> JSONResponse:
-    log.warning('database unavailable (%s) on %s %s', exc.reason, request.method, request.url.path)
+    log.warning(
+        'database unavailable (%s) on %s %s: %s',
+        exc.reason,
+        request.method,
+        quote(request.scope['path']),
+        exc.cause or '-',
+    )
     return problem(503, UNAVAILABLE_DETAIL[exc.reason], {'Retry-After': '5'})
 
 
 async def on_unexpected_error(request: Request, exc: Exception) -> JSONResponse:
     # One line here; uvicorn logs the traceback, because Starlette re-raises after sending this response.
-    log.error('unexpected %s on %s %s', type(exc).__name__, request.method, request.url.path)
+    log.error('unexpected %s on %s %s', type(exc).__name__, request.method, quote(request.scope['path']))
     return problem(500, 'Unexpected server error.')
 
 

@@ -4,10 +4,11 @@ import psycopg
 import pytest
 from psycopg.conninfo import conninfo_to_dict
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import TimeoutError as PoolExhausted
 from sqlalchemy.pool import QueuePool
 
 from app.config import Settings
-from app.db import connection_info, create_schema, open_engine
+from app.db import _cause, connection_info, create_schema, open_engine
 
 URL = 'postgresql://u@h/d'
 
@@ -61,3 +62,16 @@ def test_start_up_and_pool_connect_the_same_way(monkeypatch: pytest.MonkeyPatch)
         open_engine(settings).connect()
 
     assert calls == [connection_info(settings)] * 2
+
+
+def test_the_cause_of_a_503_is_the_error_class_sqlstate_and_first_line() -> None:
+    too_many = psycopg.errors.TooManyConnections('sorry, too many clients already\nDETAIL:  x')
+    refused = psycopg.OperationalError('connection failed: refused\n\tIs the server running?')
+
+    assert _cause(OperationalError('SELECT 1', {}, too_many)) == (
+        'TooManyConnections 53300 sorry, too many clients already'
+    )
+    assert _cause(OperationalError(None, None, refused)) == 'OperationalError connection failed: refused'
+    assert _cause(PoolExhausted('QueuePool limit of size 8 overflow 0 reached')) == (
+        'TimeoutError QueuePool limit of size 8 overflow 0 reached'
+    )
