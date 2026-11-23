@@ -2,9 +2,10 @@
 
 import logging
 import time
-from collections.abc import Mapping
+from collections.abc import AsyncIterator, Mapping
+from contextlib import asynccontextmanager
 from http import HTTPStatus
-from typing import Any
+from typing import Annotated, Any
 from urllib.parse import quote
 
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request
@@ -14,8 +15,8 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware import Middleware
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-from app.config import MAX_BODY_BYTES, Settings
-from app.db import DatabaseUnavailable
+from app.config import DEFAULT_LIMIT, MAX_BODY_BYTES, MAX_LIMIT, MAX_Q_CHARS, Services, Settings
+from app.db import DatabaseUnavailable, migrate, open_pool
 from app.schemas import FieldError, Problem
 
 log = logging.getLogger(__name__)
@@ -134,6 +135,27 @@ async def health() -> dict[str, str]:
 
 
 # ---------------------------------------------------------------------------------- application
+def build_services(settings: Settings) -> Services:
+    """Open what request handling needs. The database must be migrated already (`app.db.migrate`).
+
+    Step 3 adds the embedder and the concept map; until then both are None.
+    """
+    return Services(settings=settings, pool=open_pool(settings.database_url), embedder=None, concepts=None)
+
+
+def close_services(services: Services) -> None:
+    services.pool.close()
+
+
+async def get_services(request: Request) -> Services:
+    """Dependency for the routes of later steps. `async`: reading app.state needs no worker thread."""
+    services: Services = request.app.state.services
+    return services
+
+
+ServicesDep = Annotated[Services, Depends(get_services)]  # in a route: `def route(services: ServicesDep)`
+
+
 def _configure_logging(level: str) -> None:
     """The application's loggers at `level`; uvicorn, psycopg and every other library at WARNING."""
     logging.basicConfig(format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -145,10 +167,34 @@ def _configure_logging(level: str) -> None:
 
 def create_app(settings: Settings | None = None) -> FastAPI:
     """The application. Without `settings`, they are read from NEVIS_* variables when it starts (in the
-    lifespan, task 1.8), never at import or here: importing and creating the app needs no configuration."""
+    lifespan), never at import or here: importing and creating the app needs no configuration."""
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        active = settings if settings is not None else Settings()
+        _configure_logging(active.log_level)
+        applied = migrate(active.database_url)  # raises UnknownSchemaVersion, MissingPrivilege
+        services = build_services(active)
+        try:
+            app.state.services = services
+            log.info(
+                "started: migrations applied now: %s | concepts: not loaded | model: not loaded | limits:"
+                " request body %d bytes, content %d characters, q %d characters, limit 1-%d (default %d)",
+                applied or "none",
+                MAX_BODY_BYTES,
+                active.max_content_chars,
+                MAX_Q_CHARS,
+                MAX_LIMIT,
+                DEFAULT_LIMIT,
+            )
+            yield
+        finally:
+            close_services(services)
+
     app = FastAPI(
         title="Nevis Search API",
         version="0.1.0",
+        lifespan=lifespan,
         max_body_size=MAX_BODY_BYTES,  # 413 above 2 MiB (B3: text/plain when Content-Length says so)
         dependencies=[Depends(require_json)],
         middleware=[Middleware(AccessLogMiddleware)],

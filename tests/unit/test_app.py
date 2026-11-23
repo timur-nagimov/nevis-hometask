@@ -9,6 +9,7 @@ from typing import Any
 import pytest
 import uvicorn
 from fastapi.testclient import TestClient
+from pydantic import ValidationError
 
 import app.__main__ as entry_point
 from app.main import _configure_logging, create_app, health
@@ -93,6 +94,17 @@ def test_libraries_log_at_warning_and_the_application_at_its_level() -> None:
     finally:
         for name, level in saved.items():
             logging.getLogger(name).setLevel(level)
+
+
+def test_settings_are_read_when_the_app_starts_not_when_it_is_created(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.delenv("NEVIS_DATABASE_URL", raising=False)
+
+    app = create_app()  # importing and creating the application needs no configuration
+
+    with pytest.raises(ValidationError, match="database_url"), TestClient(app):
+        pass  # entering the client runs the lifespan, which reads the settings
 
 
 def test_entry_point_runs_the_factory_with_one_worker_and_no_uvicorn_access_log(

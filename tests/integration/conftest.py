@@ -12,9 +12,12 @@ from collections.abc import Iterator
 
 import psycopg
 import pytest
+from fastapi.testclient import TestClient
 from psycopg.conninfo import make_conninfo
 
+from app.config import Services, Settings
 from app.db import migrate
+from app.main import create_app
 from tests.integration.helpers import new_database
 
 
@@ -43,3 +46,25 @@ def fresh_dsn(admin_dsn: str) -> Iterator[str]:
     with new_database(admin_dsn) as dsn:
         migrate(dsn)
         yield dsn
+
+
+@pytest.fixture(scope="module")
+def app_dsn(admin_dsn: str) -> Iterator[str]:
+    """The database of this module's `app_client`; the application's own lifespan migrates it."""
+    with new_database(admin_dsn) as dsn:
+        yield dsn
+
+
+@pytest.fixture(scope="module")
+def app_client(app_dsn: str) -> Iterator[TestClient]:
+    """The real application on its own database with the lifespan running (migrations, pool)."""
+    with TestClient(create_app(Settings(database_url=app_dsn))) as client:
+        yield client
+
+
+@pytest.fixture(scope="module")
+def services(app_client: TestClient) -> Services:
+    """The bundle `build_services` made in app_client's lifespan: same database, same pool. Reused rather
+    than built twice, because from step 3 on building it loads the embedding model."""
+    built: Services = app_client.app.state.services
+    return built
