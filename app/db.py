@@ -62,7 +62,7 @@ def open_pool(database_url: str) -> Pool:
         database_url,
         kwargs=POOL_CONNECTION_OPTIONS,
         configure=register_vector,  # numpy arrays <-> the `vector` type
-        min_size=0,  # no connection kept in reserve: nothing stale to trip over after a database restart
+        min_size=0,  # no connections kept in reserve: fewer stale ones to trip over after a database restart
         max_size=8,
         max_idle=60,  # close connections idle for a minute
         timeout=5,  # wait at most 5 s for a free connection, then PoolTimeout

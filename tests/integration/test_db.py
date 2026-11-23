@@ -64,7 +64,7 @@ def test_connection_block_commits_when_it_ends_and_rolls_back_when_it_raises(
 
 
 def test_pool_replaces_connections_the_server_dropped(pool: Pool, fresh_dsn: str) -> None:
-    """After a database restart the next request must not fail (check=ConnectionPool.check_connection)."""
+    """A connection the server dropped is replaced, not handed out (check=ConnectionPool.check_connection)."""
     with _connection(pool) as conn:
         conn.execute("SELECT 1")  # the pool keeps this connection for reuse
     with psycopg.connect(fresh_dsn, autocommit=True) as admin:
