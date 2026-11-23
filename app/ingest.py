@@ -13,7 +13,8 @@ from urllib.parse import urlsplit
 
 import yaml
 
-from app.config import CHUNK_WORDS, ELLIPSIS, SHORT_DOC_WORDS, SUMMARY_CHARS
+from app import db
+from app.config import CHUNK_WORDS, ELLIPSIS, SHORT_DOC_WORDS, SUMMARY_CHARS, Services
 
 _SENTENCE_END = re.compile(r'(?<=[.!?])\s+')  # the summary takes whole sentences
 
@@ -221,3 +222,12 @@ def tagging_from_matches(concepts: Concepts, matches: list[tuple[int, bool, bool
         tags_text=' '.join(concepts.sentence(number) for number in matched),
         head_text=' '.join(concepts.sentence(number) for number in head),
     )
+
+
+def tag_document(services: Services, title: str, content: str) -> Tagging:
+    """The concept tags of a document, matched by the database in one round trip; none without a map."""
+    if services.concepts is None:
+        return Tagging(tags=[], tags_text='', head_text='')
+    entries, phrases = services.concepts.phrase_arrays()
+    matches = db.match_concepts(services.engine, title, content, entries, phrases)
+    return tagging_from_matches(services.concepts, matches, content)

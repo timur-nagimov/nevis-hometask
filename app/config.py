@@ -1,13 +1,17 @@
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 import psycopg
 from psycopg.conninfo import conninfo_to_dict
 from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import Engine
+
+if TYPE_CHECKING:  # for the type checker only: app.embedding and app.ingest import this module
+    from app.embedding import Embedder
+    from app.ingest import Concepts
 
 PACKAGED_CONCEPTS_FILE = str(Path(__file__).parent / 'data' / 'concepts.yaml')  # the shipped concept map
 DEFAULT_MODEL_DIR = '/opt/models/leaf-ir'  # where the image keeps the embedding model
@@ -128,7 +132,9 @@ SWAGGER_UI = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.36.0'
 
 @dataclass(frozen=True)
 class Services:
+    """What request handling needs, built once at start-up."""
+
     settings: Settings
-    engine: Engine
-    embedder: object | None
-    concepts: object | None
+    engine: Engine  # the connection pool
+    embedder: Embedder
+    concepts: Concepts | None  # None: NEVIS_CONCEPTS_FILE is empty, no tagging

@@ -1,5 +1,6 @@
-"""Health check, access log, logging levels, settings timing and the entry point; no database needed
-(the lifespan is not started, except in the test that shows it fails without settings)."""
+"""Health check, access log, logging levels, settings timing, the order in which the services are built, and
+the entry point; no database or model needed (the lifespan is not started, except in the test that shows it
+fails without settings)."""
 
 import inspect
 import logging
@@ -16,8 +17,10 @@ from pydantic import ValidationError
 
 import app.__main__ as entry_point
 from app import __version__
-from app.config import MAX_BODY_BYTES, SWAGGER_UI
-from app.main import _configure_logging, create_app, health
+from app.config import MAX_BODY_BYTES, SWAGGER_UI, Settings
+from app.main import _configure_logging, build_services, create_app, health
+
+DATABASE_URL = 'postgresql://u:p@db:5432/nevis'  # Settings needs one; nothing connects
 
 
 @pytest.fixture
@@ -129,6 +132,33 @@ def test_settings_are_read_when_the_app_starts_not_when_it_is_created(
 
     with pytest.raises(ValidationError, match='database_url'), TestClient(app):
         pass  # entering the client runs the lifespan, which reads the settings
+
+
+def test_a_broken_concept_map_stops_the_build_before_the_model_loads_or_the_pool_opens(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    path = tmp_path / 'concepts.yaml'
+    path.write_text('- concept: [x\n', encoding='utf-8')
+    opened: list[str] = []
+    monkeypatch.setattr('app.main.Embedder', lambda model_dir, threads: opened.append('model'))
+    monkeypatch.setattr('app.main.open_engine', lambda settings: opened.append('pool'))
+
+    with pytest.raises(ValueError, match='not a valid YAML file'):
+        build_services(Settings(database_url=DATABASE_URL, concepts_file=str(path)))
+
+    assert opened == []
+
+
+def test_a_missing_model_stops_the_build_before_the_pool_opens(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    opened: list[str] = []
+    monkeypatch.setattr('app.main.open_engine', lambda settings: opened.append('pool'))
+
+    with pytest.raises(FileNotFoundError, match='model files not found'):
+        build_services(Settings(database_url=DATABASE_URL, model_dir=str(tmp_path)))
+
+    assert opened == []
 
 
 @pytest.mark.parametrize(

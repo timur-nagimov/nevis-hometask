@@ -26,11 +26,14 @@ from app.config import (
     MAX_Q_CHARS,
     RETRY_AFTER_SECONDS,
     SCORE_DECIMALS,
+    SHORT_REVISION_CHARS,
     SWAGGER_UI,
     Services,
     Settings,
 )
 from app.db import DatabaseUnavailable, Reason, create_schema, open_engine
+from app.embedding import Embedder
+from app.ingest import load_concepts
 from app.schemas import Client, ClientCreate, FieldError, Problem, QueryText, SearchItem
 from app.search import ResultType
 from app.search import search as run_search
@@ -221,11 +224,18 @@ async def health() -> dict[str, str]:
 
 
 def build_services(settings: Settings) -> Services:
-    """Open what request handling needs."""
-    return Services(settings=settings, engine=open_engine(settings), embedder=None, concepts=None)
+    """Load the concept map and the model, then open the connection pool.
+
+    In this order, a broken map or a missing model stops the start before the pool is opened. Their errors
+    name the file or directory and quote nothing from it.
+    """
+    concepts = load_concepts(settings.concepts_file)
+    embedder = Embedder(settings.model_dir, settings.embed_threads)
+    return Services(settings=settings, engine=open_engine(settings), embedder=embedder, concepts=concepts)
 
 
 def close_services(services: Services) -> None:
+    """Close the connection pool; the model and the map hold nothing that needs closing."""
     services.engine.dispose()
 
 
@@ -418,11 +428,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         services = build_services(active)
         try:
             app.state.services = services
+            model = services.embedder.info()
             log.info(
-                'started: schema: %s | concepts: not loaded | model: not loaded | limits:'
+                'started: schema: %s | concepts: %s | model: %s@%s, threads %d | limits:'
                 ' request body %d bytes, content %d characters, q %d characters, limit 1-%d (default %d)'
                 ' | database: pool %d, wait %g s, connect timeout %d s, statement timeout %d ms | version %s',
                 'created' if created else 'present',
+                f'{len(services.concepts.entries)} entries' if services.concepts is not None else 'disabled',
+                model['model'],
+                model['revision'][:SHORT_REVISION_CHARS],
+                model['threads'],
                 MAX_BODY_BYTES,
                 active.max_content_chars,
                 MAX_Q_CHARS,

@@ -11,6 +11,7 @@ from sqlalchemy import Engine
 
 from app import config
 from app.config import Services, Settings
+from app.embedding import Embedder
 
 
 def test_database_url_is_required(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -59,7 +60,9 @@ def test_url_and_key_value_forms_are_accepted(url: str) -> None:
 
 def test_settings_and_services_never_print_the_database_url() -> None:
     settings = Settings(database_url='postgresql://u:S3cret@db/nevis')
-    services = Services(settings=settings, engine=cast(Engine, None), embedder=None, concepts=None)
+    services = Services(
+        settings=settings, engine=cast(Engine, None), embedder=cast(Embedder, None), concepts=None
+    )
 
     for text in (repr(settings), str(settings.model_dump()), repr(services)):
         assert 'S3cret' not in text
@@ -198,7 +201,9 @@ def test_constants_keep_their_values() -> None:
 
 def test_services_is_a_frozen_bundle_of_four() -> None:
     settings = Settings(database_url='postgresql://u:p@db:5432/nevis')
-    services = Services(settings=settings, engine=cast(Engine, None), embedder=None, concepts=None)
+    services = Services(
+        settings=settings, engine=cast(Engine, None), embedder=cast(Embedder, None), concepts=None
+    )
 
     assert [field.name for field in dataclasses.fields(Services)] == [
         'settings',
@@ -207,4 +212,4 @@ def test_services_is_a_frozen_bundle_of_four() -> None:
         'concepts',
     ]
     with pytest.raises(dataclasses.FrozenInstanceError):
-        services.embedder = object()  # type: ignore[misc]
+        services.embedder = cast(Embedder, object())  # type: ignore[misc]

@@ -59,14 +59,15 @@ def app_dsn(admin_dsn: str) -> Iterator[str]:
 
 @pytest.fixture(scope='module')
 def app_client(app_dsn: str) -> Iterator[TestClient]:
-    """The real application on its own database with the lifespan running (schema, pool)."""
+    """The real application on its own database with the lifespan running (schema, concept map, model,
+    pool)."""
     with TestClient(create_app(Settings(database_url=app_dsn))) as client:
         yield client
 
 
 @pytest.fixture(scope='module')
 def services(app_client: TestClient) -> Services:
-    """The bundle `build_services` made in app_client's lifespan: same database, same pool. Reused rather
-    than built twice."""
+    """The bundle `build_services` made in app_client's lifespan: same database and pool, the model and the
+    shipped concept map. Reused rather than built twice: loading the model takes time."""
     built: Services = cast(FastAPI, app_client.app).state.services
     return built

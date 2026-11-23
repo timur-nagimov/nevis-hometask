@@ -16,9 +16,11 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    Select,
     Text,
     all_,
     and_,
+    bindparam,
     case,
     cast,
     create_engine,
@@ -377,3 +379,77 @@ def search_clients(engine: Engine, q: str, limit: int) -> list[dict[str, Any]]:
     )
     with _connection(engine) as conn:
         return [dict(row) for row in conn.execute(statement).mappings()]
+
+
+def _match_concepts_statement() -> Select[int, bool, bool]:
+    """The concept match. Parameters: title, content, and the parallel arrays entries (int[]) and phrases
+    (text[]), where entries[i] owns phrases[i]."""
+    title = cast(bindparam('title'), Text)
+    content = cast(bindparam('content'), Text)
+    # MATERIALIZED: the two search vectors are built once, not once per phrase
+    texts = (
+        select(
+            func.to_tsvector(FTS_CONFIG, func.public.strip_punct(title)).label('tv_title'),
+            func.to_tsvector(FTS_CONFIG, func.public.strip_punct(title + ' ' + content)).label('tv_all'),
+        )
+        .cte('t')
+        .prefix_with('MATERIALIZED')
+    )
+    pairs = (
+        func.unnest(bindparam('entries', type_=ARRAY(Integer)), bindparam('phrases', type_=ARRAY(Text)))
+        .table_valued('entry', 'phrase')
+        .render_derived(name='u')
+    )
+    stripped = (
+        select(func.btrim(func.public.strip_punct(pairs.c.phrase)).label('stripped'))
+        .correlate(pairs)
+        .lateral('s')
+    )
+    parsed = (
+        select(
+            func.phraseto_tsquery(FTS_CONFIG, stripped.c.stripped).label('pq'),
+            func.regexp_split_to_array(stripped.c.stripped, r'\s+', type_=ARRAY(Text)).label('w'),
+        )
+        .correlate(stripped)
+        .lateral('x')
+    )
+    words = parsed.c.w
+    phrases = (
+        select(pairs.c.entry, parsed.c.pq)
+        .select_from(pairs.join(stripped, true()).join(parsed, true()))
+        .where(
+            func.numnode(parsed.c.pq) > 0,
+            # A phrase whose first or last word is a stop word is skipped: its query would silently lose
+            # that word ('trust in' would match any trust). Stop words inside a phrase are kept.
+            func.numnode(func.plainto_tsquery(FTS_CONFIG, words[1])) > 0,
+            func.numnode(func.plainto_tsquery(FTS_CONFIG, words[func.cardinality(words)])) > 0,
+        )
+        .cte('ph')
+    )
+    in_title = func.bool_or(texts.c.tv_title.bool_op('@@')(phrases.c.pq))
+    anywhere = func.bool_or(texts.c.tv_all.bool_op('@@')(phrases.c.pq))
+    return (
+        select(phrases.c.entry, in_title.label('in_title'), anywhere.label('anywhere'))
+        .select_from(phrases.join(texts, true()))
+        .group_by(phrases.c.entry)
+        .having(anywhere)
+        .order_by(phrases.c.entry)
+    )
+
+
+_MATCH_CONCEPTS = _match_concepts_statement()
+
+
+def match_concepts(
+    engine: Engine, title: str, content: str, entries: list[int], phrases: list[str]
+) -> list[tuple[int, bool, bool]]:
+    """The concept entries a phrase of which occurs in the document, in entry order, each once: (entry
+    number, matched in the title, matched in title + content). One round trip.
+
+    `entries` and `phrases` are parallel: entries[i] owns phrases[i]. Phrases match as whole phrases, stemmed
+    and without punctuation (text search configuration FTS_CONFIG).
+    """
+    params = {'title': title, 'content': content, 'entries': entries, 'phrases': phrases}
+    with _connection(engine) as conn:
+        rows = conn.execute(_MATCH_CONCEPTS, params).all()
+    return [(int(entry), bool(in_title), bool(anywhere)) for entry, in_title, anywhere in rows]
