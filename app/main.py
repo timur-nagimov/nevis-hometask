@@ -16,7 +16,7 @@ from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app import db
 from app.config import DEFAULT_LIMIT, MAX_BODY_BYTES, MAX_LIMIT, MAX_Q_CHARS, Services, Settings
-from app.db import DatabaseUnavailable, create_schema, open_pool
+from app.db import DatabaseUnavailable, create_schema, open_engine
 from app.schemas import Client, ClientCreate, FieldError, Problem, QueryText, SearchItem
 from app.search import search as run_search
 
@@ -140,11 +140,13 @@ async def health() -> dict[str, str]:
 
 def build_services(settings: Settings) -> Services:
     """Open what request handling needs."""
-    return Services(settings=settings, pool=open_pool(settings.database_url), embedder=None, concepts=None)
+    return Services(
+        settings=settings, engine=open_engine(settings.database_url), embedder=None, concepts=None
+    )
 
 
 def close_services(services: Services) -> None:
-    services.pool.close()
+    services.engine.dispose()
 
 
 async def get_services(request: Request) -> Services:
@@ -223,7 +225,7 @@ def parse_id(raw: str) -> UUID | None:
 )
 def create_client(body: ClientCreate, response: Response, services: ServicesDep) -> dict[str, Any]:
     """Creates a new client on every call: e-mail addresses are not unique, and POST is not idempotent."""
-    client = db.insert_client(services.pool, **body.model_dump())
+    client = db.insert_client(services.engine, **body.model_dump())
     response.headers['Location'] = f'/clients/{client["id"]}'
     return client
 
@@ -238,7 +240,7 @@ def create_client(body: ClientCreate, response: Response, services: ServicesDep)
 def get_client(client_id: str, services: ServicesDep) -> dict[str, Any]:
     """A client by id. An id that is not a UUID is answered like an unknown one: 404."""
     parsed = parse_id(client_id)
-    client = db.get_client(services.pool, parsed) if parsed is not None else None
+    client = db.get_client(services.engine, parsed) if parsed is not None else None
     if client is None:
         raise HTTPException(404, f"Client '{client_id[:64]}' does not exist.")
     return client
@@ -324,7 +326,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         active = settings if settings is not None else Settings()
         _configure_logging(active.log_level)
-        created = create_schema(active.database_url)  # before the pool, which needs the `vector` type
+        created = create_schema(active.database_url)
         services = build_services(active)
         try:
             app.state.services = services

@@ -86,15 +86,17 @@ def test_constants_have_the_values_of_the_spec() -> None:
     assert config.QUERY_PREFIX == 'Represent this sentence for searching relevant passages: '
     assert config.MAX_BODY_BYTES == 2 * 1024 * 1024
     assert (config.MAX_Q_CHARS, config.DEFAULT_LIMIT, config.MAX_LIMIT) == (200, 10, 50)
+    assert (config.CLIENT_TYPO_SIMILARITY, config.NAME_WEIGHT, config.EMAIL_WEIGHT) == (0.6, 1.0, 0.7)
+    assert config.DESCRIPTION_WEIGHT == 0.5
 
 
 def test_services_is_a_frozen_bundle_of_four() -> None:
     settings = Settings(database_url='postgresql://u:p@db:5432/nevis')
-    services = Services(settings=settings, pool=None, embedder=None, concepts=None)
+    services = Services(settings=settings, engine=None, embedder=None, concepts=None)
 
     assert [field.name for field in dataclasses.fields(Services)] == [
         'settings',
-        'pool',
+        'engine',
         'embedder',
         'concepts',
     ]

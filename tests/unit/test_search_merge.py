@@ -70,16 +70,16 @@ def test_uuid_ids_are_compared_as_text() -> None:
 def test_search_tags_client_rows_and_merges(monkeypatch: pytest.MonkeyPatch) -> None:
     calls: list[tuple[object, str, int]] = []
 
-    def fake_search_clients(pool: object, q: str, limit: int) -> list[dict[str, Any]]:
-        calls.append((pool, q, limit))
+    def fake_search_clients(engine: object, q: str, limit: int) -> list[dict[str, Any]]:
+        calls.append((engine, q, limit))
         return [
             {'id': 'b', 'match_type': 'exact', 'score': 0.85000004},
             {'id': 'a', 'match_type': 'fuzzy', 'score': 0.2205},
         ]
 
     monkeypatch.setattr(db, 'search_clients', fake_search_clients)
-    result = search(SimpleNamespace(pool='pool'), 'NevisWealth', None, 10)
-    assert calls == [('pool', 'NevisWealth', 10)]
+    result = search(SimpleNamespace(engine='engine'), 'NevisWealth', None, 10)
+    assert calls == [('engine', 'NevisWealth', 10)]
     assert [(i['type'], i['id'], i['score']) for i in result] == [
         ('client', 'b', 0.85),
         ('client', 'a', 0.2205),
@@ -91,4 +91,4 @@ def test_type_document_skips_the_client_search(monkeypatch: pytest.MonkeyPatch) 
         raise AssertionError('the client search must not run for type=document')
 
     monkeypatch.setattr(db, 'search_clients', fail)
-    assert search(SimpleNamespace(pool='pool'), 'NevisWealth', 'document', 10) == []
+    assert search(SimpleNamespace(engine='engine'), 'NevisWealth', 'document', 10) == []

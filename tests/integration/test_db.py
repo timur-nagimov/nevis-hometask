@@ -1,5 +1,6 @@
-"""The pool and the transaction rule every SQL function builds on, and the three reasons of
-DatabaseUnavailable produced by real failures: statement timeout, busy pool, no database."""
+"""The connection pool (a SQLAlchemy engine) and the transaction rule every database function builds on,
+and the three reasons of DatabaseUnavailable produced by real failures: statement timeout, busy pool, no
+database."""
 
 import time
 import uuid
@@ -8,17 +9,21 @@ from collections.abc import Iterator
 import numpy as np
 import psycopg
 import pytest
+from pgvector.sqlalchemy import Vector
+from psycopg import sql
+from psycopg.conninfo import conninfo_to_dict
+from sqlalchemy import Engine, cast, func, select, text
 
-from app.db import DatabaseUnavailable, Pool, _connection, open_pool
+from app.db import DatabaseUnavailable, _connection, open_engine
 
 UNREACHABLE = 'postgresql://nevis:nevis@127.0.0.1:1/nevis'  # nothing listens on port 1
 
 
 @pytest.fixture
-def pool(fresh_dsn: str) -> Iterator[Pool]:
-    opened = open_pool(fresh_dsn)
+def engine(fresh_dsn: str) -> Iterator[Engine]:
+    opened = open_engine(fresh_dsn)
     yield opened
-    opened.close()
+    opened.dispose()
 
 
 def count_clients(dsn: str, email: str) -> int:
@@ -29,73 +34,73 @@ def count_clients(dsn: str, email: str) -> int:
     return count
 
 
-def test_pooled_connections_carry_the_guardrails(pool: Pool) -> None:
-    with _connection(pool) as conn:
-        timeout = conn.execute('SHOW statement_timeout').fetchone()
-        parameters = conn.info.get_parameters()
-        dims = conn.execute(
-            'SELECT vector_dims(%s)', (np.array([0.25, -1.0, 3.5], dtype=np.float32),)
-        ).fetchone()
+def test_pooled_connections_carry_the_guardrails(engine: Engine) -> None:
+    with _connection(engine) as conn:
+        timeout = conn.execute(text('SHOW statement_timeout')).scalar()
+        threshold = conn.execute(text('SHOW pg_trgm.word_similarity_threshold')).scalar()
+        parameters = conn.connection.driver_connection.info.get_parameters()
+        dims = conn.execute(select(func.vector_dims(cast(np.array([0.25, -1.0, 3.5]), Vector(3))))).scalar()
 
-    assert timeout == ('5s',)
+    assert timeout == '5s'
+    assert threshold == '0.6'  # the typo tier of the client search: set here, not left to the server default
     assert parameters['connect_timeout'] == '3'
     assert parameters['keepalives_idle'] == '30'
-    assert dims == (3,)  # register_vector ran: a numpy array is sent as a `vector`
-    # A failed reconnect gives up after 5 s and the next request tries again. With the library default of
-    # 300 s the retries back off to 64 s and more, and the API stays at 503 long after the database is back.
-    assert pool.reconnect_timeout == 5
+    assert dims == 3  # numpy arrays are sent as `vector`
+    assert (engine.pool.size(), engine.pool.timeout()) == (8, 5)
 
 
 def test_connection_block_commits_when_it_ends_and_rolls_back_when_it_raises(
-    pool: Pool, fresh_dsn: str
+    engine: Engine, fresh_dsn: str
 ) -> None:
     email = f'{uuid.uuid4().hex}@example.com'
-    insert = "INSERT INTO clients (first_name, last_name, email) VALUES ('Ann', 'Lee', %s)"
+    insert = text("INSERT INTO clients (first_name, last_name, email) VALUES ('Ann', 'Lee', :email)")
 
-    with _connection(pool) as conn:
-        conn.execute(insert, (email,))
+    with _connection(engine) as conn:
+        conn.execute(insert, {'email': email})
         assert count_clients(fresh_dsn, email) == 0  # not visible to others before the commit
     assert count_clients(fresh_dsn, email) == 1  # committed when the block ended
 
-    with pytest.raises(RuntimeError, match='changed my mind'), _connection(pool) as conn:
-        conn.execute(insert, (email,))
+    with pytest.raises(RuntimeError, match='changed my mind'), _connection(engine) as conn:
+        conn.execute(insert, {'email': email})
         raise RuntimeError('changed my mind')
     assert count_clients(fresh_dsn, email) == 1  # the second insert was rolled back
 
 
-def test_pool_replaces_connections_the_server_dropped(pool: Pool, fresh_dsn: str) -> None:
-    """A connection the server dropped is replaced, not handed out (check=ConnectionPool.check_connection)."""
-    with _connection(pool) as conn:
-        conn.execute('SELECT 1')  # the pool keeps this connection for reuse
+def test_pool_replaces_connections_the_server_dropped(engine: Engine, fresh_dsn: str) -> None:
+    """A connection the server dropped is replaced, not handed out (pool_pre_ping)."""
+    with _connection(engine) as conn:
+        conn.execute(text('SELECT 1'))  # the pool keeps this connection for reuse
     with psycopg.connect(fresh_dsn, autocommit=True) as admin:
         admin.execute(
             'SELECT pg_terminate_backend(pid) FROM pg_stat_activity'
             ' WHERE datname = current_database() AND pid <> pg_backend_pid()'
         )
 
-    with _connection(pool) as conn:
-        assert conn.execute('SELECT 2').fetchone() == (2,)
+    with _connection(engine) as conn:
+        assert conn.execute(text('SELECT 2')).scalar() == 2
 
 
-def test_statement_over_the_timeout_is_unavailable_timeout(pool: Pool) -> None:
-    with pytest.raises(DatabaseUnavailable) as error, _connection(pool) as conn:
-        conn.execute('SET LOCAL statement_timeout = 200')  # the pool's 5 s, shortened for the test
-        conn.execute('SELECT pg_sleep(2)')
+def test_statement_over_the_timeout_is_unavailable_timeout(engine: Engine) -> None:
+    with pytest.raises(DatabaseUnavailable) as error, _connection(engine) as conn:
+        conn.execute(text('SET LOCAL statement_timeout = 200'))  # the pool's 5 s, shortened for the test
+        conn.execute(text('SELECT pg_sleep(2)'))
 
     assert error.value.reason == 'timeout'
-    assert isinstance(error.value.__cause__, psycopg.errors.QueryCanceled)
+    cause = error.value.__cause__
+    assert cause is not None
+    assert isinstance(getattr(cause, 'orig', None), psycopg.errors.QueryCanceled)
 
 
-def test_exhausted_pool_is_unavailable_busy(pool: Pool) -> None:
-    held = [pool.getconn() for _ in range(8)]  # every connection the pool may open (max_size=8)
+def test_exhausted_pool_is_unavailable_busy(engine: Engine) -> None:
+    held = [engine.connect() for _ in range(8)]  # every connection the pool may open
     try:
         began = time.monotonic()
-        with pytest.raises(DatabaseUnavailable) as error, _connection(pool):
+        with pytest.raises(DatabaseUnavailable) as error, _connection(engine):
             pass
         waited = time.monotonic() - began
     finally:
         for conn in held:
-            pool.putconn(conn)
+            conn.close()
 
     assert error.value.reason == 'busy'
     assert 4.5 < waited < 10  # the pool's 5 s, not the library default of 30 s
@@ -103,11 +108,36 @@ def test_exhausted_pool_is_unavailable_busy(pool: Pool) -> None:
 
 @pytest.mark.usefixtures('admin_dsn')  # runs in compose only, like every integration test
 def test_database_that_cannot_be_reached_is_unavailable_unreachable() -> None:
-    dead = open_pool(UNREACHABLE)
+    dead = open_engine(UNREACHABLE)
     try:
         with pytest.raises(DatabaseUnavailable) as error, _connection(dead):
             pass
     finally:
-        dead.close()
+        dead.dispose()
 
     assert error.value.reason == 'unreachable'
+
+
+def test_the_first_request_after_an_outage_succeeds(engine: Engine, fresh_dsn: str, admin_dsn: str) -> None:
+    name = sql.Identifier(conninfo_to_dict(fresh_dsn)['dbname'])
+    with _connection(engine) as conn:
+        conn.execute(text('SELECT 1'))  # the pool now holds one connection
+    with psycopg.connect(admin_dsn, autocommit=True) as admin:
+        admin.execute(sql.SQL('ALTER DATABASE {} WITH ALLOW_CONNECTIONS false').format(name))
+        admin.execute(
+            sql.SQL('SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = {}').format(
+                sql.Literal(conninfo_to_dict(fresh_dsn)['dbname'])
+            )
+        )
+    try:
+        with pytest.raises(DatabaseUnavailable) as error, _connection(engine):
+            pass
+        assert error.value.reason == 'unreachable'
+    finally:
+        with psycopg.connect(admin_dsn, autocommit=True) as admin:
+            admin.execute(sql.SQL('ALTER DATABASE {} WITH ALLOW_CONNECTIONS true').format(name))
+
+    began = time.monotonic()
+    with _connection(engine) as conn:
+        assert conn.execute(text('SELECT 3')).scalar() == 3
+    assert time.monotonic() - began < 2  # no back-off: the pool connects again at once

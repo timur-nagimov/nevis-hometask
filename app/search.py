@@ -34,5 +34,5 @@ def search(services: Services, q: str, type_: str | None, limit: int) -> list[di
     """
     items: list[dict[str, Any]] = []
     if type_ != 'document':
-        items += [{'type': 'client', **row} for row in db.search_clients(services.pool, q, limit)]
+        items += [{'type': 'client', **row} for row in db.search_clients(services.engine, q, limit)]
     return merge(items, limit)

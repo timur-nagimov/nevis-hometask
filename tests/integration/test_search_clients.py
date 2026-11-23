@@ -43,7 +43,7 @@ def ids(app_client: TestClient) -> dict[str, str]:
 
 
 def found(services: Services, q: str, limit: int = 10) -> list[dict[str, Any]]:
-    return db.search_clients(services.pool, q, limit)
+    return db.search_clients(services.engine, q, limit)
 
 
 def ids_of(rows: list[dict[str, Any]]) -> list[str]:

@@ -3,11 +3,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
-from psycopg import Connection
-from psycopg.rows import TupleRow
-from psycopg_pool import ConnectionPool
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from sqlalchemy import Engine
 
 
 class Settings(BaseSettings):
@@ -31,6 +29,14 @@ TAU_TITLE = 0.60  # word similarity of query and title from which a title is a t
 MIN_FUZZY_CHARS = 5  # letters and digits a query needs before typo matching is tried
 SPELL_CUTOFF = 0.90  # similarity from which a query is read as a misspelt concept phrase
 
+# Client search: a client is `exact` when every query word occurs in it; otherwise, for queries of at least
+# MIN_FUZZY_CHARS letters and digits, a typo match from this word similarity on. The weights say how much a
+# match in each field counts for the score.
+CLIENT_TYPO_SIMILARITY = 0.6
+NAME_WEIGHT = 1.0
+EMAIL_WEIGHT = 0.7
+DESCRIPTION_WEIGHT = 0.5
+
 # Ingest
 SHORT_DOC_WORDS = 200  # in a document up to this length a concept found anywhere counts like one in the title
 CHUNK_WORDS = 200  # words per embedded chunk
@@ -48,6 +54,6 @@ MAX_LIMIT = 50
 @dataclass(frozen=True)
 class Services:
     settings: Settings
-    pool: ConnectionPool[Connection[TupleRow]]
+    engine: Engine
     embedder: object | None
     concepts: object | None
