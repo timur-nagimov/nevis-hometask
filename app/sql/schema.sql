@@ -1,6 +1,7 @@
--- The schema of research/_design/spec-final.md section 4, copied from
--- research/testrun/plan/sql/001_init.sql (its lines 2-45), plus the app_meta table of section 13.2 B5.
--- Applied once by app.db.migrate, in one transaction, under an advisory lock.
+-- The database schema: spec section 4, plus the app_meta table of section 13.2 B5.
+-- app.db.create_schema runs this file at start-up, in one transaction, when the database has no tables yet;
+-- on every later start it runs nothing. There are no migrations: after a change to this file, start from an
+-- empty database (docker compose down -v).
 CREATE EXTENSION IF NOT EXISTS vector;
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE EXTENSION IF NOT EXISTS unaccent;

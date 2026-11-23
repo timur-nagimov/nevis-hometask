@@ -49,7 +49,6 @@ ENV PATH="/opt/venv/bin:${PATH}" \
 COPY --from=deps /opt/venv /opt/venv
 COPY --from=model /opt/models /opt/models
 WORKDIR /app
-COPY migrations ./migrations
 COPY app ./app
 USER 10001:10001
 # Build-time check as the user the service runs as (step 1 stub; step 3 adds the model self-check):

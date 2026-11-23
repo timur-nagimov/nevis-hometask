@@ -1,12 +1,13 @@
-"""What migrations/001_init.sql promises (spec section 4, 13.2 B5): text functions that ignore the database
-locale, the generated search columns, uuid v7 ids, and an app_meta table that holds at most one row."""
+"""What app/sql/schema.sql promises (spec section 4, 13.2 B5): it is created once, on an empty database;
+text functions that ignore the database locale; the generated search columns; uuid v7 ids; and an app_meta
+table that holds at most one row."""
 
 from collections.abc import Iterator
 
 import psycopg
 import pytest
 
-from app.db import migrate
+from app.db import create_schema
 from tests.integration.helpers import new_database
 
 
@@ -15,7 +16,7 @@ from tests.integration.helpers import new_database
 )
 def locale_dsn(request: pytest.FixtureRequest, admin_dsn: str) -> Iterator[str]:
     with new_database(admin_dsn, request.param) as dsn:
-        migrate(dsn)
+        create_schema(dsn)
         yield dsn
 
 
@@ -24,6 +25,39 @@ def value(dsn: str, query: str, *params: object) -> object:
         row = conn.execute(query, params).fetchone()
     assert row is not None
     return row[0]
+
+
+def column(dsn: str, query: str) -> list[object]:
+    with psycopg.connect(dsn) as conn:
+        return [row[0] for row in conn.execute(query)]
+
+
+def test_empty_database_gets_the_whole_schema(admin_dsn: str) -> None:
+    with new_database(admin_dsn) as dsn:
+        assert create_schema(dsn) is True
+
+        assert column(dsn, "SELECT extname FROM pg_extension WHERE extname <> 'plpgsql' ORDER BY 1") == [
+            "pg_trgm",
+            "unaccent",
+            "vector",
+        ]
+        assert column(dsn, "SELECT tablename FROM pg_tables WHERE schemaname = 'public' ORDER BY 1") == [
+            "app_meta",
+            "clients",
+            "document_chunks",
+            "documents",
+        ]
+
+
+def test_later_starts_create_nothing_and_keep_the_data(fresh_dsn: str) -> None:
+    with psycopg.connect(fresh_dsn) as conn:
+        conn.execute(
+            "INSERT INTO clients (first_name, last_name, email) VALUES ('Ann', 'Lee', 'ann@example.com')"
+        )
+
+    assert create_schema(fresh_dsn) is False
+    assert create_schema(fresh_dsn) is False
+    assert column(fresh_dsn, "SELECT email FROM clients") == ["ann@example.com"]
 
 
 def test_text_functions_do_not_depend_on_the_database_locale(locale_dsn: str) -> None:

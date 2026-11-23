@@ -16,7 +16,7 @@ from starlette.middleware import Middleware
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app.config import DEFAULT_LIMIT, MAX_BODY_BYTES, MAX_LIMIT, MAX_Q_CHARS, Services, Settings
-from app.db import DatabaseUnavailable, migrate, open_pool
+from app.db import DatabaseUnavailable, create_schema, open_pool
 from app.schemas import FieldError, Problem
 
 log = logging.getLogger(__name__)
@@ -136,7 +136,7 @@ async def health() -> dict[str, str]:
 
 # ---------------------------------------------------------------------------------- application
 def build_services(settings: Settings) -> Services:
-    """Open what request handling needs. The database must be migrated already (`app.db.migrate`).
+    """Open what request handling needs. The schema must exist already (`app.db.create_schema`).
 
     Step 3 adds the embedder and the concept map; until then both are None.
     """
@@ -173,14 +173,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         active = settings if settings is not None else Settings()
         _configure_logging(active.log_level)
-        applied = migrate(active.database_url)  # raises UnknownSchemaVersion, MissingPrivilege
+        created = create_schema(active.database_url)  # before the pool, which needs the `vector` type
         services = build_services(active)
         try:
             app.state.services = services
             log.info(
-                "started: migrations applied now: %s | concepts: not loaded | model: not loaded | limits:"
+                "started: schema: %s | concepts: not loaded | model: not loaded | limits:"
                 " request body %d bytes, content %d characters, q %d characters, limit 1-%d (default %d)",
-                applied or "none",
+                "created" if created else "present",
                 MAX_BODY_BYTES,
                 active.max_content_chars,
                 MAX_Q_CHARS,

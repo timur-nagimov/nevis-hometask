@@ -16,7 +16,7 @@ from fastapi.testclient import TestClient
 from psycopg.conninfo import make_conninfo
 
 from app.config import Services, Settings
-from app.db import migrate
+from app.db import create_schema
 from app.main import create_app
 from tests.integration.helpers import new_database
 
@@ -42,22 +42,22 @@ def admin_dsn() -> str:
 
 @pytest.fixture
 def fresh_dsn(admin_dsn: str) -> Iterator[str]:
-    """A new empty database `nevis_t_<hex>`, migrated; dropped after the test."""
+    """A new database `nevis_t_<hex>` with the schema; dropped after the test."""
     with new_database(admin_dsn) as dsn:
-        migrate(dsn)
+        create_schema(dsn)
         yield dsn
 
 
 @pytest.fixture(scope="module")
 def app_dsn(admin_dsn: str) -> Iterator[str]:
-    """The database of this module's `app_client`; the application's own lifespan migrates it."""
+    """The database of this module's `app_client`; the application's own lifespan creates its schema."""
     with new_database(admin_dsn) as dsn:
         yield dsn
 
 
 @pytest.fixture(scope="module")
 def app_client(app_dsn: str) -> Iterator[TestClient]:
-    """The real application on its own database with the lifespan running (migrations, pool)."""
+    """The real application on its own database with the lifespan running (schema, pool)."""
     with TestClient(create_app(Settings(database_url=app_dsn))) as client:
         yield client
 
