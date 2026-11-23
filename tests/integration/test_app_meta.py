@@ -8,18 +8,17 @@ from collections.abc import Iterator
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import Engine, insert, select
+from sqlalchemy import Engine
 
 from app import db
 from app.config import MODEL_REVISION, PACKAGED_CONCEPTS_FILE, TOKENIZER_SETTINGS, Services, Settings
-from app.db import AppMetaRow, open_engine
 from app.ingest import Concepts
 from app.main import check_app_meta, create_app
 
 
 @pytest.fixture
 def engine(fresh_dsn: str) -> Iterator[Engine]:
-    opened = open_engine(Settings(database_url=fresh_dsn))
+    opened = db.open_engine(Settings(database_url=fresh_dsn))
     yield opened
     opened.dispose()
 
@@ -32,10 +31,8 @@ def test_the_first_start_writes_the_row(fresh_dsn: str, engine: Engine) -> None:
     with TestClient(create_app(Settings(database_url=fresh_dsn))):
         pass
 
-    columns = (AppMetaRow.model_revision, AppMetaRow.tokenizer_settings, AppMetaRow.concepts_sha256)
-    with engine.connect() as conn:
-        row = conn.execute(select(*columns)).one()
-    assert tuple(row) == (MODEL_REVISION, TOKENIZER_SETTINGS, Concepts.load(PACKAGED_CONCEPTS_FILE).sha256)
+    concepts_sha256 = Concepts.load(PACKAGED_CONCEPTS_FILE).sha256
+    assert db.read_app_meta(engine) == db.AppMeta(MODEL_REVISION, TOKENIZER_SETTINGS, concepts_sha256)
 
 
 def test_a_matching_start_is_silent(services: Services, caplog: pytest.LogCaptureFixture) -> None:
@@ -70,11 +67,7 @@ def test_a_second_write_keeps_the_first_row(services: Services) -> None:
 def test_the_service_still_starts_after_a_mismatch_and_names_the_differing_fields(
     fresh_dsn: str, engine: Engine, caplog: pytest.LogCaptureFixture
 ) -> None:
-    older = insert(AppMetaRow).values(
-        model_revision='older-model', tokenizer_settings={'truncation': 128}, concepts_sha256=None
-    )
-    with engine.begin() as conn:
-        conn.execute(older)
+    db.write_app_meta(engine, db.AppMeta('older-model', {'truncation': 128}, None))
 
     with TestClient(create_app(Settings(database_url=fresh_dsn))) as client:
         assert client.get('/health').status_code == 200
