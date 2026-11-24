@@ -8,6 +8,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import Engine, select
 
+from app import ingest
 from app.config import EXTRACTIVE, MAX_BODY_BYTES, MAX_ECHOED_ID_CHARS, TAGS_CHUNK_NO, Services, Settings
 from app.db import DocumentChunkRow, DocumentRow, _connection
 from app.main import create_app
@@ -35,6 +36,13 @@ def chunk_numbers(engine: Engine, document_id: str) -> list[int]:
     )
     with _connection(engine) as conn:
         return list(conn.execute(statement).scalars())
+
+
+def stored_tags_text(engine: Engine, document_id: str) -> str:
+    """The searchable tag text stored for a document."""
+    statement = select(DocumentRow.tags_text).where(DocumentRow.id == UUID(document_id))
+    with _connection(engine) as conn:
+        return conn.execute(statement).scalar_one()
 
 
 def test_post_answers_201_with_location_tags_and_summary(
@@ -87,6 +95,28 @@ def test_the_stored_vector_embeds_title_newline_chunk(
     with _connection(services.engine) as conn:
         stored = conn.execute(statement).scalar_one()
 
+    assert np.allclose(stored, expected, atol=1e-5)
+
+
+def test_tags_text_keeps_every_tag_and_the_tags_chunk_embeds_title_newline_head_entries(
+    app_client: TestClient, services: Services, john: dict[str, Any]
+) -> None:
+    # a long text whose title names a bill: the bill's entries are head entries;
+    # the pension statement it mentions in passing is a tag, but it is not embedded
+    filler = ' '.join(['The adviser and the client discussed the portfolio.'] * 30)  # 240 words
+    content = f'{filler} A pension statement is due.'
+    tagging = ingest.tag_document(services, 'Utility bill', content)
+    assert tagging.head_text != tagging.tags_text
+
+    document = post_document(app_client, john['id'], 'Utility bill', content)
+    expected = services.embedder.embed_documents([f'Utility bill\n{tagging.head_text}'])[0]
+    statement = select(DocumentChunkRow.embedding).where(
+        DocumentChunkRow.document_id == UUID(document['id']), DocumentChunkRow.chunk_no == TAGS_CHUNK_NO
+    )
+    with _connection(services.engine) as conn:
+        stored = conn.execute(statement).scalar_one()
+
+    assert stored_tags_text(services.engine, document['id']) == tagging.tags_text
     assert np.allclose(stored, expected, atol=1e-5)
 
 
@@ -178,9 +208,7 @@ def test_an_empty_concepts_file_setting_disables_tagging(fresh_dsn: str) -> None
         document = post_document(client, owner['id'], 'Utility bill', UTILITY)
         engine = app.state.services.engine
         chunks = chunk_numbers(engine, document['id'])
-        statement = select(DocumentRow.tags_text).where(DocumentRow.id == UUID(document['id']))
-        with _connection(engine) as conn:
-            tags_text = conn.execute(statement).scalar_one()
+        tags_text = stored_tags_text(engine, document['id'])
 
     assert document['tags'] == []
     assert (chunks, tags_text) == ([0], '')
