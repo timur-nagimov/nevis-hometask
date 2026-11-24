@@ -50,12 +50,14 @@ def test_proof_of_delivery_is_found_by_its_words_and_the_bills_by_their_tags(
     found = {suite_ids[item['id']]: item for item in items}
 
     assert {*BILLS, TRAP} <= found.keys(), ranked
-    assert {found[bill]['match_type'] for bill in BILLS} == {'concept'}
+    for bill in BILLS:
+        assert found[bill]['match_type'] == 'concept'
     assert found[TRAP]['match_type'] == 'lexical'
 
     # recorded, not asserted
-    margin = min(found[bill]['score'] for bill in BILLS) - found[TRAP]['score']
+    trap_score = found[TRAP]['score']
+    margin = min(found[bill]['score'] for bill in BILLS) - trap_score
     print(
         f"\nTRAP q={q!r}: 'Proof of delivery' rank {ranked.index(TRAP) + 1} of {len(ranked)}, "
-        f'score {found[TRAP]["score"]:.4f}, margin to the lower bill {margin:+.4f}'
+        f'score {trap_score:.4f}, margin to the lower bill {margin:+.4f}'
     )
