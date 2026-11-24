@@ -107,7 +107,7 @@ class ClientCreate(BaseModel):
                     'first_name': 'John',
                     'last_name': 'Doe',
                     'email': 'john.doe@neviswealth.com',
-                    'description': 'Founder of a logistics company, prefers ESG funds',
+                    'description': 'Founder of a logistics company; prefers ESG funds.',
                     'social_links': ['https://www.linkedin.com/in/johndoe'],
                 }
             ]

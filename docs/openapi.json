@@ -587,7 +587,7 @@
                 "value": "NevisWealth"
               },
               "document": {
-                "summary": "Document by meaning",
+                "summary": "Documents by concept: utility bills as proof of address",
                 "value": "address proof"
               }
             }
@@ -889,7 +889,7 @@
         "description": "Body of POST /clients. Unknown members are ignored; a client-sent `id` is not honoured.",
         "examples": [
           {
-            "description": "Founder of a logistics company, prefers ESG funds",
+            "description": "Founder of a logistics company; prefers ESG funds.",
             "email": "john.doe@neviswealth.com",
             "first_name": "John",
             "last_name": "Doe",

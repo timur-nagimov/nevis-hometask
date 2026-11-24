@@ -552,7 +552,10 @@ def search(
             f'then 1-{MAX_Q_CHARS} characters, no control characters.',
             openapi_examples={
                 'client': {'summary': 'Client by part of an e-mail domain', 'value': 'NevisWealth'},
-                'document': {'summary': 'Document by meaning', 'value': 'address proof'},
+                'document': {
+                    'summary': 'Documents by concept: utility bills as proof of address',
+                    'value': 'address proof',
+                },
             },
         ),
     ],
