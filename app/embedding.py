@@ -9,7 +9,6 @@ import os
 import sys
 import threading
 from pathlib import Path
-from typing import TypedDict
 
 import numpy as np
 import numpy.typing as npt
@@ -49,7 +48,6 @@ __all__ = [
     'SELFCHECK_QUERY',
     'TOKENIZER_SETTINGS',
     'Embedder',
-    'EmbedderInfo',
     'SelfCheckError',
     'Vector',
     'main',
@@ -66,14 +64,6 @@ LOG_ERRORS_ONLY = 3  # onnxruntime log severity: 0 verbose, 1 info, 2 warning, 3
 MIN_NORM = 1e-12  # floor of the norms, so a zero vector cannot turn into NaN
 
 Vector = npt.NDArray[np.float32]
-
-
-class EmbedderInfo(TypedDict):
-    model: str
-    revision: str
-    tokenizer: dict[str, int | str]
-    dim: int
-    threads: int
 
 
 class Embedder:
@@ -104,7 +94,6 @@ class Embedder:
         self._tokenizer.enable_truncation(max_length=MAX_TOKENS)  # the shipped file stops at 128
         # to the longest text of each call; the shipped file pads every text to 128 tokens
         self._tokenizer.enable_padding(pad_id=self._tokenizer.token_to_id(PAD_TOKEN), pad_token=PAD_TOKEN)
-        self._threads = threads
         self._document_lane = threading.BoundedSemaphore(RUNS_PER_LANE)
         self._query_lane = threading.BoundedSemaphore(RUNS_PER_LANE)
 
@@ -118,16 +107,6 @@ class Embedder:
     def embed_query(self, text: str) -> Vector:
         """A search query: QUERY_PREFIX + text, on the query lane."""
         return self._run([QUERY_PREFIX + text], self._query_lane)[0]
-
-    def info(self) -> EmbedderInfo:
-        """The model and the settings the vectors come from."""
-        return EmbedderInfo(
-            model=MODEL_REPO,
-            revision=MODEL_REVISION,
-            tokenizer=dict(TOKENIZER_SETTINGS),
-            dim=DIM,
-            threads=self._threads,
-        )
 
     def _run(self, texts: list[str], lane: threading.BoundedSemaphore) -> list[Vector]:
         encodings = self._tokenizer.encode_batch(texts)

@@ -25,8 +25,6 @@ from app.embedding import (
     GOLDEN_COSINE,
     GOLDEN_TOLERANCE,
     MAX_TOKENS,
-    MODEL_REPO,
-    MODEL_REVISION,
     Embedder,
     SelfCheckError,
     selfcheck,
@@ -173,17 +171,6 @@ def test_sixteen_threads_share_one_embedder(embedder: Embedder) -> None:
 def test_the_session_runs_on_the_given_threads(embedder: Embedder) -> None:
     options = embedder._session.get_session_options()
     assert (options.intra_op_num_threads, options.inter_op_num_threads) == (THREADS, EMBED_INTER_OP_THREADS)
-
-
-def test_info_names_the_pinned_model(embedder: Embedder) -> None:
-    info = embedder.info()
-    assert (info['model'], info['revision'], info['dim'], info['threads']) == (
-        MODEL_REPO,
-        MODEL_REVISION,
-        768,
-        THREADS,
-    )
-    assert info['tokenizer'] == {'truncation': 512, 'padding': 'batch_longest'}
 
 
 def test_selfcheck_passes_on_the_pinned_model() -> None:

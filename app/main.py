@@ -26,10 +26,13 @@ from app.config import (
     MAX_ECHOED_ID_CHARS,
     MAX_LIMIT,
     MAX_Q_CHARS,
+    MODEL_REPO,
+    MODEL_REVISION,
     RETRY_AFTER_SECONDS,
     SCORE_DECIMALS,
     SHORT_REVISION_CHARS,
     SWAGGER_UI,
+    TOKENIZER_SETTINGS,
     Services,
     Settings,
 )
@@ -252,10 +255,9 @@ def check_app_meta(services: Services) -> None:
     Writes the row when the table is empty. A difference is logged as one warning, because vectors or tags
     built by another model or map would otherwise mix silently; the stored row is kept and the start goes on.
     """
-    info = services.embedder.info()
     current = db.AppMeta(
-        model_revision=info['revision'],
-        tokenizer_settings=info['tokenizer'],
+        model_revision=MODEL_REVISION,
+        tokenizer_settings=TOKENIZER_SETTINGS,
         concepts_sha256=services.concepts.sha256 if services.concepts is not None else None,
     )
     db.write_app_meta(services.engine, current)  # keeps the row of an earlier start
@@ -513,16 +515,15 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         try:
             check_app_meta(services)
             app.state.services = services
-            info = services.embedder.info()
             log.info(
                 'started: schema: %s | concepts: %s | model: %s@%s, threads %d | limits:'
                 ' request body %d bytes, content %d characters, q %d characters, limit 1-%d (default %d)'
                 ' | database: pool %d, wait %g s, connect timeout %d s, statement timeout %d ms | version %s',
                 'created' if created else 'present',
                 f'{len(services.concepts.entries)} entries' if services.concepts is not None else 'disabled',
-                info['model'],
-                info['revision'][:SHORT_REVISION_CHARS],
-                info['threads'],
+                MODEL_REPO,
+                MODEL_REVISION[:SHORT_REVISION_CHARS],
+                active.embed_threads,
                 MAX_BODY_BYTES,
                 active.max_content_chars,
                 MAX_Q_CHARS,
