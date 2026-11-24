@@ -33,7 +33,7 @@ typo tier run: trigram word similarity from 0.6, `fuzzy`. Score: `0.5 + 0.5 × s
 
 ## 4. Document ingest
 
-An upload (`create_document` in `app/ingest.py`):
+An upload (the route in `app/main.py`, then `create_document` in `app/ingest.py`):
 
 1. checks the fields (404 for an unknown client);
 2. tags the concepts whose name or `expands_to` phrase occurs in title or text;
@@ -67,12 +67,12 @@ Result rules compared (design-time, 86 documents, a 38-entry draft of the map):
 
 `app/data/concepts.yaml` models one relation: documents like X are accepted as Y (a utility bill as proof of
 address), which embeddings do not know (the README's cosine table). An entry has a `concept` (the tag), `triggers`
-(how people ask for it), `expands_to` (the documents that satisfy it) and optional `sources`. The concept and its
-`expands_to` phrases match as stemmed phrases; a phrase whose first or last word is a stop word is skipped. Only a
-match in the title, or in a document of up to 200 words, enters the embedded tags fragment, so a long letter that
-mentions a bill once does not look like proof of address. An LLM drafted 120 entries from general UK
-wealth-management knowledge; a rule cut them to 30 (keep needs whose evidence is named differently; drop single
-documents, topics and identifiers). Four entries name official lists:
+(how people ask for it; searched with the tag), `expands_to` (the documents that satisfy it) and optional `sources`.
+The concept and its `expands_to` phrases match as stemmed phrases; a phrase whose first or last word is a stop word
+is skipped. Only a match in the title, or in a document of up to 200 words, enters the embedded tags fragment, so a
+long letter that mentions a bill once does not look like proof of address. An LLM drafted 120 entries from general
+UK wealth-management knowledge; a rule cut them to 30 (keep relations of this kind; drop single documents, topics
+and identifiers). Four entries name official lists:
 
 - proof of address: [GOV.UK JSA interview](https://www.gov.uk/jobseekers-allowance/your-jsa-interview);
   [Bona Vacantia checklist](https://www.gov.uk/government/publications/proof-of-identity-checklist/proof-of-identity-checklist)
@@ -105,7 +105,7 @@ access line per request without the query string, never document text.
 ## 9. Considered and not built
 
 - Dropping the weak guesses: section 5.
-- A concept hit only inside one concept: about zero effect (design-time).
+- A concept hit only when every query word comes from one concept: about zero effect (design-time).
 - Concept hits above scattered literal hits: letters that ask for a document carry the same tag.
 - Client substrings only in e-mails: the test authors disagree on matches inside words.
 - No client typo tier: strict pass −116 (design-time).
