@@ -80,6 +80,7 @@ COPY tests ./tests
 COPY eval ./eval
 COPY testset ./testset
 COPY scripts ./scripts
+COPY README.md ./README.md
 USER 10001:10001
 # /app is not writable for this user: no pytest cache directory
 CMD ["pytest", "-p", "no:cacheprovider"]
