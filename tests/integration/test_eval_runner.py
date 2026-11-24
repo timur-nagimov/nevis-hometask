@@ -13,7 +13,13 @@ TINY: dict[str, Any] = {
     'suite': 'eval-selftest',
     'corpus': {
         'clients': [
-            {'id': 'c1', 'first_name': 'Ada', 'last_name': 'Lovelace', 'email': 'ada@example.invalid'},
+            {
+                'id': 'c1',
+                'first_name': 'Ada',
+                'last_name': 'Lovelace',
+                'email': 'ada@example.invalid',
+                'description': 'Pays the utility bill by direct debit.',  # q3 asks for documents only
+            },
             {
                 'id': 'c2',
                 'first_name': 'Too',
