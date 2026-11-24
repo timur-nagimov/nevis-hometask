@@ -1,6 +1,7 @@
 """Claude enrichment at upload. Nothing here calls Anthropic."""
 
 import pytest
+from pydantic import SecretStr
 
 from app.config import Settings
 
@@ -21,6 +22,5 @@ def test_the_key_is_read_without_the_nevis_prefix_and_never_printed(monkeypatch:
 
     settings = Settings(database_url=DSN)
 
-    assert settings.anthropic_api_key is not None
-    assert settings.anthropic_api_key.get_secret_value() == 'sk-ant-test-not-real'
+    assert settings.anthropic_api_key == SecretStr('sk-ant-test-not-real')
     assert 'sk-ant-test-not-real' not in repr(settings)

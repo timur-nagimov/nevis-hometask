@@ -42,8 +42,7 @@ class Settings(BaseSettings):
     llm_enabled: bool = False
     llm_model: str = 'claude-haiku-5-5'  # the request is shaped for this model; another may refuse it
     llm_timeout_seconds: float = Field(default=10.0, gt=0)  # a slower answer is dropped, the upload goes on
-    # read from ANTHROPIC_API_KEY, the SDK's own name, not from a NEVIS_ variable; the field name is for
-    # passing the key to the constructor
+    # read from ANTHROPIC_API_KEY (the SDK's name, no NEVIS_ prefix) or passed as anthropic_api_key=
     anthropic_api_key: SecretStr | None = Field(
         default=None, validation_alias=AliasChoices('ANTHROPIC_API_KEY', 'anthropic_api_key')
     )
