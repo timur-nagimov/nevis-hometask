@@ -685,8 +685,9 @@ def search_documents(
     `qvec` is the query's vector; `alt` is the concept phrase the query misspells and `alt_sim` its similarity
     to the query, or both are None. Rows: the document's columns, score (unrounded), match_type and cos (of
     the best chunk).
-    - `lexical`: every query word is in the title or the content (stemmed); `concept`: only with the concept
-      tags. Score EXACT_SCORE_MIN to 1, higher with the cosine.
+    - `lexical`: every query word is in the title or the content (stemmed, stop words ignored); a query of
+      nothing but stop words (`will`) can match only titles, by its words as typed. `concept`: only with the
+      concept tags. Score EXACT_SCORE_MIN to 1, higher with the cosine.
     - `fuzzy`, only when nothing is lexical or concept: the title is similar to the query, or the document
       contains `alt`. Score FUZZY_SCORE_MAX times the similarity.
     - `semantic`, never for a query without a searchable word: a cosine of at least T_STRONG and within DELTA

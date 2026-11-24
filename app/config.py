@@ -80,8 +80,8 @@ EMAIL_WEIGHT = 0.7
 DESCRIPTION_WEIGHT = 0.5
 # The score scale of clients and documents: matches of the query's words score from EXACT_SCORE_MIN to 1,
 # typo matches from 0 to FUZZY_SCORE_MAX, documents close in meaning from 0 to EXACT_SCORE_MIN. So every
-# exact match ranks above every typo match, and a caller can read a score of at least EXACT_SCORE_MIN as
-# "the query words were found".
+# match of the query's words ranks above every typo or meaning match, and a caller can read a score of at
+# least EXACT_SCORE_MIN as "the query words were found".
 EXACT_SCORE_MIN = 0.5
 FUZZY_SCORE_MAX = 0.49
 
