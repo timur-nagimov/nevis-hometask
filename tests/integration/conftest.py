@@ -29,8 +29,7 @@ from tests.integration.helpers import new_database
 @pytest.fixture(scope='session', autouse=True)
 def _never_call_claude_from_tests() -> None:
     """The application under test reads NEVIS_LLM_ENABLED, and test documents must never go to Anthropic."""
-    # the values pydantic reads as true
-    if os.environ.get('NEVIS_LLM_ENABLED', '').lower() in {'1', 'true', 't', 'yes', 'y', 'on'}:
+    if Settings(database_url='postgresql://unused').llm_enabled:
         pytest.exit('NEVIS_LLM_ENABLED is on: the integration tests must not call Claude', returncode=2)
 
 
