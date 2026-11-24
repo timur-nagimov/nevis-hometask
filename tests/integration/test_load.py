@@ -98,12 +98,14 @@ def test_search_and_health_keep_answering_during_parallel_uploads(base_url: str,
     for probe in probes:
         probe.start()
     started = time.perf_counter()
-    with ThreadPoolExecutor(max_workers=UPLOADERS) as uploaders:
-        uploads = list(uploaders.map(upload, corpus['documents']))
-    upload_wall_s = time.perf_counter() - started
-    stop.set()
-    for probe in probes:
-        probe.join()
+    try:
+        with ThreadPoolExecutor(max_workers=UPLOADERS) as uploaders:
+            uploads = list(uploaders.map(upload, corpus['documents']))
+        upload_wall_s = time.perf_counter() - started
+    finally:
+        stop.set()
+        for probe in probes:
+            probe.join()
 
     idle_search_ms = [call('GET', search_url(base_url, n))[1] for n in range(IDLE_CALLS)]
     idle_health_ms = [call('GET', health_url)[1] for _ in range(IDLE_CALLS)]
