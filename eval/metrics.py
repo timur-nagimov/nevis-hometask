@@ -49,8 +49,8 @@ def group_of(suite_name: str) -> str:
 def kinds_of(suite: dict[str, Any]) -> dict[str, str]:
     """Suite id -> 'client' or 'document'."""
     corpus = suite['corpus']
-    kinds = {c['id']: 'client' for c in corpus.get('clients') or []}
-    kinds.update({d['id']: 'document' for d in corpus.get('documents') or []})
+    kinds = {c['id']: 'client' for c in corpus['clients']}
+    kinds.update({d['id']: 'document' for d in corpus['documents']})
     return kinds
 
 
