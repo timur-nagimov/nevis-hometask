@@ -14,7 +14,7 @@ half an hour. Nothing enters the search unless it was measured first.
 | Document search | one SQL statement: literal, typo and semantic legs, two-stage result rule | rank fusion (RRF), cross-encoders, LLM re-ranking | no measured gain, or seconds per query (design-time) |
 | Domain knowledge | 30-entry map; optional Claude enrichment at upload | query-time synonyms or LLM | query-time map F1 0.628 / 0.525 against 0.646 / 0.595, dev / test (design-time); searches remain local |
 | Embeddings | `MongoDB/mdbr-leaf-ir` (Apache-2.0, 768 dimensions, 92 MB) through onnxruntime, in the image | `bge-small`; cloud embeddings | nDCG@10 0.606 against 0.473 for `bge-small` (design-time); works offline |
-| Summary | `extractive`, up to 300 characters plus an ellipsis when truncated; opt-in Claude `llm`, up to 600 | LexRank; local LLMs | offline fallback; LexRank was not significantly better; Claude measured in [evaluation](../eval/README.md#claude-at-upload) |
+| Summary | `extractive`, up to 300 characters, plus '…' when cut; opt-in Claude `llm`, up to 600 | LexRank; local LLMs | offline fallback; LexRank was not significantly better; Claude measured in [evaluation](../eval/README.md#claude-at-upload) |
 | HTTP | FastAPI, synchronous handlers, one worker | Litestar; async handlers | correct mixed-result OpenAPI discriminator; onnxruntime and psycopg release the GIL |
 | SQL access | SQLAlchemy 2.1 Core, psycopg 3, `app/db.py` | SQL files | tables and queries together; translated queries return identical test-set rows |
 | Schema | models create an empty database | numbered migrations | one version; schema changes require an empty database |
@@ -37,7 +37,7 @@ An upload (the route in `app/main.py`, then `create_document` in `app/ingest.py`
 
 1. checks the fields (404 for an unknown client);
 2. optionally calls Claude, merging its concepts with phrase-matched tags and adding its document type and phrases;
-3. uses Claude's summary (up to 600 characters), or the first sentences (up to 300, plus an ellipsis when truncated)
+3. uses Claude's summary (up to 600 characters), or the first sentences (up to 300, plus '…' when cut)
    when disabled or unsuccessful;
 4. cuts the text into fragments of up to 200 words with the title in front;
 5. embeds tags matched in the title or documents up to 200 words, plus Claude concepts/phrases;
@@ -83,7 +83,7 @@ documents, topics and identifiers). Four entries name official lists:
 - customer due diligence: [JMLSG Guidance Part I, 5.3.75-5.3.76](https://www.jmlsg.org.uk/wp-content/uploads/2026/10/JMLSG-Guidance-Part-I_Oct-2026.pdf)
 - proof of income: [GOV.UK family visas, proof of finances](https://www.gov.uk/uk-family-visa/provide-information)
 
-The other 26 entries are curated; no official list was found for them.
+The other 26 entries are curated; no official lists were found.
 
 A closed list misses phrasings ("Council Tax demand notice") and tags letters asking for evidence as evidence.
 Optional Claude enrichment adds phrases and document-type labels; matched tags remain, so false positives can persist.
@@ -133,10 +133,9 @@ access line per request without the query string, never document text.
 
 ## 11. Privacy and data flow
 
-Ids are UUID v7: the first 48 bits are the creation time in milliseconds, so anyone who sees an id learns when the
-record was created. Use random v4 ids, or opaque public ids, if that matters. The access log records the path without
-the query string, so search terms are not logged, and document text is never logged. A document's own text decides
-its tags: a document that says "utility bill" is tagged as proof of address, with or without an LLM.
+Ids are UUID v7: the first 48 bits reveal creation time in milliseconds to anyone seeing the id.
+Use random v4 ids, or opaque public ids, if that matters. Access logs contain paths without query strings;
+neither search terms nor document text is logged. A document's own text decides its tags: a document that says "utility bill" is tagged as proof of address, with or without an LLM.
 
 **Claude at upload.** Opt-in, off by default: with `NEVIS_LLM_ENABLED=true`, `ANTHROPIC_API_KEY` and the concept
 map enabled, validated uploads' titles and content (up to 50,000 characters) go to Anthropic.

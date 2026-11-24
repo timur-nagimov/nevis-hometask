@@ -1,9 +1,8 @@
 # Nevis Search API
 
-A REST service that stores wealth-management clients and their documents and searches both through one endpoint.
-FastAPI and PostgreSQL 18 (pgvector, pg_trgm, unaccent); a local embedding model is baked into the image, so after
-the first build everything runs offline and without any API key. An optional Claude call at upload is described
-under "How LLMs were used".
+A REST service storing wealth-management clients and documents, searching both through one endpoint.
+FastAPI, PostgreSQL 18 (pgvector, pg_trgm, unaccent), an embedding model inside the image: offline after
+the first build, no API key. Optional Claude enrichment at upload: "How LLMs were used".
 
 ## Run it
 
@@ -182,7 +181,7 @@ Both kinds are fetched with `limit` each, merged, sorted by score, type and id, 
 | 0.2 to 0.5 | a strong semantic match, or a typo | `semantic`, `fuzzy` |
 | below 0.2 | a weak semantic guess, or a client typo found only in the description (at most 0.245) | `semantic`, `fuzzy` |
 
-A consumer that wants only confident results drops `semantic` items below 0.2.
+For confident results, drop `semantic` items below 0.2.
 
 ## Why there is a concept map
 
@@ -211,7 +210,7 @@ topics and identifiers. Four cite official lists (GOV.UK, Bona Vacantia, DBS, JM
 ## Measured quality
 
 `eval/run_testset.py` runs the 1,887 queries of `testset/` (18 suites) against this code, once with the concept map
-and once without, with Claude off. Both columns are copied from its output in `eval/results/`.
+and once without, with Claude off. Both columns reproduce `eval/results/`.
 Claude raises first-10 recall (0.74→0.79), barely changes strict pass (1,323→1,324), and loses four required queries
 (544→540); see [evaluation results](eval/README.md#claude-at-upload).
 
@@ -255,12 +254,12 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
   (database unreachable, busy, or a query over 5 s). A body over 2 MiB gets 413, possibly as plain text.
 - A search item is the client or document itself plus `type`, `score` and `match_type`, so `item["email"]` works.
   Documents carry `tags` (matched or Claude-added concepts) and `summary` (first sentences, up to
-  300 characters plus an ellipsis when truncated, `"method": "extractive"`; with Claude enabled, up to
+  300 characters, plus '…' when cut, `"method": "extractive"`; with Claude enabled, up to
   600 characters, `"method": "llm"`).
 - Validation: names up to 100 characters, description 2,000, 20 social links, title 300, text 50,000, `q` 1-200 after
   collapsing whitespace. Control characters are rejected, except tab and newline in a description or a document's
-  text (and carriage return in the text). A path id that is not a UUID gets 404. An e-mail may repeat (spouses share
-  addresses), so there is no 409.
+  text (and carriage return in the text). Non-UUID path ids get 404. E-mails may repeat (spouses share
+  addresses), so no 409.
 - The 200-character cap on `q` bounds the substring patterns and the client typo tier; longer queries were not
   measured.
 - Results carry whole documents, like the assignment's Document model: at most 50 documents of 50,000 characters,
@@ -292,26 +291,27 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
 - **Scale.** There is no vector index and no candidate cap. Design-time measurements put document search above 0.1 s
   at about 10,000 fragments, and very common client substrings (`gmail`, `com`) at 0.35-1.9 s per query with 100,000
   clients.
-- **Memory of the whole API process.** Not measured; the model alone took about 180 MB, and 415 MB at its peak while
-  loading (design-time).
-- **Platforms.** Built and tested with podman on Apple Silicon (arm64) and with Docker on x86_64 in GitHub Actions;
-  Docker Desktop on Windows was not tried.
+- **Whole API process memory.** Unmeasured; the model alone took about 180 MB, peaking at 415 MB
+  while loading (design-time).
+- **Platforms.** Built and tested with podman on Apple Silicon (arm64) and with Docker on x86_64 in
+  [GitHub Actions](https://github.com/timur-nagimov/nevis-hometask/actions/workflows/ci.yml); Docker Desktop on Windows was not tried.
 - **No deployed instance.**
 
 ## How LLMs were used
 
-**At run time**, unless `NEVIS_LLM_ENABLED=true` is set, the service calls no LLM: the vectors come from a local
-embedding model (`mdbr-leaf-ir`, Apache-2.0) inside the image, and nothing leaves the machine.
+**At run time**, without `NEVIS_LLM_ENABLED=true`, no LLM is called: vectors come from the local
+`mdbr-leaf-ir` model (Apache-2.0) inside the image; nothing leaves the machine.
 With `NEVIS_LLM_ENABLED=true` and an Anthropic key, Claude Haiku writes the summary and adds tags at upload; on 86
-documents it took p50 2.1 s and p95 3.6 s, about $0.0003 per document. The title and text of each document then
-go to Anthropic.
+documents it took p50 2.1 s and p95 3.6 s, about $0.0003 per document. Document titles and text go to Anthropic.
 
-**During development** I used AI agents throughout. Claude Code researched, designed and wrote the code test-first;
-separate agents reviewed the design. Agents wrote 10 suites (Codex and Claude wrote 6 blind), built 8 from open
-datasets and drafted the concept map. **Checked, not trusted:** scripts reproduce quality/cosine tables, enforced by
+**During development** I used AI agents throughout. Codex co-authored 12/165 preceding commits—parts of opt-in
+Claude enrichment (live test, latency script, runner’s `--llm`, prompt hardening, documentation and review fixes) and final review
+fixes—and reviewed enrichment twice and the whole repository at completion.
+Claude Code researched, designed and wrote the rest test-first; separate agents reviewed the design.
+Agents wrote 10 suites (Codex and Claude wrote 6 blind), built 8 from open datasets and drafted the concept map. **Checked, not trusted:** scripts reproduce quality/cosine tables, enforced by
 `tests/unit/test_docs.py`; "design-time" numbers predate the code. Transcripts are captured; image builds require a
-model self-check. Implementation through the original README took about 31 hours, after the initial research and
-test set.
+model self-check. Implementation took about 38 hours of wall time from first commit to this update, after initial
+research and test-set creation; agents worked overnight and in parallel.
 
 ## Repository map
 
@@ -327,6 +327,6 @@ docs/                    DESIGN.md, openapi.json, demo-transcript.txt
 Dockerfile, docker-compose.yml, .github/workflows/ci.yml
 ```
 
-Design decisions and their reasons: [docs/DESIGN.md](docs/DESIGN.md). Licences of the parts: the embedding model
+Design decisions and reasons: [docs/DESIGN.md](docs/DESIGN.md). Licences of the parts: the embedding model
 `MongoDB/mdbr-leaf-ir` is Apache-2.0; psycopg is LGPL-3.0 and used unmodified as a library; each suite built from an
 open dataset (`ds-*`) names its source and licence in its `about` and `source` fields.
