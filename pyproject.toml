@@ -34,8 +34,8 @@ environments = ["sys_platform == 'linux'", "sys_platform == 'darwin'"]
 [tool.ruff]
 line-length = 110
 target-version = "py314"
-# Local material that is not application code. *.md: ruff 0.17 also formats the Python blocks inside
-# Markdown files, and their snippets are often partial on purpose.
+# Local material outside the repository; the test set's own files, kept as they are; and *.md, because
+# ruff 0.17 also formats the Python blocks inside Markdown files, whose snippets are often partial on purpose.
 extend-exclude = ["research", "testset", "*.md"]
 
 [tool.ruff.format]
@@ -50,7 +50,7 @@ select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
 [tool.mypy]
 python_version = "3.14"
 strict = true
-files = ["app", "tests"]
+files = ["app", "eval", "tests"]
 explicit_package_bases = true  # tests/ has no __init__.py; the repository root is the base
 plugins = ["pydantic.mypy"]
 
