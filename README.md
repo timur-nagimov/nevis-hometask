@@ -156,7 +156,7 @@ Both kinds are fetched with `limit` each, merged, sorted by score, type and id, 
 |---|---|---|
 | 0.5 and above | the query's words are in the record, or in the document's tags | `exact`, `lexical`, `concept` |
 | 0.2 to 0.5 | a strong semantic match, or a typo | `semantic`, `fuzzy` |
-| below 0.2 | a weak semantic guess, or a client typo found only in the description | `semantic`, `fuzzy` |
+| below 0.2 | a weak semantic guess, or a client typo found only in the description (at most 0.245) | `semantic`, `fuzzy` |
 
 A consumer that wants only confident results drops `semantic` items below 0.2.
 
@@ -250,16 +250,16 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
   a neighbouring tag, come back too.
 - **`address proof`** also returns "Proof of delivery … home address" and letters asking for proof of address (same
   tag as the bill); only a document-type label, say from an LLM at upload, could separate them.
-- **Client substrings inside words:** `Chester` also finds a description that mentions Manchester. The test authors
-  disagree on whether that is wrong; whole-word matching for words of up to three letters is the first variant to
-  measure.
-- **Similar names:** the typo tier can return another person with a similar name (`Sergey Menshikov` finds a
-  different Menshikov); without the tier far more typos and nicknames fail.
+- **Client substrings inside words:** `Chester` also finds a description that mentions Manchester, and `Ng` one that
+  mentions England. The test authors disagree on whether that is wrong; whole-word matching for words of up to three
+  letters is the first variant to measure.
+- **Similar names:** the typo tier can return another person with a similar name (`Sergey Menshikov` finds Sergey
+  Melikov); without the tier far more typos and nicknames fail.
 - **Typos inside a document's text** are not corrected, only in titles and concept phrases; swapped letters in a short
   name (`Jhon`) defeat trigrams.
 - **Names in another script:** Cyrillic or Arabic spellings of Latin names are not found.
-- **Queries without an answer** can get up to three weak guesses below 0.2, sometimes a wrong semantic match above
-  0.2 (`marriage certificate`).
+- **Queries without an answer** can get up to three weak guesses below 0.2 (`marriage certificate`), sometimes a wrong
+  semantic match above 0.2 (`tenancy agreement`).
 - **Long and empty queries** get 422 (over 200 characters, or only spaces); one test suite expects 200 and `[]` for
   the empty one.
 
@@ -288,7 +288,7 @@ existed. LLM agents wrote 10 of the 18 test suites (Codex and Claude wrote 6 of 
 open datasets. An LLM also drafted the concept map (see above). **Checked, not trusted:** every number in the quality
 and cosine tables is printed by a script in this repository (`tests/unit/test_docs.py` fails otherwise), numbers
 marked "design-time" come from the research done before the code, the transcripts are captured from the running
-service, and the image build fails unless the model passes a self-check. The code took about 25 hours of wall time up
+service, and the image build fails unless the model passes a self-check. The code took about 31 hours of wall time up
 to this README; the research and the test set came before.
 
 ## Repository map
