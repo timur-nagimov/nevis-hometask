@@ -62,5 +62,6 @@ ignore_missing_imports = true
 testpaths = ["tests"]
 pythonpath = ["."]
 # No -q here: a -q on the command line would add up to -qq, and pytest then prints no "N passed" line.
-addopts = "--import-mode=importlib"
+addopts = "--import-mode=importlib -m 'not slow'"
+markers = ["slow: the latency measurement during parallel uploads; deselected unless -m slow is given"]
 filterwarnings = ["error"]

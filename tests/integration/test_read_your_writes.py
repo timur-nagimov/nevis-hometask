@@ -3,42 +3,9 @@ back a response only after the application has finished, so it cannot see work t
 response is sent, such as a late commit."""
 
 import json
-import socket
-import threading
-import time
 import urllib.error
 import urllib.request
-from collections.abc import Iterator
 from typing import Any
-
-import pytest
-import uvicorn
-
-from app.config import Settings
-from app.main import create_app
-
-
-@pytest.fixture
-def base_url(fresh_dsn: str) -> Iterator[str]:
-    """The application served by uvicorn in a thread, as `python -m app` serves it, on a loopback port the OS
-    picks. The server is stopped after the test, also when the test or the start fails."""
-    app = create_app(Settings(database_url=fresh_dsn))
-    server = uvicorn.Server(uvicorn.Config(app, access_log=False, log_config=None))
-    with socket.create_server(('127.0.0.1', 0)) as listener:
-        # daemon: a server that does not stop in time must not keep pytest from exiting
-        thread = threading.Thread(target=server.run, kwargs={'sockets': [listener]}, daemon=True)
-        thread.start()
-        try:
-            deadline = time.monotonic() + 60  # the start loads the model
-            while not server.started:
-                if not thread.is_alive() or time.monotonic() > deadline:
-                    pytest.fail('uvicorn did not start')
-                time.sleep(0.05)
-            host, port = listener.getsockname()
-            yield f'http://{host}:{port}'
-        finally:
-            server.should_exit = True
-            thread.join(timeout=10)
 
 
 def call(method: str, url: str, body: dict[str, str] | None = None) -> tuple[int, Any]:

@@ -7,12 +7,15 @@ database the API serves (`nevis`) is never touched. Without NEVIS_DATABASE_URL t
 """
 
 import os
+import socket
+import threading
 import time
 from collections.abc import Iterator
 from typing import cast
 
 import psycopg
 import pytest
+import uvicorn
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from psycopg.conninfo import make_conninfo
@@ -70,3 +73,26 @@ def services(app_client: TestClient) -> Services:
     shipped concept map. Reused rather than built twice: loading the model takes time."""
     built: Services = cast(FastAPI, app_client.app).state.services
     return built
+
+
+@pytest.fixture
+def base_url(fresh_dsn: str) -> Iterator[str]:
+    """The application served by uvicorn in a thread, as `python -m app` serves it, on a loopback port the OS
+    picks. The server is stopped after the test, also when the test or the start fails."""
+    app = create_app(Settings(database_url=fresh_dsn))
+    server = uvicorn.Server(uvicorn.Config(app, access_log=False, log_config=None))
+    with socket.create_server(('127.0.0.1', 0)) as listener:
+        # daemon: a server that does not stop in time must not keep pytest from exiting
+        thread = threading.Thread(target=server.run, kwargs={'sockets': [listener]}, daemon=True)
+        thread.start()
+        try:
+            deadline = time.monotonic() + 60  # the start loads the model
+            while not server.started:
+                if not thread.is_alive() or time.monotonic() > deadline:
+                    pytest.fail('uvicorn did not start')
+                time.sleep(0.05)
+            host, port = listener.getsockname()
+            yield f'http://{host}:{port}'
+        finally:
+            server.should_exit = True
+            thread.join(timeout=10)
