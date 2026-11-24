@@ -1,4 +1,4 @@
-"""Cosine of three queries against three one-sentence documents: the shipped model, no concept map.
+"""Cosine of three queries against three short documents: the shipped model, no concept map.
 
 For `address proof` the embeddings alone rank the utility bill last: this is the README's argument for the
 concept map. It needs the model, not the database, so it runs in the tests container. To refresh the committed
