@@ -31,12 +31,12 @@ def suite_ids(app_client: TestClient) -> dict[str, str]:
     for client in corpus['clients']:
         fields = {key: client[key] for key in CLIENT_FIELDS}
         client_ids[client['id']] = post_client(app_client, **fields)['id']
-    document_ids: dict[str, str] = {}
+    suite_id_of: dict[str, str] = {}
     for document in corpus['documents']:
         client_id = client_ids[document['client_id']]
         created = post_document(app_client, client_id, document['title'], document['content'])
-        document_ids[created['id']] = document['id']
-    return document_ids
+        suite_id_of[created['id']] = document['id']
+    return suite_id_of
 
 
 @pytest.mark.parametrize('q', ['address proof', 'proof of address'])
