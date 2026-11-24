@@ -15,7 +15,7 @@ import urllib.parse
 import urllib.request
 from typing import Any
 
-API = os.environ.get('NEVIS_API') or f'http://127.0.0.1:{os.environ.get("API_PORT", "8000")}'
+API = os.environ.get('NEVIS_API') or f'http://127.0.0.1:{os.environ.get("API_PORT") or "8000"}'
 EMAIL = 'john.doe@neviswealth.com'
 BILLS = ['Electricity bill', 'Scan 0042', 'Utility bill']
 EXACT_SCORE_MIN = 0.5  # as in app/config.py: from this score on, the query words or the concept tags matched
@@ -59,7 +59,8 @@ def main() -> None:
         same = [item for item in search(title, type='document') if item['title'] == title]
         check(len(same) == 1, f'one document titled {title!r}', same)
 
-    check(search('chocolate cake recipe') == [], 'chocolate cake recipe: []', None)
+    junk = search('chocolate cake recipe')
+    check(junk == [], 'chocolate cake recipe: []', junk)
 
 
 if __name__ == '__main__':
