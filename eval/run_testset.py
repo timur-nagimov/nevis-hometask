@@ -12,6 +12,8 @@ API would reject is skipped and logged. Each query is validated like `q` of GET 
 refuses counts as an empty answer) and answered by app.search.search with the largest limit and the `type` of
 the query's scope. The answers are mapped back to suite ids and scored by eval.metrics. The tables go to
 stdout, progress and warnings to stderr.
+
+Two runs of the same suite on one server must not overlap: the second drops the first one's database.
 """
 
 import argparse
