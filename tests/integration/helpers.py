@@ -9,6 +9,9 @@ import psycopg
 from fastapi.testclient import TestClient
 from psycopg import sql
 from psycopg.conninfo import make_conninfo
+from sqlalchemy import Engine, select
+
+from app.db import DocumentChunkRow, DocumentRow, _connection
 
 
 @contextmanager
@@ -39,3 +42,21 @@ def post_document(client: TestClient, client_id: str, title: str, content: str) 
     assert response.status_code == 201, response.text
     created: dict[str, Any] = response.json()
     return created
+
+
+def chunk_numbers(engine: Engine, document_id: str) -> list[int]:
+    """The chunk numbers stored for a document, in order."""
+    statement = (
+        select(DocumentChunkRow.chunk_no)
+        .where(DocumentChunkRow.document_id == uuid.UUID(document_id))
+        .order_by(DocumentChunkRow.chunk_no)
+    )
+    with _connection(engine) as conn:
+        return list(conn.execute(statement).scalars())
+
+
+def stored_tags_text(engine: Engine, document_id: str) -> str:
+    """The searchable tag text stored for a document."""
+    statement = select(DocumentRow.tags_text).where(DocumentRow.id == uuid.UUID(document_id))
+    with _connection(engine) as conn:
+        return conn.execute(statement).scalar_one()

@@ -100,8 +100,9 @@ SHORT_DOC_WORDS = 200  # in a document up to this length a concept found anywher
 CHUNK_WORDS = 200  # words per embedded chunk
 SUMMARY_CHARS = 300  # length of the lead summary
 ELLIPSIS = '\u2026'  # ends a lead summary that had to cut its first sentence
-SummaryMethod = Literal['extractive']  # how a document's summary was made: `summary.method` in the API
+SummaryMethod = Literal['extractive', 'llm']  # how a document's summary was made: `summary.method` in the API
 EXTRACTIVE: SummaryMethod = 'extractive'  # the lead summary, taken from the content as written
+LLM: SummaryMethod = 'llm'  # written by Claude at upload
 TAGS_CHUNK_NO = -1  # chunk_no of the embedded tags; the content chunks are numbered from 0
 MAX_CONCURRENT_UPLOADS = 4  # documents processed at once; further uploads wait without holding a thread
 

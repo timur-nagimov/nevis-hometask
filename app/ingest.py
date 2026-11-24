@@ -29,6 +29,7 @@ from app.config import (
     CHUNK_WORDS,
     ELLIPSIS,
     EXTRACTIVE,
+    LLM,
     LLM_CONNECT_SECONDS,
     LLM_MAX_CONCEPTS,
     LLM_MAX_PHRASES,
@@ -266,44 +267,71 @@ def load_concepts(path: str) -> Concepts | None:
 @dataclass(frozen=True)
 class Tagging:
     tags: list[str]  # concept names of all matched entries, file order, no duplicates (in the API)
-    tags_text: str  # one sentence per matched entry (searched through documents.fts)
-    head_text: str  # sentences of the head entries only; '' means no tags chunk (TAGS_CHUNK_NO)
+    tags_text: str  # one sentence per matched entry, then Claude's (searched through documents.fts)
+    head_text: str  # the head entries' sentences, then Claude's; '' means no tags chunk (TAGS_CHUNK_NO)
 
 
-def tagging_from_matches(concepts: Concepts, matches: list[tuple[int, bool, bool]], content: str) -> Tagging:
+def tagging_from_matches(
+    concepts: Concepts,
+    matches: list[tuple[int, bool, bool]],
+    content: str,
+    answer: LlmOutput | None = None,
+) -> Tagging:
     """Tags from the matched entries, in entry order: (entry number, in the title, in title or content).
 
     Head entries: matched in the title, or matched anywhere when the content has at most SHORT_DOC_WORDS
     words. Only head entries are embedded (the tags chunk, TAGS_CHUNK_NO): otherwise a long letter that
     mentions a bill in passing would look like proof of address.
+
+    Claude's answer, when given, adds its concepts as head entries: Claude read the whole text. Its document
+    type and phrases form one more sentence, for tags_text, and for the tags chunk when there are head
+    entries or phrases.
     """
     short = len(content.split()) <= SHORT_DOC_WORDS
     matched = [entry for entry, _, _ in matches]
     head = [entry for entry, in_title, anywhere in matches if in_title or (anywhere and short)]
+    extra = ''
+    if answer is not None:
+        chosen = {number for number, name in enumerate(concepts.names) if name in answer.concepts}
+        matched = sorted(set(matched) | chosen)
+        head = sorted(set(head) | chosen)
+        extra = llm_sentence(answer)
+    sentences = [concepts.sentence(number) for number in matched]
+    head_sentences = [concepts.sentence(number) for number in head]
+    if answer is not None and extra:
+        sentences.append(extra)
+        if head or answer.phrases:  # a document type alone makes no tags chunk
+            head_sentences.append(extra)
     return Tagging(
         tags=list(dict.fromkeys(concepts.entries[number]['concept'] for number in matched)),
-        tags_text=' '.join(concepts.sentence(number) for number in matched),
-        head_text=' '.join(concepts.sentence(number) for number in head),
+        tags_text=' '.join(sentences),
+        head_text=' '.join(head_sentences),
     )
 
 
-def tag_document(services: Services, title: str, content: str) -> Tagging:
-    """The concept tags of a document, matched by the database in one round trip; none without a map."""
+def tag_document(services: Services, title: str, content: str, answer: LlmOutput | None = None) -> Tagging:
+    """The concept tags of a document, matched by the database in one round trip, with Claude's answer when
+    given; none without a map."""
     if services.concepts is None:
         return Tagging(tags=[], tags_text='', head_text='')
     entries, phrases = services.concepts.phrase_arrays()
     matches = db.match_concepts(services.engine, title, content, entries, phrases)
-    return tagging_from_matches(services.concepts, matches, content)
+    return tagging_from_matches(services.concepts, matches, content, answer)
 
 
 def create_document(services: Services, client_id: UUID, payload: DocumentCreate) -> Document:
-    """Tag, summarise, chunk, embed and store one document.
-    The caller has validated the payload and checked that the client exists."""
-    tagging = tag_document(services, payload.title, payload.content)
-    summary = lead_summary(payload.content)
+    """Tag, summarise, chunk, embed and store one document, with Claude's answer when Claude is on. The caller
+    has validated the payload and checked that the client exists, so text never goes to Claude for an upload
+    that is refused."""
+    answer = services.llm.enrich(payload.title, payload.content) if services.llm is not None else None
+    tagging = tag_document(services, payload.title, payload.content, answer)
+    if answer is not None and answer.summary:
+        summary, summary_method = answer.summary, LLM
+    else:
+        summary, summary_method = lead_summary(payload.content), EXTRACTIVE
     texts = chunk_document(payload.title, payload.content)
     chunk_numbers = list(range(len(texts)))
-    if tagging.head_text:  # the tags are embedded only when there are head entries
+    if tagging.head_text:  # the tags are embedded only when there are head entries or Claude's phrases
         texts.append(f'{payload.title}\n{tagging.head_text}')
         chunk_numbers.append(TAGS_CHUNK_NO)
     vectors = services.embedder.embed_documents(texts)
@@ -315,7 +343,7 @@ def create_document(services: Services, client_id: UUID, payload: DocumentCreate
         tags=tagging.tags,
         tags_text=tagging.tags_text,
         summary=summary,
-        summary_method=EXTRACTIVE,
+        summary_method=summary_method,
         chunks=list(zip(chunk_numbers, vectors, strict=True)),
     )
     return Document.from_row(row)
@@ -444,6 +472,16 @@ def llm_output_schema(names: Sequence[str]) -> dict[str, Any]:
         'required': ['summary', 'concepts', 'document_type', 'phrases'],
         'additionalProperties': False,
     }
+
+
+def llm_sentence(answer: LlmOutput) -> str:
+    """The document type and the phrases as one sentence, for tags_text and the tags chunk; '' when the answer
+    has neither. A phrase that only repeats the document type is left out."""
+    parts = [answer.document_type] if answer.document_type else []
+    for phrase in answer.phrases:
+        if phrase.casefold() != answer.document_type.casefold():
+            parts.append(phrase)
+    return ', '.join(parts) + '.' if parts else ''
 
 
 # At DEBUG the SDK logs every request, the document's text included: it and its HTTP stack stay at WARNING,

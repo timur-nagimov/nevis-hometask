@@ -9,7 +9,7 @@ from uuid import UUID
 import numpy as np
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import Engine, select
+from sqlalchemy import select
 
 from app import ingest
 from app.config import (
@@ -21,10 +21,10 @@ from app.config import (
     Services,
     Settings,
 )
-from app.db import DocumentChunkRow, DocumentRow, _connection
+from app.db import DocumentChunkRow, _connection
 from app.main import create_app
 from app.schemas import Document, DocumentCreate
-from tests.integration.helpers import post_client, post_document
+from tests.integration.helpers import chunk_numbers, post_client, post_document, stored_tags_text
 
 UTILITY = (
     'British Gas utility bill for March 2025. '
@@ -37,24 +37,6 @@ UNKNOWN = '00000000-0000-0000-0000-000000000000'
 @pytest.fixture(scope='module')
 def john(app_client: TestClient) -> dict[str, Any]:
     return post_client(app_client, first_name='John', last_name='Doe', email='john.doe@neviswealth.com')
-
-
-def chunk_numbers(engine: Engine, document_id: str) -> list[int]:
-    """The chunk numbers stored for a document, in order."""
-    statement = (
-        select(DocumentChunkRow.chunk_no)
-        .where(DocumentChunkRow.document_id == UUID(document_id))
-        .order_by(DocumentChunkRow.chunk_no)
-    )
-    with _connection(engine) as conn:
-        return list(conn.execute(statement).scalars())
-
-
-def stored_tags_text(engine: Engine, document_id: str) -> str:
-    """The searchable tag text stored for a document."""
-    statement = select(DocumentRow.tags_text).where(DocumentRow.id == UUID(document_id))
-    with _connection(engine) as conn:
-        return conn.execute(statement).scalar_one()
 
 
 def test_post_answers_201_with_location_tags_and_summary(

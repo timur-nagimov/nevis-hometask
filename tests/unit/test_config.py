@@ -177,7 +177,8 @@ def test_constants_keep_their_values() -> None:
     assert config.UNSTEMMED_FTS_CONFIG == 'simple'
     assert (config.SHORT_DOC_WORDS, config.CHUNK_WORDS, config.SUMMARY_CHARS) == (200, 200, 300)
     assert config.ELLIPSIS == '…'  # one character, not three full stops
-    assert config.EXTRACTIVE == 'extractive'
+    assert get_args(config.SummaryMethod) == ('extractive', 'llm')
+    assert (config.EXTRACTIVE, config.LLM) == ('extractive', 'llm')
     assert (config.TAGS_CHUNK_NO, config.MAX_CONCURRENT_UPLOADS) == (-1, 4)
     assert (config.LLM_SUMMARY_CHARS, config.LLM_MAX_CONCEPTS, config.LLM_MAX_PHRASES) == (600, 5, 10)
     assert (config.LLM_PHRASE_CHARS, config.LLM_MAX_TOKENS, config.LLM_PARALLEL) == (60, 1024, 2)

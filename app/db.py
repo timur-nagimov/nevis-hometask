@@ -2,7 +2,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Literal
+from typing import Any, Literal, get_args
 from uuid import UUID
 
 import numpy as np
@@ -28,6 +28,7 @@ from sqlalchemy import (
     bindparam,
     case,
     cast,
+    column,
     create_engine,
     exists,
     false,
@@ -68,6 +69,7 @@ from app.config import (
     TAU_TITLE,
     UNSTEMMED_FTS_CONFIG,
     Settings,
+    SummaryMethod,
 )
 
 # libpq options of every connection; the timeouts come from Settings (connection_info)
@@ -124,7 +126,12 @@ class ClientRow(Base):
 
 class DocumentRow(Base):
     __tablename__ = 'documents'
-    __table_args__ = (Index('documents_client_id_idx', 'client_id'),)
+    __table_args__ = (
+        Index('documents_client_id_idx', 'client_id'),
+        CheckConstraint(
+            column('summary_method').in_(get_args(SummaryMethod)), name='documents_summary_method_check'
+        ),
+    )
 
     id: Mapped[UUID] = mapped_column(primary_key=True, server_default=text('uuidv7()'))
     client_id: Mapped[UUID] = mapped_column(ForeignKey('clients.id', ondelete='CASCADE'))

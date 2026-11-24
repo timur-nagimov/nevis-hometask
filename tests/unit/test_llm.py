@@ -28,10 +28,13 @@ from app.ingest import (
     Concepts,
     LlmEnricher,
     LlmOutput,
+    Tagging,
     build_system_prompt,
     build_user_message,
     llm_output_schema,
+    llm_sentence,
     make_enricher,
+    tagging_from_matches,
 )
 from tests.fake_claude import REQUEST, FakeClaude, Outcome, answer, message
 
@@ -264,3 +267,44 @@ def test_the_client_has_the_timeouts_and_never_retries() -> None:
     assert llm is not None
     assert llm.client.max_retries == 0
     assert llm.client.timeout == anthropic.Timeout(settings.llm_timeout_seconds, connect=LLM_CONNECT_SECONDS)
+
+
+def test_a_500_word_bill_under_a_neutral_title_gets_the_tag_and_the_chunk() -> None:
+    address, cdd = NAMES.index('proof of address'), NAMES.index('customer due diligence')
+    bill = 'Electricity account for 14 Larkspur Close. This utility bill covers March. ' + (
+        'Meter read on schedule. ' * 122
+    )  # 499 words
+    # What the database matches under the title "Document 17": both concepts list "utility bill", which is
+    # in the text but not in the title, and the text is long, so neither is a head entry.
+    matches = [(address, False, True), (cdd, False, True)]
+    out = LlmOutput(
+        summary='A bill.', concepts=['proof of address'], document_type='utility bill', phrases=[]
+    )
+
+    offline = tagging_from_matches(CONCEPTS, matches, bill)
+    enriched = tagging_from_matches(CONCEPTS, matches, bill, out)
+
+    assert offline.tags == ['proof of address', 'customer due diligence'] and offline.head_text == ''
+    assert enriched.tags == offline.tags
+    assert enriched.tags_text == offline.tags_text + ' utility bill.'
+    assert enriched.head_text == CONCEPTS.sentence(address) + ' utility bill.'  # Claude's concept is head
+
+
+def test_phrases_alone_make_the_tags_chunk_and_a_document_type_alone_does_not() -> None:
+    phrases_only = LlmOutput(summary='s', concepts=[], document_type='', phrases=['energy bill'])
+    type_only = LlmOutput(summary='s', concepts=[], document_type='letter', phrases=[])
+
+    with_phrases = tagging_from_matches(CONCEPTS, [], 'A short letter.', phrases_only)
+    with_type = tagging_from_matches(CONCEPTS, [], 'A short letter.', type_only)
+
+    assert with_phrases == Tagging(tags=[], tags_text='energy bill.', head_text='energy bill.')
+    assert with_type == Tagging(tags=[], tags_text='letter.', head_text='')
+
+
+def test_document_type_and_phrases_form_one_sentence() -> None:
+    out = LlmOutput(
+        summary='s', concepts=[], document_type='Utility bill', phrases=['utility bill', 'energy bill']
+    )
+
+    assert llm_sentence(out) == 'Utility bill, energy bill.'  # a phrase that repeats the type is left out
+    assert llm_sentence(LlmOutput(summary='s', concepts=[], document_type='', phrases=[])) == ''
