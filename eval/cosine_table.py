@@ -7,8 +7,6 @@ table, redirect its output to eval/results/cosines.md:
     docker compose --profile test run --rm --no-deps -T tests python -m eval.cosine_table
 """
 
-from collections.abc import Sequence
-
 from app.config import Settings
 from app.embedding import Embedder
 
@@ -33,11 +31,11 @@ DOCUMENTS = (
 QUERIES = ('address proof', 'proof of address', 'utility bill')
 
 
-def render(rows: Sequence[tuple[str, Sequence[tuple[str, float]]]]) -> str:
-    """One row per query; the documents ordered by cosine, best first, each as `title cosine`."""
+def render(table: dict[str, dict[str, float]]) -> str:
+    """{query: {title: cosine}} as a table: one row per query, the documents ordered by cosine, best first."""
     lines = ['| Query | 1st | 2nd | 3rd |', '|---|---|---|---|']
-    for query, scored in rows:
-        ranked = sorted(scored, key=lambda pair: pair[1], reverse=True)
+    for query, cosines in table.items():
+        ranked = sorted(cosines.items(), key=lambda pair: pair[1], reverse=True)
         cells = ' | '.join(f'{title} {cosine:.2f}' for title, cosine in ranked)
         lines.append(f'| `{query}` | {cells} |')
     return '\n'.join(lines)
@@ -48,12 +46,12 @@ def main() -> None:
     embedder = Embedder(settings.model_dir, settings.embed_threads)
     titles = [title for title, _ in DOCUMENTS]
     passages = embedder.embed_documents([f'{title}\n{text}' for title, text in DOCUMENTS])
-    rows = []
+    table = {}
     for query in QUERIES:
         vector = embedder.embed_query(query)
         cosines = [float(vector @ passage) for passage in passages]
-        rows.append((query, list(zip(titles, cosines, strict=True))))
-    print(render(rows))
+        table[query] = dict(zip(titles, cosines, strict=True))
+    print(render(table))
 
 
 if __name__ == '__main__':

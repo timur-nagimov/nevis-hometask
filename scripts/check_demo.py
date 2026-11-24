@@ -1,6 +1,6 @@
 """Check the demo data and both assignment examples against a running API.
 
-Run it after scripts/demo.sh on a database that holds only the demo data (CI, or after
+Run it after scripts/demo.sh on a database that holds only the demo data (in CI, or after
 `docker compose down -v && docker compose up -d && scripts/demo.sh`):
 
     python3 scripts/check_demo.py        # http://127.0.0.1:8000; API_PORT and NEVIS_API work as in demo.sh
