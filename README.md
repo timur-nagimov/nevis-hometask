@@ -284,12 +284,12 @@ Apache-2.0) inside the image, and nothing leaves the machine. A Claude call at u
 but is not included: it was never run against the real API, and code that sends client documents to a third party
 should not ship unexercised. **During development** I worked with AI agents throughout: Claude Code researched the
 options, wrote the design and then this code, test-first; separate agent reviews attacked the design before any code
-existed; LLM agents wrote 10 of the 18 test suites, Codex and Claude 6 of them blind. An LLM also drafted the
-concept map (see above). **Checked, not trusted:** every number in the quality and cosine tables is printed by a
-script in this repository (`tests/unit/test_docs.py` fails otherwise), numbers marked "design-time" come from the
-research done before the code, the transcripts are captured from the running service, and the image build fails
-unless the model passes a self-check. The code took about 25 hours of wall time up to this README; the research and
-the test set came before.
+existed; LLM agents wrote 10 of the 18 test suites (Codex and Claude 6 of them blind) and built the other 8 from
+open datasets. An LLM also drafted the concept map (see above). **Checked, not trusted:** every number in the quality
+and cosine tables is printed by a script in this repository (`tests/unit/test_docs.py` fails otherwise), numbers
+marked "design-time" come from the research done before the code, the transcripts are captured from the running
+service, and the image build fails unless the model passes a self-check. The code took about 25 hours of wall time up
+to this README; the research and the test set came before.
 
 ## Repository map
 
