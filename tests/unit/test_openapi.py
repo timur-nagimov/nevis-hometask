@@ -5,8 +5,6 @@ import re
 from pathlib import Path
 from typing import Any
 
-import pytest
-
 from app.main import create_app
 
 OPENAPI_FILE = Path(__file__).resolve().parents[2] / 'docs' / 'openapi.json'
@@ -43,13 +41,9 @@ def test_committed_file_is_the_app_schema() -> None:
     assert committed == _schema(), 'docs/openapi.json is stale: run `uv run python scripts/export_openapi.py`'
 
 
-def test_the_operations_are_the_six_of_the_contract() -> None:
-    assert set(_operations(_schema())) == set(EXPECTED)
-
-
-@pytest.mark.parametrize('key', sorted(EXPECTED), ids=lambda key: f'{key[1]} {key[0]}')
-def test_every_status_is_declared(key: tuple[str, str]) -> None:
-    assert set(_operations(_schema())[key]['responses']) == EXPECTED[key]
+def test_each_operation_declares_exactly_the_statuses_it_can_return() -> None:
+    declared = {key: set(operation['responses']) for key, operation in _operations(_schema()).items()}
+    assert declared == EXPECTED
 
 
 def test_errors_are_problem_details() -> None:

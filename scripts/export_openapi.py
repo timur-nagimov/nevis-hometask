@@ -19,9 +19,8 @@ TARGET = ROOT / 'docs' / 'openapi.json'
 
 
 def main() -> None:
-    TARGET.write_text(
-        json.dumps(create_app().openapi(), indent=2, ensure_ascii=False) + '\n', encoding='utf-8'
-    )
+    schema = create_app().openapi()
+    TARGET.write_text(json.dumps(schema, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     print(f'wrote {TARGET.relative_to(ROOT)}')
 
 
