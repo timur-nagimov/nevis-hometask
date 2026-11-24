@@ -499,9 +499,9 @@ def _query_row() -> CTE:
         .correlate(words)
         .lateral('x')
     )
-    every_word = aggregate_order_by(literal(' & '), words.c.n)
+    every_word = func.string_agg(cast(word_query.c.t, Text), aggregate_order_by(literal(' & '), words.c.n))
     tsq = (
-        select(cast(func.coalesce(func.string_agg(cast(word_query.c.t, Text), every_word), ''), TSQUERY))
+        select(cast(func.coalesce(every_word, ''), TSQUERY))
         .select_from(words.join(word_query, true()))
         .where(func.numnode(word_query.c.t) > 0)
     )
@@ -587,8 +587,8 @@ def _typo_leg(query: CTE, lexical: CTE) -> CTE:
     similarity = func.greatest(
         case((near_title.c.ok, near_title.c.ws)), case((has_alt.c.ok, query.c.alt_sim))
     )
-    # The condition of the join, not of WHERE: so PostgreSQL tests it once and skips this leg when the lexical
-    # leg found something. From WHERE it would be moved into the outer join of the candidates, after the leg.
+    # On the join, not in WHERE: PostgreSQL then tests it once and skips this leg when the lexical leg found
+    # something. In WHERE it would become a filter of the candidates' outer join, tested after the leg ran.
     nothing_lexical = ~exists(select(1).select_from(lexical))
     return (
         select(DocumentRow.id.label('document_id'), similarity.label('s'))
@@ -644,11 +644,11 @@ def _search_documents_statement() -> Select[Any]:
         .cte('marked')
     )
     found = select(marked, func.bool_or(marked.c.strong).over().label('any_strong')).subquery('m')
-    cos = func.least(func.greatest(found.c.cos, 0), 1)
+    clamped_cos = func.least(func.greatest(found.c.cos, 0), 1)
     score = case(
-        (found.c.lex_hit, EXACT_SCORE_MIN + (1 - EXACT_SCORE_MIN) * cos),
+        (found.c.lex_hit, EXACT_SCORE_MIN + (1 - EXACT_SCORE_MIN) * clamped_cos),
         (found.c.fs.is_not(None), FUZZY_SCORE_MAX * found.c.fs),
-        else_=EXACT_SCORE_MIN * cos,
+        else_=EXACT_SCORE_MIN * clamped_cos,
     ).label('score')
     match_type = case(
         (found.c.in_text, 'lexical'),
@@ -682,9 +682,9 @@ def search_documents(
 ) -> list[dict[str, Any]]:
     """Documents for a prepared query, best first, at most `limit`.
 
-    `qvec` is the query's vector; `alt` and `alt_sim` are the concept phrase the query misspells and their
-    similarity, or None. Rows: the document's columns, score (unrounded), match_type and cos (of the best
-    chunk).
+    `qvec` is the query's vector; `alt` is the concept phrase the query misspells and `alt_sim` its similarity
+    to the query, or both are None. Rows: the document's columns, score (unrounded), match_type and cos (of
+    the best chunk).
     - `lexical`: every query word is in the title or the content (stemmed); `concept`: only with the concept
       tags. Score EXACT_SCORE_MIN to 1, higher with the cosine.
     - `fuzzy`, only when nothing is lexical or concept: the title is similar to the query, or the document

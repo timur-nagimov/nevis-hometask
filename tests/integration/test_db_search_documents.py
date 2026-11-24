@@ -14,19 +14,7 @@ from tests.integration.corpus import PASSPORT, UTILITY_BILL
 from tests.integration.helpers import post_client, post_document
 
 JOHN = {'first_name': 'John', 'last_name': 'Doe', 'email': 'john.doe@neviswealth.com'}
-COLUMNS = {
-    'id',
-    'score',
-    'match_type',
-    'cos',
-    'client_id',
-    'title',
-    'content',
-    'created_at',
-    'tags',
-    'summary',
-    'summary_method',
-}
+DOCUMENT_COLUMNS = {'id', 'client_id', 'title', 'content', 'created_at', 'tags', 'summary', 'summary_method'}
 
 
 @pytest.fixture(scope='module')
@@ -52,7 +40,7 @@ def test_a_row_has_score_match_type_cos_and_the_document_columns(
 ) -> None:
     row = rows(services, 'utility bill')[0]
 
-    assert set(row) == COLUMNS
+    assert set(row) == DOCUMENT_COLUMNS | {'score', 'match_type', 'cos'}
     assert str(row['id']) == ids['Utility bill']
     assert row['match_type'] == 'lexical'
     assert EXACT_SCORE_MIN <= row['score'] <= 1
@@ -72,7 +60,8 @@ def test_alt_and_alt_sim_drive_the_typo_leg(services: Services, ids: dict[str, s
 
 def test_rows_are_best_first_and_limited(services: Services, ids: dict[str, str]) -> None:
     both = rows(services, 'john doe')
+    scores = [row['score'] for row in both]
 
     assert {str(row['id']) for row in both} == set(ids.values())
-    assert [row['score'] for row in both] == sorted((row['score'] for row in both), reverse=True)
+    assert scores == sorted(scores, reverse=True)
     assert rows(services, 'john doe', limit=1) == both[:1]
