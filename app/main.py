@@ -333,7 +333,7 @@ _SERVER_ERRORS: dict[int | str, dict[str, Any]] = {
     500: problem_doc('Unexpected error; no internals are returned', INTERNAL_ERROR_DETAIL, 500),
     503: {
         **problem_doc(
-            'The database is unreachable or busy, or a query took too long',
+            'The database is unreachable, the service is busy, or a query took too long',
             UNAVAILABLE_DETAIL['unreachable'],
             503,
         ),
@@ -386,7 +386,7 @@ _SEARCH_OK: dict[int | str, dict[str, Any]] = {
                                 'client_id': _EXAMPLE_CLIENT_ID,
                                 'title': 'Utility bill',
                                 'content': _UTILITY_BILL,
-                                'created_at': '2026-11-23T10:15:02.123456Z',
+                                'created_at': '2025-11-20T10:18:42.466123Z',  # the time in the UUID v7 id
                                 'tags': ['proof of address', 'customer due diligence'],
                                 'summary': {'text': _UTILITY_BILL, 'method': EXTRACTIVE},
                             }

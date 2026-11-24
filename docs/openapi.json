@@ -160,7 +160,7 @@
             }
           },
           "503": {
-            "description": "The database is unreachable or busy, or a query took too long",
+            "description": "The database is unreachable, the service is busy, or a query took too long",
             "headers": {
               "Retry-After": {
                 "description": "Seconds to wait: always 5",
@@ -250,7 +250,7 @@
             }
           },
           "503": {
-            "description": "The database is unreachable or busy, or a query took too long",
+            "description": "The database is unreachable, the service is busy, or a query took too long",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -433,7 +433,7 @@
             }
           },
           "503": {
-            "description": "The database is unreachable or busy, or a query took too long",
+            "description": "The database is unreachable, the service is busy, or a query took too long",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -532,7 +532,7 @@
             }
           },
           "503": {
-            "description": "The database is unreachable or busy, or a query took too long",
+            "description": "The database is unreachable, the service is busy, or a query took too long",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -685,7 +685,7 @@
                         "client_id": "019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11",
                         "title": "Utility bill",
                         "content": "British Gas utility bill for March 2025. Account holder John Doe, 14 Larkspur Close, Harrogate. Amount due £84.20.",
-                        "created_at": "2026-11-23T10:15:02.123456Z",
+                        "created_at": "2025-11-20T10:18:42.466123Z",
                         "tags": [
                           "proof of address",
                           "customer due diligence"
@@ -760,7 +760,7 @@
             }
           },
           "503": {
-            "description": "The database is unreachable or busy, or a query took too long",
+            "description": "The database is unreachable, the service is busy, or a query took too long",
             "content": {
               "application/problem+json": {
                 "schema": {
