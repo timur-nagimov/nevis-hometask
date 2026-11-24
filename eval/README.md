@@ -27,8 +27,12 @@ suites.
 Anthropic). It cannot be combined with `--no-concepts`. Run it with:
 
 ```bash
-docker compose --profile test run --rm --no-deps tests python -m eval.run_testset --llm
+docker compose --profile test run --rm --no-deps -e "ANTHROPIC_API_KEY=$(sed -n 's/^ANTHROPIC_API_KEY=//p' .env)" tests python -m eval.run_testset --llm
 ```
+
+Where containers cannot reach the API (for example, a network resolving `api.anthropic.com` to IPv6 only), run
+the same runner on the host with `uv run --env-file .env python -m eval.run_testset --llm` and
+`NEVIS_DATABASE_URL` pointing at a database the host can reach.
 
 The timing above and both committed result files are for Claude off.
 
