@@ -16,7 +16,7 @@ EMAIL="john.doe@neviswealth.com"
 
 # Right after `docker compose up -d` the API may still be loading the model: wait up to 120 s.
 for attempt in $(seq 1 120); do
-  curl -fsS -o /dev/null "$API/health" 2>/dev/null && break
+  curl -fs -o /dev/null "$API/health" && break
   if [ "$attempt" -eq 120 ]; then
     echo "No answer from $API/health after 120 s. Is the stack up? Check with: docker compose ps" >&2
     exit 1
@@ -52,7 +52,10 @@ print("  document %-20s tags: %s" % (repr(d["title"]), ", ".join(d["tags"]) or "
 echo "== Demo data on $API"
 client_id=$(curl -sS --fail-with-body "$API/search?type=client&q=john.doe%40neviswealth.com" | python3 -c '
 import json, sys
-print(next((i["id"] for i in json.load(sys.stdin) if i.get("email") == sys.argv[1]), ""))' "$EMAIL")
+for client in json.load(sys.stdin):
+    if client["email"] == sys.argv[1]:
+        print(client["id"])
+        break' "$EMAIL")
 
 if [ -n "$client_id" ]; then
   echo "John Doe ($EMAIL) already exists as client $client_id: nothing created."
