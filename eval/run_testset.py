@@ -49,7 +49,7 @@ SHOWN_Q_CHARS = 80  # --failures shows a query up to this many characters
 @dataclass
 class SuiteRun:
     results: dict[str, list[str]]  # query id -> suite ids, best first
-    skipped: list[str]  # '<suite>/<record id> (<rejected fields>)'
+    skipped: list[str]  # '<suite>/<record id> (<why>)'
     clients: int  # loaded
     documents: int  # loaded
     load_s: float
@@ -165,10 +165,10 @@ def run_suite(
     The settings are `base` with that database.
     """
     database = suite_database_name(suite['suite'])
+    url = make_conninfo(admin_dsn, dbname=database)
+    settings = Settings(**{**base.model_dump(), 'database_url': url})
     recreate_database(admin_dsn, database)
     try:
-        url = make_conninfo(admin_dsn, dbname=database)
-        settings = Settings(**{**base.model_dump(), 'database_url': url})
         create_schema(settings)
         engine = open_engine(settings)
         try:

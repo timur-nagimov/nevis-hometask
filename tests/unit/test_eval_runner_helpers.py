@@ -6,8 +6,6 @@ from app.config import DEFAULT_MAX_CONTENT_CHARS, MAX_DESCRIPTION_CHARS
 from app.schemas import ClientCreate, DocumentCreate
 from eval.run_testset import api_query, client_payload, document_payload, duration, suite_database_name
 
-ADA = {'id': 'c1', 'first_name': 'Ada', 'last_name': 'Lovelace', 'email': 'ada@example.invalid'}
-
 
 def test_the_database_is_named_after_the_suite() -> None:
     assert suite_database_name('existing-clients-skeptic-44') == 'nevis_ts_existing_clients_skeptic_44'
@@ -16,21 +14,20 @@ def test_the_database_is_named_after_the_suite() -> None:
 @pytest.mark.parametrize(
     ('raw', 'q'),
     [
-        ('  John \t\n Doe ', 'John Doe'),  # searched the way GET /search searches it
+        ('  John \t\n Doe ', 'John Doe'),  # collapsed and trimmed, as GET /search does
         (' \t\n ', None),  # 422: nothing is left after collapsing
         ('\ud83d', None),  # 400: a lone surrogate cannot be sent as UTF-8
     ],
 )
-def test_a_query_the_api_refuses_has_no_q(raw: str, q: str | None) -> None:
+def test_a_query_is_searched_as_the_api_reads_it_or_not_at_all(raw: str, q: str | None) -> None:
     assert api_query(raw) == q
 
 
-def test_a_client_with_a_special_use_domain_is_loaded() -> None:  # the only client of existing-documents-86
-    assert isinstance(client_payload(ADA), ClientCreate)
-
-
-def test_a_rejected_client_names_its_fields_not_its_values() -> None:
-    assert client_payload({**ADA, 'description': 'x' * (MAX_DESCRIPTION_CHARS + 1)}) == 'description'
+def test_a_client_is_checked_like_its_upload() -> None:
+    ada = {'id': 'c1', 'first_name': 'Ada', 'last_name': 'Lovelace', 'email': 'ada@example.invalid'}
+    assert isinstance(client_payload(ada), ClientCreate)
+    too_long = {**ada, 'description': 'x' * (MAX_DESCRIPTION_CHARS + 1)}
+    assert client_payload(too_long) == 'description'
 
 
 def test_a_document_is_checked_like_its_upload() -> None:
