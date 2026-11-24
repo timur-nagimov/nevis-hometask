@@ -10,7 +10,7 @@ half an hour. Nothing enters the search unless it was measured first.
 | Area | Chosen | Instead | Why |
 |---|---|---|---|
 | Storage | PostgreSQL 18 with pgvector, pg_trgm, unaccent | Elasticsearch, Meilisearch, a vector database | substrings, full text, typos and vectors in one store; a document and its vectors commit in one transaction and are searchable at once; Elasticsearch needs a second service, a refresh before a document is visible, and 0.9-1.5 GB of memory (design-time) |
-| Client search | every query word a substring of normalised name + e-mail + description; a trigram typo tier when nothing matches | full-text search; embeddings | an e-mail is one full-text token, so `neviswealth` cannot match; 131 of 134 requirement-level cases (design-time) |
+| Client search | every query word a substring of normalised name + e-mail + description; a trigram typo tier when nothing matches | full-text search; embeddings | an e-mail is one full-text token, so `neviswealth` cannot match; 131 of 134 required client queries (design-time) |
 | Document search | one SQL statement: literal, typo and semantic legs, two-stage result rule | rank fusion (RRF), cross-encoders, LLM re-ranking | no measured gain, or seconds per query (design-time) |
 | Domain knowledge | concept map applied at upload, 30 entries | synonyms at query time; an LLM on every search | the same map at query time: F1 0.628 / 0.525 against 0.646 / 0.595, dev / test (design-time); an LLM per search adds latency and fails without a key |
 | Embeddings | `MongoDB/mdbr-leaf-ir` (Apache-2.0, 768 dimensions, 92 MB) through onnxruntime, in the image | `bge-small`; cloud embeddings | nDCG@10 0.606 against 0.473 for `bge-small` (design-time); works offline |
@@ -25,11 +25,11 @@ Numbers marked design-time were measured while designing; they are not reproduci
 ## 3. Client search
 
 `search_clients` in `app/db.py` normalises query and record alike (NFKC, no accents, case folded) and returns the
-clients whose name, e-mail and description together contain every query word as a substring: `exact`. Not full
-text: an e-mail is one token. Only when nothing is `exact` and the query has at least 5 letters or digits does the
-typo tier run: trigram word similarity from 0.6, `fuzzy`. Score: `0.5 + 0.5 × similarity` with the fields weighted
-(name 1, e-mail 0.7, description 0.5); `fuzzy` gets `0.49 × similarity`. Known misses: matches inside words
-(`Chester` finds Manchester), similar names, swapped letters (`Jhon`).
+clients whose name, e-mail and description together contain every query word as a substring: `exact`. Only when
+nothing is `exact` and the query has at least 5 letters or digits does the typo tier run: trigram word similarity
+from 0.6, `fuzzy`. Score: `0.5 + 0.5 × similarity` with the fields weighted (name 1, e-mail 0.7, description 0.5);
+`fuzzy` gets `0.49 × similarity`. Known errors: matches inside words (`Chester` finds Manchester), similar names,
+swapped letters (`Jhon`).
 
 ## 4. Document ingest
 
@@ -51,8 +51,9 @@ holding a thread.
 `_search_documents_statement` in `app/db.py` builds one statement with three legs: literal (every query word in the
 title, text or tags), typo (only when the literal leg found nothing) and semantic. Two stages: a literal or typo hit,
 or a cosine of at least 0.40 within 0.08 of the best, is strong; only when nothing is strong do the three nearest
-documents from 0.32 come back, scored below 0.2. On the 1,887 test queries, dropping the weak guesses would add 11
-strict passes, but 29 answerable queries would lose every relevant result (design-time reference run).
+documents from 0.32 come back, scored below 0.2. Scores: literal `0.5 + 0.5 × cosine`, typo `0.49 × similarity`,
+semantic `0.5 × cosine`. On the 1,887 test queries, dropping the weak guesses would add 11 strict passes, but 29
+answerable queries would lose every relevant result (design-time reference run).
 
 Result rules compared (design-time, 86 documents, a 38-entry draft of the map):
 
@@ -70,9 +71,9 @@ address), which embeddings do not know (the README's cosine table). An entry has
 (how people ask for it; searched with the tag), `expands_to` (the documents that satisfy it) and optional `sources`.
 The concept and its `expands_to` phrases match as stemmed phrases; a phrase whose first or last word is a stop word
 is skipped. Only a match in the title, or in a document of up to 200 words, enters the embedded tags fragment, so a
-long letter that mentions a bill once does not look like proof of address. An LLM drafted 120 entries from general
-UK wealth-management knowledge; a rule cut them to 30 (keep relations of this kind; drop single documents, topics
-and identifiers). Four entries name official lists:
+long letter that mentions a bill once is tagged but ranks below the bills for `address proof`. An LLM drafted 120
+entries from general UK wealth-management knowledge; a rule cut them to 30 (keep relations of this kind; drop single
+documents, topics and identifiers). Four entries name official lists:
 
 - proof of address: [GOV.UK JSA interview](https://www.gov.uk/jobseekers-allowance/your-jsa-interview);
   [Bona Vacantia checklist](https://www.gov.uk/government/publications/proof-of-identity-checklist/proof-of-identity-checklist)
@@ -113,7 +114,6 @@ access line per request without the query string, never document text.
 - 200 and `[]` for an empty `q`: the test authors disagree.
 - Phrases from failed tests added to the map: fitting the test set.
 - An LLM on every search: latency, and no search without it.
-- RRF and cross-encoders: no measured gain, or seconds per query.
 
 ## 10. Growth path
 
