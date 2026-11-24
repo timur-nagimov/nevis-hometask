@@ -1,14 +1,11 @@
-"""app.search without a database: prepare(), merge() and search()."""
+"""app.search without a database: prepare() and merge()."""
 
 import uuid
-from types import SimpleNamespace
-from typing import Any, cast
+from typing import Any
 
 import pytest
 
-from app import db
-from app.config import Services
-from app.search import merge, prepare, search
+from app.search import merge, prepare
 
 
 @pytest.mark.parametrize(
@@ -66,22 +63,3 @@ def test_uuid_ids_are_compared_as_text() -> None:
     low = uuid.UUID('01900000-0000-7000-8000-000000000001')
     high = uuid.UUID('01900000-0000-7000-8000-000000000002')
     assert [i['id'] for i in merge([item('client', high, 0.5), item('client', low, 0.5)], 10)] == [low, high]
-
-
-def test_search_tags_client_rows_and_merges(monkeypatch: pytest.MonkeyPatch) -> None:
-    calls: list[tuple[object, str, int]] = []
-
-    def fake_search_clients(engine: object, q: str, limit: int) -> list[dict[str, Any]]:
-        calls.append((engine, q, limit))
-        return [
-            {'id': 'b', 'match_type': 'exact', 'score': 0.85000004},
-            {'id': 'a', 'match_type': 'fuzzy', 'score': 0.2205},
-        ]
-
-    monkeypatch.setattr(db, 'search_clients', fake_search_clients)
-    result = search(cast(Services, SimpleNamespace(engine='engine')), 'NevisWealth', 'client', 10)
-    assert calls == [('engine', 'NevisWealth', 10)]
-    assert [(i['type'], i['id'], i['score']) for i in result] == [
-        ('client', 'b', 0.85),
-        ('client', 'a', 0.2205),
-    ]

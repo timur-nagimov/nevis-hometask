@@ -22,25 +22,24 @@ LETTER = LONG_LETTER[0]
 
 
 @pytest.fixture(scope='module')
-def ids(app_client: TestClient) -> dict[str, str]:
-    """Title -> document id, for the six documents uploaded once for this module."""
+def titles(app_client: TestClient) -> dict[str, str]:
+    """Document id -> title, for the six documents uploaded once for this module."""
     client_id = post_client(app_client, **JOHN)['id']
     documents = (UTILITY_BILL, PASSPORT, TAX_RETURN, SCAN_0042, ELECTRICITY_BILL, LONG_LETTER)
-    return {title: post_document(app_client, client_id, title, content)['id'] for title, content in documents}
+    return {post_document(app_client, client_id, title, content)['id']: title for title, content in documents}
 
 
-def address_proof(app_client: TestClient, ids: dict[str, str]) -> list[tuple[str, dict[str, Any]]]:
+def address_proof(app_client: TestClient, titles: dict[str, str]) -> list[tuple[str, dict[str, Any]]]:
     """(title, item) pairs of `address proof`, best first."""
     response = app_client.get('/search', params={'q': 'address proof', 'type': 'document'})
     assert response.status_code == 200, response.text
-    title_of = {document_id: title for title, document_id in ids.items()}
-    return [(title_of[item['id']], item) for item in response.json()]
+    return [(titles[item['id']], item) for item in response.json()]
 
 
 def test_body_only_bill_and_electricity_bill_are_concept_hits(
-    app_client: TestClient, ids: dict[str, str]
+    app_client: TestClient, titles: dict[str, str]
 ) -> None:
-    found = dict(address_proof(app_client, ids))
+    found = dict(address_proof(app_client, titles))
 
     for title in ('Scan 0042', 'Electricity bill'):
         assert found[title]['match_type'] == 'concept'
@@ -48,10 +47,10 @@ def test_body_only_bill_and_electricity_bill_are_concept_hits(
 
 
 def test_long_letter_is_a_concept_hit_below_every_real_bill(
-    app_client: TestClient, ids: dict[str, str]
+    app_client: TestClient, titles: dict[str, str]
 ) -> None:
-    ranked = address_proof(app_client, ids)
-    titles = [title for title, _ in ranked]
+    ranked = address_proof(app_client, titles)
+    order = [title for title, _ in ranked]
 
     assert dict(ranked)[LETTER]['match_type'] == 'concept'
-    assert all(titles.index(bill) < titles.index(LETTER) for bill in BILLS)
+    assert all(order.index(bill) < order.index(LETTER) for bill in BILLS)
