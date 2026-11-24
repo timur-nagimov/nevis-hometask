@@ -53,13 +53,20 @@ expect it) or `nice` (desirable; a miss is not a defect).
 ## What the tables mean
 
 **Strict pass.** Results outside the query's scope are dropped first. A query passes only if every condition that
-applies holds: (1) `empty`: the list is empty; (2) `relevant`: all listed results are present (with `within_top`, for
-typos and questions, at least one of them in the first k; when there are more than 50 relevant results, 50 suffice);
-(3) `others: wrong`, the default: nothing besides `relevant` and `acceptable`; (4) `must_not`: none of these; (5)
-`first`: the first result is one of these; (6) `top_set`: the first places hold exactly these; (7) `before`: for each
-pair both are present and the first ranks higher; (8) `min_results`: at least this many results. One wrong result,
-even in last place, fails the query. In 532 queries of eight suites (`others: ignore`, for example FiQA and Enron)
-extra results are not penalised.
+applies holds:
+
+1. `empty`: the list is empty;
+2. `relevant`: all listed results are present (with `within_top`, for typos and questions, at least one of them in the
+   first k; when there are more than 50 relevant results, 50 suffice);
+3. `others: wrong`, the default: nothing besides `relevant` and `acceptable`;
+4. `must_not`: none of these;
+5. `first`: the first result is one of these;
+6. `top_set`: the first places hold exactly these;
+7. `before`: for each pair both are present and the first ranks higher;
+8. `min_results`: at least this many results.
+
+One wrong result, even in last place, fails the query. In 532 queries of eight suites (`others: ignore`, for example
+FiQA and Enron) extra results are not penalised.
 
 **First 10.** Micro-averaged over (query, result) pairs in the first 10 results: a relevant result is a true
 positive; an `acceptable` one is ignored; any other result is a false positive (for queries with `others: wrong`, and
@@ -90,8 +97,10 @@ research) always fail. Every other number above is the same in `results/`.
 
 ## Caveats
 
-- The corpora are synthetic, except Enron, the sanctions list and RVL-CDIP; real documents need new thresholds.
-- Two suites were written by the design's authors; "written blind" and "open datasets" are the independent rows.
+- The corpora are synthetic, except Enron, FiQA (forum posts), the sanctions list and RVL-CDIP; real documents need
+  new thresholds.
+- Two suites were written by the design's authors, and the thresholds were chosen on the `dev` half of a third suite;
+  "written blind" and "open datasets" are the rows from outside the research.
 - `codex-mixed` expects 200 and `[]` for an empty `q`, while the API answers 422: h23 and h24 of
   `tests/integration/test_http_cases.py` are expected failures (55 of the 57 HTTP checks pass).
 - For future tuning, split the set by whole suites, not by query: otherwise spellings of one query land in both
