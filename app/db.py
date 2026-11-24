@@ -138,7 +138,8 @@ class DocumentRow(Base):
     title: Mapped[str] = mapped_column(Text)
     content: Mapped[str] = mapped_column(Text)
     tags: Mapped[list[str]] = mapped_column(ARRAY(Text), server_default='{}')  # names of the matched concepts
-    tags_text: Mapped[str] = mapped_column(Text, server_default='')  # each matched concept with its phrasings
+    # each matched concept with its phrasings, then Claude's document type and phrases
+    tags_text: Mapped[str] = mapped_column(Text, server_default='')
     summary: Mapped[str] = mapped_column(Text)
     summary_method: Mapped[str] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

@@ -75,8 +75,8 @@ def test_the_start_up_sends_the_warm_up_call(app_client: TestClient, fake: FakeC
 def test_an_upload_stores_claudes_summary_concepts_and_phrases(
     app_client: TestClient, services: Services, fake: FakeClaude
 ) -> None:
-    fake.messages.outcome = message(answer())
     owner = post_client(app_client, first_name='John', last_name='Doe', email='john.doe@neviswealth.com')
+    fake.messages.outcome = message(answer())
 
     doc = post_document(app_client, owner['id'], 'Letter from Northmoor Energy', LETTER)
 
@@ -141,7 +141,7 @@ def test_an_injection_document_changes_no_more_than_the_answer_allows(
 
 def test_the_database_refuses_any_other_summary_method(app_client: TestClient, services: Services) -> None:
     owner = post_client(app_client, first_name='Eve', last_name='Moss', email='eve.moss@example.test')
-    row = insert(DocumentRow).values(
+    statement = insert(DocumentRow).values(
         client_id=UUID(owner['id']),
         title='Note',
         content='Text.',
@@ -150,7 +150,7 @@ def test_the_database_refuses_any_other_summary_method(app_client: TestClient, s
     )
 
     with pytest.raises(IntegrityError) as error, _connection(services.engine) as conn:
-        conn.execute(row)
+        conn.execute(statement)
 
     assert isinstance(error.value.orig, psycopg.errors.CheckViolation)
     assert error.value.orig.diag.constraint_name == 'documents_summary_method_check'
