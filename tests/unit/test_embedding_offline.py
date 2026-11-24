@@ -65,12 +65,21 @@ class ModelOpened(Exception):
     """Ends the self-check once it has chosen the model directory."""
 
 
-@pytest.mark.parametrize('model_dir', [None, '/srv/models/leaf-ir', ''], ids=['unset', 'set', 'empty'])
+@pytest.mark.parametrize(
+    ('name', 'model_dir'),
+    [
+        ('NEVIS_MODEL_DIR', None),
+        ('NEVIS_MODEL_DIR', '/srv/models/leaf-ir'),
+        ('NEVIS_MODEL_DIR', ''),
+        ('nevis_model_dir', '/srv/models/lowercase'),
+    ],
+    ids=['unset', 'set', 'empty', 'lowercase'],
+)
 def test_the_selfcheck_opens_the_model_directory_of_the_service(
-    monkeypatch: pytest.MonkeyPatch, model_dir: str | None
+    monkeypatch: pytest.MonkeyPatch, name: str, model_dir: str | None
 ) -> None:
     if model_dir is not None:
-        monkeypatch.setenv('NEVIS_MODEL_DIR', model_dir)
+        monkeypatch.setenv(name, model_dir)
     opened: list[Path] = []
 
     def open_model(path: Path, threads: int) -> NoReturn:
@@ -130,8 +139,11 @@ def test_without_selfcheck_the_command_prints_its_usage_and_fails() -> None:
     assert '--selfcheck' in result.stderr
 
 
-def test_a_directory_without_the_model_fails_the_selfcheck_in_one_line(tmp_path: Path) -> None:
+def test_a_directory_without_the_model_fails_the_selfcheck_in_one_line(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     """A wrong --model-dir or NEVIS_MODEL_DIR: exit status 1 stops the build, and the line names the cause."""
+    monkeypatch.setenv('NEVIS_MODEL_DIR', str(tmp_path / 'ignored'))
     result = run_command('--selfcheck', '--model-dir', str(tmp_path))
 
     assert result.returncode == 1

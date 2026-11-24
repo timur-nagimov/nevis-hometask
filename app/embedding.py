@@ -129,11 +129,14 @@ class SelfCheckError(RuntimeError):
 def selfcheck(model_dir: str | Path | None = None) -> float:
     """Load the model offline; check the dimension, the unit norm and the golden cosine. Returns the cosine.
 
-    Without `model_dir` it opens the model the service would: NEVIS_MODEL_DIR when it is set, even to '',
-    else DEFAULT_MODEL_DIR. The comparisons are written as `not (... <= ...)` so that NaN fails them.
+    Without `model_dir` it opens the model the service would: NEVIS_MODEL_DIR (case-insensitive) when set,
+    even to '', else DEFAULT_MODEL_DIR. The comparisons use `not (... <= ...)` so that NaN fails them.
     """
     if model_dir is None:
-        model_dir = os.environ.get('NEVIS_MODEL_DIR', DEFAULT_MODEL_DIR)
+        model_dir = DEFAULT_MODEL_DIR
+        for name in os.environ:
+            if name.lower() == 'nevis_model_dir':
+                model_dir = os.environ[name]
     path = Path(model_dir)
     try:
         embedder = Embedder(path, threads=SELFCHECK_THREADS)
