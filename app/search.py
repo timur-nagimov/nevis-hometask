@@ -47,10 +47,8 @@ def search(services: Services, q: str, type_: ResultType | None, limit: int) -> 
 def _document_hits(services: Services, q: str, limit: int) -> list[dict[str, Any]]:
     """The document search's rows as flat dicts: type, score, match_type, then the Document fields.
 
-    The query is embedded once; the concept spell-check gives `alt` and `alt_sim` (none without a concept
-    map). The fields go through Document.from_row, so a hit renders exactly like
-    GET /clients/{client_id}/documents/{document_id} (created_at in UTC, summary as an object); `cos` is
-    dropped.
+    The fields go through Document.from_row, so a hit renders exactly like
+    GET /clients/{client_id}/documents/{document_id} (created_at in UTC, summary as an object, no `cos`).
     """
     from app.schemas import Document
 
