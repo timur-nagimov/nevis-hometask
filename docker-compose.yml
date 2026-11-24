@@ -6,7 +6,7 @@
 # CMD-SHELL health checks, no start_interval, no service_completed_successfully, no `up --wait`, no nested
 # variable defaults.
 # Optional overrides (shell or .env, see .env.example): API_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB.
-# NEVIS_* settings of the API come from .env only: a shell variable does not reach the container.
+# NEVIS_* settings and ANTHROPIC_API_KEY come from .env only: a shell variable does not reach the container.
 
 name: nevis-search
 
