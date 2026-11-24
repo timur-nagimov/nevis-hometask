@@ -13,8 +13,8 @@ import numpy as np
 import pytest
 
 from app import embedding
-from app.config import MODEL_FILE, TOKENIZER_FILE, Settings
-from app.embedding import DIM, GOLDEN_COSINE, SelfCheckError, Vector
+from app.config import EMBEDDING_DIM, GOLDEN_COSINE, MODEL_FILE, TOKENIZER_FILE, Settings
+from app.embedding import SelfCheckError, Vector
 
 ROOT = Path(__file__).resolve().parents[2]
 VARIABLES = ('ORT_DISABLE_TELEMETRY', 'HF_HUB_OFFLINE', 'HF_HUB_DISABLE_TELEMETRY')
@@ -27,8 +27,8 @@ def vector(length: int, *values: float) -> Vector:
     return result
 
 
-AXIS = vector(DIM, 1.0)
-AT_GOLDEN_COSINE = vector(DIM, GOLDEN_COSINE, math.sqrt(1 - GOLDEN_COSINE**2))  # unit length
+AXIS = vector(EMBEDDING_DIM, 1.0)
+AT_GOLDEN_COSINE = vector(EMBEDDING_DIM, GOLDEN_COSINE, math.sqrt(1 - GOLDEN_COSINE**2))  # unit length
 
 
 class FixedVectors:
@@ -88,10 +88,10 @@ def test_the_selfcheck_opens_the_model_directory_of_the_service(
 @pytest.mark.parametrize(
     ('query', 'passage', 'error'),
     [
-        (vector(DIM - 1, 1.0), AT_GOLDEN_COSINE, 'dimension'),
+        (vector(EMBEDDING_DIM - 1, 1.0), AT_GOLDEN_COSINE, 'dimension'),
         (2 * AXIS, AT_GOLDEN_COSINE, 'norms'),
-        (np.full(DIM, np.nan, dtype=np.float32), AT_GOLDEN_COSINE, 'norms'),
-        (AXIS, vector(DIM, 0.0, 1.0), 'cosine'),
+        (np.full(EMBEDDING_DIM, np.nan, dtype=np.float32), AT_GOLDEN_COSINE, 'norms'),
+        (AXIS, vector(EMBEDDING_DIM, 0.0, 1.0), 'cosine'),
     ],
     ids=['dimension', 'length', 'nan', 'cosine'],
 )

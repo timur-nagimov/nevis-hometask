@@ -17,6 +17,7 @@ from app.config import (
     DEFAULT_MODEL_DIR,
     EMBED_BATCH,
     EMBED_INTER_OP_THREADS,
+    EMBEDDING_DIM,
     GOLDEN_COSINE,
     GOLDEN_TOLERANCE,
     MAX_TOKENS,
@@ -33,12 +34,10 @@ from app.config import (
     TOKENIZER_FILE,
     TOKENIZER_SETTINGS,
 )
-from app.config import EMBEDDING_DIM as DIM
 
 # The model's constants are defined in app.config; listed here, they can also be imported from this module.
 __all__ = [
     'DEFAULT_MODEL_DIR',
-    'DIM',
     'GOLDEN_COSINE',
     'GOLDEN_TOLERANCE',
     'MAX_TOKENS',
@@ -142,8 +141,10 @@ def selfcheck(model_dir: str | Path | None = None) -> float:
         raise SelfCheckError(str(exc)) from exc
     query = embedder.embed_query(SELFCHECK_QUERY)
     (passage,) = embedder.embed_documents([SELFCHECK_PASSAGE])
-    if query.shape != (DIM,) or passage.shape != (DIM,):
-        raise SelfCheckError(f'{path}: dimension {query.shape} / {passage.shape}, expected ({DIM},)')
+    if query.shape != (EMBEDDING_DIM,) or passage.shape != (EMBEDDING_DIM,):
+        raise SelfCheckError(
+            f'{path}: dimension {query.shape} / {passage.shape}, expected ({EMBEDDING_DIM},)'
+        )
     norms = [float(np.linalg.norm(vector)) for vector in (query, passage)]
     if not all(abs(norm - 1.0) <= NORM_TOLERANCE for norm in norms):
         raise SelfCheckError(f'{path}: norms {norms}, expected 1.0 +/- {NORM_TOLERANCE}')
@@ -167,8 +168,8 @@ def main() -> int:
         print(f'selfcheck FAILED: {exc}', file=sys.stderr)
         return 1
     print(
-        f'selfcheck ok: {MODEL_REPO}@{MODEL_REVISION[:SHORT_REVISION_CHARS]} dim={DIM} cosine={cosine:.4f} '
-        f'(expected {GOLDEN_COSINE} +/- {GOLDEN_TOLERANCE})'
+        f'selfcheck ok: {MODEL_REPO}@{MODEL_REVISION[:SHORT_REVISION_CHARS]} dim={EMBEDDING_DIM} '
+        f'cosine={cosine:.4f} (expected {GOLDEN_COSINE} +/- {GOLDEN_TOLERANCE})'
     )
     return 0
 

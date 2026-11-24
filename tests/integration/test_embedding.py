@@ -17,13 +17,16 @@ import numpy.typing as npt
 import pytest
 from tokenizers import Tokenizer
 
-from app.config import EMBED_BATCH, EMBED_INTER_OP_THREADS, QUERY_PREFIX, TOKENIZER_FILE
-from app.embedding import (
+from app.config import (
     DEFAULT_MODEL_DIR,
-    DIM,
+    EMBED_BATCH,
+    EMBED_INTER_OP_THREADS,
+    EMBEDDING_DIM,
     MAX_TOKENS,
-    Embedder,
+    QUERY_PREFIX,
+    TOKENIZER_FILE,
 )
+from app.embedding import Embedder
 
 ROOT = Path(__file__).resolve().parents[2]
 MODEL_DIR = os.environ.get('NEVIS_MODEL_DIR', DEFAULT_MODEL_DIR)
@@ -47,7 +50,7 @@ def raw_tokenizer() -> Tokenizer:
 def test_vectors_have_768_dimensions_and_unit_norm(embedder: Embedder) -> None:
     vectors = [embedder.embed_query('address proof'), *embedder.embed_documents(['Utility bill', 'Passport'])]
     for vector in vectors:
-        assert vector.shape == (DIM,) and vector.dtype == np.float32
+        assert vector.shape == (EMBEDDING_DIM,) and vector.dtype == np.float32
         assert abs(float(np.linalg.norm(vector)) - 1.0) < 1e-5
 
 
@@ -55,13 +58,13 @@ def test_vectors_are_scaled_to_unit_length_and_a_zero_vector_stays_zero(
     embedder: Embedder, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     # the pinned model already returns unit vectors, so the model's output is replaced
-    output = np.zeros((2, DIM), dtype=np.float32)
+    output = np.zeros((2, EMBEDDING_DIM), dtype=np.float32)
     output[1, :2] = (3.0, 4.0)  # length 5
     monkeypatch.setattr(embedder, '_session', SimpleNamespace(run=lambda outputs, feed: [output]))
 
     zero, scaled = embedder.embed_documents(['Utility bill', 'Passport'])
 
-    assert np.array_equal(zero, np.zeros(DIM))  # not NaN
+    assert np.array_equal(zero, np.zeros(EMBEDDING_DIM))  # not NaN
     assert np.allclose(scaled[:2], (0.6, 0.8)) and not scaled[2:].any()
 
 
@@ -137,11 +140,11 @@ def test_a_query_does_not_wait_for_a_document_batch(embedder: Embedder) -> None:
     with ThreadPoolExecutor(max_workers=2) as pool:
         with embedder._document_lane:  # as if an upload's batch were running
             query = pool.submit(embedder.embed_query, 'address proof')
-            assert query.result(timeout=30).shape == (DIM,)
+            assert query.result(timeout=30).shape == (EMBEDDING_DIM,)
             batch = pool.submit(embedder.embed_documents, ['Passport'])
             with pytest.raises(TimeoutError):  # another batch waits for the lane
                 batch.result(timeout=0.5)
-        assert batch.result(timeout=30)[0].shape == (DIM,)
+        assert batch.result(timeout=30)[0].shape == (EMBEDDING_DIM,)
 
 
 def test_sixteen_threads_share_one_embedder(embedder: Embedder) -> None:
