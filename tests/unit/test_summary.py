@@ -1,4 +1,4 @@
-"""The lead summary: whole sentences from the start, whitespace collapsed, within 300 characters."""
+"""The lead summary: first sentences within 300 characters, plus an ellipsis when truncated."""
 
 import pytest
 

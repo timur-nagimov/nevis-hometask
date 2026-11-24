@@ -14,7 +14,7 @@ half an hour. Nothing enters the search unless it was measured first.
 | Document search | one SQL statement: literal, typo and semantic legs, two-stage result rule | rank fusion (RRF), cross-encoders, LLM re-ranking | no measured gain, or seconds per query (design-time) |
 | Domain knowledge | 30-entry map; optional Claude enrichment at upload | query-time synonyms or LLM | query-time map F1 0.628 / 0.525 against 0.646 / 0.595, dev / test (design-time); searches remain local |
 | Embeddings | `MongoDB/mdbr-leaf-ir` (Apache-2.0, 768 dimensions, 92 MB) through onnxruntime, in the image | `bge-small`; cloud embeddings | nDCG@10 0.606 against 0.473 for `bge-small` (design-time); works offline |
-| Summary | `extractive`, 300 characters; opt-in Claude `llm`, 600 | LexRank; local LLMs | offline fallback; LexRank was not significantly better; Claude measured in [evaluation](../eval/README.md#claude-at-upload) |
+| Summary | `extractive`, up to 300 characters plus an ellipsis when truncated; opt-in Claude `llm`, up to 600 | LexRank; local LLMs | offline fallback; LexRank was not significantly better; Claude measured in [evaluation](../eval/README.md#claude-at-upload) |
 | HTTP | FastAPI, synchronous handlers, one worker | Litestar; async handlers | correct mixed-result OpenAPI discriminator; onnxruntime and psycopg release the GIL |
 | SQL access | SQLAlchemy 2.1 Core, psycopg 3, `app/db.py` | SQL files | tables and queries together; translated queries return identical test-set rows |
 | Schema | models create an empty database | numbered migrations | one version; schema changes require an empty database |
@@ -37,7 +37,8 @@ An upload (the route in `app/main.py`, then `create_document` in `app/ingest.py`
 
 1. checks the fields (404 for an unknown client);
 2. optionally calls Claude, merging its concepts with phrase-matched tags and adding its document type and phrases;
-3. uses Claude's summary (600 characters), or the first sentences (300) when disabled or unsuccessful;
+3. uses Claude's summary (up to 600 characters), or the first sentences (up to 300, plus an ellipsis when truncated)
+   when disabled or unsuccessful;
 4. cuts the text into fragments of up to 200 words with the title in front;
 5. embeds tags matched in the title or documents up to 200 words, plus Claude concepts/phrases;
 6. embeds in batches of four and stores it all in one transaction before the 201.

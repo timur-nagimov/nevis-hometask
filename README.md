@@ -254,8 +254,9 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
   submitted value. Any call that uses the database may answer 500 without details, or 503 with `Retry-After: 5`
   (database unreachable, busy, or a query over 5 s). A body over 2 MiB gets 413, possibly as plain text.
 - A search item is the client or document itself plus `type`, `score` and `match_type`, so `item["email"]` works.
-  Documents carry `tags` (matched or Claude-added concepts) and `summary` (first sentences, up to 300 characters,
-  `"method": "extractive"`; with Claude enabled, up to 600 characters, `"method": "llm"`).
+  Documents carry `tags` (matched or Claude-added concepts) and `summary` (first sentences, up to
+  300 characters plus an ellipsis when truncated, `"method": "extractive"`; with Claude enabled, up to
+  600 characters, `"method": "llm"`).
 - Validation: names up to 100 characters, description 2,000, 20 social links, title 300, text 50,000, `q` 1-200 after
   collapsing whitespace. Control characters are rejected, except tab and newline in a description or a document's
   text (and carriage return in the text). A path id that is not a UUID gets 404. An e-mail may repeat (spouses share
