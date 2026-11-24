@@ -15,8 +15,8 @@ docker compose --profile test run --rm --no-deps tests python -m eval.run_testse
 docker compose --profile test run --rm --no-deps tests python -m eval.run_testset --no-concepts   # without the concept map
 ```
 
-One configuration takes 1 min 06 s to 1 min 17 s on an Apple M3 Pro (podman VM with 6 CPUs); the last line of the
-output gives the run time. Every suite gets its own database (`nevis_ts_<suite>`), created, given the schema with
+One configuration takes about a minute to a minute and a half on an Apple M3 Pro (podman VM with 6 CPUs); the last
+line of the output gives the run time. Every suite gets its own database (`nevis_ts_<suite>`), created, given the schema with
 `app.db.create_schema` and dropped afterwards; the demo data is not touched. Records the API would reject are skipped
 and logged, and a query the API would reject counts as an empty answer. Queries run with `limit=50`; `type` is the
 query's `scope` (`clients` → `client`, `documents` → `document`, `all` → no type). Add `--failures` to list every
@@ -31,7 +31,8 @@ diff <(grep '^|' eval/results/with-concepts.txt) \
      <(docker compose --profile test run --rm --no-deps -T tests python -m eval.run_testset | grep '^|')
 ```
 
-`python -m eval.cosine_table` prints the README's three-document cosine table ([results/cosines.md](results/cosines.md)).
+`docker compose --profile test run --rm --no-deps tests python -m eval.cosine_table` prints the README's
+three-document cosine table ([results/cosines.md](results/cosines.md)).
 
 ## The test set
 
