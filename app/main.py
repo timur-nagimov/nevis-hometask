@@ -32,6 +32,7 @@ from app.config import (
     SCORE_DECIMALS,
     SHORT_REVISION_CHARS,
     SWAGGER_UI,
+    T_STRONG,
     TOKENIZER_SETTINGS,
     Services,
     Settings,
@@ -447,10 +448,13 @@ async def require_utf8_query(request: Request) -> None:
     tags=['search'],
     summary='Search clients and documents',
     description=(
-        f'Results matching `q`, best first.\n\nOrder: `score` descending ({SCORE_DECIMALS} decimals), '
-        'then `type`, then `id`. '
-        f'`score` >= {EXACT_SCORE_MIN}: every query word occurs in the record (`exact`); '
-        f'below {EXACT_SCORE_MIN}: a typo match (`fuzzy`).'
+        'Clients and documents matching `q`, best first.\n\n'
+        f'Order: `score` descending ({SCORE_DECIMALS} decimals), then `type`, then `id`. '
+        f"`score` >= {EXACT_SCORE_MIN}: the query words occur in the record or in the document's "
+        'concept tags (`exact`, `lexical`, `concept`); '
+        f'below {EXACT_SCORE_MIN}: a typo match (`fuzzy`) or closeness of meaning (`semantic`); '
+        # a semantic hit with a cosine below T_STRONG is returned only when nothing better was found
+        f'below {EXACT_SCORE_MIN * T_STRONG}: a weak guess.'
     ),
     dependencies=[Depends(require_utf8_query)],
     responses={

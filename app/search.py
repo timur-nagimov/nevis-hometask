@@ -3,8 +3,9 @@ from typing import Any, Literal
 from app import db
 from app.config import SCORE_DECIMALS, Services
 
-# app.schemas imports prepare() from this module, so this module must not import app.schemas: that would be
-# an import cycle. The database is called through `db.<function>`, so unit tests can replace those functions.
+# app.schemas imports prepare() from this module, so this module imports app.schemas only inside a function:
+# at module level that would be an import cycle. The database is called through `db.<function>`, so unit
+# tests can replace those functions.
 
 
 def prepare(q: str) -> str:
@@ -38,4 +39,32 @@ def search(services: Services, q: str, type_: ResultType | None, limit: int) -> 
     items: list[dict[str, Any]] = []
     if type_ != 'document':
         items += [{'type': 'client', **row} for row in db.search_clients(services.engine, q, limit)]
+    if type_ != 'client':
+        items += _document_hits(services, q, limit)
     return merge(items, limit)
+
+
+def _document_hits(services: Services, q: str, limit: int) -> list[dict[str, Any]]:
+    """The document search's rows as flat dicts: type, score, match_type, then the Document fields.
+
+    The query is embedded once; the concept spell-check gives `alt` and `alt_sim` (none without a concept
+    map). The fields go through Document.from_row, so a hit renders exactly like
+    GET /clients/{client_id}/documents/{document_id} (created_at in UTC, summary as an object); `cos` is
+    dropped.
+    """
+    from app.schemas import Document
+
+    alt, alt_sim = services.concepts.alt(q) if services.concepts is not None else (None, None)
+    qvec = services.embedder.embed_query(q)
+    hits: list[dict[str, Any]] = []
+    for row in db.search_documents(services.engine, q, qvec, alt, alt_sim, limit):
+        document = Document.from_row(row)
+        hits.append(
+            {
+                'type': 'document',
+                'score': row['score'],
+                'match_type': row['match_type'],
+                **document.model_dump(),
+            }
+        )
+    return hits

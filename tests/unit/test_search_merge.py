@@ -79,7 +79,7 @@ def test_search_tags_client_rows_and_merges(monkeypatch: pytest.MonkeyPatch) -> 
         ]
 
     monkeypatch.setattr(db, 'search_clients', fake_search_clients)
-    result = search(cast(Services, SimpleNamespace(engine='engine')), 'NevisWealth', None, 10)
+    result = search(cast(Services, SimpleNamespace(engine='engine')), 'NevisWealth', 'client', 10)
     assert calls == [('engine', 'NevisWealth', 10)]
     assert [(i['type'], i['id'], i['score']) for i in result] == [
         ('client', 'b', 0.85),
@@ -92,4 +92,8 @@ def test_type_document_skips_the_client_search(monkeypatch: pytest.MonkeyPatch) 
         raise AssertionError('the client search must not run for type=document')
 
     monkeypatch.setattr(db, 'search_clients', fail)
-    assert search(cast(Services, SimpleNamespace(engine='engine')), 'NevisWealth', 'document', 10) == []
+    monkeypatch.setattr(db, 'search_documents', lambda *args: [])
+    services = SimpleNamespace(
+        engine='engine', embedder=SimpleNamespace(embed_query=lambda text: [0.0]), concepts=None
+    )
+    assert search(cast(Services, services), 'NevisWealth', 'document', 10) == []
