@@ -20,7 +20,6 @@ from tests.integration.helpers import post_client, post_document
 SUITE = Path(__file__).resolve().parents[2] / 'testset' / 'suites' / 'tools-mini-6.json'
 BILLS = ('d01', 'd05')  # "Utility bill", "Scan 0042"
 TRAP = 'd04'  # "Proof of delivery"
-CLIENT_FIELDS = ('first_name', 'last_name', 'email', 'description', 'social_links')
 
 
 @pytest.fixture(scope='module')
@@ -29,8 +28,7 @@ def suite_id_of(app_client: TestClient) -> dict[str, str]:
     corpus = json.loads(SUITE.read_text(encoding='utf-8'))['corpus']
     client_ids: dict[str, str] = {}
     for client in corpus['clients']:
-        fields = {key: client[key] for key in CLIENT_FIELDS}
-        client_ids[client['id']] = post_client(app_client, **fields)['id']
+        client_ids[client['id']] = post_client(app_client, **client)['id']  # the API ignores the suite's id
     suite_id_of: dict[str, str] = {}
     for document in corpus['documents']:
         client_id = client_ids[document['client_id']]
