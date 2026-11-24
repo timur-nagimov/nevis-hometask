@@ -20,7 +20,7 @@ docker compose --profile test run --rm --no-deps tests    # unit and integration
   blocked: `docker compose build --build-arg HF_ENDPOINT=<mirror URL>`.
 - **Port.** The API answers on http://127.0.0.1:8000 only. For another port:
   `docker compose down && API_PORT=8001 docker compose up -d` and `API_PORT=8001 scripts/demo.sh`, or set `API_PORT`
-  in `.env` (see `.env.example`). The database publishes no port.
+  in `.env` (see `.env.example`) and export it for the scripts. The database publishes no port.
 - **API description.** Swagger UI at http://127.0.0.1:8000/docs loads its JavaScript and CSS from cdn.jsdelivr.net,
   so it stays blank offline; `docs/openapi.json` is the same description as a file.
 - **Reset.** `docker compose down -v` stops everything and deletes the database volume. `scripts/demo.sh` creates
@@ -177,15 +177,15 @@ title and text):
 
 `app/data/concepts.yaml` lists 30 relations of this kind: a concept (`proof of address`), the ways people ask for it
 (`triggers`) and the documents that satisfy it (`expands_to`: utility bill, council tax bill, bank statement …). At
-upload a document gets as `tags` every concept whose name or document phrase occurs in it. The tags join the literal
-match and, for a title match or a document of up to 200 words, one extra embedded fragment: that is why the bills
-come back as `concept`, with `proof of address` in their tags.
+upload a document gets as `tags` every concept whose name or document phrase occurs in it. The tags, with their
+triggers, join the literal match and, for a title match or a document of up to 200 words, one extra embedded
+fragment: that is why the bills come back as `concept`, with `proof of address` in their tags.
 
 An LLM drafted the map once from general UK wealth-management knowledge (120 entries); it was cut by rule to 30 (keep
-needs whose evidence is named differently; drop single documents, topics and identifiers). Four entries cite an
-official list in `sources` (GOV.UK, Bona Vacantia, DBS, JMLSG). The assignment's pair is there because it is the
-canonical case; `proof of income` → payslip and `photo ID` → passport come from entries of the same kind. The map is
-a closed list: phrasings it lacks get no tag (see Limits).
+relations of this kind; drop single documents, topics and identifiers). Four entries cite an official list in
+`sources` (GOV.UK, Bona Vacantia, DBS, JMLSG). The assignment's pair is there because it is the canonical case;
+`proof of income` → payslip and `photo ID` → passport come from entries of the same kind. The map is a closed list:
+phrasings it lacks get no tag (see Limits).
 
 ## Measured quality
 
@@ -211,8 +211,8 @@ and once without. Both columns are copied from its output in `eval/results/`.
 Strict pass counts a query only if every expected result is found, nothing wrong is returned and the ordering
 requirements hold ([eval/README.md](eval/README.md)). The thresholds were chosen on the dev half of one suite, and two
 suites were written by the design's authors. The map costs a few strict passes and a little precision; it is what
-makes `address proof` find the bills. On the larger test corpora `address proof` never passes strictly: some bills
-are missed, and documents that merely mention proof or address come back with them (see Limits).
+makes `address proof` find the bills. On the test corpora `address proof` never passes strictly: some bills are
+missed, and documents that merely mention proof or address come back with them (see Limits).
 
 Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads send the 86 documents of the `existing-documents-86` suite (6 CPUs, `NEVIS_EMBED_THREADS=4`, podman on an Apple M3 Pro); idle `/search` p95 9 ms.
 
@@ -248,8 +248,8 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
 - **What a document is for** (`proof of income`, `photo ID`, `bank statement` as "anything that proves it") is the
   weakest kind of query: the map is a closed list, so phrasings it lacks ("Council Tax demand notice") get no tag, and
   documents that merely mention the words, or carry a neighbouring tag, come back too.
-- **`address proof` on larger corpora** also returns "Proof of delivery … home address" and letters asking for proof
-  of address (same tag as the bill); only a document-type label, say from an LLM at upload, could separate them.
+- **`address proof`** also returns "Proof of delivery … home address" and letters asking for proof of address (same
+  tag as the bill); only a document-type label, say from an LLM at upload, could separate them.
 - **Client substrings inside words:** `Chester` also finds a description that mentions Manchester. The test authors
   disagree on whether that is wrong; whole-word matching for words of up to three letters is the first variant to
   measure.
@@ -284,11 +284,12 @@ Apache-2.0) inside the image, and nothing leaves the machine. A Claude call at u
 but is not included: it was never run against the real API, and code that sends client documents to a third party
 should not ship unexercised. **During development** I worked with AI agents throughout: Claude Code researched the
 options, wrote the design and then this code, test-first; separate agent reviews attacked the design before any code
-existed; Codex and Claude wrote 6 of the 18 test suites blind. An LLM also drafted the concept map (see above).
-**Checked, not trusted:** every number in the quality and cosine tables is printed by a script in this repository
-(`tests/unit/test_docs.py` fails otherwise), numbers marked "design-time" come from the research done before the
-code, the transcripts are captured from the running service, and the image build fails unless the model passes a
-self-check. The code took about 25 hours of wall time up to this README; the research and the test set came before.
+existed; LLM agents wrote 10 of the 18 test suites, Codex and Claude 6 of them blind. An LLM also drafted the
+concept map (see above). **Checked, not trusted:** every number in the quality and cosine tables is printed by a
+script in this repository (`tests/unit/test_docs.py` fails otherwise), numbers marked "design-time" come from the
+research done before the code, the transcripts are captured from the running service, and the image build fails
+unless the model passes a self-check. The code took about 25 hours of wall time up to this README; the research and
+the test set came before.
 
 ## Repository map
 
@@ -305,5 +306,5 @@ Dockerfile, docker-compose.yml, .github/workflows/ci.yml
 ```
 
 Design decisions and their reasons: [docs/DESIGN.md](docs/DESIGN.md). Licences of the parts: the embedding model
-`MongoDB/mdbr-leaf-ir` is Apache-2.0; psycopg is LGPL-3.0 and used unmodified as a library; each test suite names its
-source and licence in its `about` and `source` fields.
+`MongoDB/mdbr-leaf-ir` is Apache-2.0; psycopg is LGPL-3.0 and used unmodified as a library; each suite built from an
+open dataset (`ds-*`) names its source and licence in its `about` and `source` fields.
