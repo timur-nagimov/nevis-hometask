@@ -1,5 +1,8 @@
 """POST and GET documents through the API: what is stored, the 404s, and the rules for the request body."""
 
+import threading
+import time
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 from uuid import UUID
 
@@ -9,9 +12,18 @@ from fastapi.testclient import TestClient
 from sqlalchemy import Engine, select
 
 from app import ingest
-from app.config import EXTRACTIVE, MAX_BODY_BYTES, MAX_ECHOED_ID_CHARS, TAGS_CHUNK_NO, Services, Settings
+from app.config import (
+    EXTRACTIVE,
+    MAX_BODY_BYTES,
+    MAX_CONCURRENT_UPLOADS,
+    MAX_ECHOED_ID_CHARS,
+    TAGS_CHUNK_NO,
+    Services,
+    Settings,
+)
 from app.db import DocumentChunkRow, DocumentRow, _connection
 from app.main import create_app
+from app.schemas import Document, DocumentCreate
 from tests.integration.helpers import post_client, post_document
 
 UTILITY = (
@@ -180,6 +192,34 @@ def test_media_type_json_syntax_and_size(app_client: TestClient, john: dict[str,
     assert app_client.post(url, content=b'{"title": "x"}', headers=as_text).status_code == 415
     assert app_client.post(url, content=b'{"title": ', headers=as_json).status_code == 400
     assert app_client.post(url, content=big, headers=as_json).status_code == 413
+
+
+def test_at_most_max_concurrent_uploads_are_processed_at_once(
+    app_client: TestClient, john: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    document = Document.model_validate(post_document(app_client, john['id'], 'Passport', PASSPORT))
+    lock = threading.Lock()
+    running = peak = 0
+
+    def slow_create_document(services: Services, client_id: UUID, payload: DocumentCreate) -> Document:
+        nonlocal running, peak
+        with lock:
+            running += 1
+            peak = max(peak, running)
+        time.sleep(0.2)  # long enough for the uploads to overlap
+        with lock:
+            running -= 1
+        return document
+
+    monkeypatch.setattr(ingest, 'create_document', slow_create_document)
+    uploads = 3 * MAX_CONCURRENT_UPLOADS
+    url = f'/clients/{john["id"]}/documents'
+    body = {'title': 'Note', 'content': 'Text.'}
+    with ThreadPoolExecutor(max_workers=uploads) as pool:
+        futures = [pool.submit(app_client.post, url, json=body) for _ in range(uploads)]
+
+    assert [future.result().status_code for future in futures] == [201] * uploads
+    assert peak == MAX_CONCURRENT_UPLOADS
 
 
 def test_get_is_404_for_another_client_and_for_unknown_ids(
