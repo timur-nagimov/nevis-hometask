@@ -67,6 +67,9 @@ ignore_errors = true
 testpaths = ["tests"]
 pythonpath = ["."]
 # No -q here: a -q on the command line would add up to -qq, and pytest then prints no "N passed" line.
-addopts = "--import-mode=importlib -m 'not slow'"
-markers = ["slow: the latency measurement during parallel uploads; deselected unless -m slow is given"]
+addopts = "--import-mode=importlib -m 'not slow and not live'"
+markers = [
+    "slow: the latency measurement during parallel uploads; deselected unless -m slow is given",
+    "live: calls the real Anthropic API; needs the key owner's consent; deselected unless -m live is given",
+]
 filterwarnings = ["error"]

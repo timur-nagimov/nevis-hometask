@@ -34,7 +34,7 @@ from pydantic import TypeAdapter, ValidationError
 from app.config import MAX_LIMIT, MODEL_REVISION, SHORT_REVISION_CHARS, Services, Settings
 from app.db import create_schema, insert_client, open_engine
 from app.embedding import Embedder
-from app.ingest import Concepts, create_document, load_concepts
+from app.ingest import Concepts, LlmEnricher, create_document, load_concepts, make_enricher
 from app.schemas import ClientCreate, DocumentCreate, QueryText
 from app.search import ResultType, search
 from eval.metrics import Scoreboard, kinds_of, render
@@ -46,6 +46,10 @@ SUITES_DIR = Path(__file__).resolve().parents[1] / 'testset' / 'suites'
 TYPE_OF_SCOPE: dict[str, ResultType | None] = {'all': None, 'clients': 'client', 'documents': 'document'}
 QUERY: TypeAdapter[str] = TypeAdapter(QueryText)
 SHOWN_Q_CHARS = 80  # --failures shows a query up to this many characters
+# --llm prints what the calls cost at PRICED_MODEL's prices, in US dollars per million tokens
+PRICED_MODEL = 'claude-haiku-5-5'
+INPUT_PRICE = 0.10
+OUTPUT_PRICE = 0.50
 
 
 @dataclass
@@ -160,7 +164,12 @@ def drop_database(admin_dsn: str, name: str) -> None:
 
 
 def run_suite(
-    suite: dict[str, Any], admin_dsn: str, base: Settings, embedder: Embedder, concepts: Concepts | None
+    suite: dict[str, Any],
+    admin_dsn: str,
+    base: Settings,
+    embedder: Embedder,
+    concepts: Concepts | None,
+    llm: LlmEnricher | None = None,
 ) -> SuiteRun:
     """One suite on a fresh database of its own, dropped afterwards, also after an error.
 
@@ -174,7 +183,9 @@ def run_suite(
         create_schema(settings)
         engine = open_engine(settings)
         try:
-            services = Services(settings=settings, engine=engine, embedder=embedder, concepts=concepts)
+            services = Services(
+                settings=settings, engine=engine, embedder=embedder, concepts=concepts, llm=llm
+            )
             started = time.perf_counter()
             to_suite, skipped = load_corpus(services, suite)
             loaded = time.perf_counter()
@@ -202,11 +213,28 @@ def duration(seconds: float) -> str:
     return f'{minutes} min {rest:02d} s' if minutes else f'{rest} s'
 
 
+def print_llm_totals(totals: dict[str, int]) -> None:
+    """How many documents Claude enriched, why the others fell back, and what the calls cost."""
+    calls = totals.get('calls', 0)
+    fallbacks = {k.removeprefix('fallback_'): v for k, v in sorted(totals.items()) if 'fallback_' in k}
+    tokens_in, tokens_out = totals.get('input_tokens', 0), totals.get('output_tokens', 0)
+    cost = (tokens_in * INPUT_PRICE + tokens_out * OUTPUT_PRICE) / 1_000_000
+    print(f'\nLLM: {calls} documents, {totals.get("ok", 0)} enriched, fallbacks {fallbacks or "none"}')
+    print(
+        f'LLM tokens: input {tokens_in}, output {tokens_out}; cost ${cost:.2f} total, '
+        f'${cost / max(calls, 1):.5f} per document '
+        f'({PRICED_MODEL} at ${INPUT_PRICE:.2f} / ${OUTPUT_PRICE:.2f} per million tokens)'
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog='python -m eval.run_testset', description='Run the test set against the service code.'
     )
     parser.add_argument('--no-concepts', action='store_true', help='without the concept map')
+    parser.add_argument(
+        '--llm', action='store_true', help='with Claude enrichment at upload (needs ANTHROPIC_API_KEY)'
+    )
     parser.add_argument('--failures', action='store_true', help='list every failing query and why')
     parser.add_argument('suites', nargs='*', help='suite names, e.g. tools-mini-6 (default: all)')
     args = parser.parse_args()
@@ -214,13 +242,18 @@ def main() -> None:
     log.setLevel(logging.INFO)
 
     started = time.perf_counter()
-    base = Settings(concepts_file='') if args.no_concepts else Settings()
+    base = Settings(concepts_file='') if args.no_concepts else Settings(llm_enabled=args.llm)
     concepts = load_concepts(base.concepts_file)
     if concepts is None:
         config = 'concept map off (NEVIS_CONCEPTS_FILE empty)'
     else:
         config = f'concept map on ({base.concepts_file})'
     embedder = Embedder(base.model_dir, base.embed_threads)  # one model for all suites
+    llm = make_enricher(base, concepts)  # None unless --llm, a key and the concept map; one for all suites
+    if args.llm and llm is None:
+        parser.error('--llm needs ANTHROPIC_API_KEY in the environment and the concept map')
+    if llm is not None:
+        llm.warm_up()
     admin_dsn = make_conninfo(base.database_url.get_secret_value(), dbname='postgres')
     paths = [SUITES_DIR / f'{name}.json' for name in args.suites] or sorted(SUITES_DIR.glob('*.json'))
 
@@ -236,7 +269,7 @@ def main() -> None:
             len(corpus['clients']),
             len(corpus['documents']),
         )
-        run = run_suite(suite, admin_dsn, base, embedder, concepts)
+        run = run_suite(suite, admin_dsn, base, embedder, concepts, llm)
         tally, failed = board.add_suite(suite, run.results)
         skipped += run.skipped
         load_s += run.load_s
@@ -258,6 +291,8 @@ def main() -> None:
                 log.info('  FAIL %s [%s] %r: %s', query['id'], query['level'], shown, '; '.join(why))
 
     print(render(board, config, skipped))
+    if llm is not None:
+        print_llm_totals(llm.stats())
     print(
         f'\nRun time: {duration(time.perf_counter() - started)} (loading {duration(load_s)}, '
         f'queries {duration(query_s)}); model revision {MODEL_REVISION[:SHORT_REVISION_CHARS]}'

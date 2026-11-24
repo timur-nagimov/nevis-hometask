@@ -23,6 +23,9 @@ reject are skipped and logged, and a query the API would reject counts as an emp
 `--failures` to list every failing query with the reason, and suite names (`tools-mini-6`) to run only those
 suites.
 
+`--llm` adds the Claude call at upload (needs `ANTHROPIC_API_KEY`; sends every document to Anthropic; about an hour
+and under $1 for the 18 suites).
+
 The outputs on the shipped code are committed: [results/with-concepts.txt](results/with-concepts.txt) and
 [results/no-concepts.txt](results/no-concepts.txt). The README's quality table quotes only these files. This prints
 nothing when a new run gives the same numbers:
