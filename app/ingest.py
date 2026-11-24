@@ -378,7 +378,8 @@ def _clip_sentences(text: str, max_chars: int) -> str:
 class LlmOutput(BaseModel):
     """Claude's answer. Values over the limits are clipped, never rejected; an unknown key is rejected."""
 
-    model_config = ConfigDict(extra='forbid', hide_input_in_errors=True)  # errors never quote the answer
+    # error messages never quote the answer's values
+    model_config = ConfigDict(extra='forbid', hide_input_in_errors=True)
 
     summary: str
     concepts: list[str]
