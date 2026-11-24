@@ -62,6 +62,7 @@ K_FALLBACK = 3  # ... at most this many
 TAU_TITLE = 0.60  # word similarity of query and title from which a title is a typo match
 MIN_FUZZY_CHARS = 5  # letters and digits a query needs before typo matching is tried
 SPELL_CUTOFF = 0.90  # similarity from which a query is read as a misspelt concept phrase
+MIN_SPELL_CHARS = 6  # characters a concept name or trigger needs, normalised, to be offered as a correction
 FTS_CONFIG = 'english'  # text search configuration of the documents' tsvector columns and of queries on them
 
 # Client search: a client is `exact` when every query word occurs in it; otherwise, for queries of at least

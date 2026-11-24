@@ -4,6 +4,7 @@ The lead summary, the chunker and the tagging rules are the code the search qual
 change what they return only together with a new measurement.
 """
 
+import difflib
 import hashlib
 import re
 from dataclasses import dataclass
@@ -19,7 +20,9 @@ from app.config import (
     CHUNK_WORDS,
     ELLIPSIS,
     EXTRACTIVE,
+    MIN_SPELL_CHARS,
     SHORT_DOC_WORDS,
+    SPELL_CUTOFF,
     SUMMARY_CHARS,
     TAGS_CHUNK_NO,
     Services,
@@ -130,10 +133,16 @@ class Concepts:
         self.sha256 = sha256  # of the file's bytes; stored in app_meta
         self._entry_numbers: list[int] = []
         self._phrases: list[str] = []
+        self.known: set[str] = set()  # every concept name and trigger, normalised: never corrected
         for number, entry in enumerate(entries):
             for phrase in [entry['concept'], *entry['expands_to']]:
                 self._entry_numbers.append(number)
                 self._phrases.append(phrase)
+            for name in [entry['concept'], *entry['triggers']]:
+                self.known.add(self.norm(name))
+        self.known.discard('')  # left by a trigger of punctuation only
+        # what a query can be corrected to
+        self.candidates = sorted(name for name in self.known if len(name) >= MIN_SPELL_CHARS)
 
     @classmethod
     def load(cls, path: str | Path) -> Concepts:
@@ -144,6 +153,25 @@ class Concepts:
             raise ValueError(f'{path}: expected a non-empty list of concept entries')
         entries = [_entry(path, number, item) for number, item in enumerate(raw)]
         return cls(entries, hashlib.sha256(data).hexdigest())
+
+    @staticmethod
+    def norm(s: str) -> str:
+        """Casefolded; every run of characters other than letters and digits made one space; trimmed."""
+        return ' '.join(re.sub(r'[\W_]+', ' ', s.casefold()).split())
+
+    def alt(self, q: str) -> tuple[str | None, float | None]:
+        """The concept name or trigger that `q` misspells, and their similarity; (None, None) if none.
+
+        That is the candidate closest to the normalised query, from a similarity of SPELL_CUTOFF on. A query
+        that is a concept name or trigger itself is not corrected.
+        """
+        normalised = self.norm(q)
+        if not normalised or normalised in self.known:
+            return None, None
+        best = difflib.get_close_matches(normalised, self.candidates, n=1, cutoff=SPELL_CUTOFF)
+        if not best:
+            return None, None
+        return best[0], difflib.SequenceMatcher(None, normalised, best[0]).ratio()
 
     def phrase_arrays(self) -> tuple[list[int], list[str]]:
         """Parallel arrays for the concept match: the entry number of every phrase, and the phrase.
