@@ -553,20 +553,23 @@ class LlmEnricher:
             return self._fallback('invalid_response', started)
         finally:
             self._slots.release()
-        tokens = (response.usage.input_tokens, response.usage.output_tokens)
-        if response.stop_reason != 'end_turn':  # a refusal, an answer cut at max_tokens, ...: no answer
-            return self._fallback(f'stop_{response.stop_reason}', started, tokens)
-        output = self._parse(response)
-        if output is None:
-            return self._fallback('schema_mismatch', started, tokens)
-        log.info(
-            'llm enrichment ok model=%s input_tokens=%d output_tokens=%d ms=%d request_id=%s',
-            response.model,
-            *tokens,
-            _elapsed_ms(started),
-            response._request_id,
-        )
-        return output, 'ok', *tokens
+        try:  # the SDK can return an incomplete Message without raising
+            tokens = (response.usage.input_tokens, response.usage.output_tokens)
+            if response.stop_reason != 'end_turn':  # a refusal, an answer cut at max_tokens, ...: no answer
+                return self._fallback(f'stop_{response.stop_reason}', started, tokens)
+            output = self._parse(response)
+            if output is None:
+                return self._fallback('schema_mismatch', started, tokens)
+            log.info(
+                'llm enrichment ok model=%s input_tokens=%d output_tokens=%d ms=%d request_id=%s',
+                response.model,
+                *tokens,
+                _elapsed_ms(started),
+                response._request_id,
+            )
+            return output, 'ok', *tokens
+        except AttributeError, TypeError:
+            return self._fallback('invalid_response', started)
 
     def _parse(self, response: Message) -> LlmOutput | None:
         """The answer in the response's text; None when it does not fit the schema or names a concept that is

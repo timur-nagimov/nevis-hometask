@@ -207,12 +207,20 @@ def test_every_failure_takes_the_offline_path_and_logs_its_reason(
             body='UPSTREAM-MARKER',
             message='UPSTREAM-MARKER',
         ),
+        Message.model_construct(),  # type: ignore[call-arg]  # deliberately incomplete SDK envelope
+        Message.model_construct(usage=message(answer()).usage, stop_reason='end_turn'),  # type: ignore[call-arg]
     ],
-    ids=['malformed-json', 'invalid-encoding', 'invalid-response-schema'],
+    ids=[
+        'malformed-json',
+        'invalid-encoding',
+        'invalid-response-schema',
+        'incomplete-message',
+        'missing-content',
+    ],
 )
 @pytest.mark.parametrize('warm_up', [False, True], ids=['upload', 'warm-up'])
 def test_malformed_upstream_response_falls_back_without_logging_it(
-    outcome: Exception, warm_up: bool, caplog: pytest.LogCaptureFixture
+    outcome: Outcome, warm_up: bool, caplog: pytest.LogCaptureFixture
 ) -> None:
     caplog.set_level(logging.DEBUG)
     llm, fake = enricher_with(outcome)
