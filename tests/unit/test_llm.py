@@ -116,14 +116,14 @@ def test_prompt_declares_the_document_untrusted_and_gets_the_concepts_and_limits
     assert f'{LLM_SUMMARY_CHARS} characters' in prompt
 
 
-def make(outcome: Outcome) -> tuple[LlmEnricher, FakeClaude]:
+def enricher_with(outcome: Outcome) -> tuple[LlmEnricher, FakeClaude]:
     """An enricher whose client is a fake that answers or fails with `outcome`."""
     fake = FakeClaude(outcome)
     return LlmEnricher(cast(anthropic.Anthropic, fake), 'claude-haiku-5-5', NAMES), fake
 
 
 def test_the_request_turns_thinking_off_and_asks_for_the_answer_schema() -> None:
-    llm, fake = make(message(answer()))
+    llm, fake = enricher_with(message(answer()))
     title, content = 'Electricity bill', 'Northmoor Energy, March.'
 
     out = llm.enrich(title, content)
@@ -177,7 +177,7 @@ def status_error(cls: type[anthropic.APIStatusError], status: int) -> anthropic.
 def test_every_failure_takes_the_offline_path_and_logs_its_reason(
     outcome: Outcome, reason: str, caplog: pytest.LogCaptureFixture
 ) -> None:
-    llm, _ = make(outcome)
+    llm, _ = enricher_with(outcome)
 
     assert llm.enrich('Bill', 'Text.') is None
     assert f'llm enrichment fallback reason={reason} ' in caplog.text
@@ -193,7 +193,7 @@ def test_a_call_over_the_parallel_limit_does_not_wait(caplog: pytest.LogCaptureF
         release.wait(timeout=5)
         return message(answer())
 
-    llm, fake = make(slow)
+    llm, fake = enricher_with(slow)
     with ThreadPoolExecutor(max_workers=LLM_PARALLEL) as pool:
         uploads = [pool.submit(llm.enrich, 'Bill', 'Text.') for _ in range(LLM_PARALLEL)]
         inside.wait(timeout=5)  # every slot is taken: the uploads are inside messages.create
@@ -207,8 +207,10 @@ def test_a_call_over_the_parallel_limit_does_not_wait(caplog: pytest.LogCaptureF
 
 def test_document_text_and_answer_never_reach_the_log(caplog: pytest.LogCaptureFixture) -> None:
     caplog.set_level(logging.DEBUG)
-    llm, _ = make(message(answer(summary='SUMMARY-MARKER-4410 paid.', phrases=['PHRASE-MARKER-9921'])))
-    bad, _ = make(message('CONTENT-MARKER-7731 is not JSON'))
+    llm, _ = enricher_with(
+        message(answer(summary='SUMMARY-MARKER-4410 paid.', phrases=['PHRASE-MARKER-9921']))
+    )
+    bad, _ = enricher_with(message('CONTENT-MARKER-7731 is not JSON'))
 
     assert llm.enrich('TITLE-MARKER-1187', 'CONTENT-MARKER-7731 utility bill.') is not None
     assert bad.enrich('TITLE-MARKER-1187', 'CONTENT-MARKER-7731') is None
@@ -225,8 +227,8 @@ def test_the_sdk_loggers_stay_at_warning() -> None:
 
 def test_warm_up_never_raises_and_is_not_counted(caplog: pytest.LogCaptureFixture) -> None:
     caplog.set_level(logging.INFO)
-    good, fake = make(message(answer()))
-    bad, _ = make(anthropic.APITimeoutError(request=REQUEST))
+    good, fake = enricher_with(message(answer()))
+    bad, _ = enricher_with(anthropic.APITimeoutError(request=REQUEST))
 
     good.warm_up()
     bad.warm_up()
