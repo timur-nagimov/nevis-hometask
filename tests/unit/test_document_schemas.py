@@ -64,6 +64,11 @@ def test_tab_line_feed_carriage_return_and_format_characters_are_allowed_in_cont
     assert DocumentCreate.model_validate({**BILL, 'content': content}).content == content
 
 
+def test_unknown_members_are_ignored() -> None:
+    body = DocumentCreate.model_validate({**BILL, 'id': '123', 'tags': ['vip']})
+    assert set(body.model_dump()) == {'title', 'content'}
+
+
 def test_a_stored_row_becomes_the_api_shape_with_a_utc_timestamp() -> None:
     row = {
         'id': uuid4(),
