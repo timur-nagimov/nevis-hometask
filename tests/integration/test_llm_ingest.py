@@ -95,7 +95,7 @@ def test_a_long_bill_gets_the_tags_chunk_only_through_claude(
     app_client: TestClient, services: Services, fake: FakeClaude
 ) -> None:
     owner = post_client(app_client, first_name='Jane', last_name='Roe', email='jane.roe@example.test')
-    fake.messages.outcome = message(answer())
+    fake.messages.outcome = message(answer(phrases=[]))  # phrases alone would make the tags chunk
     with_claude = post_document(app_client, owner['id'], 'Document 17', LONG_BILL)
     fake.messages.outcome = anthropic.APITimeoutError(request=REQUEST)
     offline = post_document(app_client, owner['id'], 'Document 18', LONG_BILL)
@@ -117,6 +117,18 @@ def test_a_failed_call_stores_the_document_as_without_claude(
     assert doc['summary'] == {'text': lead_summary(LETTER), 'method': EXTRACTIVE}
     assert doc['tags'] == []
     assert 'llm enrichment fallback reason=timeout' in caplog.text
+
+
+def test_an_empty_summary_from_claude_keeps_the_lead_summary(
+    app_client: TestClient, fake: FakeClaude
+) -> None:
+    owner = post_client(app_client, first_name='Mia', last_name='Hart', email='mia.hart@example.test')
+    fake.messages.outcome = message(answer(summary=''))
+
+    doc = post_document(app_client, owner['id'], 'Letter from Northmoor Energy', LETTER)
+
+    assert doc['summary'] == {'text': lead_summary(LETTER), 'method': EXTRACTIVE}
+    assert doc['tags'] == ['proof of address']  # the answer's concepts still apply
 
 
 def test_an_injection_document_changes_no_more_than_the_answer_allows(
