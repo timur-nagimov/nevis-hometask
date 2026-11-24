@@ -349,13 +349,14 @@ def _plain(text: str) -> str:
 
 
 def _clip_words(text: str, max_chars: int) -> str:
-    """At most max_chars characters, cut at the last space when there is one."""
+    """At most max_chars characters: a longer text is cut at its last space within them, when it has one, and
+    loses a comma, semicolon or colon before the cut."""
     if len(text) <= max_chars:
         return text
     cut = text[:max_chars]
-    if ' ' in cut:
-        cut = cut[: cut.rfind(' ')].rstrip(' ,;:')
-    return cut
+    if ' ' not in cut:
+        return cut
+    return cut.rsplit(' ', 1)[0].rstrip(' ,;:')
 
 
 def _clip_sentences(text: str, max_chars: int) -> str:
@@ -377,7 +378,7 @@ def _clip_sentences(text: str, max_chars: int) -> str:
 class LlmOutput(BaseModel):
     """Claude's answer. Values over the limits are clipped, never rejected; an unknown key is rejected."""
 
-    model_config = ConfigDict(extra='forbid', hide_input_in_errors=True)
+    model_config = ConfigDict(extra='forbid', hide_input_in_errors=True)  # errors never quote the answer
 
     summary: str
     concepts: list[str]
@@ -391,13 +392,13 @@ class LlmOutput(BaseModel):
 
     @field_validator('concepts')
     @classmethod
-    def _first_concepts(cls, value: list[str]) -> list[str]:
+    def _clip_concepts(cls, value: list[str]) -> list[str]:
         """The first LLM_MAX_CONCEPTS different names, in the answer's order."""
         return list(dict.fromkeys(value))[:LLM_MAX_CONCEPTS]
 
     @field_validator('document_type')
     @classmethod
-    def _clip_type(cls, value: str) -> str:
+    def _clip_document_type(cls, value: str) -> str:
         return _clip_words(_plain(value), LLM_PHRASE_CHARS)
 
     @field_validator('phrases')
