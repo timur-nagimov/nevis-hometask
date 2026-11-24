@@ -55,7 +55,15 @@ def test_id_document_finds_the_passport(app_client: TestClient, titles: dict[str
     assert first['score'] >= EXACT_SCORE_MIN
 
 
-@pytest.mark.parametrize('q', ['chocolate cake recipe', 'asdf qwer zxcv', "' OR 1=1 --", '£'])
+@pytest.mark.parametrize(
+    'q',
+    [
+        'chocolate cake recipe',
+        'asdf qwer zxcv',
+        "' OR 1=1 --",
+        '£',  # no searchable word, so not even a weak guess by meaning (the Utility bill says £84.20)
+    ],
+)
 def test_junk_finds_nothing(app_client: TestClient, titles: dict[str, str], q: str) -> None:
     assert search(app_client, q) == []
 
