@@ -49,6 +49,8 @@ def test_errors_are_problem_details() -> None:
         for status, response in operation['responses'].items():
             if status[0] in '45':
                 assert response['content'][PROBLEM_JSON]['schema'] == PROBLEM_REF, (key, status)
+            if status == '422':
+                assert set(response['content']) == {PROBLEM_JSON}, key
 
 
 def test_every_reference_resolves() -> None:
