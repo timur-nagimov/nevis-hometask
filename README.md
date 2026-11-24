@@ -22,7 +22,7 @@ docker compose --profile test run --rm --no-deps tests    # unit and integration
   `docker compose down && API_PORT=8001 docker compose up -d` and `API_PORT=8001 scripts/demo.sh`, or set `API_PORT`
   in `.env` (see `.env.example`) and export it for the scripts. The database publishes no port.
 - **API description.** Swagger UI at http://127.0.0.1:8000/docs loads its JavaScript and CSS from cdn.jsdelivr.net,
-  so it stays blank offline; `docs/openapi.json` is the same description as a file.
+  so it stays blank offline; [docs/openapi.json](docs/openapi.json) is the same description as a file.
 - **Reset.** `docker compose down -v` stops everything and deletes the database volume. `scripts/demo.sh` creates
   nothing on a second run.
 - **Tests.** After changing code, rebuild the test image first: `docker compose --profile test build`. The unit tests
