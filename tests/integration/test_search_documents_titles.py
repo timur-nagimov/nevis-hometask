@@ -28,14 +28,15 @@ def documents(app_client: TestClient, q: str) -> list[dict[str, Any]]:
     return items
 
 
-def test_will_finds_the_document_titled_will(app_client: TestClient, titles: dict[str, str]) -> None:
-    items = documents(app_client, 'will')
+@pytest.mark.parametrize('q', ['will', 'a will'])  # a one-letter piece is not a query word
+def test_will_finds_the_document_titled_will(app_client: TestClient, titles: dict[str, str], q: str) -> None:
+    items = documents(app_client, q)
 
     assert [(titles[item['id']], item['match_type']) for item in items] == [('Will', 'lexical')]
     assert items[0]['score'] >= EXACT_SCORE_MIN
 
 
-@pytest.mark.parametrize('q', ['of', 'a', '£', '????'])
+@pytest.mark.parametrize('q', ['of', 'a', '????'])
 def test_a_query_without_a_searchable_word_finds_nothing(
     app_client: TestClient, titles: dict[str, str], q: str
 ) -> None:

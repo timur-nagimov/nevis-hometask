@@ -1,4 +1,4 @@
-"""GET /search on three short documents: words, concept tags, typos, junk, and the list merged with clients.
+"""GET /search on three short documents: words, concept tags, typos, meaning, junk, and clients in one list.
 
 The module has its own database (app_client), so "nothing found" means nothing at all.
 """
@@ -8,7 +8,7 @@ from typing import Any
 import pytest
 from fastapi.testclient import TestClient
 
-from app.config import EXACT_SCORE_MIN, EXTRACTIVE
+from app.config import EXACT_SCORE_MIN, EXTRACTIVE, T_STRONG
 from tests.integration.corpus import PASSPORT, TAX_RETURN, UTILITY_BILL
 from tests.integration.helpers import post_client, post_document
 
@@ -55,7 +55,7 @@ def test_id_document_finds_the_passport(app_client: TestClient, titles: dict[str
     assert first['score'] >= EXACT_SCORE_MIN
 
 
-@pytest.mark.parametrize('q', ['chocolate cake recipe', 'asdf qwer zxcv', "' OR 1=1 --"])
+@pytest.mark.parametrize('q', ['chocolate cake recipe', 'asdf qwer zxcv', "' OR 1=1 --", '£'])
 def test_junk_finds_nothing(app_client: TestClient, titles: dict[str, str], q: str) -> None:
     assert search(app_client, q) == []
 
@@ -82,6 +82,25 @@ def test_misspelt_title_finds_the_bill_as_a_typo(app_client: TestClient, titles:
 
     assert (titles.get(first['id']), first['match_type']) == ('Utility bill', 'fuzzy')
     assert first['score'] < EXACT_SCORE_MIN
+
+
+def test_a_query_close_in_meaning_finds_a_semantic_hit(
+    app_client: TestClient, titles: dict[str, str]
+) -> None:
+    items = search(app_client, 'hmrc letter')
+
+    # the Passport is near enough for a weak guess, but weak guesses come only when nothing is strong
+    assert [(titles.get(item['id']), item['match_type']) for item in items] == [('Tax return', 'semantic')]
+    assert EXACT_SCORE_MIN * T_STRONG <= items[0]['score'] < EXACT_SCORE_MIN
+
+
+def test_without_a_strong_hit_the_nearest_document_is_a_weak_guess(
+    app_client: TestClient, titles: dict[str, str]
+) -> None:
+    items = search(app_client, 'gas supplier')
+
+    assert [(titles.get(item['id']), item['match_type']) for item in items] == [('Utility bill', 'semantic')]
+    assert items[0]['score'] < EXACT_SCORE_MIN * T_STRONG
 
 
 def test_clients_and_documents_share_one_ranked_list(app_client: TestClient, titles: dict[str, str]) -> None:

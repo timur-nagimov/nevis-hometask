@@ -1,4 +1,5 @@
-"""`address proof` on bills that name themselves in other words, and on a long letter that mentions a bill."""
+"""`address proof` and `utility bill` on bills that name themselves in other words, and on a long letter
+that mentions a bill."""
 
 from typing import Any
 
@@ -29,9 +30,9 @@ def titles(app_client: TestClient) -> dict[str, str]:
     return {post_document(app_client, client_id, title, content)['id']: title for title, content in documents}
 
 
-def address_proof(app_client: TestClient, titles: dict[str, str]) -> list[tuple[str, dict[str, Any]]]:
-    """(title, item) pairs of `address proof`, best first."""
-    response = app_client.get('/search', params={'q': 'address proof', 'type': 'document'})
+def hits(app_client: TestClient, titles: dict[str, str], q: str) -> list[tuple[str, dict[str, Any]]]:
+    """(title, item) pairs of the documents found for q, best first."""
+    response = app_client.get('/search', params={'q': q, 'type': 'document'})
     assert response.status_code == 200, response.text
     return [(titles[item['id']], item) for item in response.json()]
 
@@ -39,7 +40,7 @@ def address_proof(app_client: TestClient, titles: dict[str, str]) -> list[tuple[
 def test_body_only_bill_and_electricity_bill_are_concept_hits(
     app_client: TestClient, titles: dict[str, str]
 ) -> None:
-    found = dict(address_proof(app_client, titles))
+    found = dict(hits(app_client, titles, 'address proof'))
 
     for title in ('Scan 0042', 'Electricity bill'):
         assert found[title]['match_type'] == 'concept'
@@ -49,8 +50,17 @@ def test_body_only_bill_and_electricity_bill_are_concept_hits(
 def test_long_letter_is_a_concept_hit_below_every_real_bill(
     app_client: TestClient, titles: dict[str, str]
 ) -> None:
-    ranked = address_proof(app_client, titles)
+    ranked = hits(app_client, titles, 'address proof')
     order = [title for title, _ in ranked]
 
     assert dict(ranked)[LETTER]['match_type'] == 'concept'
     assert all(order.index(bill) < order.index(LETTER) for bill in BILLS)
+
+
+def test_a_document_close_in_meaning_but_far_below_the_best_is_left_out(
+    app_client: TestClient, titles: dict[str, str]
+) -> None:
+    found = {title for title, _ in hits(app_client, titles, 'utility bill')}
+
+    # the Electricity bill's cosine is above T_STRONG, but more than DELTA below the Utility bill's
+    assert found == {'Utility bill', 'Scan 0042', LETTER}

@@ -58,6 +58,12 @@ def test_alt_and_alt_sim_drive_the_typo_leg(services: Services, ids: dict[str, s
     assert row['score'] == pytest.approx(FUZZY_SCORE_MAX * 0.96)
 
 
+def test_no_typo_matches_when_a_document_matches_the_words(services: Services, ids: dict[str, str]) -> None:
+    found = rows(services, 'passport', alt='address proof', alt_sim=0.96)  # the Utility bill contains alt
+
+    assert [(str(row['id']), row['match_type']) for row in found] == [(ids['Passport'], 'lexical')]
+
+
 def test_rows_are_best_first_and_limited(services: Services, ids: dict[str, str]) -> None:
     both = rows(services, 'john doe')
     scores = [row['score'] for row in both]
