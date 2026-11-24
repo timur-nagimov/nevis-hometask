@@ -35,9 +35,7 @@ def test_a_misspelt_concept_phrase_is_corrected(concepts: Concepts, q: str) -> N
         '????',  # nothing is left after normalising
     ],
 )
-def test_a_phrase_itself_a_distant_query_and_punctuation_are_not_corrected(
-    concepts: Concepts, q: str
-) -> None:
+def test_a_query_that_misspells_no_concept_phrase_is_not_corrected(concepts: Concepts, q: str) -> None:
     assert concepts.alt(q) == (None, None)
 
 
@@ -48,9 +46,6 @@ def test_the_vocabulary_is_concept_names_and_triggers_of_min_spell_chars_or_more
         f'- concept: proof of address\n  triggers: [address proof, {short}]\n  expands_to: [utility bill]\n',
         encoding='utf-8',
     )
-    concepts = Concepts.load(path)
 
-    assert concepts.alt('proof of adress')[0] == 'proof of address'  # the concept name
-    assert concepts.alt('adress proof')[0] == 'address proof'  # a trigger
-    assert concepts.alt('utilty bill') == (None, None)  # an expands_to phrase is not in it
-    assert concepts.alt(short + 'x') == (None, None)  # similar enough, but the trigger is too short
+    # neither the expands_to phrase nor the trigger that is too short
+    assert Concepts.load(path).candidates == ['address proof', 'proof of address']

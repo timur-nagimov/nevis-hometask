@@ -140,7 +140,6 @@ class Concepts:
                 self._phrases.append(phrase)
             for name in [entry['concept'], *entry['triggers']]:
                 self.known.add(self.norm(name))
-        self.known.discard('')  # left by a trigger of punctuation only
         # what a query can be corrected to
         self.candidates = sorted(name for name in self.known if len(name) >= MIN_SPELL_CHARS)
 
