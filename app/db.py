@@ -11,10 +11,12 @@ import psycopg
 from pgvector.sqlalchemy import Vector
 from psycopg.conninfo import conninfo_to_dict, make_conninfo
 from sqlalchemy import (
+    CTE,
     CheckConstraint,
     Computed,
     Connection,
     DateTime,
+    Double,
     Engine,
     ForeignKey,
     Index,
@@ -33,12 +35,14 @@ from sqlalchemy import (
     insert,
     inspect,
     literal,
+    null,
+    or_,
     select,
     text,
     true,
     union_all,
 )
-from sqlalchemy.dialects.postgresql import ARRAY, JSONB, TSVECTOR, aggregate_order_by
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB, TSQUERY, TSVECTOR, aggregate_order_by
 from sqlalchemy.dialects.postgresql import insert as pg_insert  # with ON CONFLICT
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.exc import TimeoutError as PoolExhausted
@@ -47,14 +51,22 @@ from sqlalchemy.pool import NullPool
 
 from app.config import (
     CLIENT_TYPO_SIMILARITY,
+    DELTA,
     DESCRIPTION_WEIGHT,
     EMAIL_WEIGHT,
     EMBEDDING_DIM,
     EXACT_SCORE_MIN,
     FTS_CONFIG,
     FUZZY_SCORE_MAX,
+    K_FALLBACK,
     MIN_FUZZY_CHARS,
+    MIN_STOP_WORDS_CHARS,
+    MIN_WORD_CHARS,
     NAME_WEIGHT,
+    T_FALLBACK,
+    T_STRONG,
+    TAU_TITLE,
+    UNSTEMMED_FTS_CONFIG,
     Settings,
 )
 
@@ -448,6 +460,242 @@ def get_document(engine: Engine, client_id: UUID, document_id: UUID) -> dict[str
     with _connection(engine) as conn:
         row = conn.execute(statement).mappings().first()
     return None if row is None else dict(row)
+
+
+def _query_row() -> CTE:
+    """One row about the query (`p`), from the bound parameters q, qvec, alt and alt_sim."""
+    q = cast(bindparam('q'), Text)
+    alt = cast(bindparam('alt'), Text)
+    # The query's words: each whitespace piece without its punctuation, short tokens dropped
+    pieces = (
+        func.regexp_split_to_table(q, r'\s+').table_valued('raw', with_ordinality='n').render_derived('w')
+    )
+    tokens = (
+        func.regexp_split_to_table(func.btrim(func.public.strip_punct(pieces.c.raw)), ' ')
+        .table_valued('tok', with_ordinality='k')
+        .render_derived()
+        .lateral('t')
+    )
+    words = (
+        select(
+            pieces.c.n,
+            func.string_agg(tokens.c.tok, aggregate_order_by(literal(' '), tokens.c.k)).label('word'),
+        )
+        .select_from(pieces.join(tokens, true()))
+        .where(func.char_length(tokens.c.tok) >= MIN_WORD_CHARS)
+        .group_by(pieces.c.n)
+        .cte('tok')
+        .prefix_with('MATERIALIZED')
+    )
+    # The full-text query: every word must occur (stemmed, stop words ignored); a word with a digit must occur
+    # as the phrase of its tokens, so LV-7734-0921-KX is found whole and by 7734
+    word_query = (
+        select(
+            case(
+                (words.c.word.regexp_match('[0-9]'), func.phraseto_tsquery(FTS_CONFIG, words.c.word)),
+                else_=func.plainto_tsquery(FTS_CONFIG, words.c.word),
+            ).label('t')
+        )
+        .correlate(words)
+        .lateral('x')
+    )
+    every_word = aggregate_order_by(literal(' & '), words.c.n)
+    tsq = (
+        select(cast(func.coalesce(func.string_agg(cast(word_query.c.t, Text), every_word), ''), TSQUERY))
+        .select_from(words.join(word_query, true()))
+        .where(func.numnode(word_query.c.t) > 0)
+    )
+    # The words as typed, stop words kept: for a query of stop words only, matched against titles
+    as_typed = func.coalesce(func.string_agg(words.c.word, aggregate_order_by(literal(' '), words.c.n)), '')
+    q_words = select(func.plainto_tsquery(UNSTEMMED_FTS_CONFIG, as_typed))
+    q_word_chars = select(func.coalesce(func.sum(func.char_length(func.replace(words.c.word, ' ', ''))), 0))
+    # The concept phrase that the query misspells, as a full-text query
+    altq = case((alt.is_(None), null()), else_=func.plainto_tsquery(FTS_CONFIG, func.public.strip_punct(alt)))
+    vector = Vector(EMBEDDING_DIM)  # the parameter's type sends the numpy array; the cast types the column
+    return (
+        select(
+            q.label('q'),
+            cast(bindparam('qvec', type_=vector), vector).label('qvec'),
+            cast(bindparam('alt_sim'), Double).label('alt_sim'),
+            tsq.scalar_subquery().label('tsq'),
+            q_words.scalar_subquery().label('q_words'),
+            q_word_chars.scalar_subquery().label('q_word_chars'),
+            altq.label('altq'),
+        )
+        .cte('p')
+        .prefix_with('MATERIALIZED')
+    )
+
+
+def _lexical_leg(query: CTE) -> CTE:
+    """The documents with every query word in the title, the content or the tags (`lex`); `in_text`: in the
+    title or the content alone. A query of stop words only can match titles, by its words as typed."""
+    has_words = func.numnode(query.c.tsq) > 0
+    title_words = func.to_tsvector(UNSTEMMED_FTS_CONFIG, func.public.strip_punct(DocumentRow.title))
+    title_hit = (
+        select(
+            and_(
+                func.numnode(query.c.tsq) == 0,
+                func.numnode(query.c.q_words) > 0,
+                query.c.q_word_chars >= MIN_STOP_WORDS_CHARS,
+                title_words.bool_op('@@')(query.c.q_words),
+            ).label('title_hit')
+        )
+        .correlate(DocumentRow, query)
+        .lateral('h')
+    )
+    in_text = or_(and_(has_words, DocumentRow.fts_text.bool_op('@@')(query.c.tsq)), title_hit.c.title_hit)
+    with_tags = or_(and_(has_words, DocumentRow.fts.bool_op('@@')(query.c.tsq)), title_hit.c.title_hit)
+    return (
+        select(DocumentRow.id.label('document_id'), in_text.label('in_text'))
+        .join_from(DocumentRow, query, true())
+        .join(title_hit, true())
+        .where(with_tags)
+        .cte('lex')
+    )
+
+
+def _typo_leg(query: CTE, lexical: CTE) -> CTE:
+    """Only when the lexical leg found nothing: the documents whose title is similar to the query, or that
+    contain the concept phrase the query misspells (`fuz`). `s`: the title's similarity or alt_sim, the
+    greater when both apply."""
+    title_similarity = (
+        select(func.word_similarity(query.c.q, DocumentRow.title).label('ws'))
+        .correlate(DocumentRow, query)
+        .lateral('w')
+    )
+    letters_and_digits = func.length(func.regexp_replace(query.c.q, '[^[:alnum:]]', '', 'g'))
+    near_title = (
+        select(
+            and_(letters_and_digits >= MIN_FUZZY_CHARS, title_similarity.c.ws >= TAU_TITLE).label('ok'),
+            title_similarity.c.ws,
+        )
+        .correlate(query, title_similarity)
+        .lateral('tt')
+    )
+    has_alt = (
+        select(
+            and_(
+                query.c.altq.is_not(None),
+                func.numnode(query.c.altq) > 0,
+                DocumentRow.fts.bool_op('@@')(query.c.altq),
+            ).label('ok')
+        )
+        .correlate(DocumentRow, query)
+        .lateral('aa')
+    )
+    similarity = func.greatest(
+        case((near_title.c.ok, near_title.c.ws)), case((has_alt.c.ok, query.c.alt_sim))
+    )
+    # The condition of the join, not of WHERE: so PostgreSQL tests it once and skips this leg when the lexical
+    # leg found something. From WHERE it would be moved into the outer join of the candidates, after the leg.
+    nothing_lexical = ~exists(select(1).select_from(lexical))
+    return (
+        select(DocumentRow.id.label('document_id'), similarity.label('s'))
+        .join_from(DocumentRow, query, nothing_lexical)
+        .join(title_similarity, true())
+        .join(near_title, true())
+        .join(has_alt, true())
+        .where(or_(near_title.c.ok, has_alt.c.ok))
+        .cte('fuz')
+    )
+
+
+def _search_documents_statement() -> Select[Any]:
+    """The statement of search_documents, with the bound parameters q, qvec, alt, alt_sim and limit."""
+    query = _query_row()
+    # The best cosine of each document's chunks: an exact scan, no vector index
+    semantic = (
+        select(
+            DocumentChunkRow.document_id,
+            func.max(1 - DocumentChunkRow.embedding.cosine_distance(query.c.qvec)).label('cos'),
+        )
+        .join_from(DocumentChunkRow, query, true())
+        .group_by(DocumentChunkRow.document_id)
+        .cte('sem')
+    )
+    lexical = _lexical_leg(query)
+    typos = _typo_leg(query, lexical)
+    cos_rank = func.row_number().over(order_by=(semantic.c.cos.desc(), semantic.c.document_id))
+    candidates = (
+        select(
+            semantic.c.document_id,
+            semantic.c.cos,
+            lexical.c.in_text,
+            typos.c.s.label('fs'),
+            lexical.c.document_id.is_not(None).label('lex_hit'),
+            or_(lexical.c.document_id.is_not(None), typos.c.document_id.is_not(None)).label('literal'),
+            func.max(semantic.c.cos).over().label('top_cos'),
+            cos_rank.label('cos_rank'),
+        )
+        .outerjoin_from(semantic, lexical, lexical.c.document_id == semantic.c.document_id)
+        .outerjoin(typos, typos.c.document_id == semantic.c.document_id)
+        .cte('cand')
+    )
+    # Strong: a word or typo match, or a cosine of at least T_STRONG within DELTA of the best one. A query
+    # without a searchable word gets no matches by meaning (sem_ok).
+    has_words = func.numnode(query.c.tsq) > 0
+    near_best = and_(
+        has_words, candidates.c.cos >= T_STRONG, candidates.c.cos >= candidates.c.top_cos - DELTA
+    )
+    marked = (
+        select(candidates, has_words.label('sem_ok'), or_(candidates.c.literal, near_best).label('strong'))
+        .join_from(candidates, query, true())
+        .cte('marked')
+    )
+    found = select(marked, func.bool_or(marked.c.strong).over().label('any_strong')).subquery('m')
+    cos = func.least(func.greatest(found.c.cos, 0), 1)
+    score = case(
+        (found.c.lex_hit, EXACT_SCORE_MIN + (1 - EXACT_SCORE_MIN) * cos),
+        (found.c.fs.is_not(None), FUZZY_SCORE_MAX * found.c.fs),
+        else_=EXACT_SCORE_MIN * cos,
+    ).label('score')
+    match_type = case(
+        (found.c.in_text, 'lexical'),
+        (found.c.lex_hit, 'concept'),
+        (found.c.fs.is_not(None), 'fuzzy'),
+        else_='semantic',
+    ).label('match_type')
+    # Nothing strong: the K_FALLBACK nearest documents from a cosine of T_FALLBACK on
+    fallback = and_(
+        found.c.sem_ok, ~found.c.any_strong, found.c.cos >= T_FALLBACK, found.c.cos_rank <= K_FALLBACK
+    )
+    return (
+        select(*_DOCUMENT_COLUMNS, score, match_type, found.c.cos)
+        .join_from(found, DocumentRow, DocumentRow.id == found.c.document_id)
+        .where(or_(found.c.strong, fallback))
+        .order_by(score.desc(), DocumentRow.id)
+        .limit(bindparam('limit'))
+    )
+
+
+_SEARCH_DOCUMENTS = _search_documents_statement()
+
+
+def search_documents(
+    engine: Engine,
+    q: str,
+    qvec: npt.NDArray[np.float32],
+    alt: str | None,
+    alt_sim: float | None,
+    limit: int,
+) -> list[dict[str, Any]]:
+    """Documents for a prepared query, best first, at most `limit`.
+
+    `qvec` is the query's vector; `alt` and `alt_sim` are the concept phrase the query misspells and their
+    similarity, or None. Rows: the document's columns, score (unrounded), match_type and cos (of the best
+    chunk).
+    - `lexical`: every query word is in the title or the content (stemmed); `concept`: only with the concept
+      tags. Score EXACT_SCORE_MIN to 1, higher with the cosine.
+    - `fuzzy`, only when nothing is lexical or concept: the title is similar to the query, or the document
+      contains `alt`. Score FUZZY_SCORE_MAX times the similarity.
+    - `semantic`, never for a query without a searchable word: a cosine of at least T_STRONG and within DELTA
+      of the best document's; when nothing else is found, the K_FALLBACK nearest documents from T_FALLBACK on.
+      Score EXACT_SCORE_MIN times the cosine.
+    """
+    params = {'q': q, 'qvec': qvec, 'alt': alt, 'alt_sim': alt_sim, 'limit': limit}
+    with _connection(engine) as conn:
+        return [dict(row) for row in conn.execute(_SEARCH_DOCUMENTS, params).mappings()]
 
 
 def _match_concepts_statement() -> Select[int, bool, bool]:

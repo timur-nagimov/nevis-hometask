@@ -64,6 +64,11 @@ MIN_FUZZY_CHARS = 5  # letters and digits a query needs before typo matching is 
 SPELL_CUTOFF = 0.90  # similarity from which a query is read as a misspelt concept phrase
 MIN_SPELL_CHARS = 6  # characters a concept name or trigger needs, normalised, to be offered as a correction
 FTS_CONFIG = 'english'  # text search configuration of the documents' tsvector columns and of queries on them
+MIN_WORD_CHARS = 2  # shorter pieces of a query are not words: `a`, or the 1s of `1=1`
+# A query of stop words only (`will`) finds the titles that contain its words as typed (UNSTEMMED_FTS_CONFIG)
+# when its words have at least MIN_STOP_WORDS_CHARS letters and digits together: `of` finds nothing.
+UNSTEMMED_FTS_CONFIG = 'simple'
+MIN_STOP_WORDS_CHARS = 4
 
 # Client search: a client is `exact` when every query word occurs in it; otherwise, for queries of at least
 # MIN_FUZZY_CHARS letters and digits, a typo match from this word similarity on. The weights say how much a
@@ -72,9 +77,10 @@ CLIENT_TYPO_SIMILARITY = 0.6
 NAME_WEIGHT = 1.0
 EMAIL_WEIGHT = 0.7
 DESCRIPTION_WEIGHT = 0.5
-# The score scale of clients: exact matches score from EXACT_SCORE_MIN to 1, typo matches from 0 to
-# FUZZY_SCORE_MAX. So every exact match ranks above every typo match, and a caller can read a score of at
-# least EXACT_SCORE_MIN as "the query words were found".
+# The score scale of clients and documents: matches of the query's words score from EXACT_SCORE_MIN to 1,
+# typo matches from 0 to FUZZY_SCORE_MAX, documents close in meaning from 0 to EXACT_SCORE_MIN. So every
+# exact match ranks above every typo match, and a caller can read a score of at least EXACT_SCORE_MIN as
+# "the query words were found".
 EXACT_SCORE_MIN = 0.5
 FUZZY_SCORE_MAX = 0.49
 
