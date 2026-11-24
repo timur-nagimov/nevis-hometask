@@ -520,6 +520,7 @@ def _query_row() -> CTE:
             tsq.scalar_subquery().label('tsq'),
             q_words.scalar_subquery().label('q_words'),
             q_word_chars.scalar_subquery().label('q_word_chars'),
+            func.length(func.regexp_replace(q, '[^[:alnum:]]', '', 'g')).label('q_alnum_chars'),
             altq.label('altq'),
         )
         .cte('p')
@@ -564,10 +565,9 @@ def _typo_leg(query: CTE, lexical: CTE) -> CTE:
         .correlate(DocumentRow, query)
         .lateral('w')
     )
-    letters_and_digits = func.length(func.regexp_replace(query.c.q, '[^[:alnum:]]', '', 'g'))
     near_title = (
         select(
-            and_(letters_and_digits >= MIN_FUZZY_CHARS, title_similarity.c.ws >= TAU_TITLE).label('ok'),
+            and_(query.c.q_alnum_chars >= MIN_FUZZY_CHARS, title_similarity.c.ws >= TAU_TITLE).label('ok'),
             title_similarity.c.ws,
         )
         .correlate(query, title_similarity)
