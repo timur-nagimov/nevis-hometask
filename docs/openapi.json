@@ -1136,7 +1136,10 @@
           },
           "method": {
             "type": "string",
-            "const": "extractive",
+            "enum": [
+              "extractive",
+              "llm"
+            ],
             "title": "Method"
           }
         },
