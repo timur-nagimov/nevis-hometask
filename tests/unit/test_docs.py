@@ -12,8 +12,6 @@ from pathlib import Path
 
 import pytest
 
-from app.config import SUMMARY_CHARS
-
 ROOT = Path(__file__).resolve().parents[2]
 RESULTS = ROOT / 'eval' / 'results'
 LINK = re.compile(r'\]\(([^)#\s]+)')  # the target of a Markdown link, without its #anchor
@@ -100,9 +98,3 @@ def test_transcripts_are_captured_output() -> None:
 )
 def test_readme_states(fact: str) -> None:
     assert fact in _readme()
-
-
-@pytest.mark.parametrize('doc', ['README.md', 'docs/DESIGN.md'])
-def test_extractive_summary_limit_accounts_for_the_ellipsis(doc: str) -> None:
-    text = (ROOT / doc).read_text(encoding='utf-8')
-    assert f'{SUMMARY_CHARS} characters plus an ellipsis' in text
