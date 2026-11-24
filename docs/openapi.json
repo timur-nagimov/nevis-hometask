@@ -1,0 +1,1260 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Nevis Search API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "ops"
+        ],
+        "summary": "Liveness check; does not touch the database",
+        "description": "`async def` without I/O: answered on the event loop even when every worker thread is busy.",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Health Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients": {
+      "post": {
+        "tags": [
+          "clients"
+        ],
+        "summary": "Create a client",
+        "description": "Creates a new client on every call: e-mail addresses are not unique, and POST is not idempotent.",
+        "operationId": "create_client_clients_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Client created",
+            "headers": {
+              "Location": {
+                "description": "URI reference of the new client",
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference",
+                  "example": "/clients/019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Body is not parseable JSON",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Bad Request",
+                  "status": 400,
+                  "detail": "Request body is not valid JSON: Expecting ',' delimiter (character 41)."
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body larger than 2,097,152 bytes (rejected before parsing)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Content Too Large"
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "`Content-Type` is not `application/json`",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Unsupported Media Type",
+                  "status": 415,
+                  "detail": "Send the body as application/json."
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "A field or parameter failed validation",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Unprocessable Content",
+                  "status": 422,
+                  "detail": "1 validation error(s).",
+                  "errors": [
+                    {
+                      "loc": [
+                        "body"
+                      ],
+                      "msg": "Field required",
+                      "type": "missing"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error; no internals are returned",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Internal Server Error",
+                  "status": 500,
+                  "detail": "Unexpected server error."
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The database is unreachable or busy, or a query took too long",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait: always 5",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 5
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Service Unavailable",
+                  "status": 503,
+                  "detail": "The database is unreachable; retry shortly."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients/{client_id}": {
+      "get": {
+        "tags": [
+          "clients"
+        ],
+        "summary": "Get a client",
+        "description": "A client by id. An id that is not a UUID is answered like an unknown one: 404.",
+        "operationId": "get_client_clients__client_id__get",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Client Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client does not exist (unknown or malformed id)",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Not Found",
+                  "status": 404,
+                  "detail": "Client '123' does not exist."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error; no internals are returned",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Internal Server Error",
+                  "status": 500,
+                  "detail": "Unexpected server error."
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The database is unreachable or busy, or a query took too long",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Service Unavailable",
+                  "status": 503,
+                  "detail": "The database is unreachable; retry shortly."
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait: always 5",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 5
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients/{client_id}/documents": {
+      "post": {
+        "tags": [
+          "documents"
+        ],
+        "summary": "Add a document to a client",
+        "description": "Tags, summarises, chunks and embeds the document; it is stored when the 201 is sent.",
+        "operationId": "create_document_clients__client_id__documents_post",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Client Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Document created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Document"
+                }
+              }
+            },
+            "headers": {
+              "Location": {
+                "description": "URI reference of the new document",
+                "schema": {
+                  "type": "string",
+                  "format": "uri-reference",
+                  "example": "/clients/019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11/documents/019aa0c6-01a2-7e3f-8a44-9b7d5c2e6f30"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client does not exist (unknown or malformed id)",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Not Found",
+                  "status": 404,
+                  "detail": "Client '123' does not exist."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Body is not parseable JSON",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Bad Request",
+                  "status": 400,
+                  "detail": "Request body is not valid JSON: Expecting ',' delimiter (character 41)."
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Body larger than 2,097,152 bytes (rejected before parsing)",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Content Too Large"
+              },
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "`Content-Type` is not `application/json`",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Unsupported Media Type",
+                  "status": 415,
+                  "detail": "Send the body as application/json."
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "A field or parameter failed validation",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Unprocessable Content",
+                  "status": 422,
+                  "detail": "1 validation error(s).",
+                  "errors": [
+                    {
+                      "loc": [
+                        "body"
+                      ],
+                      "msg": "Field required",
+                      "type": "missing"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error; no internals are returned",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Internal Server Error",
+                  "status": 500,
+                  "detail": "Unexpected server error."
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The database is unreachable or busy, or a query took too long",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Service Unavailable",
+                  "status": 503,
+                  "detail": "The database is unreachable; retry shortly."
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait: always 5",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 5
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients/{client_id}/documents/{document_id}": {
+      "get": {
+        "tags": [
+          "documents"
+        ],
+        "summary": "Get a document",
+        "description": "A document of this client. A document of another client is a 404, like an unknown id.",
+        "operationId": "get_document_clients__client_id__documents__document_id__get",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Client Id"
+            }
+          },
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Document"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document does not exist (unknown or malformed id)",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Not Found",
+                  "status": 404,
+                  "detail": "Document '123' does not exist."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error; no internals are returned",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Internal Server Error",
+                  "status": 500,
+                  "detail": "Unexpected server error."
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The database is unreachable or busy, or a query took too long",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Service Unavailable",
+                  "status": 503,
+                  "detail": "The database is unreachable; retry shortly."
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait: always 5",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 5
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Search clients and documents",
+        "description": "Clients and documents matching `q`, best first.\n\nOrder: `score` descending (4 decimals), then `type`, then `id`. `score` >= 0.5: the query words occur in the record or in the document's concept tags (`exact`, `lexical`, `concept`); below 0.5: a typo match (`fuzzy`) or closeness of meaning (`semantic`); below 0.2: a weak guess.",
+        "operationId": "search_search_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "pattern": "^[^\\x00-\\x1f\\x7f-\\x9f]+$",
+              "description": "Search text. Whitespace runs collapse to one space and the ends are trimmed; then 1-200 characters, no control characters.",
+              "title": "Q"
+            },
+            "description": "Search text. Whitespace runs collapse to one space and the ends are trimmed; then 1-200 characters, no control characters.",
+            "examples": {
+              "client": {
+                "summary": "Client by part of an e-mail domain",
+                "value": "NevisWealth"
+              },
+              "document": {
+                "summary": "Document by meaning",
+                "value": "address proof"
+              }
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "client",
+                    "document"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Return only this kind of result",
+              "title": "Type"
+            },
+            "description": "Return only this kind of result"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "description": "Maximum number of results, clients and documents together",
+              "default": 10,
+              "title": "Limit"
+            },
+            "description": "Maximum number of results, clients and documents together"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matches, best first; an empty array when nothing matches",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/ClientSearchItem"
+                      },
+                      {
+                        "$ref": "#/components/schemas/DocumentSearchItem"
+                      }
+                    ],
+                    "discriminator": {
+                      "propertyName": "type",
+                      "mapping": {
+                        "client": "#/components/schemas/ClientSearchItem",
+                        "document": "#/components/schemas/DocumentSearchItem"
+                      }
+                    }
+                  },
+                  "title": "Response Search Search Get"
+                },
+                "examples": {
+                  "client": {
+                    "summary": "q=NevisWealth (illustrative id and score)",
+                    "value": [
+                      {
+                        "type": "client",
+                        "score": 0.85,
+                        "match_type": "exact",
+                        "id": "019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11",
+                        "first_name": "John",
+                        "last_name": "Doe",
+                        "email": "john.doe@neviswealth.com",
+                        "description": "Founder of a logistics company; prefers ESG funds.",
+                        "social_links": [
+                          "https://www.linkedin.com/in/johndoe"
+                        ]
+                      }
+                    ]
+                  },
+                  "document": {
+                    "summary": "q=address proof (illustrative id and score)",
+                    "value": [
+                      {
+                        "type": "document",
+                        "score": 0.72,
+                        "match_type": "concept",
+                        "id": "019aa0c6-01a2-7e3f-8a44-9b7d5c2e6f30",
+                        "client_id": "019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11",
+                        "title": "Utility bill",
+                        "content": "British Gas utility bill for March 2025. Account holder John Doe, 14 Larkspur Close, Harrogate. Amount due £84.20.",
+                        "created_at": "2026-11-23T10:15:02.123456Z",
+                        "tags": [
+                          "proof of address",
+                          "customer due diligence"
+                        ],
+                        "summary": {
+                          "text": "British Gas utility bill for March 2025. Account holder John Doe, 14 Larkspur Close, Harrogate. Amount due £84.20.",
+                          "method": "extractive"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The query string is not valid UTF-8",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Bad Request",
+                  "status": 400,
+                  "detail": "The query string is not valid UTF-8."
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "A parameter failed validation",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Unprocessable Content",
+                  "status": 422,
+                  "detail": "1 validation error(s).",
+                  "errors": [
+                    {
+                      "loc": [
+                        "query",
+                        "q"
+                      ],
+                      "msg": "String should have at least 1 character",
+                      "type": "string_too_short"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error; no internals are returned",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Internal Server Error",
+                  "status": 500,
+                  "detail": "Unexpected server error."
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The database is unreachable or busy, or a query took too long",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Service Unavailable",
+                  "status": 503,
+                  "detail": "The database is unreachable; retry shortly."
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait: always 5",
+                "schema": {
+                  "type": "integer"
+                },
+                "example": 5
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Client": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "first_name": {
+            "type": "string",
+            "title": "First Name"
+          },
+          "last_name": {
+            "type": "string",
+            "title": "Last Name"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "social_links": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Social Links"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "first_name",
+          "last_name",
+          "email",
+          "description",
+          "social_links"
+        ],
+        "title": "Client",
+        "description": "A client as the API returns it."
+      },
+      "ClientCreate": {
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^\\x00-\\x1f\\x7f-\\x9f]+$",
+            "title": "First Name",
+            "description": "Trimmed; 1-100 characters; no control characters"
+          },
+          "last_name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[^\\x00-\\x1f\\x7f-\\x9f]+$",
+            "title": "Last Name",
+            "description": "Trimmed; 1-100 characters; no control characters"
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 254,
+            "format": "email",
+            "title": "Email",
+            "description": "Trimmed; at most 254 characters; syntax check only; stored as sent"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 2000,
+            "pattern": "^[^\\x00-\\x08\\x0b-\\x1f\\x7f-\\x9f]*$",
+            "title": "Description",
+            "description": "At most 2,000 characters, verbatim; tab and newline allowed; null or absent: empty",
+            "default": ""
+          },
+          "social_links": {
+            "items": {
+              "type": "string",
+              "maxLength": 2048,
+              "minLength": 1,
+              "pattern": "^[^\\x00-\\x1f\\x7f-\\x9f]+$"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Social Links",
+            "description": "At most 20 strings, each trimmed, 1-2,048 characters, not validated as URLs; null: none"
+          }
+        },
+        "type": "object",
+        "required": [
+          "first_name",
+          "last_name",
+          "email"
+        ],
+        "title": "ClientCreate",
+        "description": "Body of POST /clients. Unknown members are ignored; a client-sent `id` is not honoured.",
+        "examples": [
+          {
+            "description": "Founder of a logistics company, prefers ESG funds",
+            "email": "john.doe@neviswealth.com",
+            "first_name": "John",
+            "last_name": "Doe",
+            "social_links": [
+              "https://www.linkedin.com/in/johndoe"
+            ]
+          }
+        ]
+      },
+      "ClientSearchItem": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "client",
+            "title": "Type",
+            "default": "client"
+          },
+          "score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Score",
+            "description": "Ordering key, 4 decimals, not a probability. >= 0.5: the query words occur in the record; below 0.5: a typo match"
+          },
+          "match_type": {
+            "type": "string",
+            "enum": [
+              "exact",
+              "fuzzy"
+            ],
+            "title": "Match Type",
+            "description": "`exact`: every query word occurs in name, e-mail or description; `fuzzy`: a typo match"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "first_name": {
+            "type": "string",
+            "title": "First Name"
+          },
+          "last_name": {
+            "type": "string",
+            "title": "Last Name"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "social_links": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Social Links"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "score",
+          "match_type",
+          "id",
+          "first_name",
+          "last_name",
+          "email",
+          "description",
+          "social_links"
+        ],
+        "title": "ClientSearchItem",
+        "description": "A Client plus search metadata, flat: `item['email']` works."
+      },
+      "Document": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "client_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Client Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "RFC 3339, UTC"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags",
+            "description": "Concepts the document matched at upload, in concept-map order"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/Summary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "client_id",
+          "title",
+          "content",
+          "created_at",
+          "tags",
+          "summary"
+        ],
+        "title": "Document",
+        "description": "A document as the API returns it."
+      },
+      "DocumentCreate": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "pattern": "^[^\\x00-\\x1f\\x7f-\\x9f]+$",
+            "title": "Title",
+            "description": "Trimmed; 1-300 characters; no control characters"
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f-\\x9f]*$",
+            "title": "Content",
+            "description": "Stored as sent; 1 to NEVIS_MAX_CONTENT_CHARS (default 50,000) characters; not blank; control characters other than tab, line feed and carriage return are rejected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content"
+        ],
+        "title": "DocumentCreate",
+        "description": "Body of POST /clients/{client_id}/documents. Unknown members are ignored.",
+        "examples": [
+          {
+            "content": "British Gas utility bill for March 2025. Account holder John Doe, 14 Larkspur Close, Harrogate. Amount due £84.20.",
+            "title": "Utility bill"
+          }
+        ]
+      },
+      "DocumentSearchItem": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "document",
+            "title": "Type",
+            "default": "document"
+          },
+          "score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Score",
+            "description": "Ordering key, 4 decimals, not a probability. >= 0.5: the query words occur in the title, the text or the concept tags; below 0.5: a typo match or closeness of meaning"
+          },
+          "match_type": {
+            "type": "string",
+            "enum": [
+              "lexical",
+              "concept",
+              "fuzzy",
+              "semantic"
+            ],
+            "title": "Match Type",
+            "description": "`lexical`: the words are in title or text; `concept`: only with the concept tags; `fuzzy`: a typo of the title or of a concept phrase; `semantic`: closeness of meaning"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "client_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Client Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "RFC 3339, UTC"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags",
+            "description": "Concepts the document matched at upload, in concept-map order"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/Summary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "score",
+          "match_type",
+          "id",
+          "client_id",
+          "title",
+          "content",
+          "created_at",
+          "tags",
+          "summary"
+        ],
+        "title": "DocumentSearchItem",
+        "description": "A Document plus search metadata, flat: `item['title']` works."
+      },
+      "Summary": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "method": {
+            "type": "string",
+            "const": "extractive",
+            "title": "Method"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "method"
+        ],
+        "title": "Summary"
+      },
+      "Problem": {
+        "description": "`type` is always `about:blank`: the HTTP status code carries the meaning.",
+        "properties": {
+          "type": {
+            "default": "about:blank",
+            "title": "Type",
+            "type": "string"
+          },
+          "title": {
+            "description": "HTTP status phrase",
+            "examples": [
+              "Not Found"
+            ],
+            "title": "Title",
+            "type": "string"
+          },
+          "status": {
+            "examples": [
+              404
+            ],
+            "title": "Status",
+            "type": "integer"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Human-readable explanation of this occurrence",
+            "title": "Detail"
+          },
+          "errors": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FieldError"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Extension member, present on 422 only",
+            "title": "Errors"
+          }
+        },
+        "required": [
+          "title",
+          "status"
+        ],
+        "title": "Problem",
+        "type": "object"
+      },
+      "FieldError": {
+        "description": "One failed field of a 422 response. The submitted value is never echoed.",
+        "properties": {
+          "loc": {
+            "description": "Where: `body`/`query`/`path`, then the field path",
+            "examples": [
+              [
+                "body",
+                "email"
+              ]
+            ],
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Loc",
+            "type": "array"
+          },
+          "msg": {
+            "examples": [
+              "value is not a valid email address: An email address must have an @-sign."
+            ],
+            "title": "Msg",
+            "type": "string"
+          },
+          "type": {
+            "description": "Stable machine-readable error code",
+            "examples": [
+              "value_error"
+            ],
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "FieldError",
+        "type": "object"
+      }
+    }
+  }
+}

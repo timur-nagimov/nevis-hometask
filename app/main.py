@@ -21,6 +21,7 @@ from app import __version__, db, ingest
 from app.config import (
     DEFAULT_LIMIT,
     EXACT_SCORE_MIN,
+    EXTRACTIVE,
     MAX_BODY_BYTES,
     MAX_CONCURRENT_UPLOADS,
     MAX_ECHOED_ID_CHARS,
@@ -327,6 +328,77 @@ def _not_found(what: str) -> dict[int | str, dict[str, Any]]:
     }
 
 
+# Every route that uses the database may also answer these two
+_SERVER_ERRORS: dict[int | str, dict[str, Any]] = {
+    500: problem_doc('Unexpected error; no internals are returned', INTERNAL_ERROR_DETAIL, 500),
+    503: {
+        **problem_doc(
+            'The database is unreachable or busy, or a query took too long',
+            UNAVAILABLE_DETAIL['unreachable'],
+            503,
+        ),
+        'headers': {
+            'Retry-After': {
+                'description': f'Seconds to wait: always {RETRY_AFTER_SECONDS}',
+                'schema': {'type': 'integer'},
+                'example': RETRY_AFTER_SECONDS,
+            }
+        },
+    },
+}
+_EXAMPLE_CLIENT_ID = '019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11'
+_EXAMPLE_DOCUMENT_ID = '019aa0c6-01a2-7e3f-8a44-9b7d5c2e6f30'
+_UTILITY_BILL = (
+    'British Gas utility bill for March 2025. Account holder John Doe, 14 Larkspur Close, Harrogate. '
+    'Amount due £84.20.'
+)
+# Both assignment queries as response examples of GET /search (illustrative ids and scores)
+_SEARCH_OK: dict[int | str, dict[str, Any]] = {
+    200: {
+        'description': 'Matches, best first; an empty array when nothing matches',
+        'content': {
+            'application/json': {
+                'examples': {
+                    'client': {
+                        'summary': 'q=NevisWealth (illustrative id and score)',
+                        'value': [
+                            {
+                                'type': 'client',
+                                'score': 0.85,
+                                'match_type': 'exact',
+                                'id': _EXAMPLE_CLIENT_ID,
+                                'first_name': 'John',
+                                'last_name': 'Doe',
+                                'email': 'john.doe@neviswealth.com',
+                                'description': 'Founder of a logistics company; prefers ESG funds.',
+                                'social_links': ['https://www.linkedin.com/in/johndoe'],
+                            }
+                        ],
+                    },
+                    'document': {
+                        'summary': 'q=address proof (illustrative id and score)',
+                        'value': [
+                            {
+                                'type': 'document',
+                                'score': 0.72,
+                                'match_type': 'concept',
+                                'id': _EXAMPLE_DOCUMENT_ID,
+                                'client_id': _EXAMPLE_CLIENT_ID,
+                                'title': 'Utility bill',
+                                'content': _UTILITY_BILL,
+                                'created_at': '2026-11-23T10:15:02.123456Z',
+                                'tags': ['proof of address', 'customer due diligence'],
+                                'summary': {'text': _UTILITY_BILL, 'method': EXTRACTIVE},
+                            }
+                        ],
+                    },
+                }
+            }
+        },
+    }
+}
+
+
 def parse_id(raw: str) -> UUID | None:
     """Ids are opaque strings for API clients: anything that is not a canonical UUID does not exist."""
     try:
@@ -342,7 +414,7 @@ def parse_id(raw: str) -> UUID | None:
     response_model=Client,
     tags=['clients'],
     summary='Create a client',
-    responses={**_created('Client', '/clients/019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11'), **_WRITE_ERRORS},
+    responses={**_created('Client', f'/clients/{_EXAMPLE_CLIENT_ID}'), **_WRITE_ERRORS, **_SERVER_ERRORS},
 )
 def create_client(body: ClientCreate, response: Response, services: ServicesDep) -> dict[str, Any]:
     """Creates a new client on every call: e-mail addresses are not unique, and POST is not idempotent."""
@@ -363,7 +435,7 @@ def create_client(body: ClientCreate, response: Response, services: ServicesDep)
     response_model=Client,
     tags=['clients'],
     summary='Get a client',
-    responses=_not_found('Client'),
+    responses={**_not_found('Client'), **_SERVER_ERRORS},
 )
 def get_client(client_id: str, services: ServicesDep) -> dict[str, Any]:
     """A client by id. An id that is not a UUID is answered like an unknown one: 404."""
@@ -387,12 +459,10 @@ async def _upload_slot() -> AsyncIterator[None]:
     summary='Add a document to a client',
     dependencies=[Depends(_upload_slot, max_concurrency=MAX_CONCURRENT_UPLOADS, scope='function')],
     responses={
-        **_created(
-            'Document',
-            '/clients/019aa0c5-6d6e-7c7b-9d55-2f1c3b0a4e11/documents/019aa0c6-01a2-7e3f-8a44-9b7d5c2e6f30',
-        ),
+        **_created('Document', f'/clients/{_EXAMPLE_CLIENT_ID}/documents/{_EXAMPLE_DOCUMENT_ID}'),
         **_not_found('Client'),
         **_WRITE_ERRORS,
+        **_SERVER_ERRORS,
     },
 )
 def create_document(
@@ -417,7 +487,7 @@ def create_document(
     '/clients/{client_id}/documents/{document_id}',
     tags=['documents'],
     summary='Get a document',
-    responses=_not_found('Document'),
+    responses={**_not_found('Document'), **_SERVER_ERRORS},
 )
 def get_document(client_id: str, document_id: str, services: ServicesDep) -> Document:
     """A document of this client. A document of another client is a 404, like an unknown id."""
@@ -458,7 +528,7 @@ async def require_utf8_query(request: Request) -> None:
     ),
     dependencies=[Depends(require_utf8_query)],
     responses={
-        200: {'description': 'Matches, best first; an empty array when nothing matches'},
+        **_SEARCH_OK,
         400: problem_doc('The query string is not valid UTF-8', 'The query string is not valid UTF-8.', 400),
         422: problem_doc(
             'A parameter failed validation',
@@ -470,6 +540,7 @@ async def require_utf8_query(request: Request) -> None:
                 )
             ],
         ),
+        **_SERVER_ERRORS,
     },
 )
 def search(

@@ -78,6 +78,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project
 COPY tests ./tests
 COPY eval ./eval
+COPY docs ./docs
 COPY testset ./testset
 COPY scripts ./scripts
 COPY README.md ./README.md
