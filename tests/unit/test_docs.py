@@ -37,11 +37,13 @@ def _cells(row: str) -> list[str]:
 
 
 def _runner_cells(name: str) -> set[str]:
-    """Every table cell that the evaluation runner printed into eval/results/<name>."""
+    """Every value cell of the tables that the evaluation runner printed into eval/results/<name>."""
     text = (RESULTS / name).read_text(encoding='utf-8')
     cells: set[str] = set()
     for row in _table_lines(text):
-        cells.update(_cells(row))
+        label, *values = _cells(row)
+        if label and label != '---':  # a row of values, not a header or a separator
+            cells.update(values)
     return cells
 
 
