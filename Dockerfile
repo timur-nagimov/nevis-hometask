@@ -4,7 +4,7 @@
 #   deps     locked runtime dependencies in /opt/venv                 (uv sync --locked --no-dev)
 #   model    the embedding model in /opt/models                       (scripts/fetch_model.py)
 #   app      Python + venv + model + code, non-root user, build-time checks
-#   test     app + dev deps + tests, eval, testset, scripts
+#   test     app + dev deps + tests, eval, docs, testset, scripts
 #            docker compose --profile test run --rm --no-deps tests
 #   runtime  app + start command; LAST, so it is the default target   docker compose up --build -d
 #
