@@ -140,16 +140,16 @@ when every query word is a substring of its name, e-mail and description togethe
 `john.doe` and `Doe John` all find John Doe. Only when nothing matches and the query has at least 5 letters or digits
 does a trigram typo tier run (`NevisWelth`, `Jon Doe` → `fuzzy`).
 
-**Documents.** One SQL statement, four ways in:
+**Documents.** Documents are cut into fragments of up to 200 words, each with a vector; a document's cosine is its
+best fragment's. One SQL statement, four ways in:
 1. *literal*: every query word (English stemming) is in the title, the text or the tags → `lexical`, or `concept`
    when the tags were needed;
 2. *typo*, only if the literal way found nothing: the title resembles the query, or the query is a misspelt concept
    phrase (`adress proof`) → `fuzzy`;
-3. *meaning*: the best fragment's cosine is at least 0.40 and within 0.08 of the best document → `semantic`;
+3. *meaning*: the document's cosine is at least 0.40 and within 0.08 of the best document's → `semantic`;
 4. *weak guess*, only if nothing above matched: up to three nearest documents with a cosine of at least 0.32 →
    `semantic`.
 
-Documents are cut into fragments of up to 200 words, each with a vector; a document's cosine is its best fragment's.
 Both kinds are fetched with `limit` each, merged, sorted by score, type and id, and cut to `limit` (1-50, default 10).
 
 | Score | Meaning | `match_type` |
@@ -177,15 +177,14 @@ title and text):
 
 `app/data/concepts.yaml` lists 30 relations of this kind: a concept (`proof of address`), the ways people ask for it
 (`triggers`) and the documents that satisfy it (`expands_to`: utility bill, council tax bill, bank statement …). At
-upload a document gets as `tags` every concept whose name or document phrase occurs in it. The tags, with their
+upload a document gets as `tags` every concept whose name or `expands_to` phrase occurs in it. The tags, with their
 triggers, join the literal match and, for a title match or a document of up to 200 words, one extra embedded
 fragment: that is why the bills come back as `concept`, with `proof of address` in their tags.
 
 An LLM drafted the map once from general UK wealth-management knowledge (120 entries); it was cut by rule to 30 (keep
 relations of this kind; drop single documents, topics and identifiers). Four entries cite an official list in
 `sources` (GOV.UK, Bona Vacantia, DBS, JMLSG). The assignment's pair is there because it is the canonical case;
-`proof of income` → payslip and `photo ID` → passport come from entries of the same kind. The map is a closed list:
-phrasings it lacks get no tag (see Limits).
+`proof of income` → payslip and `photo ID` → passport come from entries of the same kind.
 
 ## Measured quality
 
@@ -196,9 +195,9 @@ and once without. Both columns are copied from its output in `eval/results/`.
 | | With the concept map (shipped) | Without the concept map |
 |---|---|---|
 | Strict pass, all 1,887 queries | 1323/1887 (70 %) | 1328/1887 (70 %) |
-| … written blind by Codex and Claude (400) | 255/400 (64 %) | 259/400 (65 %) |
+| … written by Codex and Claude without seeing the design (400) | 255/400 (64 %) | 259/400 (65 %) |
 | … built from open datasets (951) | 640/951 (67 %) | 642/951 (68 %) |
-| … level "required" (621) | 544/621 (88 %) | 547/621 (88 %) |
+| … required by the assignment's text (621) | 544/621 (88 %) | 547/621 (88 %) |
 | First 10: precision | 0.80 | 0.82 |
 | First 10: recall | 0.74 | 0.69 |
 | First 10: F1 | 0.766 | 0.747 |
@@ -210,9 +209,10 @@ and once without. Both columns are copied from its output in `eval/results/`.
 
 Strict pass counts a query only if every expected result is found, nothing wrong is returned and the ordering
 requirements hold ([eval/README.md](eval/README.md)). The thresholds were chosen on the dev half of one suite, and two
-suites were written by the design's authors. The map costs a few strict passes and a little precision; it is what
-makes `address proof` find the bills. On the test corpora `address proof` never passes strictly: some bills are
-missed, and documents that merely mention proof or address come back with them (see Limits).
+suites were written by the design's authors. The map costs a few strict passes and a little precision but adds
+recall; it is what makes `address proof` find the bills. On the test corpora `address proof` never passes strictly:
+some bills are missed, and documents that merely mention proof or address come back with them (see Limits).
+[docs/DESIGN.md](docs/DESIGN.md) compares the strict pass with Elasticsearch and Meilisearch.
 
 Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads send the 86 documents of the `existing-documents-86` suite (6 CPUs, `NEVIS_EMBED_THREADS=4`, podman on an Apple M3 Pro); idle `/search` p95 9 ms.
 
@@ -233,7 +233,7 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
 - A search item is the client or document itself plus `type`, `score` and `match_type`, so `item["email"]` works.
   Documents carry `tags` (concepts matched at upload) and `summary` (the first sentences, up to 300 characters,
   `"method": "extractive"`).
-- Limits: names up to 100 characters, description 2,000, 20 social links, title 300, text 50,000, `q` 1-200 after
+- Validation: names up to 100 characters, description 2,000, 20 social links, title 300, text 50,000, `q` 1-200 after
   collapsing whitespace. Control characters are rejected, except tab and newline in a description or a document's
   text (and carriage return in the text). A path id that is not a UUID gets 404. An e-mail may repeat (spouses share
   addresses), so there is no 409.
@@ -245,9 +245,9 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
 
 ## Limits
 
-- **What a document is for** (`proof of income`, `photo ID`, `bank statement` as "anything that proves it") is the
-  weakest kind of query: the map is a closed list, so phrasings it lacks ("Council Tax demand notice") get no tag, and
-  documents that merely mention the words, or carry a neighbouring tag, come back too.
+- **What a document is for** (`proof of income`, `photo ID`) is the weakest kind of query: the map is a closed list,
+  so phrasings it lacks ("Council Tax demand notice") get no tag, and documents that merely mention the words, or carry
+  a neighbouring tag, come back too.
 - **`address proof`** also returns "Proof of delivery … home address" and letters asking for proof of address (same
   tag as the bill); only a document-type label, say from an LLM at upload, could separate them.
 - **Client substrings inside words:** `Chester` also finds a description that mentions Manchester. The test authors
@@ -282,9 +282,9 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
 **At run time** the service calls no LLM: the vectors come from a local embedding model (`mdbr-leaf-ir`,
 Apache-2.0) inside the image, and nothing leaves the machine. A Claude call at upload (summary and tags) was designed
 but is not included: it was never run against the real API, and code that sends client documents to a third party
-should not ship unexercised. **During development** I worked with AI agents throughout: Claude Code researched the
+should not ship unexercised. **During development** I worked with AI agents throughout. Claude Code researched the
 options, wrote the design and then this code, test-first; separate agent reviews attacked the design before any code
-existed; LLM agents wrote 10 of the 18 test suites (Codex and Claude 6 of them blind) and built the other 8 from
+existed. LLM agents wrote 10 of the 18 test suites (Codex and Claude wrote 6 of them blind) and built the other 8 from
 open datasets. An LLM also drafted the concept map (see above). **Checked, not trusted:** every number in the quality
 and cosine tables is printed by a script in this repository (`tests/unit/test_docs.py` fails otherwise), numbers
 marked "design-time" come from the research done before the code, the transcripts are captured from the running
