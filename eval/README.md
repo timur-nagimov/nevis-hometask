@@ -16,11 +16,12 @@ docker compose --profile test run --rm --no-deps tests python -m eval.run_testse
 ```
 
 One configuration takes about a minute to a minute and a half on an Apple M3 Pro (podman VM with 6 CPUs); the last
-line of the output gives the run time. Every suite gets its own database (`nevis_ts_<suite>`), created, given the schema with
-`app.db.create_schema` and dropped afterwards; the demo data is not touched. Records the API would reject are skipped
-and logged, and a query the API would reject counts as an empty answer. Queries run with `limit=50`; `type` is the
-query's `scope` (`clients` → `client`, `documents` → `document`, `all` → no type). Add `--failures` to list every
-failing query with the reason, and suite names (`tools-mini-6`) to run only those suites.
+line of the output gives the run time. Every suite gets its own database (`nevis_ts_<suite>`), created, given the
+schema with `app.db.create_schema` and dropped afterwards; the demo data is not touched. Records the API would
+reject are skipped and logged, and a query the API would reject counts as an empty answer. Queries run with
+`limit=50`; `type` is the query's `scope` (`clients` → `client`, `documents` → `document`, `all` → no type). Add
+`--failures` to list every failing query with the reason, and suite names (`tools-mini-6`) to run only those
+suites.
 
 The outputs on the shipped code are committed: [results/with-concepts.txt](results/with-concepts.txt) and
 [results/no-concepts.txt](results/no-concepts.txt). The README's quality table quotes only these files. This prints
