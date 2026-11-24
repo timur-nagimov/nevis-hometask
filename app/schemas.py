@@ -16,6 +16,7 @@ from app.config import (
     MAX_SOCIAL_LINKS,
     MAX_TITLE_CHARS,
     SCORE_DECIMALS,
+    DocumentMatchType,
     SummaryMethod,
 )
 from app.search import prepare
@@ -191,6 +192,8 @@ class Summary(BaseModel):
 class Document(BaseModel):
     """A document as the API returns it."""
 
+    model_config = ConfigDict(json_schema_serialization_defaults_required=True)
+
     id: UUID
     client_id: UUID
     title: str
@@ -246,4 +249,25 @@ class ClientSearchItem(Client, _ClientMatch):
     """A Client plus search metadata, flat: `item['email']` works."""
 
 
-SearchItem = ClientSearchItem
+class _DocumentMatch(BaseModel):
+    """Search metadata of a document hit. As the second base class below, its fields come first in JSON."""
+
+    type: Literal['document'] = 'document'
+    score: float = Field(
+        ge=0,
+        le=1,
+        description=f'Ordering key, {SCORE_DECIMALS} decimals, not a probability. '
+        f'>= {EXACT_SCORE_MIN}: the query words occur in the title, the text or the concept tags; '
+        f'below {EXACT_SCORE_MIN}: a typo match or closeness of meaning',
+    )
+    match_type: DocumentMatchType = Field(
+        description='`lexical`: the words are in title or text; `concept`: only with the concept tags; '
+        '`fuzzy`: a typo of the title or of a concept phrase; `semantic`: closeness of meaning'
+    )
+
+
+class DocumentSearchItem(Document, _DocumentMatch):
+    """A Document plus search metadata, flat: `item['title']` works."""
+
+
+SearchItem = Annotated[ClientSearchItem | DocumentSearchItem, Field(discriminator='type')]

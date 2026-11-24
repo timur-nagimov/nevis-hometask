@@ -3,7 +3,7 @@
 import dataclasses
 import os
 from pathlib import Path
-from typing import cast
+from typing import cast, get_args
 
 import pytest
 from pydantic import SecretStr, ValidationError
@@ -161,6 +161,7 @@ def test_invalid_values_are_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 def test_constants_keep_their_values() -> None:
+    assert get_args(config.DocumentMatchType) == ('lexical', 'concept', 'fuzzy', 'semantic')
     assert (config.T_STRONG, config.DELTA, config.T_FALLBACK, config.K_FALLBACK) == (0.40, 0.08, 0.32, 3)
     assert (config.TAU_TITLE, config.MIN_FUZZY_CHARS, config.SPELL_CUTOFF) == (0.60, 5, 0.90)
     assert (config.MIN_SPELL_CHARS, config.MIN_WORD_CHARS, config.MIN_STOP_WORDS_CHARS) == (6, 2, 4)

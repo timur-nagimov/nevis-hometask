@@ -55,6 +55,7 @@ class Settings(BaseSettings):
 
 
 # Document search
+DocumentMatchType = Literal['lexical', 'concept', 'fuzzy', 'semantic']  # `match_type` of a document hit
 T_STRONG = 0.40  # a semantic hit needs cos >= T_STRONG ...
 DELTA = 0.08  # ... and cos >= (best cos of the query) - DELTA
 T_FALLBACK = 0.32  # when nothing is a hit: the nearest documents with cos >= T_FALLBACK ...

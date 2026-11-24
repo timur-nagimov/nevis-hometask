@@ -119,6 +119,29 @@ def test_openapi_declares_the_statuses_of_the_routes() -> None:
     assert 'Problem' in spec['components']['schemas']
 
 
+def test_openapi_search_returns_a_list_discriminated_by_type() -> None:
+    spec = create_app(Settings(database_url='postgresql://unused/x')).openapi()
+    response = spec['paths']['/search']['get']['responses']['200']
+    schemas = spec['components']['schemas']
+
+    assert response['content']['application/json']['schema']['items'] == {
+        'oneOf': [
+            {'$ref': '#/components/schemas/ClientSearchItem'},
+            {'$ref': '#/components/schemas/DocumentSearchItem'},
+        ],
+        'discriminator': {
+            'propertyName': 'type',
+            'mapping': {
+                'client': '#/components/schemas/ClientSearchItem',
+                'document': '#/components/schemas/DocumentSearchItem',
+            },
+        },
+    }
+    # `type` has a default, but every item the API sends carries it
+    assert 'type' in schemas['ClientSearchItem']['required']
+    assert 'type' in schemas['DocumentSearchItem']['required']
+
+
 def test_openapi_errors_are_problem_json_also_after_a_late_route() -> None:
     app = create_app(Settings(database_url='postgresql://unused/x'))
     spec = app.openapi()
