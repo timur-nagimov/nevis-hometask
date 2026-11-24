@@ -3,6 +3,7 @@
 import json
 import logging
 import threading
+from concurrent.futures import ThreadPoolExecutor
 from typing import cast
 
 import anthropic
@@ -193,22 +194,13 @@ def test_a_call_over_the_parallel_limit_does_not_wait(caplog: pytest.LogCaptureF
         return message(answer())
 
     llm, fake = make(slow)
-    results: list[LlmOutput | None] = []
+    with ThreadPoolExecutor(max_workers=LLM_PARALLEL) as pool:
+        uploads = [pool.submit(llm.enrich, 'Bill', 'Text.') for _ in range(LLM_PARALLEL)]
+        inside.wait(timeout=5)  # every slot is taken: the uploads are inside messages.create
+        assert llm.enrich('Bill', 'Text.') is None  # no wait, and no request
+        release.set()
 
-    def upload() -> None:
-        results.append(llm.enrich('Bill', 'Text.'))
-
-    workers = [threading.Thread(target=upload) for _ in range(LLM_PARALLEL)]
-    for worker in workers:
-        worker.start()
-    inside.wait(timeout=5)  # every slot is taken: the workers are inside messages.create
-
-    assert llm.enrich('Bill', 'Text.') is None  # no wait, and no request
-
-    release.set()
-    for worker in workers:
-        worker.join(timeout=5)
-    assert len(results) == LLM_PARALLEL and None not in results
+    assert None not in [upload.result() for upload in uploads]
     assert len(fake.messages.calls) == LLM_PARALLEL
     assert 'reason=busy' in caplog.text
 
