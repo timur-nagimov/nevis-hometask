@@ -133,9 +133,10 @@ access line per request without the query string, never document text.
 
 ## 11. Privacy and data flow
 
-Ids are UUID v7: the first 48 bits reveal creation time in milliseconds to anyone seeing the id.
-Use random v4 ids, or opaque public ids, if that matters. Access logs contain paths without query strings;
-neither search terms nor document text is logged. A document's own text decides its tags: a document that says "utility bill" is tagged as proof of address, with or without an LLM.
+Ids are UUID v7: the first 48 bits reveal creation time in milliseconds to anyone seeing the id. Use random v4 ids,
+or opaque public ids, if that matters. Access logs contain paths without query strings; neither search terms nor
+document text is logged. A document's own text decides its tags: a document that says "utility bill" is tagged as
+proof of address, with or without an LLM.
 
 **Claude at upload.** Opt-in, off by default: with `NEVIS_LLM_ENABLED=true`, `ANTHROPIC_API_KEY` and the concept
 map enabled, validated uploads' titles and content (up to 50,000 characters) go to Anthropic.

@@ -1,8 +1,9 @@
 # Nevis Search API
 
-A REST service storing wealth-management clients and documents, searching both through one endpoint.
-FastAPI, PostgreSQL 18 (pgvector, pg_trgm, unaccent), an embedding model inside the image: offline after
-the first build, no API key. Optional Claude enrichment at upload: "How LLMs were used".
+A REST service that stores wealth-management clients and their documents and searches both through one endpoint.
+FastAPI and PostgreSQL 18 (pgvector, pg_trgm, unaccent); a local embedding model is baked into the image, so after
+the first build everything runs offline and without any API key. An optional Claude call at upload is described
+under "How LLMs were used".
 
 ## Run it
 
@@ -210,7 +211,7 @@ topics and identifiers. Four cite official lists (GOV.UK, Bona Vacantia, DBS, JM
 ## Measured quality
 
 `eval/run_testset.py` runs the 1,887 queries of `testset/` (18 suites) against this code, once with the concept map
-and once without, with Claude off. Both columns reproduce `eval/results/`.
+and once without, with Claude off. Both columns come from `eval/results/`.
 Claude raises first-10 recall (0.74→0.79), barely changes strict pass (1,323→1,324), and loses four required queries
 (544→540); see [evaluation results](eval/README.md#claude-at-upload).
 
@@ -294,7 +295,8 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
 - **Whole API process memory.** Unmeasured; the model alone took about 180 MB, peaking at 415 MB
   while loading (design-time).
 - **Platforms.** Built and tested with podman on Apple Silicon (arm64) and with Docker on x86_64 in
-  [GitHub Actions](https://github.com/timur-nagimov/nevis-hometask/actions/workflows/ci.yml); Docker Desktop on Windows was not tried.
+  [GitHub Actions](https://github.com/timur-nagimov/nevis-hometask/actions/workflows/ci.yml); Docker Desktop on
+  Windows was not tried.
 - **No deployed instance.**
 
 ## How LLMs were used
@@ -304,14 +306,13 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
 With `NEVIS_LLM_ENABLED=true` and an Anthropic key, Claude Haiku writes the summary and adds tags at upload; on 86
 documents it took p50 2.1 s and p95 3.6 s, about $0.0003 per document. Document titles and text go to Anthropic.
 
-**During development** I used AI agents throughout. Codex co-authored 12/165 preceding commits—parts of opt-in
-Claude enrichment (live test, latency script, runner’s `--llm`, prompt hardening, documentation and review fixes) and final review
-fixes—and reviewed enrichment twice and the whole repository at completion.
-Claude Code researched, designed and wrote the rest test-first; separate agents reviewed the design.
-Agents wrote 10 suites (Codex and Claude wrote 6 blind), built 8 from open datasets and drafted the concept map. **Checked, not trusted:** scripts reproduce quality/cosine tables, enforced by
+**During development** I used AI agents throughout. Claude Code researched, designed and wrote most of the code
+test-first; Codex wrote part of the Claude enrichment and the final review fixes (12 commits) and reviewed the code;
+separate agents reviewed the design. Agents wrote 10 suites (Codex and Claude wrote 6 blind), built 8 from open
+datasets and drafted the concept map. **Checked, not trusted:** scripts reproduce quality/cosine tables, enforced by
 `tests/unit/test_docs.py`; "design-time" numbers predate the code. Transcripts are captured; image builds require a
-model self-check. Implementation took about 38 hours of wall time from first commit to this update, after initial
-research and test-set creation; agents worked overnight and in parallel.
+model self-check. Implementation took about 39 hours of wall time (agents also worked overnight), after the initial
+research and test set.
 
 ## Repository map
 
