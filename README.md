@@ -212,7 +212,8 @@ topics and identifiers. Four cite official lists (GOV.UK, Bona Vacantia, DBS, JM
 
 `eval/run_testset.py` runs the 1,887 queries of `testset/` (18 suites) against this code, once with the concept map
 and once without, with Claude off. Both columns are copied from its output in `eval/results/`.
-Claude-on quality results are pending; see [evaluation status](eval/README.md#claude-at-upload).
+Claude raises first-10 recall (0.74→0.79), barely changes strict pass (1,323→1,324), and loses four required queries
+(544→540); see [evaluation results](eval/README.md#claude-at-upload).
 
 <!-- quality:start -->
 | | With the concept map (shipped) | Without the concept map |
@@ -271,7 +272,7 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
   so phrasings it lacks ("Council Tax demand notice") get no tag, and documents that merely mention the words, or carry
   a neighbouring tag, come back too.
 - **`address proof`** with Claude off also returns "Proof of delivery … home address" and letters asking for proof
-  of address. Claude adds document-type labels; its search-quality evaluation is pending.
+  of address. With Claude, still 0/10.
 - **Client substrings inside words:** `Chester` finds Manchester, `Ng` finds England. Test authors disagree;
   whole-word matching for up to three letters is the first alternative to measure.
 - **Similar names:** `Sergey Menshikov` finds Sergey Melikov; removing typo matching loses more typos and nicknames.

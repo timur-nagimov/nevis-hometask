@@ -57,8 +57,20 @@ Measured on 2026-11-24 with `claude-haiku-5-5`:
 - Cost: 87 calls (86 uploads plus the start-up warm-up) used 148,635 input and 24,604 output tokens, about $0.027 in all, about $0.0003 per document at $0.10 / $0.50 per million tokens.
 - Where it was measured: on this corporate network the Anthropic API resolves to IPv6 addresses only and the podman containers have IPv4 only, so the measurements with the option on ran the same code on the host (uv run) against the project database; in containers here every call falls back with connection_error. On a normal network the containers reach the API.
 
-**Claude-on quality:** the `--llm` evaluation is running; strict pass out of 1,887, enrichment coverage and
-first-10 metrics are pending. The baseline with the concept map and Claude off is 1,323/1,887.
+**Claude-on quality:** Claude raises recall in the first 10 and barely moves strict pass, while losing four
+`required` queries. Both runs used the same runner and host, with the concept map on:
+
+| Metric | Claude on | Claude off |
+|---|---|---|
+| Strict pass | 1,324/1,887 | 1,323/1,887 |
+| First 10, all suites: precision / recall / F1 | 0.80 / 0.79 / 0.794 | 0.80 / 0.74 / 0.766 |
+| hit@10 | 0.87 | 0.86 |
+| No-answer clean | 154/230 | 154/230 |
+| `required` pass | 540/621 | 544/621 |
+| `existing-documents-86` F1, dev / test | 0.683 / 0.600 | 0.646 / 0.595 |
+
+Enrichment succeeded for 1,780 of 1,781 documents, with one timeout fallback. The run took 69 minutes and used
+3,171,885 input and 490,868 output tokens: about $0.56 total, $0.00032 per document, excluding warm-up.
 
 These four passing live tests do not establish general resistance to prompt injection. The upload measurements
 establish latency, cost and coverage for those 86 documents; they do not establish improved search quality.
@@ -120,8 +132,8 @@ The reference implementation of the design (the same SQL, model and rules, witho
 | hit@10 | 0.86 | 0.84 |
 | no-answer clean (230) | 0.67 | 0.68 |
 
-The shipped code scores 2 fewer strict passes in each configuration (1,323 and 1,328), and 2 fewer in the rows
-"research, independent" and "required". The reference run loaded one client whose description exceeds the API's
+With Claude off, the shipped code scores 2 fewer strict passes in each configuration (1,323 and 1,328), and 2 fewer
+in the rows "research, independent" and "required". The reference run loaded one client whose description exceeds the API's
 2,000-character limit; without that client, queries B01 and B02 of `existing-clients-skeptic-44` (required,
 research) always fail. Every other number above is the same in `results/`.
 

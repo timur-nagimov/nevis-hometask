@@ -92,8 +92,9 @@ Optional Claude enrichment adds phrases and document-type labels; matched tags r
 `eval/run_testset.py` scores the service's own code on the 1,887 queries of `testset/`, with and without the concept
 map ([eval/README.md](../eval/README.md)). Elasticsearch and Meilisearch in their best measured configurations, with
 the same concept map but without vectors, passed 1,191 and 1,206 of the 1,887 queries; the reference implementation
-of this design passed 1,325 (design-time reference run), and this code passes 1,323 with Claude off.
-Claude-on quality is pending; [evaluation status](../eval/README.md#claude-at-upload) holds the measured upload results.
+of this design passed 1,325 (design-time), and this code passes 1,323 with Claude off.
+Claude raises first-10 recall (0.74→0.79), barely changes strict pass (1,324), and loses four required queries
+(544→540); see [evaluation results](../eval/README.md#claude-at-upload).
 
 ## 8. Operations
 
@@ -125,7 +126,7 @@ access line per request without the query string, never document text.
   document rewrites when the map changes.
 - **Clients.** Cap the candidates of very common substrings after about 10,000 clients (design-time: 22-123 ms
   instead of 0.35-1.9 s).
-- **Quality.** Measure Claude-added tags; re-tune thresholds on real queries, splitting by whole suites.
+- **Quality.** Re-tune thresholds on real queries, splitting by whole suites.
 - **Product.** Access control per adviser, removal of personal data before any LLM call, asynchronous ingest for large
   uploads.
 
