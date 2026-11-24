@@ -447,7 +447,7 @@ def llm_output_schema(names: Sequence[str]) -> dict[str, Any]:
 
 
 # At DEBUG the SDK logs every request, the document's text included: it and its HTTP stack stay at WARNING,
-# whatever NEVIS_LOG_LEVEL or ANTHROPIC_LOG (read when anthropic was imported) say.
+# whatever ANTHROPIC_LOG (read when anthropic was imported) or the root logger's level say.
 for _sdk_logger in ('anthropic', 'httpx2', 'httpcore2'):
     logging.getLogger(_sdk_logger).setLevel(logging.WARNING)
 
