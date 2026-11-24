@@ -1,0 +1,92 @@
+== Demo data on http://127.0.0.1:8000
+Created client John Doe (john.doe@neviswealth.com): 01a20d78-9dc6-7176-80d5-c653059a60a9
+  document 'Utility bill'       tags: proof of address, customer due diligence
+  document 'Passport'           tags: proof of identity, customer due diligence
+  document 'Tax return'         tags: source of wealth, personal tax return
+  document 'Scan 0042'          tags: proof of address, customer due diligence
+  document 'Electricity bill'   tags: proof of address
+
+== Example 1: NevisWealth finds the client with the e-mail john.doe@neviswealth.com
+
+$ curl -s 'http://127.0.0.1:8000/search?q=NevisWealth' | python3 -m json.tool --no-ensure-ascii
+[
+    {
+        "type": "client",
+        "score": 0.85,
+        "match_type": "exact",
+        "id": "01a20d78-9dc6-7176-80d5-c653059a60a9",
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john.doe@neviswealth.com",
+        "description": "Founder of a logistics company; prefers ESG funds.",
+        "social_links": [
+            "https://www.linkedin.com/in/johndoe"
+        ]
+    }
+]
+
+== Example 2: address proof finds the documents that are utility bills
+
+$ curl -s 'http://127.0.0.1:8000/search?q=address%20proof' | python3 -m json.tool --no-ensure-ascii
+[
+    {
+        "type": "document",
+        "score": 0.7531,
+        "match_type": "concept",
+        "id": "01a20d78-a241-7823-9839-67457e69335f",
+        "client_id": "01a20d78-9dc6-7176-80d5-c653059a60a9",
+        "title": "Electricity bill",
+        "content": "Electricity bill from EDF Energy for January 2025, 7 Mill Lane, Leeds. Amount due £96.10.",
+        "created_at": "2026-11-24T12:12:19.393278Z",
+        "tags": [
+            "proof of address"
+        ],
+        "summary": {
+            "text": "Electricity bill from EDF Energy for January 2025, 7 Mill Lane, Leeds. Amount due £96.10.",
+            "method": "extractive"
+        }
+    },
+    {
+        "type": "document",
+        "score": 0.7396,
+        "match_type": "concept",
+        "id": "01a20d78-a17e-7410-82f7-0e000102bcc2",
+        "client_id": "01a20d78-9dc6-7176-80d5-c653059a60a9",
+        "title": "Scan 0042",
+        "content": "Scan: utility bill (electricity), 2 pages.\n\nNORTHMOOR ENERGY\nMr Tobias Hallworth\n14 Larkspur Close, Harrogate HG2 7QD\nCustomer number 8830 5512 07. Bill date 14 March 2025.\n\nYour electricity bill for 11 December 2024 to 10 March 2025 (90 days).\nMeter 21E4470913: previous reading 41,208, latest reading 42,371 (smart meter). Electricity used: 1,163 kWh.\nUnit charges 1,163 kWh at 24.86p: £289.12\nStanding charge 90 days at 60.97p: £54.87\nVAT at 5%: £17.20\nTotal charges this period: £361.19\nPayments received, thank you (3 direct debits of £95.47): £286.41\nBalance carried forward: £74.78 debit\n\nYour monthly direct debit stays at £95.47 and is collected on the 3rd of each month. Tariff: Fixed Saver 18, ends 30 September 2025. Estimated annual cost on this tariff: £1,210.",
+        "created_at": "2026-11-24T12:12:19.198030Z",
+        "tags": [
+            "proof of address",
+            "customer due diligence"
+        ],
+        "summary": {
+            "text": "Scan: utility bill (electricity), 2 pages. NORTHMOOR ENERGY Mr Tobias Hallworth 14 Larkspur Close, Harrogate HG2 7QD Customer number 8830 5512 07. Bill date 14 March 2025. Your electricity bill for 11 December 2024 to 10 March 2025 (90 days).",
+            "method": "extractive"
+        }
+    },
+    {
+        "type": "document",
+        "score": 0.7382,
+        "match_type": "concept",
+        "id": "01a20d78-9ec5-7c74-acdd-4ab3baa2a17e",
+        "client_id": "01a20d78-9dc6-7176-80d5-c653059a60a9",
+        "title": "Utility bill",
+        "content": "British Gas utility bill for March 2025. Account holder John Doe, 14 Larkspur Close, Harrogate. Amount due £84.20.",
+        "created_at": "2026-11-24T12:12:18.501407Z",
+        "tags": [
+            "proof of address",
+            "customer due diligence"
+        ],
+        "summary": {
+            "text": "British Gas utility bill for March 2025. Account holder John Doe, 14 Larkspur Close, Harrogate. Amount due £84.20.",
+            "method": "extractive"
+        }
+    }
+]
+
+== A junk query finds nothing
+
+$ curl -s 'http://127.0.0.1:8000/search?q=chocolate%20cake%20recipe' | python3 -m json.tool --no-ensure-ascii
+[]
+
+Swagger UI: http://127.0.0.1:8000/docs (it loads its JavaScript from cdn.jsdelivr.net)

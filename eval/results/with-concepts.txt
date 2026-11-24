@@ -1,0 +1,35 @@
+## Test set: concept map on (/app/app/data/concepts.yaml)
+
+Skipped records (the API would reject them): existing-clients-skeptic-44/c_long (description)
+
+### Strict pass (passed / total)
+
+| | passed |
+|---|---|
+| **total** | 1323/1887 (70 %) |
+| written blind (Codex, Claude) | 255/400 (64 %) |
+| open datasets | 640/951 (67 %) |
+| research, independent of the design | 296/391 (76 %) |
+| research, written by the design's authors | 132/145 (91 %) |
+| required | 544/621 (88 %) |
+| expected | 595/887 (67 %) |
+| nice | 184/379 (49 %) |
+| existing-documents-86 dev | 24/50 (48 %) |
+| existing-documents-86 test | 23/50 (46 %) |
+
+### First 10 results: micro precision / recall / F1, hit@10, no-answer queries clean
+
+| | precision | recall | F1 | hit@10 | no-answer clean |
+|---|---|---|---|---|---|
+| all suites | 0.80 | 0.74 | 0.766 | 0.86 | 0.67 (154/230) |
+| existing-documents-86 dev | 0.56 | 0.76 | 0.646 | 0.88 | 0.75 (6/8) |
+| existing-documents-86 test | 0.64 | 0.56 | 0.595 | 0.76 | 0.62 (5/8) |
+
+### The assignment examples (strict pass, every suite that has the query)
+
+| | passed |
+|---|---|
+| `neviswealth` | 16/16 |
+| `address proof` | 0/10 |
+
+Run time: 1 min 13 s (loading 1 min 03 s, queries 8 s); model revision 4262131
