@@ -58,6 +58,10 @@ plugins = ["pydantic.mypy"]
 module = ["onnxruntime", "onnxruntime.*"]  # ships no type information
 ignore_missing_imports = true
 
+[[tool.mypy.overrides]]
+module = ["testset.*"]  # the test set's own scripts, imported as they are; not written for strict mode
+ignore_errors = true
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
