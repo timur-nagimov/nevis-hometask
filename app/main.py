@@ -2,7 +2,7 @@ import dataclasses
 import logging
 import time
 import traceback
-from collections.abc import AsyncIterator, Iterator, Mapping
+from collections.abc import AsyncIterator, Mapping
 from contextlib import asynccontextmanager
 from http import HTTPStatus
 from typing import Annotated, Any
@@ -371,9 +371,9 @@ def get_client(client_id: str, services: ServicesDep) -> dict[str, Any]:
     return client
 
 
-def _upload_slot() -> Iterator[None]:
-    """Held while an upload is processed. Callers beyond MAX_CONCURRENT_UPLOADS wait on the event loop, not in
-    a worker thread; scope='function' frees the slot when the route returns, before the response is sent."""
+async def _upload_slot() -> AsyncIterator[None]:
+    """Held while an upload is processed. `async`: no worker thread, also for callers waiting for a slot.
+    scope='function' frees the slot when the route returns, before the response is sent."""
     yield
 
 
