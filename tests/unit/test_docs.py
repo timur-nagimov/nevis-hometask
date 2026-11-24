@@ -39,7 +39,10 @@ def _cells(row: str) -> list[str]:
 def _runner_cells(name: str) -> set[str]:
     """Every table cell that the evaluation runner printed into eval/results/<name>."""
     text = (RESULTS / name).read_text(encoding='utf-8')
-    return {cell for row in _table_lines(text) for cell in _cells(row)}
+    cells: set[str] = set()
+    for row in _table_lines(text):
+        cells.update(_cells(row))
+    return cells
 
 
 @pytest.mark.parametrize('doc', ['README.md', 'docs/DESIGN.md', 'eval/README.md'])
@@ -51,7 +54,8 @@ def test_relative_links_resolve(doc: str) -> None:
 
 
 def test_quality_cells_are_runner_output() -> None:
-    with_concepts, no_concepts = _runner_cells('with-concepts.txt'), _runner_cells('no-concepts.txt')
+    with_concepts = _runner_cells('with-concepts.txt')
+    no_concepts = _runner_cells('no-concepts.txt')
     rows = _table_lines(_between(_readme(), 'quality'))[2:]  # after the header and its separator
     assert len(rows) >= 6, 'the quality table needs at least six rows'
     for row in rows:

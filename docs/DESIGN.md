@@ -33,13 +33,18 @@ typo tier run: trigram word similarity from 0.6, `fuzzy`. Score: `0.5 + 0.5 × s
 
 ## 4. Document ingest
 
-An upload (`create_document` in `app/ingest.py`) checks the fields (404 for an unknown client), tags the concepts
-whose name or `expands_to` phrase occurs in title or text, keeps the first sentences up to 300 characters as the
-summary, cuts the text into fragments of up to 200 words with the title in front, adds the tags as a fragment if they
-matched in the title or in a document of up to 200 words, embeds in batches of four, and stores it all in one
-transaction before the 201. Synchronous by choice: a document is searchable when the 201 returns. Worst case about
-2 s for 50,000 characters (design-time: about 40 ms per 200-word fragment on 2 CPUs); at most four uploads run at
-once, the others wait without holding a thread.
+An upload (`create_document` in `app/ingest.py`):
+
+1. checks the fields (404 for an unknown client);
+2. tags the concepts whose name or `expands_to` phrase occurs in title or text;
+3. keeps the first sentences up to 300 characters as the summary;
+4. cuts the text into fragments of up to 200 words with the title in front;
+5. adds the tags as a fragment if they matched in the title or in a document of up to 200 words;
+6. embeds in batches of four and stores it all in one transaction before the 201.
+
+Synchronous by choice: a document is searchable when the 201 returns. Worst case about 2 s for 50,000 characters
+(design-time: about 40 ms per 200-word fragment on 2 CPUs); at most four uploads run at once, the others wait without
+holding a thread.
 
 ## 5. Document search
 

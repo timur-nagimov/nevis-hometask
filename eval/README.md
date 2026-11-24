@@ -1,7 +1,7 @@
 # Evaluation
 
 `eval/run_testset.py` measures the shipped search code on 18 test suites: 1,887 queries whose correct answers were
-written down before the code existed. It loads each suite and asks its queries through the service's own functions
+written down before the code existed. It loads each suite and runs its queries through the service's own functions
 (`app.db.insert_client`, `app.ingest.create_document`, `app.search.search` with the queries of `app/db.py`), so it
 measures exactly what the API does, without the HTTP layer.
 
@@ -24,7 +24,7 @@ failing query with the reason, and suite names (`tools-mini-6`) to run only thos
 
 The outputs on the shipped code are committed: [results/with-concepts.txt](results/with-concepts.txt) and
 [results/no-concepts.txt](results/no-concepts.txt). The README's quality table quotes only these files. This prints
-nothing when a new run reproduces the first one:
+nothing when a new run gives the same numbers:
 
 ```bash
 diff <(grep '^|' eval/results/with-concepts.txt) \
@@ -83,10 +83,10 @@ The reference implementation of the design (the same SQL, model and rules, witho
 | hit@10 | 0.86 | 0.84 |
 | no-answer clean (230) | 0.67 | 0.68 |
 
-The shipped code scores 2 fewer strict passes in each configuration, 1,323 and 1,328, and so 2 fewer in the rows
-"research, independent" and "required": the reference run loaded one client whose description exceeds the API's
-2,000-character limit, and without it queries B01 and B02 of `existing-clients-skeptic-44` (required, research)
-always fail. Every other number above is the same in `results/`.
+The shipped code scores 2 fewer strict passes in each configuration (1,323 and 1,328), and 2 fewer in the rows
+"research, independent" and "required". The reference run loaded one client whose description exceeds the API's
+2,000-character limit; without that client, queries B01 and B02 of `existing-clients-skeptic-44` (required,
+research) always fail. Every other number above is the same in `results/`.
 
 ## Caveats
 
