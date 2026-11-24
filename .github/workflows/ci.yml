@@ -1,7 +1,6 @@
-# CI, two jobs in parallel. build-and-test: build both images, start the stack, wait for /health, run every
-# test in the tests container. demo: start the stack, run the demo twice (the second run must create nothing)
-# and check both assignment examples. Each job shows the logs when something failed and removes everything.
-# ubuntu-latest is x86_64, so this is also the linux/amd64 check of the image.
+# CI, two jobs in parallel, each with a stack of its own. build-and-test: lint, type-check and run every test
+# in the tests container. demo: run the demo twice (the second run must create nothing), then check both
+# assignment examples. ubuntu-latest is x86_64, so this is also the linux/amd64 check of the image.
 name: ci
 
 on:
