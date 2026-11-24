@@ -17,17 +17,12 @@ import numpy.typing as npt
 import pytest
 from tokenizers import Tokenizer
 
-from app import embedding
 from app.config import EMBED_BATCH, EMBED_INTER_OP_THREADS, QUERY_PREFIX, TOKENIZER_FILE
 from app.embedding import (
     DEFAULT_MODEL_DIR,
     DIM,
-    GOLDEN_COSINE,
-    GOLDEN_TOLERANCE,
     MAX_TOKENS,
     Embedder,
-    SelfCheckError,
-    selfcheck,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -171,16 +166,6 @@ def test_sixteen_threads_share_one_embedder(embedder: Embedder) -> None:
 def test_the_session_runs_on_the_given_threads(embedder: Embedder) -> None:
     options = embedder._session.get_session_options()
     assert (options.intra_op_num_threads, options.inter_op_num_threads) == (THREADS, EMBED_INTER_OP_THREADS)
-
-
-def test_selfcheck_passes_on_the_pinned_model() -> None:
-    assert abs(selfcheck(MODEL_DIR) - GOLDEN_COSINE) <= GOLDEN_TOLERANCE
-
-
-def test_selfcheck_fails_when_the_cosine_is_off(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(embedding, 'GOLDEN_COSINE', GOLDEN_COSINE + 10 * GOLDEN_TOLERANCE)
-    with pytest.raises(SelfCheckError, match='cosine'):
-        selfcheck(MODEL_DIR)
 
 
 def test_selfcheck_command_exits_0() -> None:

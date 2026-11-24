@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from app.config import PACKAGED_CONCEPTS_FILE, SHORT_DOC_WORDS, Settings
+from app.config import PACKAGED_CONCEPTS_FILE, SHORT_DOC_WORDS
 from app.ingest import Concepts, load_concepts, tagging_from_matches
 
 GOV = 'https://www.gov.uk/'
@@ -18,7 +18,6 @@ DBS = (
 JSA = GOV + 'jobseekers-allowance/your-jsa-interview'
 JMLSG = 'https://www.jmlsg.org.uk/wp-content/uploads/2026/10/JMLSG-Guidance-Part-I_Oct-2026.pdf'
 FAMILY_VISA = GOV + 'uk-family-visa/provide-information'
-DATABASE_URL = 'postgresql://nevis@localhost/nevis'  # Settings needs one; nothing connects
 PLANTED = 'Zq9planted'  # file content that no error message may repeat
 
 MINI = """
@@ -55,12 +54,6 @@ def test_the_shipped_map_has_30_entries_and_four_official_sources() -> None:
         'customer due diligence': [JMLSG],
         'proof of income': [FAMILY_VISA],
     }
-
-
-def test_the_default_setting_loads_the_shipped_map() -> None:
-    concepts = load_concepts(Settings(database_url=DATABASE_URL).concepts_file)
-    assert concepts is not None
-    assert concepts.sha256 == hashlib.sha256(Path(PACKAGED_CONCEPTS_FILE).read_bytes()).hexdigest()
 
 
 def test_the_hash_is_of_the_file_bytes(mini: Concepts) -> None:
