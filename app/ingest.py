@@ -372,7 +372,7 @@ def _clip_sentences(text: str, max_chars: int) -> str:
         kept = longer
     if kept:
         return kept
-    return _clip_words(text, max_chars - 1) + ELLIPSIS
+    return _clip_words(text, max_chars - len(ELLIPSIS)) + ELLIPSIS
 
 
 class LlmOutput(BaseModel):

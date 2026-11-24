@@ -6,6 +6,7 @@ import pytest
 from pydantic import SecretStr
 
 from app.config import (
+    ELLIPSIS,
     LLM_MAX_CONCEPTS,
     LLM_MAX_PHRASES,
     LLM_PHRASE_CHARS,
@@ -64,6 +65,12 @@ def test_answer_is_clipped_not_rejected() -> None:
     assert len(out.phrases) == LLM_MAX_PHRASES
     assert all(len(phrase) <= LLM_PHRASE_CHARS for phrase in out.phrases)
     assert [phrase.casefold() for phrase in out.phrases].count('energy bill') == 1
+
+
+def test_an_overlong_first_sentence_is_cut_to_the_limit_with_an_ellipsis() -> None:
+    out = LlmOutput(summary='y' * 700, concepts=[], document_type='', phrases=[])
+
+    assert len(out.summary) == LLM_SUMMARY_CHARS and out.summary.endswith(ELLIPSIS)
 
 
 def test_control_characters_in_the_answer_become_spaces() -> None:
