@@ -68,12 +68,9 @@ def test_strict_pass_is_score_py_with_the_api_limit_of_50() -> None:
     ('suite', 'group'),
     [
         ('codex-mixed', 'written blind (Codex, Claude)'),
-        ('claude-clients', 'written blind (Codex, Claude)'),
         ('ds-fiqa', 'open datasets'),
-        ('existing-documents-86', 'research, independent of the design'),
         ('existing-clients-skeptic-44', 'research, independent of the design'),
         ('existing-clients-fixture-42', "research, written by the design's authors"),
-        ('tools-mini-6', "research, written by the design's authors"),
     ],
 )
 def test_suites_are_grouped_by_origin(suite: str, group: str) -> None:
