@@ -109,7 +109,7 @@ TINY: dict[str, Any] = {
 }
 
 
-def test_kinds_of() -> None:
+def test_corpus_ids_are_mapped_to_client_or_document() -> None:
     assert kinds_of(TINY) == {'c00': 'client', 'd1': 'document', 'd2': 'document'}
 
 

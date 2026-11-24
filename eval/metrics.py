@@ -95,7 +95,7 @@ class FirstTen:
             return
         tp = len(rel & set(got))
         self.tp += tp
-        self.fn += min(len(rel), K) - min(tp, K)
+        self.fn += min(len(rel), K) - tp
         if query.get('others', 'wrong') == 'wrong':
             self.fp += sum(1 for x in got if x not in rel and x not in acc)
         self.pos_n += 1
@@ -194,5 +194,6 @@ def render(board: Scoreboard, config: str, skipped: list[str]) -> str:
         '| | passed |',
         '|---|---|',
     ]
-    lines += [f'| `{q}` | {t.passed}/{t.total} |' for q, t in board.examples.items()]
+    for example, tally in board.examples.items():
+        lines.append(f'| `{example}` | {tally.passed}/{tally.total} |')
     return '\n'.join(lines)
