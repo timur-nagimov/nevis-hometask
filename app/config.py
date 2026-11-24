@@ -11,7 +11,7 @@ from sqlalchemy import Engine
 
 if TYPE_CHECKING:  # for the type checker only: app.embedding and app.ingest import this module
     from app.embedding import Embedder
-    from app.ingest import Concepts
+    from app.ingest import Concepts, LlmEnricher
 
 PACKAGED_CONCEPTS_FILE = str(Path(__file__).parent / 'data' / 'concepts.yaml')  # the shipped concept map
 DEFAULT_MODEL_DIR = '/opt/models/leaf-ir'  # where the image keeps the embedding model
@@ -171,3 +171,4 @@ class Services:
     engine: Engine  # the connection pool
     embedder: Embedder
     concepts: Concepts | None  # None: NEVIS_CONCEPTS_FILE is empty, no tagging
+    llm: LlmEnricher | None = None  # None: uploads are not sent to Claude

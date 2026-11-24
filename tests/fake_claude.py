@@ -23,7 +23,7 @@ def answer(**changes: Any) -> dict[str, Any]:
 
 def message(body: dict[str, Any] | str, stop_reason: str = 'end_turn') -> Message:
     """Claude's response with `body` as its text: a dict as JSON, a string as it is."""
-    return Message(
+    response = Message(
         id='msg_fake',
         content=[TextBlock(type='text', text=body if isinstance(body, str) else json.dumps(body))],
         model='claude-haiku-5-5',
@@ -33,6 +33,8 @@ def message(body: dict[str, Any] | str, stop_reason: str = 'end_turn') -> Messag
         type='message',
         usage=Usage(input_tokens=1500, output_tokens=200),
     )
+    response._request_id = 'req_fake'  # the SDK sets it on every response it returns
+    return response
 
 
 class FakeMessages:

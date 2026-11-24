@@ -214,7 +214,7 @@ def test_constants_keep_their_values() -> None:
     assert round(config.FUZZY_SCORE_MAX, config.SCORE_DECIMALS) < config.EXACT_SCORE_MIN
 
 
-def test_services_is_a_frozen_bundle_of_four() -> None:
+def test_services_is_a_frozen_bundle_of_five() -> None:
     settings = Settings(database_url='postgresql://u:p@db:5432/nevis')
     services = Services(
         settings=settings, engine=cast(Engine, None), embedder=cast(Embedder, None), concepts=None
@@ -225,6 +225,7 @@ def test_services_is_a_frozen_bundle_of_four() -> None:
         'engine',
         'embedder',
         'concepts',
+        'llm',
     ]
     with pytest.raises(dataclasses.FrozenInstanceError):
         services.embedder = cast(Embedder, object())  # type: ignore[misc]

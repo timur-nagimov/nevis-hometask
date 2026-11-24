@@ -6,8 +6,12 @@ was measured with: change what they return only together with a new measurement.
 
 import difflib
 import hashlib
+import logging
 import re
+import threading
+import time
 import unicodedata
+from collections import Counter
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -15,16 +19,21 @@ from typing import Any, TypedDict
 from urllib.parse import urlsplit
 from uuid import UUID
 
+import anthropic
 import yaml
-from pydantic import BaseModel, ConfigDict, field_validator
+from anthropic.types import Message, TextBlock
+from pydantic import BaseModel, ConfigDict, ValidationError, field_validator
 
 from app import db
 from app.config import (
     CHUNK_WORDS,
     ELLIPSIS,
     EXTRACTIVE,
+    LLM_CONNECT_SECONDS,
     LLM_MAX_CONCEPTS,
     LLM_MAX_PHRASES,
+    LLM_MAX_TOKENS,
+    LLM_PARALLEL,
     LLM_PHRASE_CHARS,
     LLM_SUMMARY_CHARS,
     MIN_SPELL_CHARS,
@@ -34,8 +43,11 @@ from app.config import (
     SUMMARY_CHARS,
     TAGS_CHUNK_NO,
     Services,
+    Settings,
 )
 from app.schemas import Document, DocumentCreate
+
+log = logging.getLogger(__name__)
 
 _SENTENCE_END = re.compile(r'(?<=[.!?])\s+')  # the summary takes whole sentences
 
@@ -432,3 +444,134 @@ def llm_output_schema(names: Sequence[str]) -> dict[str, Any]:
         'required': ['summary', 'concepts', 'document_type', 'phrases'],
         'additionalProperties': False,
     }
+
+
+# At DEBUG the SDK logs every request, the document's text included: it and its HTTP stack stay at WARNING,
+# whatever NEVIS_LOG_LEVEL or ANTHROPIC_LOG (read when anthropic was imported) say.
+for _sdk_logger in ('anthropic', 'httpx2', 'httpcore2'):
+    logging.getLogger(_sdk_logger).setLevel(logging.WARNING)
+
+
+class LlmEnricher:
+    """Claude's description of each uploaded document: one call per document, at most LLM_PARALLEL at a time.
+    A failed call returns None and logs only its reason, never the document or the answer."""
+
+    def __init__(self, client: anthropic.Anthropic, model: str, names: Sequence[str]) -> None:
+        self.client = client
+        self.model = model
+        self._names = frozenset(names)
+        self._schema = llm_output_schema(names)
+        self._system = build_system_prompt(names)
+        self._slots = threading.BoundedSemaphore(LLM_PARALLEL)
+        self._stats: Counter[str] = Counter()
+        self._stats_lock = threading.Lock()
+
+    def enrich(self, title: str, content: str) -> LlmOutput | None:
+        """Claude's answer for the document, or None: then the upload takes the offline path."""
+        output, reason, input_tokens, output_tokens = self._call(title, content)
+        with self._stats_lock:
+            self._stats['calls'] += 1
+            self._stats['ok' if output is not None else f'fallback_{reason}'] += 1
+            self._stats['input_tokens'] += input_tokens
+            self._stats['output_tokens'] += output_tokens
+        return output
+
+    def warm_up(self) -> None:
+        """One call with a short synthetic document at start-up, not counted in stats(): the first request
+        with a new answer schema waits while the schema is compiled."""
+        output, reason, _, _ = self._call('Warm-up', 'Electricity bill for March.')
+        if output is None:
+            log.warning('llm warm-up failed reason=%s; failed calls take the offline path', reason)
+        else:
+            log.info('llm warm-up ok')
+
+    def stats(self) -> dict[str, int]:
+        """Counts of enrich() since start-up: calls, ok, fallback_<reason>, input_tokens, output_tokens."""
+        with self._stats_lock:
+            return dict(self._stats)
+
+    def _call(self, title: str, content: str) -> tuple[LlmOutput | None, str, int, int]:
+        """The answer and 'ok', or None and the reason (logged); then the input and output tokens used."""
+        started = time.perf_counter()
+        if not self._slots.acquire(blocking=False):  # LLM_PARALLEL calls in flight: never wait for a slot
+            return self._fallback('busy', started)
+        try:
+            response = self.client.messages.create(
+                model=self.model,
+                max_tokens=LLM_MAX_TOKENS,
+                thinking={'type': 'disabled'},
+                output_config={'effort': 'low', 'format': {'type': 'json_schema', 'schema': self._schema}},
+                system=self._system,
+                messages=[{'role': 'user', 'content': build_user_message(title, content)}],
+            )
+        except anthropic.APITimeoutError:  # a subclass of APIConnectionError: keep it first
+            return self._fallback('timeout', started)
+        except anthropic.APIConnectionError:
+            return self._fallback('connection_error', started)
+        except anthropic.APIStatusError as exc:  # any 4xx or 5xx, 429 and 529 included: never retried
+            return self._fallback(f'api_error_{exc.status_code}', started)
+        finally:
+            self._slots.release()
+        tokens = (response.usage.input_tokens, response.usage.output_tokens)
+        if response.stop_reason != 'end_turn':  # a refusal, an answer cut at max_tokens, ...: no answer
+            return self._fallback(f'stop_{response.stop_reason}', started, tokens)
+        output = self._parse(response)
+        if output is None:
+            return self._fallback('schema_mismatch', started, tokens)
+        log.info(
+            'llm enrichment ok model=%s input_tokens=%d output_tokens=%d ms=%d request_id=%s',
+            response.model,
+            *tokens,
+            _elapsed_ms(started),
+            response._request_id,
+        )
+        return output, 'ok', *tokens
+
+    def _parse(self, response: Message) -> LlmOutput | None:
+        """The answer in the response's text; None when it does not fit the schema or names a concept that is
+        not in the map."""
+        text = ''.join(block.text for block in response.content if isinstance(block, TextBlock))
+        try:
+            output = LlmOutput.model_validate_json(text)
+        except ValidationError:
+            return None
+        return output if set(output.concepts) <= self._names else None
+
+    @staticmethod
+    def _fallback(
+        reason: str, started: float, tokens: tuple[int, int] = (0, 0)
+    ) -> tuple[None, str, int, int]:
+        log.warning('llm enrichment fallback reason=%s ms=%d', reason, _elapsed_ms(started))
+        return None, reason, *tokens
+
+
+def _elapsed_ms(started: float) -> int:
+    return round((time.perf_counter() - started) * 1000)
+
+
+def make_enricher(settings: Settings, concepts: Concepts | None) -> LlmEnricher | None:
+    """The enricher, or None when uploads are not to be sent to Claude: sending them takes NEVIS_LLM_ENABLED,
+    an API key and the concept map. One log line says whether it is on and, when it is off, why."""
+    secret = settings.anthropic_api_key
+    key = secret.get_secret_value().strip() if secret is not None else ''
+    if not settings.llm_enabled:
+        reason = 'NEVIS_LLM_ENABLED is not true'
+    elif not key:
+        reason = 'ANTHROPIC_API_KEY is not set'
+    elif concepts is None:
+        reason = 'NEVIS_CONCEPTS_FILE is empty'
+    else:
+        client = anthropic.Anthropic(
+            api_key=key,
+            timeout=anthropic.Timeout(settings.llm_timeout_seconds, connect=LLM_CONNECT_SECONDS),
+            max_retries=0,  # a failed call takes the offline path at once
+        )
+        log.info(
+            'llm enrichment: on model=%s timeout=%ss parallel=%d',
+            settings.llm_model,
+            settings.llm_timeout_seconds,
+            LLM_PARALLEL,
+        )
+        return LlmEnricher(client, settings.llm_model, concepts.names)
+    log.info('llm enrichment: off (%s)', reason)
+    return None

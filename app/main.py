@@ -40,7 +40,7 @@ from app.config import (
 )
 from app.db import DatabaseUnavailable, Reason, create_schema, open_engine
 from app.embedding import Embedder
-from app.ingest import load_concepts
+from app.ingest import load_concepts, make_enricher
 from app.schemas import (
     Client,
     ClientCreate,
@@ -240,10 +240,16 @@ async def health() -> dict[str, str]:
 
 
 def build_services(settings: Settings) -> Services:
-    """Load the concept map and the model, then open the connection pool."""
+    """Load the concept map and the model, set up the Claude call and warm it up, then open the connection
+    pool."""
     concepts = load_concepts(settings.concepts_file)
     embedder = Embedder(settings.model_dir, settings.embed_threads)
-    return Services(settings=settings, engine=open_engine(settings), embedder=embedder, concepts=concepts)
+    llm = make_enricher(settings, concepts)
+    if llm is not None:
+        llm.warm_up()
+    return Services(
+        settings=settings, engine=open_engine(settings), embedder=embedder, concepts=concepts, llm=llm
+    )
 
 
 def close_services(services: Services) -> None:
