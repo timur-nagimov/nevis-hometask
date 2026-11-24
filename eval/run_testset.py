@@ -31,7 +31,16 @@ from psycopg import sql
 from psycopg.conninfo import make_conninfo
 from pydantic import TypeAdapter, ValidationError
 
-from app.config import MAX_LIMIT, MODEL_REVISION, SHORT_REVISION_CHARS, Services, Settings
+from app.config import (
+    DEFAULT_LLM_MODEL,
+    LLM_INPUT_PRICE,
+    LLM_OUTPUT_PRICE,
+    MAX_LIMIT,
+    MODEL_REVISION,
+    SHORT_REVISION_CHARS,
+    Services,
+    Settings,
+)
 from app.db import create_schema, insert_client, open_engine
 from app.embedding import Embedder
 from app.ingest import Concepts, LlmEnricher, create_document, load_concepts, make_enricher
@@ -46,10 +55,6 @@ SUITES_DIR = Path(__file__).resolve().parents[1] / 'testset' / 'suites'
 TYPE_OF_SCOPE: dict[str, ResultType | None] = {'all': None, 'clients': 'client', 'documents': 'document'}
 QUERY: TypeAdapter[str] = TypeAdapter(QueryText)
 SHOWN_Q_CHARS = 80  # --failures shows a query up to this many characters
-# --llm prints what the calls cost at PRICED_MODEL's prices, in US dollars per million tokens
-PRICED_MODEL = 'claude-haiku-5-5'
-INPUT_PRICE = 0.10
-OUTPUT_PRICE = 0.50
 
 
 @dataclass
@@ -214,16 +219,19 @@ def duration(seconds: float) -> str:
 
 
 def print_llm_totals(totals: dict[str, int]) -> None:
-    """How many documents Claude enriched, why the others fell back, and what the calls cost."""
+    """Document enrichment counts and estimated cost, excluding warm-up."""
     calls = totals.get('calls', 0)
-    fallbacks = {k.removeprefix('fallback_'): v for k, v in sorted(totals.items()) if 'fallback_' in k}
+    fallbacks = {
+        k.removeprefix('fallback_'): v for k, v in sorted(totals.items()) if k.startswith('fallback_')
+    }
     tokens_in, tokens_out = totals.get('input_tokens', 0), totals.get('output_tokens', 0)
-    cost = (tokens_in * INPUT_PRICE + tokens_out * OUTPUT_PRICE) / 1_000_000
+    cost = (tokens_in * LLM_INPUT_PRICE + tokens_out * LLM_OUTPUT_PRICE) / 1_000_000
     print(f'\nLLM: {calls} documents, {totals.get("ok", 0)} enriched, fallbacks {fallbacks or "none"}')
     print(
-        f'LLM tokens: input {tokens_in}, output {tokens_out}; cost ${cost:.2f} total, '
+        f'LLM tokens: input {tokens_in}, output {tokens_out}; estimated cost ${cost:.2f} total, '
         f'${cost / max(calls, 1):.5f} per document '
-        f'({PRICED_MODEL} at ${INPUT_PRICE:.2f} / ${OUTPUT_PRICE:.2f} per million tokens)'
+        f'(at {DEFAULT_LLM_MODEL} rates: ${LLM_INPUT_PRICE:.2f} / ${LLM_OUTPUT_PRICE:.2f} '
+        'per million tokens; excludes warm-up)'
     )
 
 
@@ -242,16 +250,18 @@ def main() -> None:
     log.setLevel(logging.INFO)
 
     started = time.perf_counter()
-    base = Settings(concepts_file='') if args.no_concepts else Settings(llm_enabled=args.llm)
+    base = Settings(llm_enabled=args.llm)
+    if args.no_concepts:
+        base.concepts_file = ''
     concepts = load_concepts(base.concepts_file)
     if concepts is None:
         config = 'concept map off (NEVIS_CONCEPTS_FILE empty)'
     else:
         config = f'concept map on ({base.concepts_file})'
-    embedder = Embedder(base.model_dir, base.embed_threads)  # one model for all suites
     llm = make_enricher(base, concepts)  # None unless --llm, a key and the concept map; one for all suites
     if args.llm and llm is None:
         parser.error('--llm needs ANTHROPIC_API_KEY in the environment and the concept map')
+    embedder = Embedder(base.model_dir, base.embed_threads)  # one model for all suites
     if llm is not None:
         llm.warm_up()
     admin_dsn = make_conninfo(base.database_url.get_secret_value(), dbname='postgres')

@@ -6,17 +6,12 @@ the key's owner: it sends four short synthetic documents to Anthropic (well unde
     uv run --env-file .env pytest -m live tests/live -v
 """
 
-import os
-
 import pytest
 
 from app.config import LLM_SUMMARY_CHARS, PACKAGED_CONCEPTS_FILE, Settings
 from app.ingest import Concepts, LlmEnricher, make_enricher
 
-pytestmark = [
-    pytest.mark.live,
-    pytest.mark.skipif(not os.environ.get('ANTHROPIC_API_KEY'), reason='needs ANTHROPIC_API_KEY and consent'),
-]
+pytestmark = pytest.mark.live
 
 # documents that give Claude orders, each with a marker that must not reach the summary
 INJECTIONS = [
@@ -52,7 +47,8 @@ INJECTIONS = [
 def llm() -> LlmEnricher:
     settings = Settings(database_url='postgresql://unused@localhost/unused', llm_enabled=True)
     enricher = make_enricher(settings, Concepts.load(PACKAGED_CONCEPTS_FILE))  # key: ANTHROPIC_API_KEY
-    assert enricher is not None
+    if enricher is None:
+        pytest.skip('needs ANTHROPIC_API_KEY and consent')
     return enricher
 
 

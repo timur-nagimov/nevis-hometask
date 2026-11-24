@@ -4,7 +4,14 @@ import pytest
 
 from app.config import DEFAULT_MAX_CONTENT_CHARS, MAX_DESCRIPTION_CHARS
 from app.schemas import ClientCreate, DocumentCreate
-from eval.run_testset import api_query, client_payload, document_payload, duration, suite_database_name
+from eval.run_testset import (
+    api_query,
+    client_payload,
+    document_payload,
+    duration,
+    print_llm_totals,
+    suite_database_name,
+)
 
 
 def test_the_database_is_named_after_the_suite() -> None:
@@ -46,3 +53,24 @@ def test_content_over_the_limit_is_rejected_as_the_upload_route_does() -> None:
 def test_a_duration_is_shown_in_seconds_or_in_minutes_and_seconds() -> None:
     assert duration(41.2) == '41 s'
     assert duration(125.4) == '2 min 05 s'
+
+
+def test_llm_totals_include_fallback_tokens_and_exclude_warm_up(capsys: pytest.CaptureFixture[str]) -> None:
+    print_llm_totals(
+        {'calls': 2, 'ok': 1, 'fallback_schema_mismatch': 1, 'input_tokens': 1000, 'output_tokens': 200}
+    )
+
+    out = capsys.readouterr().out
+    assert "2 documents, 1 enriched, fallbacks {'schema_mismatch': 1}" in out
+    assert 'input 1000, output 200' in out
+    assert 'estimated cost $0.00 total, $0.00010 per document' in out
+    assert 'excludes warm-up' in out
+
+
+def test_llm_totals_with_no_documents(capsys: pytest.CaptureFixture[str]) -> None:
+    print_llm_totals({})
+
+    out = capsys.readouterr().out
+    assert '0 documents, 0 enriched, fallbacks none' in out
+    assert 'input 0, output 0' in out
+    assert '$0.00 total, $0.00000 per document' in out

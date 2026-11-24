@@ -16,6 +16,10 @@ if TYPE_CHECKING:  # for the type checker only: app.embedding and app.ingest imp
 PACKAGED_CONCEPTS_FILE = str(Path(__file__).parent / 'data' / 'concepts.yaml')  # the shipped concept map
 DEFAULT_MODEL_DIR = '/opt/models/leaf-ir'  # where the image keeps the embedding model
 DEFAULT_MAX_CONTENT_CHARS = 50_000  # document content limit when NEVIS_MAX_CONTENT_CHARS is not set
+DEFAULT_LLM_MODEL = 'claude-haiku-5-5'
+LLM_INPUT_PRICE = 0.10  # USD per million tokens at DEFAULT_LLM_MODEL's rates
+LLM_OUTPUT_PRICE = 0.50
+EVAL_POST_TIMEOUT_SECONDS = 60
 
 
 class Settings(BaseSettings):
@@ -40,7 +44,7 @@ class Settings(BaseSettings):
     # Claude enrichment at upload. Claude is called only when both the flag and the key are set: a key that
     # happens to be in the environment sends nothing on its own.
     llm_enabled: bool = False
-    llm_model: str = 'claude-haiku-5-5'  # the request is shaped for this model; another may refuse it
+    llm_model: str = DEFAULT_LLM_MODEL  # the request is shaped for this model; another may refuse it
     llm_timeout_seconds: float = Field(default=10.0, gt=0)  # a slower answer is dropped, the upload goes on
     # read from ANTHROPIC_API_KEY (the SDK's name, no NEVIS_ prefix) or passed as anthropic_api_key=
     anthropic_api_key: SecretStr | None = Field(

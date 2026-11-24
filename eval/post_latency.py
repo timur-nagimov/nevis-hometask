@@ -2,13 +2,9 @@
 
 Creates one client, posts the 86 documents of testset/suites/existing-documents-86.json one after another
 and prints p50 / p95 / max of the POST time and how many summaries each method produced. The client and the
-documents stay in the API's database, so point it at a throw-away stack, for example a second compose project:
+documents stay in the API's database, so point it at a throw-away stack:
 
-    API_PORT=8001 docker compose -p nevis-latency up --build -d
     uv run python -m eval.post_latency --base-url http://127.0.0.1:8001
-    docker compose -p nevis-latency down -v
-
-Standard library only.
 """
 
 import argparse
@@ -19,8 +15,9 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
+from app.config import EVAL_POST_TIMEOUT_SECONDS
+
 SUITE = Path(__file__).resolve().parents[1] / 'testset' / 'suites' / 'existing-documents-86.json'
-TIMEOUT_SECONDS = 60  # per request
 
 
 def post(base_url: str, path: str, body: dict[str, Any]) -> dict[str, Any]:
@@ -30,7 +27,7 @@ def post(base_url: str, path: str, body: dict[str, Any]) -> dict[str, Any]:
         headers={'Content-Type': 'application/json'},
         method='POST',
     )
-    with urllib.request.urlopen(request, timeout=TIMEOUT_SECONDS) as response:
+    with urllib.request.urlopen(request, timeout=EVAL_POST_TIMEOUT_SECONDS) as response:
         result: dict[str, Any] = json.load(response)
     return result
 
