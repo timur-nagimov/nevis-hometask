@@ -2,7 +2,8 @@
 
 A REST service that stores wealth-management clients and their documents and searches both through one endpoint.
 FastAPI and PostgreSQL 18 (pgvector, pg_trgm, unaccent); a local embedding model is baked into the image, so after
-the first build everything runs offline and without any API key.
+the first build everything runs offline and without any API key. An optional Claude call at upload is described
+under "How LLMs were used".
 
 ## Run it
 
@@ -14,20 +15,18 @@ scripts/demo.sh                                           # create John Doe and 
 docker compose --profile test run --rm --no-deps tests    # unit and integration tests, on the running database
 ```
 
-- **First build.** It downloads base images from docker.io and ghcr.io, Python packages from PyPI and the embedding
-  model (92 MB, pinned revision, checked by sha256) from huggingface.co. It took 46 s on a fresh GitHub Actions
-  runner (x86_64); allow longer on a slow connection. Later starts take seconds. If huggingface.co is slow or
-  blocked: `docker compose build --build-arg HF_ENDPOINT=<mirror URL>`.
+- **First build.** Downloads: images from docker.io and ghcr.io, packages from PyPI, the embedding model (92 MB,
+  pinned revision and sha256) from huggingface.co. Measured: 46 s on fresh GitHub Actions x86_64; later starts take
+  seconds. For a model mirror: `docker compose build --build-arg HF_ENDPOINT=<mirror URL>`.
 - **Port.** The API answers on http://127.0.0.1:8000 only. For another port:
   `docker compose down && API_PORT=8001 docker compose up -d` and `API_PORT=8001 scripts/demo.sh`, or set `API_PORT`
   in `.env` (see `.env.example`) and export it for the scripts. The database publishes no port.
-- **API description.** Swagger UI at http://127.0.0.1:8000/docs loads its JavaScript and CSS from cdn.jsdelivr.net,
-  so it stays blank offline; [docs/openapi.json](docs/openapi.json) is the same description as a file.
+- **API description.** http://127.0.0.1:8000/docs requires cdn.jsdelivr.net;
+  [docs/openapi.json](docs/openapi.json) works offline.
 - **Reset.** `docker compose down -v` stops everything and deletes the database volume. `scripts/demo.sh` creates
   nothing on a second run.
-- **Tests.** After changing code, rebuild the test image first: `docker compose --profile test build`. The unit tests
-  also run on the host: `uv sync && uv run pytest tests/unit` (Linux or Apple Silicon; onnxruntime has no wheels for
-  Intel macOS).
+- **Tests.** Rebuild after code changes: `docker compose --profile test build`. Host unit tests:
+  `uv sync && uv run pytest tests/unit` (Linux or Apple Silicon; no onnxruntime wheels for Intel macOS).
 - **Evaluation.** `docker compose --profile test run --rm --no-deps tests python -m eval.run_testset` scores this
   code on the 1,887-query test set in under a minute and a half; see [eval/README.md](eval/README.md).
 
@@ -133,12 +132,37 @@ $ curl -s 'http://127.0.0.1:8000/search?q=chocolate%20cake%20recipe' | python3 -
 ```
 <!-- transcript:end -->
 
+## Optional: Claude enrichment at upload
+
+Off by default. Set `NEVIS_LLM_ENABLED=true` and `ANTHROPIC_API_KEY` in `.env`, then recreate the API container.
+With the concept map enabled, Claude (`claude-haiku-5-5`) returns a summary (up to 600 characters), up to five
+concepts, a document type and up to ten search phrases. Searches never call Claude. A timeout (10 s), API error,
+refusal, invalid answer or third concurrent call falls back to extractive summarisation and the concept map.
+
+Measured 2026-11-24: 86 sequential uploads using `eval/post_latency.py`, API on an Apple M3 Pro:
+
+| Option | POST p50 | p95 | max | Summaries |
+|---|---|---|---|---|
+| off | 32 ms | 153 ms | 171 ms | extractive 86 |
+| on | 2109 ms | 3645 ms | 3968 ms | llm 86, no fallback |
+
+87 calls including warm-up used 148,635 input and 24,604 output tokens: about $0.027 total, about $0.0003 per
+document at $0.10 / $0.50 per million tokens. Enabled measurements ran on the host: this corporate network resolves
+Anthropic to IPv6 only, but its podman containers have IPv4 only and fall back with `connection_error`.
+On a normal network the containers reach the API. [Evaluation details](eval/README.md#claude-at-upload) include
+the 4 passing live tests and the earlier injection failures.
+
+**Data flow.** Opt-in: each uploaded title and content (up to 50,000 characters) go to Anthropic.
+PostgreSQL stores the document, summary, tags, search phrases and vectors. Logs contain outcome, model, token counts,
+timing and request ID, never document text or Claude's answer. Set `NEVIS_LLM_ENABLED=false` and recreate the API
+to stop calls; stored enrichment remains. Any deployed copy should hold synthetic data only; hosting request logs
+may record search terms. [Data-flow details](docs/DESIGN.md#11-privacy-and-data-flow).
+
 ## How search decides
 
-**Clients.** Query and record are normalised alike (Unicode NFKC, no accents, case folded). A client matches `exact`
-when every query word is a substring of its name, e-mail and description together: `neviswealth`, `wealth`,
-`john.doe` and `Doe John` all find John Doe. Only when nothing matches and the query has at least 5 letters or digits
-does a trigram typo tier run (`NevisWelth`, `Jon Doe` → `fuzzy`).
+**Clients.** Query and record use Unicode NFKC, accent removal and case folding. `exact` requires every query word
+in name, e-mail or description: `neviswealth`, `wealth`, `john.doe`, `Doe John` find John Doe. With no matches and
+at least 5 letters/digits, trigrams handle typos (`NevisWelth`, `Jon Doe` → `fuzzy`).
 
 **Documents.** Documents are cut into fragments of up to 200 words, each with a vector; a document's cosine is its
 best fragment's. One SQL statement, four ways in:
@@ -175,21 +199,20 @@ title and text):
 | `utility bill` | Utility bill 0.52 | Tax return 0.21 | Passport 0.15 |
 <!-- cosines:end -->
 
-`app/data/concepts.yaml` lists 30 relations of this kind: a concept (`proof of address`), the ways people ask for it
-(`triggers`) and the documents that satisfy it (`expands_to`: utility bill, council tax bill, bank statement …). At
-upload a document gets as `tags` every concept whose name or `expands_to` phrase occurs in it. The tags, with their
-triggers, join the literal match and, for a title match or a document of up to 200 words, one extra embedded
-fragment: that is why the bills come back as `concept`, with `proof of address` in their tags.
+`app/data/concepts.yaml` lists 30 concepts, query phrasings (`triggers`) and accepted documents (`expands_to`).
+Concept names and `expands_to` phrases matched at upload become tags. Tags/triggers enter literal matching and,
+for title matches or documents up to 200 words, an embedded fragment. Bills thus return as `concept` with
+`proof of address` tags. Claude can add concepts and phrases when enabled.
 
-An LLM drafted the map once from general UK wealth-management knowledge (120 entries); it was cut by rule to 30 (keep
-relations of this kind; drop single documents, topics and identifiers). Four entries cite an official list in
-`sources` (GOV.UK, Bona Vacantia, DBS, JMLSG). The assignment's pair is there because it is the canonical case;
-`proof of income` → payslip and `photo ID` → passport come from entries of the same kind.
+An LLM drafted 120 entries from UK wealth-management knowledge, cut to 30 relations by dropping single documents,
+topics and identifiers. Four cite official lists (GOV.UK, Bona Vacantia, DBS, JMLSG). Other relations include
+`proof of income` → payslip and `photo ID` → passport.
 
 ## Measured quality
 
 `eval/run_testset.py` runs the 1,887 queries of `testset/` (18 suites) against this code, once with the concept map
-and once without. Both columns are copied from its output in `eval/results/`.
+and once without, with Claude off. Both columns are copied from its output in `eval/results/`.
+Claude-on quality results are pending; see [evaluation status](eval/README.md#claude-at-upload).
 
 <!-- quality:start -->
 | | With the concept map (shipped) | Without the concept map |
@@ -207,11 +230,10 @@ and once without. Both columns are copied from its output in `eval/results/`.
 | `address proof`, strict, all its queries in the test set | 0/10 | 0/10 |
 <!-- quality:end -->
 
-Strict pass counts a query only if every expected result is found, nothing wrong is returned and the ordering
-requirements hold ([eval/README.md](eval/README.md)). The thresholds were chosen on the dev half of one suite, and two
-suites were written by the design's authors. The map costs a few strict passes and a little precision but adds
-recall; it is what makes `address proof` find the bills. On the test corpora `address proof` never passes strictly:
-some bills are missed, and documents that merely mention proof or address come back with them (see Limits).
+Strict pass requires every expected result, no wrong results and correct ordering ([eval/README.md](eval/README.md)).
+Thresholds were tuned on one suite's dev half; the design's authors wrote two suites. The map trades precision and
+strict passes for recall, making `address proof` find bills. That query never passes strictly: bills are missed and
+documents merely mentioning proof or address also return (see Limits).
 [docs/DESIGN.md](docs/DESIGN.md) compares the strict pass with Elasticsearch and Meilisearch.
 
 Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads send the 86 documents of the `existing-documents-86` suite (6 CPUs, `NEVIS_EMBED_THREADS=4`, podman on an Apple M3 Pro); idle `/search` p95 9 ms.
@@ -231,8 +253,8 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
   submitted value. Any call that uses the database may answer 500 without details, or 503 with `Retry-After: 5`
   (database unreachable, busy, or a query over 5 s). A body over 2 MiB gets 413, possibly as plain text.
 - A search item is the client or document itself plus `type`, `score` and `match_type`, so `item["email"]` works.
-  Documents carry `tags` (concepts matched at upload) and `summary` (the first sentences, up to 300 characters,
-  `"method": "extractive"`).
+  Documents carry `tags` (matched or Claude-added concepts) and `summary` (first sentences, up to 300 characters,
+  `"method": "extractive"`; with Claude enabled, up to 600 characters, `"method": "llm"`).
 - Validation: names up to 100 characters, description 2,000, 20 social links, title 300, text 50,000, `q` 1-200 after
   collapsing whitespace. Control characters are rejected, except tab and newline in a description or a document's
   text (and carriage return in the text). A path id that is not a UUID gets 404. An e-mail may repeat (spouses share
@@ -248,13 +270,11 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
 - **What a document is for** (`proof of income`, `photo ID`) is the weakest kind of query: the map is a closed list,
   so phrasings it lacks ("Council Tax demand notice") get no tag, and documents that merely mention the words, or carry
   a neighbouring tag, come back too.
-- **`address proof`** also returns "Proof of delivery … home address" and letters asking for proof of address (same
-  tag as the bill); only a document-type label, say from an LLM at upload, could separate them.
-- **Client substrings inside words:** `Chester` also finds a description that mentions Manchester, and `Ng` one that
-  mentions England. The test authors disagree on whether that is wrong; whole-word matching for words of up to three
-  letters is the first variant to measure.
-- **Similar names:** the typo tier can return another person with a similar name (`Sergey Menshikov` finds Sergey
-  Melikov); without the tier far more typos and nicknames fail.
+- **`address proof`** with Claude off also returns "Proof of delivery … home address" and letters asking for proof
+  of address. Claude adds document-type labels; its search-quality evaluation is pending.
+- **Client substrings inside words:** `Chester` finds Manchester, `Ng` finds England. Test authors disagree;
+  whole-word matching for up to three letters is the first alternative to measure.
+- **Similar names:** `Sergey Menshikov` finds Sergey Melikov; removing typo matching loses more typos and nicknames.
 - **Typos inside a document's text** are not corrected, only in titles and concept phrases; swapped letters in a short
   name (`Jhon`) defeat trigrams.
 - **Names in another script:** Cyrillic or Arabic spellings of Latin names are not found.
@@ -274,22 +294,22 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
   loading (design-time).
 - **Platforms.** Built and tested with podman on Apple Silicon (arm64) and with Docker on x86_64 in GitHub Actions;
   Docker Desktop on Windows was not tried.
-- **The Claude call at upload** was never run against the real API, so it is not included.
 - **No deployed instance.**
 
 ## How LLMs were used
 
-**At run time** the service calls no LLM: the vectors come from a local embedding model (`mdbr-leaf-ir`,
-Apache-2.0) inside the image, and nothing leaves the machine. A Claude call at upload (summary and tags) was designed
-but is not included: it was never run against the real API, and code that sends client documents to a third party
-should not ship unexercised. **During development** I worked with AI agents throughout. Claude Code researched the
-options, wrote the design and then this code, test-first; separate agent reviews attacked the design before any code
-existed. LLM agents wrote 10 of the 18 test suites (Codex and Claude wrote 6 of them blind) and built the other 8 from
-open datasets. An LLM also drafted the concept map (see above). **Checked, not trusted:** every number in the quality
-and cosine tables is printed by a script in this repository (`tests/unit/test_docs.py` fails otherwise), numbers
-marked "design-time" come from the research done before the code, the transcripts are captured from the running
-service, and the image build fails unless the model passes a self-check. The code took about 31 hours of wall time up
-to this README; the research and the test set came before.
+**At run time**, unless `NEVIS_LLM_ENABLED=true` is set, the service calls no LLM: the vectors come from a local
+embedding model (`mdbr-leaf-ir`, Apache-2.0) inside the image, and nothing leaves the machine.
+With `NEVIS_LLM_ENABLED=true` and an Anthropic key, Claude Haiku writes the summary and adds tags at upload; on 86
+documents it took p50 2.1 s and p95 3.6 s, about $0.0003 per document. The title and text of each document then
+go to Anthropic.
+
+**During development** I used AI agents throughout. Claude Code researched, designed and wrote the code test-first;
+separate agents reviewed the design. Agents wrote 10 suites (Codex and Claude wrote 6 blind), built 8 from open
+datasets and drafted the concept map. **Checked, not trusted:** scripts reproduce quality/cosine tables, enforced by
+`tests/unit/test_docs.py`; "design-time" numbers predate the code. Transcripts are captured; image builds require a
+model self-check. Implementation through the original README took about 31 hours, after the initial research and
+test set.
 
 ## Repository map
 

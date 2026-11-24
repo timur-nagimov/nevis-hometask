@@ -9,15 +9,15 @@ half an hour. Nothing enters the search unless it was measured first.
 
 | Area | Chosen | Instead | Why |
 |---|---|---|---|
-| Storage | PostgreSQL 18 with pgvector, pg_trgm, unaccent | Elasticsearch, Meilisearch, a vector database | substrings, full text, typos and vectors in one store; a document and its vectors commit in one transaction and are searchable at once; Elasticsearch needs a second service, a refresh before a document is visible, and 0.9-1.5 GB of memory (design-time) |
-| Client search | every query word a substring of normalised name + e-mail + description; a trigram typo tier when nothing matches | full-text search; embeddings | an e-mail is one full-text token, so `neviswealth` cannot match; 131 of 134 required client queries (design-time) |
+| Storage | PostgreSQL 18, pgvector, pg_trgm, unaccent | Elasticsearch, Meilisearch, vector databases | atomic document/vector writes; immediate search; Elasticsearch needs another service, refreshes and 0.9-1.5 GB (design-time) |
+| Client search | normalised substrings, then trigrams | full-text search; embeddings | full-text e-mail tokens miss `neviswealth`; 131/134 required queries (design-time) |
 | Document search | one SQL statement: literal, typo and semantic legs, two-stage result rule | rank fusion (RRF), cross-encoders, LLM re-ranking | no measured gain, or seconds per query (design-time) |
-| Domain knowledge | concept map applied at upload, 30 entries | synonyms at query time; an LLM on every search | the same map at query time: F1 0.628 / 0.525 against 0.646 / 0.595, dev / test (design-time); an LLM per search adds latency and fails without a key |
+| Domain knowledge | 30-entry map; optional Claude enrichment at upload | query-time synonyms or LLM | query-time map F1 0.628 / 0.525 against 0.646 / 0.595, dev / test (design-time); searches remain local |
 | Embeddings | `MongoDB/mdbr-leaf-ir` (Apache-2.0, 768 dimensions, 92 MB) through onnxruntime, in the image | `bge-small`; cloud embeddings | nDCG@10 0.606 against 0.473 for `bge-small` (design-time); works offline |
-| Summary | first sentences up to 300 characters, marked `extractive` | LexRank; local LLMs | invents nothing and needs no key; LexRank was not significantly better |
-| HTTP | FastAPI, synchronous handlers, one worker | Litestar; async handlers | the most exact OpenAPI for a list that mixes clients and documents (Litestar lost the discriminator); onnxruntime and psycopg release the GIL |
-| SQL access | SQLAlchemy 2.1 Core over psycopg 3, tables and queries in `app/db.py` | SQL files run through psycopg | one place for tables and queries; each measured statement, translated, returns the same rows as its SQL did on the test set |
-| Schema | created from the models at the first start, on an empty database | numbered migrations (own runner or Alembic) | one schema version, so migration machinery would guard nothing; after a schema change, start from an empty database |
+| Summary | `extractive`, 300 characters; opt-in Claude `llm`, 600 | LexRank; local LLMs | offline fallback; LexRank was not significantly better; Claude measured in [evaluation](../eval/README.md#claude-at-upload) |
+| HTTP | FastAPI, synchronous handlers, one worker | Litestar; async handlers | correct mixed-result OpenAPI discriminator; onnxruntime and psycopg release the GIL |
+| SQL access | SQLAlchemy 2.1 Core, psycopg 3, `app/db.py` | SQL files | tables and queries together; translated queries return identical test-set rows |
+| Schema | models create an empty database | numbered migrations | one version; schema changes require an empty database |
 | Vector index | none: every search scans all fragments | HNSW | milliseconds at this scale; needed after about 10,000 fragments (design-time) |
 
 Numbers marked design-time were measured while designing; they are not reproducible from this repository.
@@ -36,13 +36,13 @@ swapped letters (`Jhon`).
 An upload (the route in `app/main.py`, then `create_document` in `app/ingest.py`):
 
 1. checks the fields (404 for an unknown client);
-2. tags the concepts whose name or `expands_to` phrase occurs in title or text;
-3. keeps the first sentences up to 300 characters as the summary;
+2. optionally calls Claude, merging its concepts with phrase-matched tags and adding its document type and phrases;
+3. uses Claude's summary (600 characters), or the first sentences (300) when disabled or unsuccessful;
 4. cuts the text into fragments of up to 200 words with the title in front;
-5. adds the tags as a fragment if they matched in the title or in a document of up to 200 words;
+5. embeds tags matched in the title or documents up to 200 words, plus Claude concepts/phrases;
 6. embeds in batches of four and stores it all in one transaction before the 201.
 
-Synchronous by choice: a document is searchable when the 201 returns. Worst case about 2 s for 50,000 characters
+Synchronous: searchable at 201. Without Claude, about 2 s for 50,000 characters
 (design-time: about 40 ms per 200-word fragment on 2 CPUs); at most four uploads run at once, the others wait without
 holding a thread.
 
@@ -84,15 +84,16 @@ documents, topics and identifiers). Four entries name official lists:
 
 The other 26 entries are curated; no official list was found for them.
 
-A closed list misses the phrasings it lacks ("Council Tax demand notice"), and a letter asking for proof of address
-gets the bill's tag. Tags from an LLM at upload could add the missing phrasings and a document-type label.
+A closed list misses phrasings ("Council Tax demand notice") and tags letters asking for evidence as evidence.
+Optional Claude enrichment adds phrases and document-type labels; matched tags remain, so false positives can persist.
 
 ## 7. Evaluation
 
 `eval/run_testset.py` scores the service's own code on the 1,887 queries of `testset/`, with and without the concept
 map ([eval/README.md](../eval/README.md)). Elasticsearch and Meilisearch in their best measured configurations, with
 the same concept map but without vectors, passed 1,191 and 1,206 of the 1,887 queries; the reference implementation
-of this design passed 1,325 (design-time reference run), and this code passes 1,323.
+of this design passed 1,325 (design-time reference run), and this code passes 1,323 with Claude off.
+Claude-on quality is pending; [evaluation status](../eval/README.md#claude-at-upload) holds the measured upload results.
 
 ## 8. Operations
 
@@ -117,16 +118,14 @@ access line per request without the query string, never document text.
 
 ## 10. Growth path
 
-- **Vectors.** Past about 10,000 fragments: an HNSW index for the top-k fragments of the semantic leg, plus the exact
-  cosine for the documents the literal and typo legs return. The leg compares each document's best fragment with the
-  global best, and an index returns only the top k, so the leg is rewritten, not just indexed.
+- **Vectors.** Past about 10,000 fragments: HNSW top-k for semantics, exact cosine for literal/typo candidates.
+  Comparing each document's best fragment with the global best requires rewriting the semantic leg.
 - **Full text.** A GIN index on `fts_text` and `fts` once the literal leg stops being a fast scan.
-- **Concept tags in a side table** (`document_concepts(document_id, concept)`) instead of the `tags_text` sentence,
-  plus a re-tag command, so that a change of the map re-tags documents without rewriting them.
+- **Concept tags in a side table** (`document_concepts(document_id, concept)`) and a re-tag command, avoiding
+  document rewrites when the map changes.
 - **Clients.** Cap the candidates of very common substrings after about 10,000 clients (design-time: 22-123 ms
   instead of 0.35-1.9 s).
-- **Quality.** Tags from an LLM at upload for phrasings the map lacks; thresholds re-tuned on real queries, with the
-  test set split by whole suites.
+- **Quality.** Measure Claude-added tags; re-tune thresholds on real queries, splitting by whole suites.
 - **Product.** Access control per adviser, removal of personal data before any LLM call, asynchronous ingest for large
   uploads.
 
@@ -136,3 +135,15 @@ Ids are UUID v7: the first 48 bits are the creation time in milliseconds, so any
 record was created. Use random v4 ids, or opaque public ids, if that matters. The access log records the path without
 the query string, so search terms are not logged, and document text is never logged. A document's own text decides
 its tags: a document that says "utility bill" is tagged as proof of address, with or without an LLM.
+
+**Claude at upload.** Opt-in, off by default: with `NEVIS_LLM_ENABLED=true`, `ANTHROPIC_API_KEY` and the concept
+map enabled, validated uploads' titles and content (up to 50,000 characters) go to Anthropic.
+One call per upload, no retries, at most two concurrent calls; start-up also sends a synthetic warm-up document.
+Searches never call Claude. Delimited document text is untrusted; the prompt excludes embedded instructions from
+every output field. Claude sees no other documents or client records; the key authenticates the request, never
+enters the prompt. Answers allow five of 30 concepts, a 600-character summary, a document type and ten 60-character
+phrases. PostgreSQL stores original text, summary/method, merged tags, type/phrases in `tags_text`, and vectors.
+Logs record outcome/fallback reason, model, token counts, timing and request ID, never document text, titles,
+names, e-mails, query values or Claude's answers. Set `NEVIS_LLM_ENABLED=false` and restart/recreate the API to stop
+calls; stored enrichment remains. Any deployed copy should contain synthetic data only; hosting request logs may
+capture search terms. Four live tests passed after hardening; this is not a general injection-resistance guarantee.

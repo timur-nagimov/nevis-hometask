@@ -23,8 +23,14 @@ reject are skipped and logged, and a query the API would reject counts as an emp
 `--failures` to list every failing query with the reason, and suite names (`tools-mini-6`) to run only those
 suites.
 
-`--llm` adds the Claude call at upload (needs `ANTHROPIC_API_KEY`; sends every document to Anthropic; about an hour
-and under $1 for the 18 suites).
+`--llm` enables the shipped Claude call at upload (needs `ANTHROPIC_API_KEY`; sends document titles and content to
+Anthropic). It cannot be combined with `--no-concepts`. Run it with:
+
+```bash
+docker compose --profile test run --rm --no-deps tests python -m eval.run_testset --llm
+```
+
+The timing above and both committed result files are for Claude off.
 
 The outputs on the shipped code are committed: [results/with-concepts.txt](results/with-concepts.txt) and
 [results/no-concepts.txt](results/no-concepts.txt). The README's quality table quotes only these files. This prints
@@ -37,6 +43,21 @@ diff <(grep '^|' eval/results/with-concepts.txt) \
 
 `docker compose --profile test run --rm --no-deps tests python -m eval.cosine_table` prints the README's
 three-document cosine table ([results/cosines.md](results/cosines.md)).
+
+## Claude at upload
+
+Measured on 2026-11-24 with `claude-haiku-5-5`:
+
+- Live test against the real API (tests/live): 4 passed after the prompt was hardened; before that, 2 of the 3 prompt-injection cases failed (one summary quoted an embedded instruction, one followed a fake System line), and the prompt now tells the model to leave such text out of every field.
+- Upload latency, 86 documents of testset/suites/existing-documents-86.json posted one after another (eval/post_latency.py), API process on an Apple M3 Pro: option off p50 32 ms, p95 153 ms, max 171 ms, summaries extractive 86; option on p50 2109 ms, p95 3645 ms, max 3968 ms, summaries llm 86, no fallback.
+- Cost: 87 calls (86 uploads plus the start-up warm-up) used 148,635 input and 24,604 output tokens, about $0.027 in all, about $0.0003 per document at $0.10 / $0.50 per million tokens.
+- Where it was measured: on this corporate network the Anthropic API resolves to IPv6 addresses only and the podman containers have IPv4 only, so the measurements with the option on ran the same code on the host (uv run) against the project database; in containers here every call falls back with connection_error. On a normal network the containers reach the API.
+
+**Claude-on quality:** the `--llm` evaluation is running; strict pass out of 1,887, enrichment coverage and
+first-10 metrics are pending. The baseline with the concept map and Claude off is 1,323/1,887.
+
+These four passing live tests do not establish general resistance to prompt injection. The upload measurements
+establish latency, cost and coverage for those 86 documents; they do not establish improved search quality.
 
 ## The test set
 
