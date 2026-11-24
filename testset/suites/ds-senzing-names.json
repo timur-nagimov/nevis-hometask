@@ -1,0 +1,2795 @@
+{
+ "suite": "ds-senzing-names",
+ "author": "Claude subagent (dataset import, labels from the Senzing answer key and the nickname table), 2026-11-20",
+ "about": "Client name and e-mail search cases converted from two open datasets. (1) Senzing truth sets, demo set (https://github.com/Senzing/truth-sets, commit 68761b692bf5cf8bf0eebd24ef5961e0bb32d25e, files truthsets/demo/customers.csv, watchlist.csv, reference.csv and actual_truthset_key.csv, Apache-2.0): mock KYC records with hand-curated name variations and an answer key grouping records into entities. (2) carltonnorthern/nicknames (https://github.com/carltonnorthern/nicknames, commit ed160b3af2d17e1af8ebd570f10a10e4dade4ff4, file names.csv, Apache-2.0): canonical given names and their nicknames. Corpus: one client per answer-key entity that has a CUSTOMERS person record with a Latin-script first and last name (64 of 85 entities; 13 entities have only watchlist/reference records). Representative = such record with the lowest RECORD_ID; first_name/last_name as recorded (CUSTOMERS 1058 really has first name Jones, last name Jay); e-mail = the first address found in the entity, else an invented client.<id>@example.com placeholder (30 clients: c002, c007, c008, c009, c010, c011, c012, c014, c015, c016, c017, c019, c020, c021, c024, c025, c026, c027, c028, c029, c030, c031, c032, c033, c036, c037, c039, c040, c044, c045; no query uses them); description = only the representative's ADDR_CITY, ADDR_STATE, ADDR_COUNTRY, CATEGORY and STATUS fields; social_links empty. Queries: names and e-mail addresses of the other records of each entity, typed as an adviser would (full name, distinctive surname alone, e-mail, local part, local@domain-name, domain, native script); relevant = that entity's client (for e-mail queries every client holding the exact address, local part or domain, e.g. the Kusha household shares one address); acceptable = other clients sharing a name word or prefix, a nickname-table first name, or containing the query in e-mail/description; first is set only when the relevant clients are the only ones matching every query word (nicknames via the table). Levels: exact name, first name, surname, e-mail and e-mail fragments = required; punctuation, swapped order, initials and partial compound names = expected; nicknames, typos, other first-name spellings ('name variant'), longer compound surnames and native script = nice (typos and name variants: within_top 5, others ignored). 16 extra nickname queries come from the nickname table (nicknames that occur nowhere in the Senzing files); if an engine uses the same table for synonym expansion those cases are circular. Entities not used: looks like a real person (Vasiliev): 1; no customer record has both a first and a last name: 1; organisation, not a person: 6. Variants left out (7): first initial does not match the client's first name: 1; role mailbox shared by many unrelated entities: 2; surname differs from the client's: 4 (details in left_out). Attribution: contains data from Senzing truth-sets (c) Senzing, Inc. and from the nicknames table by Carlton Northern / Old Dominion University Web Science and Digital Libraries Research Group, both under the Apache License 2.0; records were selected, reformatted and relabelled for this suite. Built by research/datasets/build/ds_senzing_names.py from research/datasets/raw/senzing/.",
+ "source": [
+  {
+   "name": "Senzing truth sets (demo)",
+   "url": "https://github.com/Senzing/truth-sets",
+   "commit": "68761b692bf5cf8bf0eebd24ef5961e0bb32d25e",
+   "files": [
+    "truthsets/demo/customers.csv",
+    "truthsets/demo/watchlist.csv",
+    "truthsets/demo/reference.csv",
+    "truthsets/demo/actual_truthset_key.csv"
+   ],
+   "licence": "Apache-2.0",
+   "attribution": "Senzing truth-sets, (c) Senzing, Inc., Apache License 2.0; mock data, converted and relabelled for this suite."
+  },
+  {
+   "name": "carltonnorthern/nicknames",
+   "url": "https://github.com/carltonnorthern/nicknames",
+   "commit": "ed160b3af2d17e1af8ebd570f10a10e4dade4ff4",
+   "files": [
+    "names.csv"
+   ],
+   "licence": "Apache-2.0",
+   "attribution": "nicknames by Carlton Northern and the Old Dominion University Web Science and Digital Libraries Research Group, Apache License 2.0."
+  }
+ ],
+ "corpus": {
+  "clients": [
+   {
+    "id": "c001",
+    "first_name": "Robert",
+    "last_name": "Smith",
+    "email": "bsmith@work.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c002",
+    "first_name": "Robbie",
+    "last_name": "Smith",
+    "email": "client.c002@example.com",
+    "description": "City on file: Henderson, NV. Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c003",
+    "first_name": "Edward",
+    "last_name": "Kusha",
+    "email": "Kusha123@hmail.com",
+    "description": "City on file: Blacklick, OH. Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c004",
+    "first_name": "Mary",
+    "last_name": "Kusha",
+    "email": "Kusha123@hmail.com",
+    "description": "City on file: Blacklick, OH. Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c005",
+    "first_name": "Mark",
+    "last_name": "Kusha",
+    "email": "Kusha123@hmail.com",
+    "description": "City on file: Blacklick, OH. Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c006",
+    "first_name": "Marsha",
+    "last_name": "Kusha",
+    "email": "Kusha123@hmail.com",
+    "description": "City on file: Blacklick, OH. Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c007",
+    "first_name": "Mohamed",
+    "last_name": "Antoun",
+    "email": "client.c007@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c008",
+    "first_name": "Darla",
+    "last_name": "Anderson",
+    "email": "client.c008@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c009",
+    "first_name": "Darlene",
+    "last_name": "Anderson",
+    "email": "client.c009@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c010",
+    "first_name": "David",
+    "last_name": "Dobbins Jr",
+    "email": "client.c010@example.com",
+    "description": "City on file: Arlington, VA. Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c011",
+    "first_name": "Luis",
+    "last_name": "Garski",
+    "email": "client.c011@example.com",
+    "description": "City on file: San Ramon, CA. Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c012",
+    "first_name": "Daniella",
+    "last_name": "Shaw",
+    "email": "client.c012@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c013",
+    "first_name": "Maria Luis",
+    "last_name": "Medina Sentosa",
+    "email": "msentosa@fmail.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c014",
+    "first_name": "John",
+    "last_name": "Smith",
+    "email": "client.c014@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c015",
+    "first_name": "John",
+    "last_name": "Smith",
+    "email": "client.c015@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c016",
+    "first_name": "Patrick",
+    "last_name": "Smith",
+    "email": "client.c016@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c017",
+    "first_name": "Patricia",
+    "last_name": "Smith",
+    "email": "client.c017@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c018",
+    "first_name": "Zara",
+    "last_name": "Thompson",
+    "email": "sthomp45@fmail.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c019",
+    "first_name": "Lee",
+    "last_name": "Toulouse",
+    "email": "client.c019@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c020",
+    "first_name": "Beau",
+    "last_name": "Smith",
+    "email": "client.c020@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c021",
+    "first_name": "Magdalena",
+    "last_name": "Smith",
+    "email": "client.c021@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c022",
+    "first_name": "Jay",
+    "last_name": "Jones",
+    "email": "jjones@jones.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c023",
+    "first_name": "Jones",
+    "last_name": "Jay",
+    "email": "jjones@fmail.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c024",
+    "first_name": "Ray",
+    "last_name": "Roderick",
+    "email": "client.c024@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c025",
+    "first_name": "Susan",
+    "last_name": "Mooney",
+    "email": "client.c025@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c026",
+    "first_name": "Jie",
+    "last_name": "Wang",
+    "email": "client.c026@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c027",
+    "first_name": "Wei",
+    "last_name": "Wang",
+    "email": "client.c027@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c028",
+    "first_name": "Wei",
+    "last_name": "Zhang",
+    "email": "client.c028@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c029",
+    "first_name": "Xiu Ying",
+    "last_name": "Zhang",
+    "email": "client.c029@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c030",
+    "first_name": "Jie",
+    "last_name": "Liu",
+    "email": "client.c030@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c031",
+    "first_name": "Jeffrey",
+    "last_name": "Brown",
+    "email": "client.c031@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c032",
+    "first_name": "George",
+    "last_name": "Frankens",
+    "email": "client.c032@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c033",
+    "first_name": "Morris",
+    "last_name": "Klempski",
+    "email": "client.c033@example.com",
+    "description": "City on file: Toronto. Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c034",
+    "first_name": "Ellie",
+    "last_name": "D'esquire",
+    "email": "dellie@fmail.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c035",
+    "first_name": "George",
+    "last_name": "Wiest",
+    "email": "pfranks@ishmail.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c036",
+    "first_name": "Morris I",
+    "last_name": "Klein",
+    "email": "client.c036@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c037",
+    "first_name": "Morris II",
+    "last_name": "Klein",
+    "email": "client.c037@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c038",
+    "first_name": "Ellie",
+    "last_name": "Ohare",
+    "email": "ellie.ohare@fmail.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c039",
+    "first_name": "Amanda",
+    "last_name": "Anderson",
+    "email": "client.c039@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c040",
+    "first_name": "Juan",
+    "last_name": "Aguilar",
+    "email": "client.c040@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c041",
+    "first_name": "Marie",
+    "last_name": "Sanchez",
+    "email": "mickey@mmail.com",
+    "description": "City on file: Andersonville, IL. Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c042",
+    "first_name": "Anna Maria",
+    "last_name": "Aguilar",
+    "email": "mouse@mmail.com",
+    "description": "City on file: Chicago, IL. Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c043",
+    "first_name": "Mark",
+    "last_name": "Miller",
+    "email": "mark@marksfoods.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c044",
+    "first_name": "Anabella",
+    "last_name": "Becker",
+    "email": "client.c044@example.com",
+    "description": "Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c045",
+    "first_name": "Dara",
+    "last_name": "Kim",
+    "email": "client.c045@example.com",
+    "description": "City on file: Phnom Penh, Cambodia. Customer category: Silver. Customer status: Active.",
+    "social_links": []
+   },
+   {
+    "id": "c046",
+    "first_name": "Andrew",
+    "last_name": "Anderson",
+    "email": "info@ca-state.gov",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c047",
+    "first_name": "Andy",
+    "last_name": "Anderson",
+    "email": "info@ca-state.gov",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c048",
+    "first_name": "Anna",
+    "last_name": "Anderson",
+    "email": "info@ca-state.gov",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c049",
+    "first_name": "Annabelle",
+    "last_name": "Anderson",
+    "email": "info@ca-state.gov",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c050",
+    "first_name": "Jim",
+    "last_name": "Muir",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Sacramento, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c051",
+    "first_name": "Jane",
+    "last_name": "Muir",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Sacramento, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c052",
+    "first_name": "Jorg",
+    "last_name": "Swarm",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Elmwood Park, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c053",
+    "first_name": "Jorge",
+    "last_name": "Barge",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Elmwood Park, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c054",
+    "first_name": "Gaston",
+    "last_name": "Gray",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Sacramento, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c055",
+    "first_name": "Henry",
+    "last_name": "Howard",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Sacramento, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c056",
+    "first_name": "Inez",
+    "last_name": "Inverness",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Sacramento, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c057",
+    "first_name": "Julia",
+    "last_name": "Jackson",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Elmwood Park, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c058",
+    "first_name": "Kandace",
+    "last_name": "Kellar",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Elmwood Park, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c059",
+    "first_name": "Leslie",
+    "last_name": "Leonard",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Elmwood Park, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c060",
+    "first_name": "Millie",
+    "last_name": "Miller",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Sacramento, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c061",
+    "first_name": "Nelson",
+    "last_name": "Nice",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Elmwood Park, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c062",
+    "first_name": "Otto",
+    "last_name": "Otter",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Elmwood Park, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c063",
+    "first_name": "Penny",
+    "last_name": "Pemberton",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Elmwood Park, CA.",
+    "social_links": []
+   },
+   {
+    "id": "c064",
+    "first_name": "Sandy",
+    "last_name": "Sanders",
+    "email": "info@ca-state.gov",
+    "description": "City on file: Sacramento, CA.",
+    "social_links": []
+   }
+  ],
+  "documents": []
+ },
+ "queries": [
+  {
+   "id": "q001",
+   "q": "Bob Smith",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c001"
+   ],
+   "acceptable": [
+    "c002",
+    "c014",
+    "c015",
+    "c016",
+    "c017",
+    "c020",
+    "c021"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c001"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1002, CUSTOMERS 1003: answer-key entity 1001, as is the client's record CUSTOMERS 1001 (Robert Smith); bob and robert are a nickname pair in the nickname table. | Acceptable: 7 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q002",
+   "q": "bsmith@work.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c001"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "bsmith@work.com appears in Senzing CUSTOMERS 1003, CUSTOMERS 1004 (answer-key entity 1001); every client holding exactly this address must be found."
+  },
+  {
+   "id": "q003",
+   "q": "bsmith",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c001"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "bsmith@work.com appears in Senzing CUSTOMERS 1003, CUSTOMERS 1004 (answer-key entity 1001); local part of the address."
+  },
+  {
+   "id": "q004",
+   "q": "bsmith@work",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c001"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "bsmith@work.com appears in Senzing CUSTOMERS 1003, CUSTOMERS 1004 (answer-key entity 1001); start of the address across the @ sign."
+  },
+  {
+   "id": "q005",
+   "q": "work.com",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c001"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "bsmith@work.com appears in Senzing CUSTOMERS 1003, CUSTOMERS 1004 (answer-key entity 1001); domain of the address, every client on this domain must be found."
+  },
+  {
+   "id": "q006",
+   "q": "Robert Smith Sr",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c002"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing WATCHLIST 1006: answer-key entity 1002, as is the client's record CUSTOMERS 1005 (Robbie Smith); first name robert vs robbie (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q007",
+   "q": "Eddie Kusha",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c003"
+   ],
+   "acceptable": [
+    "c004",
+    "c005",
+    "c006"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c003"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1010, WATCHLIST 1012: answer-key entity 1021, as is the client's record CUSTOMERS 1009 (Edward Kusha); eddie and edward are a nickname pair in the nickname table. | Acceptable: 3 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q008",
+   "q": "Marie Kusha",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c004"
+   ],
+   "acceptable": [
+    "c003",
+    "c005",
+    "c006",
+    "c041"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c004"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1016, CUSTOMERS 1018: answer-key entity 1023, as is the client's record CUSTOMERS 1015 (Mary Kusha); marie and mary are a nickname pair in the nickname table. | Acceptable: 4 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q009",
+   "q": "Mary Kusha",
+   "category": "full name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c004"
+   ],
+   "acceptable": [
+    "c003",
+    "c005",
+    "c006",
+    "c041"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c004"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1017: answer-key entity 1023, as is the client's record CUSTOMERS 1015 (Mary Kusha); the same full name as the client. | Acceptable: 4 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q010",
+   "q": "Kusha123@hmail.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c003",
+    "c004",
+    "c005",
+    "c006"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Kusha123@hmail.com appears in Senzing WATCHLIST 1021 (answer-key entity 1025); every client holding exactly this address must be found."
+  },
+  {
+   "id": "q011",
+   "q": "Kusha123",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c003",
+    "c004",
+    "c005",
+    "c006"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Kusha123@hmail.com appears in Senzing WATCHLIST 1021 (answer-key entity 1025); local part of the address."
+  },
+  {
+   "id": "q012",
+   "q": "Kusha123@hmail",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c003",
+    "c004",
+    "c005",
+    "c006"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Kusha123@hmail.com appears in Senzing WATCHLIST 1021 (answer-key entity 1025); start of the address across the @ sign."
+  },
+  {
+   "id": "q013",
+   "q": "hmail.com",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c003",
+    "c004",
+    "c005",
+    "c006"
+   ],
+   "acceptable": [
+    "c035"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Kusha123@hmail.com appears in Senzing WATCHLIST 1021 (answer-key entity 1025); domain of the address, every client on this domain must be found. | Acceptable: 1 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description."
+  },
+  {
+   "id": "q014",
+   "q": "Muhammed Antoun",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c007"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1023: answer-key entity 1031, as is the client's record CUSTOMERS 1022 (Mohamed Antoun); first name muhammed vs mohamed (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q015",
+   "q": "Mhd Antoun",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c007"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing WATCHLIST 1024: answer-key entity 1031, as is the client's record CUSTOMERS 1022 (Mohamed Antoun); first name mhd vs mohamed (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q016",
+   "q": "Antoun",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c007"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1023, WATCHLIST 1024: answer-key entity 1031, as is the client's record CUSTOMERS 1022 (Mohamed Antoun); distinctive surname typed alone."
+  },
+  {
+   "id": "q017",
+   "q": "Louis Garsky",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c011"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1031: answer-key entity 1051, as is the client's record CUSTOMERS 1030 (Luis Garski); surname garsky vs garski is a misspelling; first name louis vs luis (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q018",
+   "q": "Garsky",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c011"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1031: answer-key entity 1051, as is the client's record CUSTOMERS 1030 (Luis Garski); misspelt surname typed alone. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q019",
+   "q": "Shaw Daniella",
+   "category": "name order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c012"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1033: answer-key entity 1061, as is the client's record CUSTOMERS 1032 (Daniella Shaw); the client's name with first and last name swapped."
+  },
+  {
+   "id": "q020",
+   "q": "Maria Luis M Sentosa",
+   "category": "compound surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c013"
+   ],
+   "acceptable": [
+    "c011",
+    "c042"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c013"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1035: answer-key entity 1071, as is the client's record CUSTOMERS 1034 (Maria Luis Medina Sentosa); part of the client's compound name. | Acceptable: 2 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q021",
+   "q": "Maria Luis Sentosa",
+   "category": "compound surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c013"
+   ],
+   "acceptable": [
+    "c011",
+    "c042"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c013"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1036: answer-key entity 1071, as is the client's record CUSTOMERS 1034 (Maria Luis Medina Sentosa); part of the client's compound name. | Acceptable: 2 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q022",
+   "q": "Maria Sentosa",
+   "category": "compound surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c013"
+   ],
+   "acceptable": [
+    "c042"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c013"
+   ],
+   "empty": false,
+   "why": "Senzing WATCHLIST 1037: answer-key entity 1071, as is the client's record CUSTOMERS 1034 (Maria Luis Medina Sentosa); part of the client's compound name. | Acceptable: 1 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q023",
+   "q": "msentosa@fmail.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c013"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "msentosa@fmail.com appears in Senzing WATCHLIST 1037, WATCHLIST 1038 (answer-key entity 1071); every client holding exactly this address must be found."
+  },
+  {
+   "id": "q024",
+   "q": "msentosa",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c013"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "msentosa@fmail.com appears in Senzing WATCHLIST 1037, WATCHLIST 1038 (answer-key entity 1071); local part of the address."
+  },
+  {
+   "id": "q025",
+   "q": "msentosa@fmail",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c013"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "msentosa@fmail.com appears in Senzing WATCHLIST 1037, WATCHLIST 1038 (answer-key entity 1071); start of the address across the @ sign."
+  },
+  {
+   "id": "q026",
+   "q": "fmail.com",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c013",
+    "c018",
+    "c023",
+    "c034",
+    "c038"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "msentosa@fmail.com appears in Senzing WATCHLIST 1037, WATCHLIST 1038 (answer-key entity 1071); domain of the address, every client on this domain must be found | sthomp45@fmail.com appears in Senzing CUSTOMERS 1048, CUSTOMERS 1049 (answer-key entity 1101); domain of the address, every client on this domain must be found | dellie@fmail.com appears in Senzing CUSTOMERS 1086 (answer-key entity 1211); domain of the address, every client on this domain must be found | ellie.ohare@fmail.com appears in Senzing CUSTOMERS 1092 (answer-key entity 1241); domain of the address, every client on this domain must be found."
+  },
+  {
+   "id": "q027",
+   "q": "Maria Medina",
+   "category": "compound surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c013"
+   ],
+   "acceptable": [
+    "c042"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c013"
+   ],
+   "empty": false,
+   "why": "Senzing WATCHLIST 1038: answer-key entity 1071, as is the client's record CUSTOMERS 1034 (Maria Luis Medina Sentosa); part of the client's compound name. | Acceptable: 1 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q028",
+   "q": "Medina",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c013"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing WATCHLIST 1038: answer-key entity 1071, as is the client's record CUSTOMERS 1034 (Maria Luis Medina Sentosa); distinctive surname typed alone."
+  },
+  {
+   "id": "q029",
+   "q": "Sentosa",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c013"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1036, WATCHLIST 1037: answer-key entity 1071, as is the client's record CUSTOMERS 1034 (Maria Luis Medina Sentosa); distinctive surname typed alone."
+  },
+  {
+   "id": "q030",
+   "q": "Pat Smith",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c016",
+    "c017"
+   ],
+   "acceptable": [
+    "c001",
+    "c002",
+    "c014",
+    "c015",
+    "c020",
+    "c021"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c016",
+    "c017"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1045: answer-key entity 1091, as is the client's record CUSTOMERS 1043 (Patrick Smith); pat and patrick are a nickname pair in the nickname table | Senzing CUSTOMERS 1046: answer-key entity 1092, as is the client's record CUSTOMERS 1044 (Patricia Smith); pat and patricia are a nickname pair in the nickname table. | Acceptable: 6 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q031",
+   "q": "Sarah Tompson",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c018"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1048: answer-key entity 1101, as is the client's record CUSTOMERS 1047 (Zara Thompson); surname tompson vs thompson is a misspelling; first name sarah vs zara (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q032",
+   "q": "sthomp45@fmail.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c018"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "sthomp45@fmail.com appears in Senzing CUSTOMERS 1048, CUSTOMERS 1049 (answer-key entity 1101); every client holding exactly this address must be found."
+  },
+  {
+   "id": "q033",
+   "q": "sthomp45",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c018"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "sthomp45@fmail.com appears in Senzing CUSTOMERS 1048, CUSTOMERS 1049 (answer-key entity 1101); local part of the address."
+  },
+  {
+   "id": "q034",
+   "q": "sthomp45@fmail",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c018"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "sthomp45@fmail.com appears in Senzing CUSTOMERS 1048, CUSTOMERS 1049 (answer-key entity 1101); start of the address across the @ sign."
+  },
+  {
+   "id": "q035",
+   "q": "Sahra Thompson",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c018"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1049: answer-key entity 1101, as is the client's record CUSTOMERS 1047 (Zara Thompson); first name sahra vs zara (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q036",
+   "q": "Thompson",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c018"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1049: answer-key entity 1101, as is the client's record CUSTOMERS 1047 (Zara Thompson); distinctive surname typed alone."
+  },
+  {
+   "id": "q037",
+   "q": "Tompson",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c018"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1048: answer-key entity 1101, as is the client's record CUSTOMERS 1047 (Zara Thompson); misspelt surname typed alone. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q038",
+   "q": "Leigh Toulouse",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c019"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1051: answer-key entity 1111, as is the client's record CUSTOMERS 1050 (Lee Toulouse); first name leigh vs lee (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q039",
+   "q": "Lea Toulouse",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c019"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1052: answer-key entity 1111, as is the client's record CUSTOMERS 1050 (Lee Toulouse); first name lea vs lee (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q040",
+   "q": "Toulouse",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c019"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1051, CUSTOMERS 1052: answer-key entity 1111, as is the client's record CUSTOMERS 1050 (Lee Toulouse); distinctive surname typed alone."
+  },
+  {
+   "id": "q041",
+   "q": "Beau",
+   "category": "first name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c020"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1055: answer-key entity 1121, as is the client's record CUSTOMERS 1053 (Beau Smith); first name only, exactly as the client's."
+  },
+  {
+   "id": "q042",
+   "q": "R Roderick",
+   "category": "initial",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c024"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1060: answer-key entity 1141, as is the client's record CUSTOMERS 1059 (Ray Roderick); first initial plus the surname."
+  },
+  {
+   "id": "q043",
+   "q": "Roderick",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c024"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1060: answer-key entity 1141, as is the client's record CUSTOMERS 1059 (Ray Roderick); distinctive surname typed alone."
+  },
+  {
+   "id": "q044",
+   "q": "Susanne Mooney",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c025"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1064: answer-key entity 1161, as is the client's record CUSTOMERS 1063 (Susan Mooney); first name susanne vs susan (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q045",
+   "q": "Susan Mooney",
+   "category": "full name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c025"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1065, CUSTOMERS 1066: answer-key entity 1161, as is the client's record CUSTOMERS 1063 (Susan Mooney); the same full name as the client."
+  },
+  {
+   "id": "q046",
+   "q": "Susan Moonie",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c025"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1067: answer-key entity 1161, as is the client's record CUSTOMERS 1063 (Susan Mooney); surname moonie vs mooney is a misspelling. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q047",
+   "q": "Susan Moony",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c025"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1068: answer-key entity 1161, as is the client's record CUSTOMERS 1063 (Susan Mooney); surname moony vs mooney is a misspelling. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q048",
+   "q": "Mooney",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c025"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1064, CUSTOMERS 1065, CUSTOMERS 1066: answer-key entity 1161, as is the client's record CUSTOMERS 1063 (Susan Mooney); distinctive surname typed alone."
+  },
+  {
+   "id": "q049",
+   "q": "Moonie",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c025"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1067: answer-key entity 1161, as is the client's record CUSTOMERS 1063 (Susan Mooney); misspelt surname typed alone. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q050",
+   "q": "Moony",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c025"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1068: answer-key entity 1161, as is the client's record CUSTOMERS 1063 (Susan Mooney); misspelt surname typed alone. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q051",
+   "q": "王杰",
+   "category": "native script",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c026"
+   ],
+   "acceptable": [
+    "c027",
+    "c030"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c026"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1069: answer-key entity 1171, as is the client's record CUSTOMERS 1070 (Jie Wang); native-script form of the name. | Acceptable: 2 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q052",
+   "q": "Wang Jie",
+   "category": "name order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c026"
+   ],
+   "acceptable": [
+    "c027",
+    "c030"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c026"
+   ],
+   "empty": false,
+   "why": "Senzing REFERENCE 2013: answer-key entity 1171, as is the client's record CUSTOMERS 1070 (Jie Wang); the client's name with first and last name swapped. | Acceptable: 2 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q053",
+   "q": "王伟",
+   "category": "native script",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c027"
+   ],
+   "acceptable": [
+    "c026",
+    "c028"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c027"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1071: answer-key entity 1172, as is the client's record CUSTOMERS 1072 (Wei Wang); native-script form of the name. | Acceptable: 2 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q054",
+   "q": "Wang Wei",
+   "category": "name order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c027"
+   ],
+   "acceptable": [
+    "c026",
+    "c028"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c027"
+   ],
+   "empty": false,
+   "why": "Senzing REFERENCE 2014: answer-key entity 1172, as is the client's record CUSTOMERS 1072 (Wei Wang); the client's name with first and last name swapped. | Acceptable: 2 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q055",
+   "q": "张伟",
+   "category": "native script",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c028"
+   ],
+   "acceptable": [
+    "c027",
+    "c029"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c028"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1073: answer-key entity 1173, as is the client's record CUSTOMERS 1074 (Wei Zhang); native-script form of the name. | Acceptable: 2 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q056",
+   "q": "张秀英",
+   "category": "native script",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c029"
+   ],
+   "acceptable": [
+    "c028"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c029"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1075: answer-key entity 1174, as is the client's record CUSTOMERS 1076 (Xiu Ying Zhang); native-script form of the name. | Acceptable: 1 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q057",
+   "q": "刘杰",
+   "category": "native script",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c030"
+   ],
+   "acceptable": [
+    "c026"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c030"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1077: answer-key entity 1175, as is the client's record CUSTOMERS 1078 (Jie Liu); native-script form of the name. | Acceptable: 1 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q058",
+   "q": "Geoffrey Brown Jr",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c031"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1080: answer-key entity 1181, as is the client's record CUSTOMERS 1079 (Jeffrey Brown); first name geoffrey vs jeffrey (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q059",
+   "q": "Brown",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c031"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1080: answer-key entity 1181, as is the client's record CUSTOMERS 1079 (Jeffrey Brown); distinctive surname typed alone."
+  },
+  {
+   "id": "q060",
+   "q": "Georg Frankens",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c032"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1082: answer-key entity 1191, as is the client's record CUSTOMERS 1081 (George Frankens); first name georg vs george (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q061",
+   "q": "Frankens",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c032"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1082: answer-key entity 1191, as is the client's record CUSTOMERS 1081 (George Frankens); distinctive surname typed alone."
+  },
+  {
+   "id": "q062",
+   "q": "Morrie Klempsky",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c033"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1084: answer-key entity 1201, as is the client's record CUSTOMERS 1083 (Morris Klempski); surname klempsky vs klempski is a misspelling; first name morrie vs morris (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q063",
+   "q": "Klempsky",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c033"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1084: answer-key entity 1201, as is the client's record CUSTOMERS 1083 (Morris Klempski); misspelt surname typed alone. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q064",
+   "q": "Ellie Desqueir",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c034"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1086: answer-key entity 1211, as is the client's record CUSTOMERS 1085 (Ellie D'esquire); surname desqueir vs desquire is a misspelling. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q065",
+   "q": "dellie@fmail.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c034"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "dellie@fmail.com appears in Senzing CUSTOMERS 1086 (answer-key entity 1211); every client holding exactly this address must be found."
+  },
+  {
+   "id": "q066",
+   "q": "dellie",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c034"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "dellie@fmail.com appears in Senzing CUSTOMERS 1086 (answer-key entity 1211); local part of the address."
+  },
+  {
+   "id": "q067",
+   "q": "dellie@fmail",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c034"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "dellie@fmail.com appears in Senzing CUSTOMERS 1086 (answer-key entity 1211); start of the address across the @ sign."
+  },
+  {
+   "id": "q068",
+   "q": "Desqueir",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c034"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1086: answer-key entity 1211, as is the client's record CUSTOMERS 1085 (Ellie D'esquire); misspelt surname typed alone. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q069",
+   "q": "George Weest",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c035"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1088: answer-key entity 1221, as is the client's record CUSTOMERS 1087 (George Wiest); surname weest vs wiest is a misspelling. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q070",
+   "q": "pfranks@ishmail.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c035"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "pfranks@ishmail.com appears in Senzing CUSTOMERS 1088 (answer-key entity 1221); every client holding exactly this address must be found."
+  },
+  {
+   "id": "q071",
+   "q": "pfranks",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c035"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "pfranks@ishmail.com appears in Senzing CUSTOMERS 1088 (answer-key entity 1221); local part of the address."
+  },
+  {
+   "id": "q072",
+   "q": "pfranks@ishmail",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c035"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "pfranks@ishmail.com appears in Senzing CUSTOMERS 1088 (answer-key entity 1221); start of the address across the @ sign."
+  },
+  {
+   "id": "q073",
+   "q": "ishmail.com",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c035"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "pfranks@ishmail.com appears in Senzing CUSTOMERS 1088 (answer-key entity 1221); domain of the address, every client on this domain must be found."
+  },
+  {
+   "id": "q074",
+   "q": "Weest",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c035"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1088: answer-key entity 1221, as is the client's record CUSTOMERS 1087 (George Wiest); misspelt surname typed alone. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q075",
+   "q": "Ellie O'hare",
+   "category": "punctuation",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c038"
+   ],
+   "acceptable": [
+    "c034"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c038"
+   ],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1092: answer-key entity 1241, as is the client's record CUSTOMERS 1091 (Ellie Ohare); differs from the client's name only in punctuation. | Acceptable: 1 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q076",
+   "q": "ellie.ohare@fmail.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c038"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "ellie.ohare@fmail.com appears in Senzing CUSTOMERS 1092 (answer-key entity 1241); every client holding exactly this address must be found."
+  },
+  {
+   "id": "q077",
+   "q": "ellie.ohare",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c038"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "ellie.ohare@fmail.com appears in Senzing CUSTOMERS 1092 (answer-key entity 1241); local part of the address."
+  },
+  {
+   "id": "q078",
+   "q": "ellie.ohare@fmail",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c038"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "ellie.ohare@fmail.com appears in Senzing CUSTOMERS 1092 (answer-key entity 1241); start of the address across the @ sign."
+  },
+  {
+   "id": "q079",
+   "q": "O'hare",
+   "category": "punctuation",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c038"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1092: answer-key entity 1241, as is the client's record CUSTOMERS 1091 (Ellie Ohare); surname typed alone, punctuation differs."
+  },
+  {
+   "id": "q080",
+   "q": "Juann Aguilar",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c040"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1096: answer-key entity 1261, as is the client's record CUSTOMERS 1095 (Juan Aguilar); first name juann vs juan (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q081",
+   "q": "Marie Sanchez Mendoza",
+   "category": "compound surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c041"
+   ],
+   "acceptable": [
+    "c004"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1098: answer-key entity 1271, as is the client's record CUSTOMERS 1097 (Marie Sanchez); a longer compound surname than the client's. | Acceptable: 1 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description."
+  },
+  {
+   "id": "q082",
+   "q": "mickey@mmail.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c041"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "mickey@mmail.com appears in Senzing CUSTOMERS 1098 (answer-key entity 1271); every client holding exactly this address must be found."
+  },
+  {
+   "id": "q083",
+   "q": "mickey",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c041"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "mickey@mmail.com appears in Senzing CUSTOMERS 1098 (answer-key entity 1271); local part of the address."
+  },
+  {
+   "id": "q084",
+   "q": "mickey@mmail",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c041"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "mickey@mmail.com appears in Senzing CUSTOMERS 1098 (answer-key entity 1271); start of the address across the @ sign."
+  },
+  {
+   "id": "q085",
+   "q": "mmail.com",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c041",
+    "c042"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "mickey@mmail.com appears in Senzing CUSTOMERS 1098 (answer-key entity 1271); domain of the address, every client on this domain must be found | mouse@mmail.com appears in Senzing CUSTOMERS 1100 (answer-key entity 1281); domain of the address, every client on this domain must be found."
+  },
+  {
+   "id": "q086",
+   "q": "Sanchez Mendoza",
+   "category": "compound surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c041"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1098: answer-key entity 1271, as is the client's record CUSTOMERS 1097 (Marie Sanchez); longer compound surname typed alone."
+  },
+  {
+   "id": "q087",
+   "q": "Anna Marie Aguilar",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c042"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1100: answer-key entity 1281, as is the client's record CUSTOMERS 1099 (Anna Maria Aguilar); first name anna marie vs anna maria (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q088",
+   "q": "mouse@mmail.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c042"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "mouse@mmail.com appears in Senzing CUSTOMERS 1100 (answer-key entity 1281); every client holding exactly this address must be found."
+  },
+  {
+   "id": "q089",
+   "q": "mouse",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c042"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "mouse@mmail.com appears in Senzing CUSTOMERS 1100 (answer-key entity 1281); local part of the address."
+  },
+  {
+   "id": "q090",
+   "q": "mouse@mmail",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c042"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "mouse@mmail.com appears in Senzing CUSTOMERS 1100 (answer-key entity 1281); start of the address across the @ sign."
+  },
+  {
+   "id": "q091",
+   "q": "Mark Milner",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c043"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1102: answer-key entity 1291, as is the client's record CUSTOMERS 1101 (Mark Miller); surname milner vs miller is a misspelling. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q092",
+   "q": "mark@marksfoods.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c043"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "mark@marksfoods.com appears in Senzing CUSTOMERS 1102 (answer-key entity 1291); every client holding exactly this address must be found."
+  },
+  {
+   "id": "q093",
+   "q": "mark",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c043"
+   ],
+   "acceptable": [
+    "c005"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "mark@marksfoods.com appears in Senzing CUSTOMERS 1102 (answer-key entity 1291); local part of the address. | Acceptable: 1 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description."
+  },
+  {
+   "id": "q094",
+   "q": "mark@marksfoods",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c043"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "mark@marksfoods.com appears in Senzing CUSTOMERS 1102 (answer-key entity 1291); start of the address across the @ sign."
+  },
+  {
+   "id": "q095",
+   "q": "marksfoods.com",
+   "category": "e-mail fragment",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c043"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "mark@marksfoods.com appears in Senzing CUSTOMERS 1102 (answer-key entity 1291); domain of the address, every client on this domain must be found."
+  },
+  {
+   "id": "q096",
+   "q": "Milner",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c043"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1102: answer-key entity 1291, as is the client's record CUSTOMERS 1101 (Mark Miller); misspelt surname typed alone. | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q097",
+   "q": "Annabelle Becker",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c044"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1104: answer-key entity 1301, as is the client's record CUSTOMERS 1103 (Anabella Becker); first name annabelle vs anabella (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q098",
+   "q": "Becker",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c044"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 1104: answer-key entity 1301, as is the client's record CUSTOMERS 1103 (Anabella Becker); distinctive surname typed alone."
+  },
+  {
+   "id": "q099",
+   "q": "គឹម តារា",
+   "category": "native script",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c045"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 2031: answer-key entity 2031, as is the client's record CUSTOMERS 2032 (Dara Kim); native-script form of the name."
+  },
+  {
+   "id": "q100",
+   "q": "J Muir",
+   "category": "initial",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c051"
+   ],
+   "acceptable": [
+    "c050"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 2193: answer-key entity 2192, as is the client's record CUSTOMERS 2192 (Jane Muir); first initial plus the surname. | Acceptable: 1 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description."
+  },
+  {
+   "id": "q101",
+   "q": "Candace Kellar",
+   "category": "name variant",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c058"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "must_not": [],
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Senzing CUSTOMERS 2213: answer-key entity 2207, as is the client's record CUSTOMERS 2207 (Kandace Kellar); first name candace vs kandace (not a nickname pair in the table). | Fuzzy case: one relevant client within the first 5 is enough; other results are not scored."
+  },
+  {
+   "id": "q102",
+   "q": "Kellar",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c058"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Senzing CUSTOMERS 2213: answer-key entity 2207, as is the client's record CUSTOMERS 2207 (Kandace Kellar); distinctive surname typed alone."
+  },
+  {
+   "id": "q103",
+   "q": "Rob Smith",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c001"
+   ],
+   "acceptable": [
+    "c002",
+    "c014",
+    "c015",
+    "c016",
+    "c017",
+    "c020",
+    "c021"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c001"
+   ],
+   "empty": false,
+   "why": "Nickname table: 'rob' is listed as a nickname of robert, so every client named Robert Smith is meant (1); 'rob' occurs nowhere in the Senzing files. | Acceptable: 7 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q104",
+   "q": "Johnny Smith",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c014",
+    "c015"
+   ],
+   "acceptable": [
+    "c001",
+    "c002",
+    "c016",
+    "c017",
+    "c020",
+    "c021"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c014",
+    "c015"
+   ],
+   "empty": false,
+   "why": "Nickname table: 'johnny' is listed as a nickname of john, so every client named John Smith is meant (2); 'johnny' occurs nowhere in the Senzing files. | Acceptable: 6 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q105",
+   "q": "Trish Smith",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c017"
+   ],
+   "acceptable": [
+    "c001",
+    "c002",
+    "c014",
+    "c015",
+    "c016",
+    "c020",
+    "c021"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c017"
+   ],
+   "empty": false,
+   "why": "Nickname table: 'trish' is listed as a nickname of patricia, so every client named Patricia Smith is meant (1); 'trish' occurs nowhere in the Senzing files. | Acceptable: 7 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q106",
+   "q": "Ted Kusha",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c003"
+   ],
+   "acceptable": [
+    "c004",
+    "c005",
+    "c006"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c003"
+   ],
+   "empty": false,
+   "why": "Nickname table: 'ted' is listed as a nickname of edward, so every client named Edward Kusha is meant (1); 'ted' occurs nowhere in the Senzing files. | Acceptable: 3 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q107",
+   "q": "Molly Kusha",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c004"
+   ],
+   "acceptable": [
+    "c003",
+    "c005",
+    "c006"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c004"
+   ],
+   "empty": false,
+   "why": "Nickname table: 'molly' is listed as a nickname of mary, so every client named Mary Kusha is meant (1); 'molly' occurs nowhere in the Senzing files. | Acceptable: 3 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q108",
+   "q": "Sue Mooney",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c025"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Nickname table: 'sue' is listed as a nickname of susan, so every client named Susan Mooney is meant (1); 'sue' occurs nowhere in the Senzing files."
+  },
+  {
+   "id": "q109",
+   "q": "Dave Dobbins",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c010"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Nickname table: 'dave' is listed as a nickname of david, so every client named David Dobbins is meant (1); 'dave' occurs nowhere in the Senzing files."
+  },
+  {
+   "id": "q110",
+   "q": "Jeff Brown",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c031"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Nickname table: 'jeff' is listed as a nickname of jeffrey, so every client named Jeffrey Brown is meant (1); 'jeff' occurs nowhere in the Senzing files."
+  },
+  {
+   "id": "q111",
+   "q": "Morey Klempski",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c033"
+   ],
+   "acceptable": [
+    "c036",
+    "c037"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c033"
+   ],
+   "empty": false,
+   "why": "Nickname table: 'morey' is listed as a nickname of morris, so every client named Morris Klempski is meant (1); 'morey' occurs nowhere in the Senzing files. | Acceptable: 2 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q112",
+   "q": "Elly Ohare",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c038"
+   ],
+   "acceptable": [
+    "c034"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c038"
+   ],
+   "empty": false,
+   "why": "Nickname table: 'elly' is listed as a nickname of ellie, so every client named Ellie Ohare is meant (1); 'elly' occurs nowhere in the Senzing files. | Acceptable: 1 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q113",
+   "q": "Mandy Anderson",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c039"
+   ],
+   "acceptable": [
+    "c008",
+    "c009",
+    "c041",
+    "c046",
+    "c047",
+    "c048",
+    "c049"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c039"
+   ],
+   "empty": false,
+   "why": "Nickname table: 'mandy' is listed as a nickname of amanda, so every client named Amanda Anderson is meant (1); 'mandy' occurs nowhere in the Senzing files. | Acceptable: 7 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q114",
+   "q": "Drew Anderson",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c046"
+   ],
+   "acceptable": [
+    "c008",
+    "c009",
+    "c039",
+    "c041",
+    "c047",
+    "c048",
+    "c049"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c046"
+   ],
+   "empty": false,
+   "why": "Nickname table: 'drew' is listed as a nickname of andrew, so every client named Andrew Anderson is meant (1); 'drew' occurs nowhere in the Senzing files. | Acceptable: 7 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q115",
+   "q": "Hank Howard",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c055"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Nickname table: 'hank' is listed as a nickname of henry, so every client named Henry Howard is meant (1); 'hank' occurs nowhere in the Senzing files."
+  },
+  {
+   "id": "q116",
+   "q": "Julie Jackson",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c057"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Nickname table: 'julie' is listed as a nickname of julia, so every client named Julia Jackson is meant (1); 'julie' occurs nowhere in the Senzing files."
+  },
+  {
+   "id": "q117",
+   "q": "Janie Muir",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c051"
+   ],
+   "acceptable": [
+    "c050"
+   ],
+   "others": "wrong",
+   "must_not": [],
+   "first": [
+    "c051"
+   ],
+   "empty": false,
+   "why": "Nickname table: 'janie' is listed as a nickname of jane, so every client named Jane Muir is meant (1); 'janie' occurs nowhere in the Senzing files. | Acceptable: 1 other client(s) share a name word, a name prefix or a nickname pair with the query, or contain it in e-mail/description. | First: only the relevant client(s) match every word of the query."
+  },
+  {
+   "id": "q118",
+   "q": "Les Leonard",
+   "category": "nickname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c059"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "must_not": [],
+   "first": [],
+   "empty": false,
+   "why": "Nickname table: 'les' is listed as a nickname of leslie, so every client named Leslie Leonard is meant (1); 'les' occurs nowhere in the Senzing files."
+  }
+ ],
+ "http_cases": [],
+ "left_out": [
+  {
+   "records": [
+    "CUSTOMERS 1061",
+    "CUSTOMERS 1062"
+   ],
+   "entity": "1151",
+   "variant": "Andreason",
+   "reason": "dropped entity: no customer record has both a first and a last name"
+  },
+  {
+   "records": [
+    "CUSTOMERS 2011",
+    "REFERENCE 2012"
+   ],
+   "entity": "2011",
+   "variant": "Hajah Mamunah (Jln Pisang)",
+   "reason": "dropped entity: organisation, not a person"
+  },
+  {
+   "records": [
+    "CUSTOMERS 2042",
+    "REFERENCE 2041"
+   ],
+   "entity": "2041",
+   "variant": "Mullenkrants",
+   "reason": "dropped entity: organisation, not a person"
+  },
+  {
+   "records": [
+    "CUSTOMERS 2063",
+    "WATCHLIST 2062",
+    "REFERENCE 2061"
+   ],
+   "entity": "2061",
+   "variant": "Alexander Pavlovich Vasiliev",
+   "reason": "dropped entity: Alexander Pavlovich Vasiliev: the watchlist/reference records carry a full patronymic name, an apartment-level street address and a phone number flagged 'Sanctioned', which reads like a real sanctions-list entry; dropped rather than verified (verifying would mean sending the name to an external service)."
+  },
+  {
+   "records": [
+    "CUSTOMERS 2072",
+    "REFERENCE 2071"
+   ],
+   "entity": "2071",
+   "variant": "Univrsl Export Inc",
+   "reason": "dropped entity: organisation, not a person"
+  },
+  {
+   "records": [
+    "CUSTOMERS 2073",
+    "REFERENCE 2074"
+   ],
+   "entity": "2073",
+   "variant": "Worldwide Exports",
+   "reason": "dropped entity: organisation, not a person"
+  },
+  {
+   "records": [
+    "CUSTOMERS 2142",
+    "REFERENCE 2141"
+   ],
+   "entity": "2141",
+   "variant": "Singapore exports",
+   "reason": "dropped entity: organisation, not a person"
+  },
+  {
+   "records": [
+    "CUSTOMERS 2152",
+    "REFERENCE 2151"
+   ],
+   "entity": "2151",
+   "variant": "India Exports",
+   "reason": "dropped entity: organisation, not a person"
+  },
+  {
+   "records": [
+    "CUSTOMERS 1004"
+   ],
+   "entity": "1001",
+   "variant": "B Smith",
+   "reason": "first initial does not match the client's first name; the record shares EMAIL_ADDRESS with the entity's other records (fuzzier DOB/ID/address matches not listed)"
+  },
+  {
+   "records": [
+    "CUSTOMERS 1011"
+   ],
+   "entity": "1021",
+   "variant": "Ed Knight",
+   "reason": "surname differs from the client's; the record shares DATE_OF_BIRTH with the entity's other records (fuzzier DOB/ID/address matches not listed)"
+  },
+  {
+   "records": [
+    "WATCHLIST 1014"
+   ],
+   "entity": "1021",
+   "variant": "Eddie Knight",
+   "reason": "surname differs from the client's; the record shares DATE_OF_BIRTH, SSN_NUMBER with the entity's other records (fuzzier DOB/ID/address matches not listed)"
+  },
+  {
+   "records": [
+    "CUSTOMERS 1056"
+   ],
+   "entity": "1122",
+   "variant": "Magdalena Jones",
+   "reason": "surname differs from the client's; the record shares DRIVERS_LICENSE_NUMBER with the entity's other records (fuzzier DOB/ID/address matches not listed)"
+  },
+  {
+   "records": [
+    "CUSTOMERS 1094"
+   ],
+   "entity": "1251",
+   "variant": "Amanda Jones",
+   "reason": "surname differs from the client's; the record shares DATE_OF_BIRTH, DRIVERS_LICENSE_NUMBER with the entity's other records (fuzzier DOB/ID/address matches not listed)"
+  },
+  {
+   "records": [
+    "CUSTOMERS 2193"
+   ],
+   "entity": "2192",
+   "variant": "info@ca-state.gov",
+   "reason": "role mailbox shared by many unrelated entities; it identifies nobody"
+  },
+  {
+   "records": [
+    "CUSTOMERS 2213"
+   ],
+   "entity": "2207",
+   "variant": "info@ca-state.gov",
+   "reason": "role mailbox shared by many unrelated entities; it identifies nobody"
+  }
+ ]
+}

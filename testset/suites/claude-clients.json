@@ -1,0 +1,1234 @@
+{
+ "suite": "claude-clients",
+ "author": "Claude Opus 5.5",
+ "corpus": {
+  "clients": [
+   {
+    "id": "c01",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@neviswealth.com",
+    "description": "Portfolio manager at a boutique investment house in Mayfair. Married with two teenage children; wants to use carry-forward to maximise pension contributions and is interested in EIS and VCT reliefs.",
+    "social_links": [
+     "https://www.linkedin.com/in/john-doe-4471a2"
+    ]
+   },
+   {
+    "id": "c02",
+    "first_name": "Siobhán",
+    "last_name": "O'Sullivan",
+    "email": "s.osullivan@harbourside-medical.co.uk",
+    "description": "GP partner at a surgery in Clifton, Bristol. Grew up in Cork and moved to England in 2009. Wants to understand the tapered annual allowance and her NHS pension options.",
+    "social_links": [
+     "https://www.linkedin.com/in/dr-s-osullivan"
+    ]
+   },
+   {
+    "id": "c03",
+    "first_name": "Mark",
+    "last_name": "Sullivan",
+    "email": "mark.sullivan@brightpost.co.uk",
+    "description": "Long-haul airline captain based at Heathrow who lives near Windsor. Divorced; pays school fees for two children and hopes to retire at 58.",
+    "social_links": [
+     "https://www.instagram.com/markplaysgolf"
+    ]
+   },
+   {
+    "id": "c04",
+    "first_name": "Renée",
+    "last_name": "Lefèvre",
+    "email": "renee.l@studiomarais.co.uk",
+    "description": "French-born interior designer who runs her own studio in Edinburgh's New Town. Holds a French assurance-vie policy and needs advice on its UK tax treatment.",
+    "social_links": [
+     "https://www.instagram.com/studiomarais"
+    ]
+   },
+   {
+    "id": "c05",
+    "first_name": "Arabella",
+    "last_name": "Pemberton-Hale",
+    "email": "a.pemberton-hale@brightpost.co.uk",
+    "description": "Daughter of Giles Pemberton, who is also a client. Organises equestrian events in the Cotswolds and is a trustee of the Pemberton family trust.",
+    "social_links": [
+     "https://www.linkedin.com/in/arabella-pemberton-hale"
+    ]
+   },
+   {
+    "id": "c06",
+    "first_name": "Giles",
+    "last_name": "Pemberton",
+    "email": "giles@pembertonfarms.co.uk",
+    "description": "Retired arable farmer near Hereford. Plans to pass the farm to the next generation using agricultural property relief; enjoys horse racing.",
+    "social_links": []
+   },
+   {
+    "id": "c07",
+    "first_name": "Margaret",
+    "last_name": "Hargreaves",
+    "email": "margaret@thehargreaves.co.uk",
+    "description": "Retired primary school headteacher living in Harrogate. Holds joint accounts with her husband and wants to start regular gifts to her grandchildren.",
+    "social_links": []
+   },
+   {
+    "id": "c08",
+    "first_name": "Edward",
+    "last_name": "Hargreaves",
+    "email": "edward@thehargreaves.co.uk",
+    "description": "Retired consultant anaesthetist. Married to Margaret; the couple live in Harrogate. Has an NHS pension and a SIPP, and plays golf twice a week.",
+    "social_links": []
+   },
+   {
+    "id": "c09",
+    "first_name": "Lucy",
+    "last_name": "Hargreaves",
+    "email": "lucy.hargreaves@mailhaven.com",
+    "description": "Employment barrister practising from chambers in Leeds. Self-employed, so wants to make larger pension contributions in good years.",
+    "social_links": [
+     "https://www.linkedin.com/in/lucy-hargreaves-barrister"
+    ]
+   },
+   {
+    "id": "c10",
+    "first_name": "Hattie",
+    "last_name": "Greaves",
+    "email": "hattie.greaves@brightpost.co.uk",
+    "description": "Runs a plant nursery and garden shop, and recently bought the freehold of the premises. Prefers to be contacted by phone rather than email.",
+    "social_links": [
+     "https://www.instagram.com/thepottingshedbristol",
+     "https://www.linkedin.com/in/hattie-greaves-0b7c21"
+    ]
+   },
+   {
+    "id": "c11",
+    "first_name": "Priya",
+    "last_name": "Shah",
+    "email": "priya@shahdental.co.uk",
+    "description": "Dentist who owns a two-surgery practice in Leicester. Considering incorporating the practice; her brother Rohan is also a client.",
+    "social_links": [
+     "https://www.linkedin.com/in/priya-shah-dentist"
+    ]
+   },
+   {
+    "id": "c12",
+    "first_name": "Rohan",
+    "last_name": "Shah",
+    "email": "rohan.shah@mailhaven.com",
+    "description": "Software engineer at a fintech start-up in Shoreditch, holding EMI share options. Brother of Priya Shah.",
+    "social_links": [
+     "https://github.com/rohanshah-dev"
+    ]
+   },
+   {
+    "id": "c13",
+    "first_name": "Priya",
+    "last_name": "Raman",
+    "email": "priya.raman@brightpost.co.uk",
+    "description": "Headteacher of a secondary school in Birmingham and a member of the Teachers' Pension Scheme. Saving for her two daughters' university costs.",
+    "social_links": []
+   },
+   {
+    "id": "c14",
+    "first_name": "Amelia",
+    "last_name": "Brooks",
+    "email": "amelia.brooks@haldenpryce.co.uk",
+    "description": "Solicitor and partner in the private client team at Halden & Pryce LLP in Manchester. Her partnership drawings vary from year to year.",
+    "social_links": [
+     "https://www.linkedin.com/in/amelia-brooks-solicitor"
+    ]
+   },
+   {
+    "id": "c15",
+    "first_name": "Oliver",
+    "last_name": "Grant",
+    "email": "oliver.grant@haldenpryce.co.uk",
+    "description": "Associate solicitor in a commercial property team. First-time buyer saving into a Lifetime ISA.",
+    "social_links": []
+   },
+   {
+    "id": "c16",
+    "first_name": "Fiona",
+    "last_name": "MacLeod",
+    "email": "fiona.macleod@mailhaven.com",
+    "description": "Introduced by her solicitor at Halden & Pryce after her divorce settlement. Lives in Glasgow and works part-time as a speech and language therapist.",
+    "social_links": []
+   },
+   {
+    "id": "c17",
+    "first_name": "Оксана",
+    "last_name": "Мельник",
+    "email": "oksana.melnyk@brightpost.co.uk",
+    "description": "Ukrainian-born architect at a practice in Bristol. Moved to the UK in 2016 and became a British citizen in 2022. Building up a stocks and shares ISA.",
+    "social_links": [
+     "https://www.linkedin.com/in/oksana-melnyk-architect"
+    ]
+   },
+   {
+    "id": "c18",
+    "first_name": "Daniel",
+    "last_name": "Ng",
+    "email": "daniel.ng@corvidanalytics.co.uk",
+    "description": "Head of data science at Corvid Analytics in Cambridge. Received a large RSU vest when the company was acquired.",
+    "social_links": [
+     "https://www.linkedin.com/in/danielng-data"
+    ]
+   },
+   {
+    "id": "c19",
+    "first_name": "Robert",
+    "last_name": "Ashworth",
+    "email": "bob.ashworth@mailhaven.com",
+    "description": "Retired fire officer from Fort William who has climbed Ben Nevis more than forty times and does sponsored hill walks for charity. Wants a sustainable income from his drawdown pot.",
+    "social_links": []
+   },
+   {
+    "id": "c20",
+    "first_name": "Catherine",
+    "last_name": "Doyle",
+    "email": "catherine.doyle@brightpost.co.uk",
+    "description": "Transferred her ISA and SIPP to us from Kestrel Wealth in 2024 after a dispute over fees. Works as a community pharmacist in Chesterfield.",
+    "social_links": []
+   },
+   {
+    "id": "c21",
+    "first_name": "James",
+    "last_name": "Whitfield",
+    "email": "james.whitfield@mailhaven.com",
+    "description": "Referred by John Doe; the two were at university together. Owns a small chain of independent coffee shops in Brighton.",
+    "social_links": [
+     "https://www.linkedin.com/in/james-whitfield-coffee"
+    ]
+   },
+   {
+    "id": "c22",
+    "first_name": "John",
+    "last_name": "Okafor",
+    "email": "john.okafor@brightpost.co.uk",
+    "description": "Consultant orthopaedic surgeon. Lives in Chester with his wife and three children and does private work at weekends.",
+    "social_links": []
+   },
+   {
+    "id": "c23",
+    "first_name": "Sarah",
+    "last_name": "Johnson",
+    "email": "sarah.johnson@mailhaven.com",
+    "description": "Head of operations at a logistics firm in Manchester. Enjoys classical music and long-distance running.",
+    "social_links": [
+     "https://www.linkedin.com/in/sarah-johnson-ops"
+    ]
+   },
+   {
+    "id": "c24",
+    "first_name": "Ruth",
+    "last_name": "Baker",
+    "email": "ruth.baker@brightpost.co.uk",
+    "description": "Freelance translator who grew up in Halesowen and now lives in York. A keen opera lover who travels to Verona every summer.",
+    "social_links": []
+   },
+   {
+    "id": "c25",
+    "first_name": "Gareth",
+    "last_name": "Llewellyn",
+    "email": "gareth@llewellynbakery.co.uk",
+    "description": "Master baker who owns three artisan bakeries in Cardiff. The business recovered strongly after COVID and he now wants to extract profits tax-efficiently.",
+    "social_links": [
+     "https://www.instagram.com/llewellynbakery"
+    ]
+   },
+   {
+    "id": "c26",
+    "first_name": "Nigel",
+    "last_name": "Ferris",
+    "email": "nigel.ferris@mailhaven.com",
+    "description": "Property developer in Surrey who collects classic cars and restores them in his own workshop. Got in touch after one of our advisers posted on LinkedIn about business relief.",
+    "social_links": [
+     "https://www.linkedin.com/in/nigel-ferris-developments"
+    ]
+   },
+   {
+    "id": "c27",
+    "first_name": "Zoe",
+    "last_name": "Whitcombe",
+    "email": "zoe.whitcombe@brightpost.co.uk",
+    "description": "Marketing director for a cosmetics brand in Guildford who studied at Goldsmiths. Inherited her late father's house; the grant of probate was issued in March.",
+    "social_links": []
+   }
+  ],
+  "documents": []
+ },
+ "queries": [
+  {
+   "id": "q001",
+   "q": "NevisWealth",
+   "category": "email",
+   "level": "required",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [
+    "c01"
+   ],
+   "empty": false,
+   "why": "Assignment example: the term is John Doe's e-mail domain; c19 (climbed Ben Nevis) and c20 (came from Kestrel Wealth) each share only half of the compound and are not what the adviser wants."
+  },
+  {
+   "id": "q002",
+   "q": "neviswealth",
+   "category": "email",
+   "level": "required",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The domain without '.com' in lower case; the assignment example already implies case-insensitive matching inside the e-mail."
+  },
+  {
+   "id": "q003",
+   "q": "NEVISWEALTH",
+   "category": "email",
+   "level": "required",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Upper-case variant of the assignment example; letter case must not matter."
+  },
+  {
+   "id": "q004",
+   "q": "john.doe@neviswealth.com",
+   "category": "email",
+   "level": "required",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "A full e-mail address identifies exactly one client; c21 only mentions the name John Doe in a referral note, so returning him for the address is wrong."
+  },
+  {
+   "id": "q005",
+   "q": "john.doe",
+   "category": "email",
+   "level": "required",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [
+    "c21"
+   ],
+   "first": [
+    "c01"
+   ],
+   "empty": false,
+   "why": "The e-mail local part identifies John Doe; c21's description says he was referred by John Doe, a reasonable but not required extra that must not outrank c01."
+  },
+  {
+   "id": "q006",
+   "q": "neviswealth.com",
+   "category": "email",
+   "level": "required",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The full domain including '.com' is a literal part of c01's e-mail and of no other field in the corpus."
+  },
+  {
+   "id": "q007",
+   "q": "wealth",
+   "category": "email",
+   "level": "expected",
+   "relevant": [
+    "c01",
+    "c20"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "'wealth' is the second word of the compound domain neviswealth.com (c01) and a whole word in c20's description (Kestrel Wealth); both are genuine matches."
+  },
+  {
+   "id": "q008",
+   "q": "Nevis Wealth",
+   "category": "email",
+   "level": "expected",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The firm name typed as two words should match the domain neviswealth.com; c19 (Ben Nevis) and c20 (Kestrel Wealth) each match one word only and are traps."
+  },
+  {
+   "id": "q009",
+   "q": "Nevis",
+   "category": "email",
+   "level": "expected",
+   "relevant": [
+    "c01",
+    "c19"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "'Nevis' is the first word of c01's e-mail domain and a whole word in c19's description (climbed Ben Nevis); the single word is ambiguous, so both are legitimate."
+  },
+  {
+   "id": "q010",
+   "q": "John",
+   "category": "name",
+   "level": "required",
+   "relevant": [
+    "c01",
+    "c22"
+   ],
+   "acceptable": [
+    "c21",
+    "c23"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Both clients whose first name is John are required; Sarah Johnson (prefix of a surname) and c21 (description mentions John Doe) are tolerable extras, not targets."
+  },
+  {
+   "id": "q011",
+   "q": "Doe",
+   "category": "name",
+   "level": "required",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [
+    "c21"
+   ],
+   "first": [
+    "c01"
+   ],
+   "empty": false,
+   "why": "Surname search; c21's note mentions John Doe so he may appear below c01, but c19 and c22 only contain the word 'does' and must not be returned."
+  },
+  {
+   "id": "q012",
+   "q": "John Doe",
+   "category": "name",
+   "level": "required",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [
+    "c21"
+   ],
+   "first": [
+    "c01"
+   ],
+   "empty": false,
+   "why": "Full name of the example client; c21's description literally contains 'John Doe' so he is tolerable below c01, while c22 (a John who 'does' private work) only matches by accident and is wrong."
+  },
+  {
+   "id": "q013",
+   "q": "Doe John",
+   "category": "name-order",
+   "level": "expected",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [
+    "c21"
+   ],
+   "first": [
+    "c01"
+   ],
+   "empty": false,
+   "why": "Same person typed surname first; word order must not change the answer given for 'John Doe'."
+  },
+  {
+   "id": "q014",
+   "q": "  John   Doe  ",
+   "category": "name",
+   "level": "expected",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [
+    "c21"
+   ],
+   "first": [
+    "c01"
+   ],
+   "empty": false,
+   "why": "Leading, trailing and repeated spaces must be normalised; the answer equals that for 'John Doe'."
+  },
+  {
+   "id": "q015",
+   "q": "Bob Ashworth",
+   "category": "name",
+   "level": "expected",
+   "relevant": [
+    "c19"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Robert Ashworth is known as Bob, which appears only in his e-mail local part (bob.ashworth); together with the surname it identifies him."
+  },
+  {
+   "id": "q016",
+   "q": "Hargreaves",
+   "category": "shared",
+   "level": "required",
+   "relevant": [
+    "c07",
+    "c08",
+    "c09"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Three clients share the surname (a married couple and an unrelated barrister) and all must be returned; Hattie Greaves (c10) has a different surname that is merely contained in it."
+  },
+  {
+   "id": "q017",
+   "q": "Margaret Hargreaves",
+   "category": "shared",
+   "level": "required",
+   "relevant": [
+    "c07"
+   ],
+   "acceptable": [
+    "c08"
+   ],
+   "first": [
+    "c07"
+   ],
+   "empty": false,
+   "why": "The named client must come first; her husband c08 matches both words (surname plus 'Married to Margaret') so he is tolerable, but unrelated Lucy Hargreaves (c09) matches the surname only and is wrong."
+  },
+  {
+   "id": "q018",
+   "q": "Hargreaves, Margaret",
+   "category": "name-order",
+   "level": "expected",
+   "relevant": [
+    "c07"
+   ],
+   "acceptable": [
+    "c08"
+   ],
+   "first": [
+    "c07"
+   ],
+   "empty": false,
+   "why": "'Surname, Forename' as copied from UK admin lists; the comma and order must be ignored, so the answer equals 'Margaret Hargreaves'."
+  },
+  {
+   "id": "q019",
+   "q": "Priya",
+   "category": "shared",
+   "level": "required",
+   "relevant": [
+    "c11",
+    "c13"
+   ],
+   "acceptable": [
+    "c12"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Two unrelated clients are called Priya and both are required; c12's description mentions his sister Priya Shah, which is tolerable, but he is not a Priya."
+  },
+  {
+   "id": "q020",
+   "q": "Priya dentist",
+   "category": "multiword",
+   "level": "expected",
+   "relevant": [
+    "c11"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Only Priya Shah is both a Priya and a dentist; the other Priya (c13) and her brother c12 match one word only and are not what the adviser is looking for."
+  },
+  {
+   "id": "q021",
+   "q": "Siobhán O'Sullivan",
+   "category": "unicode",
+   "level": "required",
+   "relevant": [
+    "c02"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Exact stored name with a fada and an apostrophe; Mark Sullivan (c03) matches only part of the surname and is wrong for a full-name query."
+  },
+  {
+   "id": "q022",
+   "q": "Siobhan",
+   "category": "unicode",
+   "level": "expected",
+   "relevant": [
+    "c02"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Typed without the accent; her e-mail (s.osullivan) does not contain the first name, so only accent-insensitive name matching finds Siobhán."
+  },
+  {
+   "id": "q023",
+   "q": "O'Sullivan",
+   "category": "unicode",
+   "level": "required",
+   "relevant": [
+    "c02"
+   ],
+   "acceptable": [
+    "c03"
+   ],
+   "first": [
+    "c02"
+   ],
+   "empty": false,
+   "why": "The apostrophe surname must be matched safely and exactly; Mark Sullivan carries the anglicised form of the same name, so he is tolerable but must rank below Siobhán."
+  },
+  {
+   "id": "q024",
+   "q": "Renee Lefevre",
+   "category": "unicode",
+   "level": "expected",
+   "relevant": [
+    "c04"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Both names typed without accents; her e-mail contains 'renee' but not 'lefevre', so the surname must be matched accent-insensitively against Lefèvre."
+  },
+  {
+   "id": "q025",
+   "q": "Zoë",
+   "category": "unicode",
+   "level": "expected",
+   "relevant": [
+    "c27"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Reverse case: the adviser types the diaeresis but the client is stored as 'Zoe', so accent folding must be applied to the query as well as to the data."
+  },
+  {
+   "id": "q026",
+   "q": "Pemberton Hale",
+   "category": "unicode",
+   "level": "expected",
+   "relevant": [
+    "c05"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Double-barrelled surname typed with a space instead of the hyphen; her father Giles Pemberton (c06) matches only the first half and is not who the adviser wants."
+  },
+  {
+   "id": "q027",
+   "q": "Hale",
+   "category": "unicode",
+   "level": "required",
+   "relevant": [
+    "c05"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "'Hale' is a full part of the double-barrelled surname Pemberton-Hale; c24 merely grew up in Halesowen, a different word."
+  },
+  {
+   "id": "q028",
+   "q": "Мельник",
+   "category": "unicode",
+   "level": "required",
+   "relevant": [
+    "c17"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Surname stored in Cyrillic must be found when typed exactly as stored."
+  },
+  {
+   "id": "q029",
+   "q": "мельник",
+   "category": "unicode",
+   "level": "expected",
+   "relevant": [
+    "c17"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Lower-case Cyrillic: case-insensitive matching has to work beyond ASCII (an ASCII-only LIKE/lower() fails here)."
+  },
+  {
+   "id": "q030",
+   "q": "Melnyk",
+   "category": "unicode",
+   "level": "required",
+   "relevant": [
+    "c17"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The Latin spelling an English-speaking adviser would type appears in her e-mail (oksana.melnyk), so this is a direct e-mail match."
+  },
+  {
+   "id": "q031",
+   "q": "Corvid",
+   "category": "description",
+   "level": "required",
+   "relevant": [
+    "c18"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Employer named in c18's description and e-mail domain; c25's 'COVID' is a different word one letter away and must not be returned."
+  },
+  {
+   "id": "q032",
+   "q": "solicitor",
+   "category": "description",
+   "level": "required",
+   "relevant": [
+    "c14",
+    "c15"
+   ],
+   "acceptable": [
+    "c16"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "c14 and c15 are solicitors; c16's description mentions 'her solicitor', so the word matches but she is not a solicitor and is only tolerable."
+  },
+  {
+   "id": "q033",
+   "q": "doctor",
+   "category": "description",
+   "level": "nice",
+   "relevant": [
+    "c02",
+    "c08",
+    "c22"
+   ],
+   "acceptable": [
+    "c11"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "No description contains 'doctor', but the GP, the retired anaesthetist and the orthopaedic surgeon are doctors and the dentist (courtesy title Dr) is tolerable; only semantic matching finds them, hence nice."
+  },
+  {
+   "id": "q034",
+   "q": "Chester",
+   "category": "description",
+   "level": "required",
+   "relevant": [
+    "c22"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Only c22 lives in Chester; Manchester (c14, c23) and Chesterfield (c20) merely contain the letters and are different places."
+  },
+  {
+   "id": "q035",
+   "q": "Bristol",
+   "category": "description",
+   "level": "required",
+   "relevant": [
+    "c02",
+    "c17"
+   ],
+   "acceptable": [
+    "c10"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "c02 and c17 mention Bristol in their descriptions; c10's handle 'thepottingshedbristol' is only in a social link, a field the assignment does not list, so she is tolerable but not required."
+  },
+  {
+   "id": "q036",
+   "q": "golf",
+   "category": "description",
+   "level": "required",
+   "relevant": [
+    "c08"
+   ],
+   "acceptable": [
+    "c03"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "c08's description says he plays golf; c03's Instagram handle 'markplaysgolf' hints at golf too, but social links are outside the listed fields, so he is tolerable only."
+  },
+  {
+   "id": "q037",
+   "q": "opera",
+   "category": "description",
+   "level": "required",
+   "relevant": [
+    "c24"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "c24 is an opera lover; c23's 'operations' only starts with the same letters and is unrelated."
+  },
+  {
+   "id": "q038",
+   "q": "classic cars",
+   "category": "description",
+   "level": "required",
+   "relevant": [
+    "c26"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "c26 collects classic cars; c23 'enjoys classical music', which shares a prefix but is not what the adviser wants."
+  },
+  {
+   "id": "q039",
+   "q": "Ben Nevis",
+   "category": "description",
+   "level": "required",
+   "relevant": [
+    "c19"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Only c19's description mentions the mountain; John Doe's domain contains 'nevis' but has nothing to do with Ben Nevis, so c01 is wrong here."
+  },
+  {
+   "id": "q040",
+   "q": "Margaret Harrogate",
+   "category": "multiword",
+   "level": "expected",
+   "relevant": [
+    "c07"
+   ],
+   "acceptable": [
+    "c08"
+   ],
+   "first": [
+    "c07"
+   ],
+   "empty": false,
+   "why": "Margaret Hargreaves lives in Harrogate; her husband c08 also matches both words ('Married to Margaret', Harrogate) and is tolerable, but the client actually called Margaret must be first."
+  },
+  {
+   "id": "q041",
+   "q": "Halden & Pryce",
+   "category": "shared",
+   "level": "expected",
+   "relevant": [
+    "c14",
+    "c15",
+    "c16"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Clients tied to this law firm: c14 works there (description and e-mail), c15 works there (only his haldenpryce e-mail domain shows it) and c16 was introduced by its solicitor; the '&' must also survive URL encoding."
+  },
+  {
+   "id": "q042",
+   "q": "haldenpryce.co.uk",
+   "category": "shared",
+   "level": "required",
+   "relevant": [
+    "c14",
+    "c15"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Two colleagues share this e-mail domain and both are required; c16 only mentions the firm in her description and has no address there, so she is not what a domain search asks for."
+  },
+  {
+   "id": "q043",
+   "q": "thehargreaves.co.uk",
+   "category": "shared",
+   "level": "required",
+   "relevant": [
+    "c07",
+    "c08"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The married couple share a family e-mail domain; Lucy Hargreaves (c09) has the surname but a different domain and is wrong."
+  },
+  {
+   "id": "q044",
+   "q": "oliver.grant@haldenpryce.co.uk",
+   "category": "ranking",
+   "level": "required",
+   "relevant": [
+    "c15"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "A full address identifies one client even though his colleague c14 shares the domain; c14 (and c27, whose description mentions a 'grant') must not be returned."
+  },
+  {
+   "id": "q045",
+   "q": "Giles Pemberton",
+   "category": "ranking",
+   "level": "required",
+   "relevant": [
+    "c06"
+   ],
+   "acceptable": [
+    "c05"
+   ],
+   "first": [
+    "c06"
+   ],
+   "empty": false,
+   "why": "The named client must be first; his daughter c05 mentions 'Giles Pemberton' in her description and has Pemberton in her surname, so she is tolerable below him."
+  },
+  {
+   "id": "q046",
+   "q": "Pemberton",
+   "category": "shared",
+   "level": "required",
+   "relevant": [
+    "c05",
+    "c06"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Giles has the surname and Arabella has it as one half of her double-barrelled surname Pemberton-Hale; neither clearly outranks the other."
+  },
+  {
+   "id": "q047",
+   "q": "Sullivan",
+   "category": "ranking",
+   "level": "expected",
+   "relevant": [
+    "c03"
+   ],
+   "acceptable": [
+    "c02"
+   ],
+   "first": [
+    "c03"
+   ],
+   "empty": false,
+   "why": "Mark Sullivan has exactly this surname and must be first; Siobhán O'Sullivan has the same name after the O' prefix, so she is tolerable but not required."
+  },
+  {
+   "id": "q048",
+   "q": "Baker",
+   "category": "ranking",
+   "level": "expected",
+   "relevant": [
+    "c24",
+    "c25"
+   ],
+   "acceptable": [],
+   "first": [
+    "c24"
+   ],
+   "empty": false,
+   "why": "Same word in different fields: Ruth Baker's surname is the strongest match and must come first, while c25 is a master baker by profession, which is also a plausible intent."
+  },
+  {
+   "id": "q049",
+   "q": "Grant",
+   "category": "ranking",
+   "level": "expected",
+   "relevant": [
+    "c15"
+   ],
+   "acceptable": [
+    "c27"
+   ],
+   "first": [
+    "c15"
+   ],
+   "empty": false,
+   "why": "Oliver Grant must come first; c27's description mentions a 'grant of probate', a literal match in an unrelated sense, so she is tolerable only."
+  },
+  {
+   "id": "q050",
+   "q": "Jhon Doe",
+   "category": "typo",
+   "level": "nice",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [
+    "c21"
+   ],
+   "first": [
+    "c01"
+   ],
+   "empty": false,
+   "why": "Swapped letters in the first name; fuzzy matching should still put John Doe first, with c21 (whose note mentions John Doe) tolerable and the other John (c22) wrong."
+  },
+  {
+   "id": "q051",
+   "q": "Hargreeves",
+   "category": "typo",
+   "level": "nice",
+   "relevant": [
+    "c07",
+    "c08",
+    "c09"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Misspelt surname (ee for ea); all three Hargreaves are intended, while Hattie Greaves (c10) is a different, shorter surname."
+  },
+  {
+   "id": "q052",
+   "q": "neviswelth",
+   "category": "typo",
+   "level": "nice",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Missing letter in the assignment's example domain; a fuzzy match should still find John Doe."
+  },
+  {
+   "id": "q053",
+   "q": "Whitfeild",
+   "category": "typo",
+   "level": "nice",
+   "relevant": [
+    "c21"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The classic ie/ei swap of Whitfield; no other client has a similar name."
+  },
+  {
+   "id": "q054",
+   "q": "markplaysgolf",
+   "category": "social-links",
+   "level": "nice",
+   "relevant": [
+    "c03"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The handle appears only in c03's Instagram link; the assignment lists e-mail, name and description, so not searching links is no defect, but an adviser typing the handle clearly means him."
+  },
+  {
+   "id": "q055",
+   "q": "https://www.linkedin.com/in/hattie-greaves-0b7c21",
+   "category": "social-links",
+   "level": "nice",
+   "relevant": [
+    "c10"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "An adviser pasting a profile URL wants to know whether that person is a client; the URL is stored only in c10's social links (links are not a listed field, hence nice), and the Hargreaves clients merely contain 'greaves'."
+  },
+  {
+   "id": "q056",
+   "q": "LinkedIn",
+   "category": "social-links",
+   "level": "nice",
+   "relevant": [
+    "c26"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Only c26's description mentions LinkedIn (how he found the firm); the linkedin.com host in a dozen clients' profile URLs is boilerplate, so returning those clients is noise."
+  },
+  {
+   "id": "q057",
+   "q": "John Smith",
+   "category": "negative",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "No client is called John Smith; the two Johns match one word only and c27's 'Goldsmiths' merely contains 'smith', so the correct answer is an empty list."
+  },
+  {
+   "id": "q058",
+   "q": "Smith",
+   "category": "negative",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "No client has the surname Smith; 'Goldsmiths' in c27's description contains the letters but names a college, not the person sought."
+  },
+  {
+   "id": "q059",
+   "q": "actuary",
+   "category": "negative",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "No client is an actuary or mentions actuarial work; a search that always returns its nearest neighbours (e.g. pure vector similarity) would wrongly show unrelated professionals."
+  },
+  {
+   "id": "q060",
+   "q": "Ng",
+   "category": "short",
+   "level": "required",
+   "relevant": [
+    "c18"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "A two-letter query that is a complete surname: Daniel Ng must be found, but the many words that merely contain 'ng' (living, running, Long-haul) must not be returned."
+  },
+  {
+   "id": "q061",
+   "q": "GP",
+   "category": "short",
+   "level": "required",
+   "relevant": [
+    "c02"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "A two-letter professional abbreviation that appears as a word only in c02's description ('GP partner'); a minimum-length rule must not drop it."
+  },
+  {
+   "id": "q062",
+   "q": "e",
+   "category": "short",
+   "level": "nice",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "A single letter means nothing to the adviser and substring matching would return nearly every client, so an empty list is the correct result."
+  },
+  {
+   "id": "q063",
+   "q": "   ",
+   "category": "short",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "A whitespace-only query has no search terms; after trimming, a naive LIKE '%%' would return every client, so the result must be empty."
+  },
+  {
+   "id": "q064",
+   "q": "@",
+   "category": "short",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Every e-mail contains '@', but no adviser wants the whole client list for it; punctuation alone must give an empty result."
+  },
+  {
+   "id": "q065",
+   "q": "%",
+   "category": "hostile",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "'%' is the SQL LIKE wildcard: unescaped it matches every client, while the literal character appears in no client field."
+  },
+  {
+   "id": "q066",
+   "q": "' OR '1'='1",
+   "category": "hostile",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Classic SQL-injection tautology; with parameterised queries it is plain text that matches no client, so the result must be empty, never the full table or a 500."
+  },
+  {
+   "id": "q067",
+   "q": "'; DROP TABLE clients; --",
+   "category": "hostile",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Injection attempt that must be treated as literal text; it matches no client (the word 'client' in two descriptions is not what was typed) and the table must survive."
+  },
+  {
+   "id": "q068",
+   "q": "<script>alert('x')</script>",
+   "category": "hostile",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Script markup matches no client and must neither error nor be reflected unescaped; the correct result is an empty list."
+  },
+  {
+   "id": "q069",
+   "q": "\\",
+   "category": "hostile",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "A lone backslash is PostgreSQL's default LIKE escape character and makes an unescaped pattern invalid (a common 500); no client field contains one."
+  },
+  {
+   "id": "q070",
+   "q": "\u0000",
+   "category": "hostile",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "A NUL byte (sent as %00) cannot be stored in PostgreSQL text and often triggers a 500; it must be handled gracefully and match nothing."
+  }
+ ],
+ "http_cases": []
+}

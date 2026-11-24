@@ -1,0 +1,1214 @@
+{
+  "suite": "codex-clients",
+  "author": "GPT-6 (Codex)",
+  "corpus": {
+    "clients": [
+      {
+        "id": "c01",
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john.doe@neviswealth.com",
+        "description": "Retired civil engineer living in Merewick; enjoys sailing and is reviewing pension drawdown with his adviser. Retains a NevisWealth mailbox after leaving the firm.",
+        "social_links": []
+      },
+      {
+        "id": "c02",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "email": "jane.doe@doefamily.example",
+        "description": "GP partner in Aldercombe and a member of the Doe family; saving towards a practice buy-in and enjoys allotment gardening.",
+        "social_links": []
+      },
+      {
+        "id": "c03",
+        "first_name": "Jonathan",
+        "last_name": "Doe",
+        "email": "jonathan.doe@neviswealth.com",
+        "description": "Compliance officer employed by NevisWealth in Aldercombe; considering additional pension contributions and enjoys birdwatching.",
+        "social_links": []
+      },
+      {
+        "id": "c04",
+        "first_name": "John",
+        "last_name": "Dore",
+        "email": "john.dore@brackenquill.example",
+        "description": "Structural engineer employed by Brackenquill Design in Merewick; planning a phased retirement and enjoys cycling.",
+        "social_links": []
+      },
+      {
+        "id": "c05",
+        "first_name": "Alice",
+        "last_name": "Mercer",
+        "email": "alice.mercer@neviswealth.com",
+        "description": "Portfolio administrator employed by NevisWealth in Fencombe; building an emergency fund and enjoys choral singing.",
+        "social_links": []
+      },
+      {
+        "id": "c06",
+        "first_name": "Aisha",
+        "last_name": "Patel",
+        "email": "aisha.patel@patelfamily.example",
+        "description": "Procurement manager at Ternspindle Foods in Aldercombe; previously negotiated a supplier contract with NevisWealth but has never worked there. Enjoys badminton.",
+        "social_links": []
+      },
+      {
+        "id": "c07",
+        "first_name": "Ravi",
+        "last_name": "Patel",
+        "email": "ravi.patel@patelfamily.example",
+        "description": "Self-employed dentist in Merewick and brother of Aisha; considering partnership succession and enjoys sailing.",
+        "social_links": []
+      },
+      {
+        "id": "c08",
+        "first_name": "Alice",
+        "last_name": "Fenwick",
+        "email": "alice.fenwick@brackenquill.example",
+        "description": "Architect employed by Brackenquill Design in Fencombe; saving for parental leave and interested in low-energy housing.",
+        "social_links": []
+      },
+      {
+        "id": "c09",
+        "first_name": "Robert",
+        "last_name": "Fenwick",
+        "email": "robert.fenwick@fenwickfamily.example",
+        "description": "Self-employed arborist in Aldercombe and father of Alice Fenwick; planning woodland succession and enjoys wildlife photography.",
+        "social_links": [
+          "https://social.example/puffinledger"
+        ]
+      },
+      {
+        "id": "c10",
+        "first_name": "José",
+        "last_name": "Álvarez",
+        "email": "j.alvarez@ceramicatelier.example",
+        "description": "Runs a ceramic restoration workshop in Fencombe; setting aside funds for a kiln replacement and a personal pension.",
+        "social_links": []
+      },
+      {
+        "id": "c11",
+        "first_name": "Zoë",
+        "last_name": "Noël",
+        "email": "z.noel@winterfolio.example",
+        "description": "Illustrator in Merewick with variable royalty income; building a cash reserve and enjoys fell walking.",
+        "social_links": []
+      },
+      {
+        "id": "c12",
+        "first_name": "Siobhán",
+        "last_name": "O’Neill",
+        "email": "s.oneill@hearthloom.example",
+        "description": "Textile conservator at Hearthloom Studio in Aldercombe; reviewing income protection and enjoys traditional fiddle music.",
+        "social_links": []
+      },
+      {
+        "id": "c13",
+        "first_name": "Anne-Marie",
+        "last_name": "Smith-Jones",
+        "email": "am.sj@cedarharbour.example",
+        "description": "Veterinary surgeon in Fencombe; planning to purchase a share in a practice and enjoys open-water swimming.",
+        "social_links": []
+      },
+      {
+        "id": "c14",
+        "first_name": "Anne",
+        "last_name": "Smith",
+        "email": "anne.smith@reedglass.example",
+        "description": "Glass artist in Merewick; building retirement savings from exhibition income and enjoys botanical drawing.",
+        "social_links": []
+      },
+      {
+        "id": "c15",
+        "first_name": "Mei-Ling",
+        "last_name": "Chan",
+        "email": "m.chan@thistleorbit.example",
+        "description": "Software engineer at Thistleorbit Systems in Aldercombe; reviewing employee share options and enjoys bouldering.",
+        "social_links": []
+      },
+      {
+        "id": "c16",
+        "first_name": "Лидия",
+        "last_name": "Морозова",
+        "email": "lm@silverthimble.example",
+        "description": "Costume maker based in Fencombe; budgeting for freelance gaps and saving towards a studio lease.",
+        "social_links": []
+      },
+      {
+        "id": "c17",
+        "first_name": "Priya",
+        "last_name": "Shah",
+        "email": "priya.shah@coppermere.example",
+        "description": "Finance director employed by Coppermere Instruments in Merewick; planning school fees and enjoys chamber music.",
+        "social_links": []
+      },
+      {
+        "id": "c18",
+        "first_name": "Kiran",
+        "last_name": "Shah",
+        "email": "kiran.shah@coppermere.example",
+        "description": "Laboratory technician employed by Coppermere Instruments in Aldercombe; unrelated to Priya Shah and saving for a first home.",
+        "social_links": []
+      },
+      {
+        "id": "c19",
+        "first_name": "Daniel",
+        "last_name": "Reed",
+        "email": "d.reed@marshfolio.example",
+        "description": "Quantity surveyor at Marshfolio Build in Fencombe; reviewing mortgage overpayments and enjoys model railways.",
+        "social_links": []
+      },
+      {
+        "id": "c20",
+        "first_name": "Danielle",
+        "last_name": "Reid",
+        "email": "d.reid@willowmeasure.example",
+        "description": "Chartered accountant at Willowmeasure Partners in Merewick; assessing a partnership offer and enjoys pottery.",
+        "social_links": []
+      },
+      {
+        "id": "c21",
+        "first_name": "Robin",
+        "last_name": "Banks",
+        "email": "r.banks@rookfern.example",
+        "description": "Librarian in Aldercombe; planning retirement from public service and enjoys local history.",
+        "social_links": []
+      },
+      {
+        "id": "c22",
+        "first_name": "Grace",
+        "last_name": "Wells",
+        "email": "g.wells@homeledger.example",
+        "description": "Restores historic buildings in Fencombe; collects old bank signs as a hobby and is saving for workshop equipment.",
+        "social_links": []
+      },
+      {
+        "id": "c23",
+        "first_name": "Miles",
+        "last_name": "North",
+        "email": "m.north@oakquaylegal.example",
+        "description": "Solicitor in Merewick whose commercial clients include the publishing house John Doe Press; reviewing life cover after becoming a partner.",
+        "social_links": []
+      },
+      {
+        "id": "c24",
+        "first_name": "Ruth",
+        "last_name": "Bell",
+        "email": "r.bell@parcelheath.example",
+        "description": "Courier in Fencombe who records proof of delivery at home addresses; saving for a replacement electric van and enjoys netball.",
+        "social_links": [
+          "https://social.example/cobaltpostbag"
+        ]
+      },
+      {
+        "id": "c25",
+        "first_name": "Felix",
+        "last_name": "Moss",
+        "email": "f.moss@peatlantern.example",
+        "description": "Stage lighting technician in Aldercombe; smoothing seasonal earnings and saving for further training.",
+        "social_links": [
+          "https://social.example/amberotter"
+        ]
+      },
+      {
+        "id": "c26",
+        "first_name": "Jo",
+        "last_name": "Li",
+        "email": "jo.li@limeharbour.example",
+        "description": "Optometrist in Merewick; saving towards new diagnostic equipment and enjoys sailing.",
+        "social_links": []
+      },
+      {
+        "id": "c27",
+        "first_name": "Bo",
+        "last_name": "Xu",
+        "email": "bo.xu@dunefable.example",
+        "description": "Translator in Fencombe; reviewing pension provision for freelance income and enjoys chess.",
+        "social_links": []
+      },
+      {
+        "id": "c28",
+        "first_name": "Niamh",
+        "last_name": "O'Connor",
+        "email": "n.oconnor@ferncog.example",
+        "description": "Mechanical engineer at Ferncog Works in Aldercombe; saving for a career break and enjoys ceramic restoration as a hobby.",
+        "social_links": []
+      }
+    ],
+    "documents": []
+  },
+  "queries": [
+    {
+      "id": "q001",
+      "q": "NevisWealth",
+      "category": "email",
+      "level": "required",
+      "relevant": [
+        "c01",
+        "c03",
+        "c05",
+        "c06"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The assignment example matches three email domains, while Aisha also directly mentions NevisWealth in her description without being an employee."
+    },
+    {
+      "id": "q002",
+      "q": "NEVISWEALTH",
+      "category": "email",
+      "level": "expected",
+      "relevant": [
+        "c01",
+        "c03",
+        "c05",
+        "c06"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Changing the capitalisation of a firm name should preserve both email-domain and description matches."
+    },
+    {
+      "id": "q003",
+      "q": "john.doe@neviswealth.com",
+      "category": "email",
+      "level": "required",
+      "relevant": [
+        "c01"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The complete email address exactly identifies the assignment’s John Doe client and excludes other users of the same domain."
+    },
+    {
+      "id": "q004",
+      "q": "JOHN.DOE@NEVISWEALTH.COM",
+      "category": "email",
+      "level": "expected",
+      "relevant": [
+        "c01"
+      ],
+      "acceptable": [],
+      "first": [
+        "c01"
+      ],
+      "empty": false,
+      "why": "An adviser typing this full address with capitals is identifying John Doe alone."
+    },
+    {
+      "id": "q005",
+      "q": "john.doe",
+      "category": "email",
+      "level": "required",
+      "relevant": [
+        "c01"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "This complete email local part identifies John Doe, not Jonathan Doe or John Dore."
+    },
+    {
+      "id": "q006",
+      "q": "neviswealth.com",
+      "category": "email",
+      "level": "required",
+      "relevant": [
+        "c01",
+        "c03",
+        "c05"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The literal domain occurs in three addresses, whereas Aisha mentions only the firm name and has a different email domain."
+    },
+    {
+      "id": "q007",
+      "q": "wealth",
+      "category": "email",
+      "level": "required",
+      "relevant": [
+        "c01",
+        "c03",
+        "c05",
+        "c06"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "This internal fragment matches the three NevisWealth email domains and the same firm name in Aisha’s description."
+    },
+    {
+      "id": "q008",
+      "q": "nevis wealth",
+      "category": "email",
+      "level": "expected",
+      "relevant": [
+        "c01",
+        "c03",
+        "c05",
+        "c06"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Splitting the distinctive firm name into two words should retain its domain and description matches."
+    },
+    {
+      "id": "q009",
+      "q": "@neviswealth.com",
+      "category": "email",
+      "level": "expected",
+      "relevant": [
+        "c01",
+        "c03",
+        "c05"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The leading at-sign makes the intent to find addresses on this exact domain explicit."
+    },
+    {
+      "id": "q010",
+      "q": "John",
+      "category": "name",
+      "level": "required",
+      "relevant": [
+        "c01",
+        "c04",
+        "c23"
+      ],
+      "acceptable": [
+        "c03"
+      ],
+      "first": [],
+      "empty": false,
+      "why": "Two clients have the first name John and Miles explicitly mentions John Doe Press; Jonathan is an optional longer-name match."
+    },
+    {
+      "id": "q011",
+      "q": "Doe",
+      "category": "shared",
+      "level": "required",
+      "relevant": [
+        "c01",
+        "c02",
+        "c03",
+        "c23"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "All three Doe clients match their surname and Miles matches the explicit publisher name in his description, whereas Dore is a different surname."
+    },
+    {
+      "id": "q012",
+      "q": "John Doe",
+      "category": "ranking",
+      "level": "expected",
+      "relevant": [
+        "c01"
+      ],
+      "acceptable": [
+        "c23"
+      ],
+      "first": [
+        "c01"
+      ],
+      "empty": false,
+      "why": "The exact personal name must lead, with Miles’s John Doe Press connection a reasonable secondary result but no basis to include other similar names."
+    },
+    {
+      "id": "q013",
+      "q": "Doe John",
+      "category": "name-order",
+      "level": "expected",
+      "relevant": [
+        "c01"
+      ],
+      "acceptable": [
+        "c23"
+      ],
+      "first": [],
+      "empty": false,
+      "why": "Surname-first input still identifies John Doe, with the publisher connection an optional secondary association."
+    },
+    {
+      "id": "q014",
+      "q": "  John   Doe  ",
+      "category": "name",
+      "level": "expected",
+      "relevant": [
+        "c01"
+      ],
+      "acceptable": [
+        "c23"
+      ],
+      "first": [],
+      "empty": false,
+      "why": "Leading, trailing and repeated spaces should preserve the full-name result and its optional publisher association."
+    },
+    {
+      "id": "q015",
+      "q": "Jane",
+      "category": "name",
+      "level": "required",
+      "relevant": [
+        "c02"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Jane has an exact first-name match and the other Doe family members do not share it."
+    },
+    {
+      "id": "q016",
+      "q": "Smith",
+      "category": "shared",
+      "level": "required",
+      "relevant": [
+        "c13",
+        "c14"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Smith is both Anne’s complete surname and a component of Anne-Marie’s double-barrelled surname."
+    },
+    {
+      "id": "q017",
+      "q": "Anne Smith",
+      "category": "ranking",
+      "level": "expected",
+      "relevant": [
+        "c14"
+      ],
+      "acceptable": [
+        "c13"
+      ],
+      "first": [
+        "c14"
+      ],
+      "empty": false,
+      "why": "The exact full name must lead, while Anne-Marie Smith-Jones is a plausible abbreviated compound-name match."
+    },
+    {
+      "id": "q018",
+      "q": "Anne-Marie",
+      "category": "name",
+      "level": "required",
+      "relevant": [
+        "c13"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The complete hyphenated first name identifies Anne-Marie rather than Anne Smith."
+    },
+    {
+      "id": "q019",
+      "q": "Smith-Jones",
+      "category": "name",
+      "level": "required",
+      "relevant": [
+        "c13"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Both parts of this double-barrelled surname identify Anne-Marie and exclude Anne Smith."
+    },
+    {
+      "id": "q020",
+      "q": "Smith Jones",
+      "category": "name",
+      "level": "expected",
+      "relevant": [
+        "c13"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Replacing a surname hyphen with a space should preserve the identity of Smith-Jones."
+    },
+    {
+      "id": "q021",
+      "q": "Anne Marie Smith Jones",
+      "category": "name",
+      "level": "expected",
+      "relevant": [
+        "c13"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "All four components identify the compound full name even when both hyphens are omitted."
+    },
+    {
+      "id": "q022",
+      "q": "José",
+      "category": "unicode",
+      "level": "required",
+      "relevant": [
+        "c10"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The accented first name is stored exactly on José’s client record."
+    },
+    {
+      "id": "q023",
+      "q": "Jose Alvarez",
+      "category": "unicode",
+      "level": "expected",
+      "relevant": [
+        "c10"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Omitting accents from both given name and surname should still identify José Álvarez."
+    },
+    {
+      "id": "q024",
+      "q": "Zoë Noël",
+      "category": "unicode",
+      "level": "required",
+      "relevant": [
+        "c11"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Both accented name components exactly identify Zoë Noël."
+    },
+    {
+      "id": "q025",
+      "q": "Zoe Noel",
+      "category": "unicode",
+      "level": "expected",
+      "relevant": [
+        "c11"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Plain Latin keyboard input should find Zoë Noël without requiring the two diaereses."
+    },
+    {
+      "id": "q026",
+      "q": "Siobhán O’Neill",
+      "category": "unicode",
+      "level": "required",
+      "relevant": [
+        "c12"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "This full name matches the stored accent and typographic apostrophe exactly."
+    },
+    {
+      "id": "q027",
+      "q": "Siobhan O'Neill",
+      "category": "unicode",
+      "level": "expected",
+      "relevant": [
+        "c12"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Removing the accent and using a straight apostrophe should preserve Siobhán O’Neill’s identity."
+    },
+    {
+      "id": "q028",
+      "q": "O'Neill",
+      "category": "unicode",
+      "level": "expected",
+      "relevant": [
+        "c12"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Straight and typographic apostrophes should be interchangeable when searching this surname."
+    },
+    {
+      "id": "q029",
+      "q": "Niamh O’Connor",
+      "category": "unicode",
+      "level": "expected",
+      "relevant": [
+        "c28"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "A typographic apostrophe in the query should also match a name stored with a straight apostrophe."
+    },
+    {
+      "id": "q030",
+      "q": "Mei Ling Chan",
+      "category": "name",
+      "level": "expected",
+      "relevant": [
+        "c15"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Replacing the first-name hyphen with a space should still identify Mei-Ling Chan."
+    },
+    {
+      "id": "q031",
+      "q": "Лидия Морозова",
+      "category": "unicode",
+      "level": "required",
+      "relevant": [
+        "c16"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Exact Cyrillic names are valid name-field matches just as Latin-script names are."
+    },
+    {
+      "id": "q032",
+      "q": "Морозова Лидия",
+      "category": "name-order",
+      "level": "expected",
+      "relevant": [
+        "c16"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Surname-first matching should work for the Cyrillic name as well as for Latin-script names."
+    },
+    {
+      "id": "q033",
+      "q": "Lidiya Morozova",
+      "category": "unicode",
+      "level": "nice",
+      "relevant": [
+        "c16"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "This plausible Latin transliteration identifies Лидия Морозова, but cross-script matching is an optional enhancement."
+    },
+    {
+      "id": "q034",
+      "q": "Brackenquill",
+      "category": "description",
+      "level": "required",
+      "relevant": [
+        "c04",
+        "c08"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Both colleagues name Brackenquill Design as their employer and also share its email domain."
+    },
+    {
+      "id": "q035",
+      "q": "architect",
+      "category": "description",
+      "level": "required",
+      "relevant": [
+        "c08"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Alice Fenwick is the architect; John Dore’s related engineering profession does not make him an architect."
+    },
+    {
+      "id": "q036",
+      "q": "Merewick",
+      "category": "description",
+      "level": "required",
+      "relevant": [
+        "c01",
+        "c04",
+        "c07",
+        "c11",
+        "c14",
+        "c17",
+        "c20",
+        "c23",
+        "c26"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Every listed client explicitly lives or works in Merewick and clients described only in other towns do not match."
+    },
+    {
+      "id": "q037",
+      "q": "sailing",
+      "category": "description",
+      "level": "required",
+      "relevant": [
+        "c01",
+        "c07",
+        "c26"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "These three clients explicitly list sailing as an interest, unlike swimming or other outdoor activities."
+    },
+    {
+      "id": "q038",
+      "q": "ceramic restoration",
+      "category": "description",
+      "level": "required",
+      "relevant": [
+        "c10",
+        "c28"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The phrase describes José’s business and Niamh’s hobby, both valid description matches regardless of professional status."
+    },
+    {
+      "id": "q039",
+      "q": "Alice architect",
+      "category": "multiword",
+      "level": "expected",
+      "relevant": [
+        "c08"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Only Alice Fenwick combines the name Alice with the profession architect; Alice Mercer and Robert’s reference to his daughter are insufficient."
+    },
+    {
+      "id": "q040",
+      "q": "Patel dentist",
+      "category": "multiword",
+      "level": "expected",
+      "relevant": [
+        "c07"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Ravi alone combines the Patel surname with dentistry, so his sister’s shared surname and domain are insufficient."
+    },
+    {
+      "id": "q041",
+      "q": "John Merewick",
+      "category": "multiword",
+      "level": "expected",
+      "relevant": [
+        "c01",
+        "c04"
+      ],
+      "acceptable": [
+        "c23"
+      ],
+      "first": [],
+      "empty": false,
+      "why": "Both clients named John are in Merewick, with Miles’s local publisher reference a reasonable optional association."
+    },
+    {
+      "id": "q042",
+      "q": "retired civil engineer",
+      "category": "description",
+      "level": "required",
+      "relevant": [
+        "c01"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "John Doe’s description contains the exact occupational phrase, while John Dore is a structural engineer still planning retirement."
+    },
+    {
+      "id": "q043",
+      "q": "current NevisWealth employees",
+      "category": "multiword",
+      "level": "expected",
+      "relevant": [
+        "c03",
+        "c05"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Jonathan and Alice Mercer are explicitly employed there, while John has left and Aisha has never worked there despite all four mentioning the firm."
+    },
+    {
+      "id": "q044",
+      "q": "Patel",
+      "category": "shared",
+      "level": "required",
+      "relevant": [
+        "c06",
+        "c07"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Both siblings have this exact surname and neither is uniquely preferred by the query."
+    },
+    {
+      "id": "q045",
+      "q": "@patelfamily.example",
+      "category": "shared",
+      "level": "expected",
+      "relevant": [
+        "c06",
+        "c07"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The shared family email domain identifies both Patel siblings without selecting one first."
+    },
+    {
+      "id": "q046",
+      "q": "coppermere.example",
+      "category": "shared",
+      "level": "required",
+      "relevant": [
+        "c17",
+        "c18"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Both Coppermere colleagues use this exact domain regardless of whether their shared surname indicates kinship."
+    },
+    {
+      "id": "q047",
+      "q": "Fenwick",
+      "category": "shared",
+      "level": "required",
+      "relevant": [
+        "c08",
+        "c09"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The shared surname identifies both Alice and Robert without a justified ordering between them."
+    },
+    {
+      "id": "q048",
+      "q": "Alice",
+      "category": "shared",
+      "level": "required",
+      "relevant": [
+        "c05",
+        "c08",
+        "c09"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Two clients are named Alice and Robert explicitly names Alice Fenwick in his searchable description."
+    },
+    {
+      "id": "q049",
+      "q": "Daniel Reed",
+      "category": "ranking",
+      "level": "expected",
+      "relevant": [
+        "c19"
+      ],
+      "acceptable": [],
+      "first": [
+        "c19"
+      ],
+      "empty": false,
+      "why": "The exact full name identifies Daniel and must not be confused with the distinct client Danielle Reid."
+    },
+    {
+      "id": "q050",
+      "q": "Robin Banks",
+      "category": "ranking",
+      "level": "expected",
+      "relevant": [
+        "c21"
+      ],
+      "acceptable": [],
+      "first": [
+        "c21"
+      ],
+      "empty": false,
+      "why": "The exact personal name identifies Robin, whereas Grace’s interest in bank signs does not satisfy the query."
+    },
+    {
+      "id": "q051",
+      "q": "John Dore",
+      "category": "ranking",
+      "level": "expected",
+      "relevant": [
+        "c04"
+      ],
+      "acceptable": [],
+      "first": [
+        "c04"
+      ],
+      "empty": false,
+      "why": "The exact full name must identify John Dore rather than John Doe or the publisher John Doe Press."
+    },
+    {
+      "id": "q052",
+      "q": "Jhon Doe",
+      "category": "typo",
+      "level": "nice",
+      "relevant": [
+        "c01"
+      ],
+      "acceptable": [
+        "c23"
+      ],
+      "first": [],
+      "empty": false,
+      "why": "A transposition in John’s first name plausibly identifies John Doe, with the matching publisher connection optional if typo correction is supported."
+    },
+    {
+      "id": "q053",
+      "q": "NeivsWealth",
+      "category": "typo",
+      "level": "nice",
+      "relevant": [
+        "c01",
+        "c03",
+        "c05",
+        "c06"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Correcting swapped letters in the distinctive firm name would recover all its email-domain and description matches, but typo tolerance is optional."
+    },
+    {
+      "id": "q054",
+      "q": "Siobahn O'Neill",
+      "category": "typo",
+      "level": "nice",
+      "relevant": [
+        "c12"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The swapped letters plausibly identify Siobhán O’Neill, but typo correction combined with punctuation and accent normalisation is optional."
+    },
+    {
+      "id": "q055",
+      "q": "amberotter",
+      "category": "social-links",
+      "level": "nice",
+      "relevant": [
+        "c25"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Felix’s unique handle occurs only in a social URL, so finding him is useful but optional because the assignment requires only email, name and description search."
+    },
+    {
+      "id": "q056",
+      "q": "puffinledger",
+      "category": "social-links",
+      "level": "nice",
+      "relevant": [
+        "c09"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Robert’s unique social handle identifies him if social links are indexed, an enhancement outside the assignment’s required fields."
+    },
+    {
+      "id": "q057",
+      "q": "cobaltpostbag",
+      "category": "social-links",
+      "level": "nice",
+      "relevant": [
+        "c24"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Ruth’s unique social handle appears nowhere outside her URL, so this positive judgement applies only to the optional social-link search capability."
+    },
+    {
+      "id": "q058",
+      "q": "Zebulon Quince",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "No client or description identifies this person, so unrelated names must not be returned as a fallback."
+    },
+    {
+      "id": "q059",
+      "q": "oceanographer",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "Nobody is described as an oceanographer and sailing as a hobby is not evidence of that profession."
+    },
+    {
+      "id": "q060",
+      "q": "John Shah",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "No individual combines this given name and surname, so pooling separate John and Shah records would answer a different question."
+    },
+    {
+      "id": "q061",
+      "q": "!!!",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "Punctuation alone expresses no client identity or searchable subject and must not turn into a match-all query."
+    },
+    {
+      "id": "q062",
+      "q": "@",
+      "category": "short",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "An isolated email separator supplies no identifying information even though every email contains it."
+    },
+    {
+      "id": "q063",
+      "q": "Q",
+      "category": "short",
+      "level": "nice",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "With no matching name or recorded initial, a single Q has no defensible client target despite incidental letters inside company names, and single-character policy is unspecified."
+    },
+    {
+      "id": "q064",
+      "q": "Jo",
+      "category": "short",
+      "level": "expected",
+      "relevant": [
+        "c26"
+      ],
+      "acceptable": [
+        "c01",
+        "c03",
+        "c04",
+        "c13"
+      ],
+      "first": [
+        "c26"
+      ],
+      "empty": false,
+      "why": "Jo is a complete given name and should lead, while John, Jonathan and the Jones surname component are reasonable optional name-prefix matches."
+    },
+    {
+      "id": "q065",
+      "q": "Li",
+      "category": "short",
+      "level": "expected",
+      "relevant": [
+        "c26"
+      ],
+      "acceptable": [
+        "c15"
+      ],
+      "first": [
+        "c26"
+      ],
+      "empty": false,
+      "why": "Li is a complete surname and should lead, while the Ling component of Mei-Ling is a reasonable optional name-prefix match."
+    },
+    {
+      "id": "q066",
+      "q": "Bo",
+      "category": "short",
+      "level": "required",
+      "relevant": [
+        "c27"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Bo is a complete two-letter given name, so a blanket minimum query length must not suppress this direct name match."
+    },
+    {
+      "id": "q067",
+      "q": "' OR 1=1 --",
+      "category": "hostile",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "The SQL-like string identifies no client and must be treated as literal input rather than a condition that returns every record."
+    },
+    {
+      "id": "q068",
+      "q": "'; DROP TABLE clients; --",
+      "category": "hostile",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "The SQL-like command names no client and has no relevant search result, while this relevance case does not itself assert database integrity."
+    },
+    {
+      "id": "q069",
+      "q": "<script>alert(1)</script>",
+      "category": "hostile",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "The script-like input has no matching client identity or description and should yield no records when treated as text."
+    },
+    {
+      "id": "q070",
+      "q": "${7*7}",
+      "category": "hostile",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "The template-like expression is not any client’s name, email or description and must not manufacture a search result."
+    }
+  ],
+  "http_cases": []
+}

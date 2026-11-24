@@ -1,0 +1,1435 @@
+{
+  "suite": "codex-mixed",
+  "author": "GPT-6",
+  "execution_notes": [
+    "All people, organisations, addresses and references are invented; the John Doe email is the mandated assignment fixture, and all other email and social-link domains use example.com.",
+    "Load the corpus before search evaluation; fixture ids identify results regardless of any ids allocated by an implementation, and preserve document ownership when mapping them.",
+    "Run each HTTP case independently against the same initial corpus; generated records from happy paths must not contaminate query judgements.",
+    "Query q values are decoded text: URL-encode them once as parameter values, preserving quotes, punctuation and whitespace.",
+    "Results match their own searchable text, not every field of their owner or every document attached to a matching client; full-name queries include documents that explicitly identify that person.",
+    "The unqualified address proof query seeks usable evidence of residence: recent household utility bills, a current council tax bill and a recent bank statement qualify, but delivery receipts, repair invoices, employment letters and a pending mortgage offer do not.",
+    "Absent first imposes no ranking constraint; an acceptable client on a name-plus-document query is a useful navigation result, but the requested document must rank first.",
+    "HTTP cases with raw_body must transmit that exact UTF-8 string with the specified Content-Type instead of JSON-serialising body; otherwise JSON-serialise non-null body and send no body for null.",
+    "expected_response_schema uses JSON Schema assertions for response checks; no upper query length is specified, so the oversized relevance case is nice rather than a required availability test.",
+    "Blank and whitespace-only searches return an empty array: q is present, no minLength is stated, and there is no search intent authorising an all-records listing.",
+    "HTTP expected_query_id also applies that query’s relevance and ranking assertions; remap c02 in the document path and response schema to the loaded fixture id if the API allocates ids."
+  ],
+  "corpus": {
+    "clients": [
+      {
+        "id": "c01",
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "john.doe@neviswealth.com",
+        "description": "Civil engineer living in Mereford, planning a gradual retirement and reviewing an old workplace pension.",
+        "social_links": []
+      },
+      {
+        "id": "c02",
+        "first_name": "Jane",
+        "last_name": "Smith",
+        "email": "jane.smith@elmbrook.example.com",
+        "description": "Design engineer employed by Larchmere Robotics in Mereford; saving towards a first home.",
+        "social_links": [
+          "https://profiles.example.com/jane-smith-design"
+        ]
+      },
+      {
+        "id": "c03",
+        "first_name": "Jon",
+        "last_name": "Doe",
+        "email": "jon.doe@cobaltkestrel.example.com",
+        "description": "Architect and partner at Cobalt Kestrel, seeking advice on irregular partnership drawings.",
+        "social_links": []
+      },
+      {
+        "id": "c04",
+        "first_name": "James",
+        "last_name": "Smith",
+        "email": "james.smith@willowpost.example.com",
+        "description": "Retired surgeon who previously requested a quotation from NevisWealth but never became its client or employee.",
+        "social_links": []
+      },
+      {
+        "id": "c05",
+        "first_name": "Amina",
+        "last_name": "Rahman",
+        "email": "amina.rahman@brackenquay.example.com",
+        "description": "Finance director at Bracken Quay Textiles, based in Alderwick; balancing a mortgage with longer-term investments.",
+        "social_links": [
+          "https://profiles.example.com/amina-rahman-finance"
+        ]
+      },
+      {
+        "id": "c06",
+        "first_name": "Siobhán",
+        "last_name": "O’Rourke",
+        "email": "siobhan.orourke@larkhollow.example.com",
+        "description": "Veterinary surgeon in Larkhollow, reviewing family provision and retirement savings.",
+        "social_links": []
+      },
+      {
+        "id": "c07",
+        "first_name": "Ravi",
+        "last_name": "Shah",
+        "email": "ravi.shah@bellcairn.example.com",
+        "description": "Founder of Bellcairn Couriers; requests paperless correspondence and enjoys astrophotography.",
+        "social_links": []
+      },
+      {
+        "id": "c08",
+        "first_name": "Zoë",
+        "last_name": "March",
+        "email": "zoe.march@kilnpost.example.com",
+        "description": "Self-employed ceramicist living in Alderwick, building a cash reserve for seasonal trading.",
+        "social_links": [
+          "https://profiles.example.com/zoe-march-ceramics"
+        ]
+      },
+      {
+        "id": "c09",
+        "first_name": "Theo",
+        "last_name": "March",
+        "email": "theo.march@hazelpost.example.com",
+        "description": "Retired teacher living in Mereford, drawing a regular income from investments; unrelated to the other client with this surname.",
+        "social_links": []
+      }
+    ],
+    "documents": [
+      {
+        "id": "d01",
+        "client_id": "c01",
+        "title": "Electricity account — home",
+        "content": "John Doe: utility bill from Fenwold Energy for electricity supplied to 14 Wrenfold Close, Mereford, for October 2026; issued 2 November 2026 and showing the account holder and residential address.",
+        "created_at": "2026-11-19T10:01:00Z"
+      },
+      {
+        "id": "d02",
+        "client_id": "c01",
+        "title": "Workplace pension transfer assessment",
+        "content": "John Doe has requested a pension transfer assessment for his former employer’s defined contribution scheme; the adviser will compare charges and investment options before making a recommendation.",
+        "created_at": "2026-11-19T10:02:00Z"
+      },
+      {
+        "id": "d03",
+        "client_id": "c02",
+        "title": "Passport identification copy",
+        "content": "Certified copy of Jane Smith’s valid British passport, specimen reference TEST-JS-401; photograph and personal details checked against the original for identity verification.",
+        "created_at": "2026-11-19T10:03:00Z"
+      },
+      {
+        "id": "d04",
+        "client_id": "c02",
+        "title": "Employment confirmation",
+        "content": "Larchmere Robotics confirms that Jane Smith is employed as a design engineer at its Mereford office; this letter confirms salary and employment only and contains no residential address.",
+        "created_at": "2026-11-19T10:04:00Z"
+      },
+      {
+        "id": "d05",
+        "client_id": "c03",
+        "title": "Council tax demand — residence",
+        "content": "Jon Doe is the named occupier on the current council tax bill for 8 Hazelspindle Row, Thistledene; the 2026–27 demand records his residential address and instalments.",
+        "created_at": "2026-11-19T10:05:00Z"
+      },
+      {
+        "id": "d06",
+        "client_id": "c03",
+        "title": "Signed parcel receipt",
+        "content": "Proof of delivery for a parcel of drawing tools addressed to Jon Doe at his home address, 8 Hazelspindle Row, Thistledene; a courier scan records a doorstep signature but does not verify residence.",
+        "created_at": "2026-11-19T10:06:00Z"
+      },
+      {
+        "id": "d07",
+        "client_id": "c04",
+        "title": "Passport identification copy",
+        "content": "James Smith’s valid British passport, specimen reference TEST-JMS-772, was copied and certified after inspection of the original for identity verification.",
+        "created_at": "2026-11-19T10:07:00Z"
+      },
+      {
+        "id": "d08",
+        "client_id": "c04",
+        "title": "Consultancy share award",
+        "content": "Larchmere Robotics awarded James Smith a small holding in return for an earlier medical-device consultancy; he was an external consultant, not an employee, and wishes to discuss concentration risk.",
+        "created_at": "2026-11-19T10:08:00Z"
+      },
+      {
+        "id": "d09",
+        "client_id": "c05",
+        "title": "Current account statement",
+        "content": "Amina Rahman’s October 2026 bank statement from Wrenbarrow Bank shows her name and home address at 22 Copperfinch Walk, Alderwick, together with routine household transactions; issued 1 November 2026.",
+        "created_at": "2026-11-19T10:09:00Z"
+      },
+      {
+        "id": "d10",
+        "client_id": "c05",
+        "title": "Residential mortgage offer",
+        "content": "Amina Rahman’s mortgage offer is based on her salary as finance director of Bracken Quay Textiles; completion on the proposed purchase is still pending, so the offer does not establish her current residence.",
+        "created_at": "2026-11-19T10:10:00Z"
+      },
+      {
+        "id": "d11",
+        "client_id": "c06",
+        "title": "Pension beneficiary nomination",
+        "content": "Siobhán O’Rourke completed a pension expression-of-wish form naming her beneficiaries and their shares; the instruction concerns death benefits and makes no request to move the pension.",
+        "created_at": "2026-11-19T10:11:00Z"
+      },
+      {
+        "id": "d12",
+        "client_id": "c06",
+        "title": "Identity verification certificate",
+        "content": "The adviser inspected Siobhán O’Rourke’s valid British passport and certified the attached copy, specimen reference TEST-SOR-118, for identity verification; no residential evidence is included.",
+        "created_at": "2026-11-19T10:12:00Z"
+      },
+      {
+        "id": "d13",
+        "client_id": "c07",
+        "title": "Overseas remittance receipt",
+        "content": "Ravi Shah’s international payment confirmation records a sterling-to-euro transfer to a supplier; this is proof of payment, not evidence of where the account holder lives.",
+        "created_at": "2026-11-19T10:13:00Z"
+      },
+      {
+        "id": "d14",
+        "client_id": "c07",
+        "title": "Investment risk questionnaire",
+        "content": "Ravi Shah completed an investment risk questionnaire recording a balanced attitude to risk, a ten-year investment horizon and a separate emergency cash reserve.",
+        "created_at": "2026-11-19T10:14:00Z"
+      },
+      {
+        "id": "d15",
+        "client_id": "c08",
+        "title": "Water account — home",
+        "content": "Zoë March: utility bill from Silvermere Water for her home at 6 Ashenlace Gardens, Alderwick; issued 5 November 2026 and showing her name, residential address and water charges.",
+        "created_at": "2026-11-19T10:15:00Z"
+      },
+      {
+        "id": "d16",
+        "client_id": "c08",
+        "title": "Adviser fee comparison",
+        "content": "Zoë March compared the NevisWealth proposal with another adviser’s quotation; the discussion concerns ongoing advice fees and does not establish employment or an existing relationship with either firm.",
+        "created_at": "2026-11-19T10:16:00Z"
+      },
+      {
+        "id": "d17",
+        "client_id": "c09",
+        "title": "Boiler repair invoice",
+        "content": "Theo March paid a one-off invoice from Ternfold Heating for repairing a boiler at 3 Fernspindle Mews; this is a tradesperson’s repair invoice, not an ongoing household account or independent verification of residence.",
+        "created_at": "2026-11-19T10:17:00Z"
+      },
+      {
+        "id": "d18",
+        "client_id": "c09",
+        "title": "Annual financial review",
+        "content": "Theo March attended his annual financial review at the Mereford office; he confirmed his investment income needs and discussed the cash reserve for planned home repairs.",
+        "created_at": "2026-11-19T10:18:00Z"
+      }
+    ]
+  },
+  "queries": [
+    {
+      "id": "q001",
+      "q": "NevisWealth",
+      "category": "example",
+      "level": "required",
+      "relevant": [
+        "c01",
+        "c04",
+        "d16"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The assignment’s email-domain example matches c01, while the unqualified firm name also matches the explicit description mention in c04 and fee comparison in d16 without implying employment."
+    },
+    {
+      "id": "q002",
+      "q": "address proof",
+      "category": "example",
+      "level": "required",
+      "relevant": [
+        "d01",
+        "d05",
+        "d09",
+        "d15"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The assignment’s semantic example includes current utility, council tax and bank evidence of residence, while delivery, payment, repair, employment and prospective-purchase documents do not establish residence."
+    },
+    {
+      "id": "q003",
+      "q": "John Doe",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "c01",
+        "d01",
+        "d02"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The exact full name identifies the client and his two named documents, whereas Jon Doe is a different person."
+    },
+    {
+      "id": "q004",
+      "q": "Jane Smith",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "c02",
+        "d03",
+        "d04"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The client and both documents explicitly identify Jane, while James Smith shares only the surname."
+    },
+    {
+      "id": "q005",
+      "q": "jane smith passport",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "d03"
+      ],
+      "acceptable": [
+        "c02"
+      ],
+      "empty": false,
+      "why": "Jane’s passport is the requested document and must lead; her client record is a reasonable navigation result, but her employment letter and James’s passport are wrong.",
+      "first": [
+        "d03"
+      ]
+    },
+    {
+      "id": "q006",
+      "q": "James Smith passport",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "d07"
+      ],
+      "acceptable": [
+        "c04"
+      ],
+      "empty": false,
+      "why": "The person-and-type restriction selects James’s passport ahead of an optional client navigation result and excludes Jane’s passport.",
+      "first": [
+        "d07"
+      ]
+    },
+    {
+      "id": "q007",
+      "q": "Jon Doe",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "c03",
+        "d05",
+        "d06"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Jon’s client record, council tax bill and parcel receipt name him, and the similar spelling John must not conflate the two people."
+    },
+    {
+      "id": "q008",
+      "q": "Doe",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "c01",
+        "c03",
+        "d01",
+        "d02",
+        "d05",
+        "d06"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "An unqualified shared surname refers to both Doe clients and all documents that explicitly name either one."
+    },
+    {
+      "id": "q009",
+      "q": "Smith",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "c02",
+        "c04",
+        "d03",
+        "d04",
+        "d07",
+        "d08"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The shared surname matches Jane and James and their named documents without a basis for preferring one person."
+    },
+    {
+      "id": "q010",
+      "q": "Larchmere Robotics",
+      "category": "mixed",
+      "level": "required",
+      "relevant": [
+        "c02",
+        "d04",
+        "d08"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The employer occurs in Jane’s description and letter and in James’s consultancy document, but James’s client record and Jane’s passport contain no firm mention."
+    },
+    {
+      "id": "q011",
+      "q": "Mereford",
+      "category": "mixed",
+      "level": "required",
+      "relevant": [
+        "c01",
+        "c02",
+        "c09",
+        "d01",
+        "d04",
+        "d18"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The city occurs directly in three client descriptions and three document contents; ownership does not make the other documents city matches."
+    },
+    {
+      "id": "q012",
+      "q": "Alderwick",
+      "category": "mixed",
+      "level": "required",
+      "relevant": [
+        "c05",
+        "c08",
+        "d09",
+        "d15"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The city matches the two residents’ descriptions and their residential statements, without spreading to their mortgage offer or fee comparison."
+    },
+    {
+      "id": "q013",
+      "q": "Bracken Quay Textiles",
+      "category": "mixed",
+      "level": "required",
+      "relevant": [
+        "c05",
+        "d10"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Amina’s description and mortgage offer name this employer, but her bank statement does not."
+    },
+    {
+      "id": "q014",
+      "q": "Cobalt Kestrel",
+      "category": "owner-only",
+      "level": "required",
+      "relevant": [
+        "c03"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Only Jon’s description names this partnership, so his council tax and delivery documents must not be returned solely through ownership."
+    },
+    {
+      "id": "q015",
+      "q": "astrophotography",
+      "category": "owner-only",
+      "level": "required",
+      "relevant": [
+        "c07"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The hobby appears only in Ravi’s description and does not make his remittance receipt or investment questionnaire relevant."
+    },
+    {
+      "id": "q016",
+      "q": "paperless",
+      "category": "owner-only",
+      "level": "required",
+      "relevant": [
+        "c07"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The correspondence preference occurs only in the client record and is not inherited by the client’s documents."
+    },
+    {
+      "id": "q017",
+      "q": "john.doe@neviswealth.com",
+      "category": "email",
+      "level": "required",
+      "relevant": [
+        "c01"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The exact email uniquely identifies John’s client record and is absent from all documents and the other client’s firm mention.",
+      "first": [
+        "c01"
+      ]
+    },
+    {
+      "id": "q018",
+      "q": "jOhN dOe",
+      "category": "normalisation",
+      "level": "expected",
+      "relevant": [
+        "c01",
+        "d01",
+        "d02"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Letter case does not change which John Doe the adviser is seeking."
+    },
+    {
+      "id": "q019",
+      "q": "  John   Doe  ",
+      "category": "normalisation",
+      "level": "expected",
+      "relevant": [
+        "c01",
+        "d01",
+        "d02"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Leading, trailing and repeated internal spaces preserve the full-name intent and must not admit Jon Doe."
+    },
+    {
+      "id": "q020",
+      "q": "\"John Doe\"",
+      "category": "normalisation",
+      "level": "expected",
+      "relevant": [
+        "c01",
+        "d01",
+        "d02"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Quotation marks around a full name retain the same person and exact-name document matches."
+    },
+    {
+      "id": "q021",
+      "q": "John Doe!!!",
+      "category": "normalisation",
+      "level": "expected",
+      "relevant": [
+        "c01",
+        "d01",
+        "d02"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Trailing exclamation marks are incidental punctuation rather than part of the client’s name."
+    },
+    {
+      "id": "q022",
+      "q": "address-proof",
+      "category": "normalisation",
+      "level": "expected",
+      "relevant": [
+        "d01",
+        "d05",
+        "d09",
+        "d15"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "A hyphen between the two words preserves the request for evidence of residence rather than delivery or payment proof."
+    },
+    {
+      "id": "q023",
+      "q": "ADDRESS PROOF",
+      "category": "normalisation",
+      "level": "expected",
+      "relevant": [
+        "d01",
+        "d05",
+        "d09",
+        "d15"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Uppercase text has the same evidence-of-residence intent as the assignment example."
+    },
+    {
+      "id": "q024",
+      "q": "  address    proof  ",
+      "category": "normalisation",
+      "level": "expected",
+      "relevant": [
+        "d01",
+        "d05",
+        "d09",
+        "d15"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Extra spaces do not change the request for evidence of residence."
+    },
+    {
+      "id": "q025",
+      "q": "\"address proof\"",
+      "category": "normalisation",
+      "level": "nice",
+      "relevant": [
+        "d01",
+        "d05",
+        "d09",
+        "d15"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Treating quotes as ordinary emphasis preserves the residence-evidence intent, but literal-phrase query syntax is unspecified so this interpretation is optional."
+    },
+    {
+      "id": "q026",
+      "q": "jane-smith passport",
+      "category": "normalisation",
+      "level": "nice",
+      "relevant": [
+        "d03"
+      ],
+      "acceptable": [
+        "c02"
+      ],
+      "empty": false,
+      "why": "Interpreting the inserted hyphen as a space recovers Jane’s passport request, but this punctuation recovery is optional.",
+      "first": [
+        "d03"
+      ]
+    },
+    {
+      "id": "q027",
+      "q": "Siobhán O’Rourke",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "c06",
+        "d11",
+        "d12"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The correctly accented full name matches the client and both documents that identify her."
+    },
+    {
+      "id": "q028",
+      "q": "Siobhan O'Rourke",
+      "category": "normalisation",
+      "level": "expected",
+      "relevant": [
+        "c06",
+        "d11",
+        "d12"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "An unaccented keyboard spelling and straight apostrophe refer to the same client and her explicitly named documents."
+    },
+    {
+      "id": "q029",
+      "q": "Zoë March",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "c08",
+        "d15",
+        "d16"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The full name identifies Zoë and her two named documents and excludes Theo despite the shared surname."
+    },
+    {
+      "id": "q030",
+      "q": "Zoe March",
+      "category": "normalisation",
+      "level": "expected",
+      "relevant": [
+        "c08",
+        "d15",
+        "d16"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Removing the diaeresis preserves Zoë’s identity and does not broaden the query to Theo March."
+    },
+    {
+      "id": "q031",
+      "q": "Jóhn Dóe",
+      "category": "normalisation",
+      "level": "nice",
+      "relevant": [
+        "c01",
+        "d01",
+        "d02"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Ignoring accidentally added accents recovers John’s full name, but accepting this spelling error is optional and must not merge him with Jon."
+    },
+    {
+      "id": "q032",
+      "q": "Jane Smith passport.",
+      "category": "normalisation",
+      "level": "expected",
+      "relevant": [
+        "d03"
+      ],
+      "acceptable": [
+        "c02"
+      ],
+      "empty": false,
+      "why": "A trailing full stop leaves the request for Jane’s passport unchanged, with the client record only an optional navigation result.",
+      "first": [
+        "d03"
+      ]
+    },
+    {
+      "id": "q033",
+      "q": "proof of delivery",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [
+        "d06"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The adviser seeks a courier receipt, so only Jon’s parcel receipt matches despite other documents providing residence, identity or payment evidence.",
+      "first": [
+        "d06"
+      ]
+    },
+    {
+      "id": "q034",
+      "q": "international payment proof",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [
+        "d13"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Ravi’s overseas remittance receipt proves the requested payment, whereas a pension transfer assessment and parcel delivery receipt serve different purposes.",
+      "first": [
+        "d13"
+      ]
+    },
+    {
+      "id": "q035",
+      "q": "utility bill",
+      "category": "example",
+      "level": "required",
+      "relevant": [
+        "d01",
+        "d15"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The two household utility accounts are utility bills, while council tax, banking and boiler repair records are different document types despite potentially related words or purposes."
+    },
+    {
+      "id": "q036",
+      "q": "proof of identity",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "d03",
+        "d07",
+        "d12"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The three certified passport copies establish identity, while household bills establish residence and client records are not identity evidence."
+    },
+    {
+      "id": "q037",
+      "q": "pension transfer",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [
+        "d02"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "John’s pension-transfer assessment is the requested subject, whereas Siobhán’s beneficiary nomination explicitly concerns death benefits rather than moving a pension.",
+      "first": [
+        "d02"
+      ]
+    },
+    {
+      "id": "q038",
+      "q": "Theo March",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "c09",
+        "d17",
+        "d18"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "Theo’s client record and two named documents match, but Zoë’s records do not match the full name."
+    },
+    {
+      "id": "q039",
+      "q": "March",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "c08",
+        "c09",
+        "d15",
+        "d16",
+        "d17",
+        "d18"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "This shared surname matches both clients and their named documents, and no document content uses March as a calendar month."
+    },
+    {
+      "id": "q040",
+      "q": "Ravi Shah",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "c07",
+        "d13",
+        "d14"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The full name matches Ravi’s client record and both documents that explicitly identify him."
+    },
+    {
+      "id": "q041",
+      "q": "Amina Rahman",
+      "category": "mixed",
+      "level": "expected",
+      "relevant": [
+        "c05",
+        "d09",
+        "d10"
+      ],
+      "acceptable": [],
+      "empty": false,
+      "why": "The full name matches Amina’s client record and both named documents regardless of their differing evidential purposes."
+    },
+    {
+      "id": "q042",
+      "q": "Jane Smith driving licence",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "empty": true,
+      "why": "No driving licence for Jane exists in the corpus, and a passport or employment letter is not the specifically requested document.",
+      "first": []
+    },
+    {
+      "id": "q043",
+      "q": "Hester Fernvale",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "empty": true,
+      "why": "No client or document identifies this invented person, so unrelated names must not fill the results.",
+      "first": []
+    },
+    {
+      "id": "q044",
+      "q": "zqxv7319plmn",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "empty": true,
+      "why": "This meaningless token matches no person, identifier or document subject in the corpus.",
+      "first": []
+    },
+    {
+      "id": "q045",
+      "q": "' OR 1=1 --",
+      "category": "hostile",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "empty": true,
+      "why": "The SQL-shaped input is literal search text with no relevant corpus item and must not become an all-records database predicate.",
+      "first": []
+    },
+    {
+      "id": "q046",
+      "q": "<script>alert('x')</script>",
+      "category": "hostile",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "empty": true,
+      "why": "The script-shaped input has no relevant document or client and must be treated as data rather than executable markup.",
+      "first": []
+    },
+    {
+      "id": "q047",
+      "q": "zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn zqxv7319plmn",
+      "category": "long",
+      "level": "nice",
+      "relevant": [],
+      "acceptable": [],
+      "empty": true,
+      "why": "This 10,399-character sequence has no meaningful match; an implementation that accepts it should return nothing, while maximum supported input length is unspecified.",
+      "first": []
+    },
+    {
+      "id": "q048",
+      "q": "",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "empty": true,
+      "why": "A present but empty query expresses no search intent, so the chosen contract returns no records rather than exposing the entire corpus.",
+      "first": []
+    },
+    {
+      "id": "q049",
+      "q": " \t\n   ",
+      "category": "normalisation",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "empty": true,
+      "why": "Whitespace-only input is equivalent to an empty query and must not turn into an all-records listing.",
+      "first": []
+    },
+    {
+      "id": "q050",
+      "q": "Jane Smth passport",
+      "category": "mixed",
+      "level": "nice",
+      "relevant": [
+        "d03"
+      ],
+      "acceptable": [
+        "c02"
+      ],
+      "empty": false,
+      "why": "Optional typo recovery can infer Jane Smith’s passport from the near surname and exact first name, with her client record a secondary navigation result.",
+      "first": [
+        "d03"
+      ]
+    }
+  ],
+  "http_cases": [
+    {
+      "id": "h01",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": {
+        "first_name": "Nell",
+        "last_name": "Fennwick",
+        "email": "nell.fennwick@birchpost.example.com",
+        "description": "New client seeking advice on retirement income.",
+        "social_links": [
+          "https://profiles.example.com/nell-fennwick"
+        ]
+      },
+      "expected_status": [
+        201
+      ],
+      "why": "A valid complete client must be created and returned as a Client object with its assigned id and submitted fields.",
+      "expected_response_schema": {
+        "type": "object",
+        "required": [
+          "id",
+          "first_name",
+          "last_name",
+          "email",
+          "description",
+          "social_links"
+        ],
+        "properties": {
+          "first_name": {
+            "const": "Nell"
+          },
+          "last_name": {
+            "const": "Fennwick"
+          },
+          "email": {
+            "const": "nell.fennwick@birchpost.example.com"
+          },
+          "description": {
+            "const": "New client seeking advice on retirement income."
+          },
+          "social_links": {
+            "const": [
+              "https://profiles.example.com/nell-fennwick"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "id": "h02",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": {
+        "first_name": "Nell",
+        "last_name": "Fennwick",
+        "email": "nell.fennwick@birchpost.example.com"
+      },
+      "expected_status": [
+        201
+      ],
+      "why": "Only first_name, last_name and email are required, so omitting description and social_links must still create and return a client.",
+      "expected_response_schema": {
+        "type": "object",
+        "required": [
+          "id",
+          "first_name",
+          "last_name",
+          "email"
+        ],
+        "properties": {
+          "first_name": {
+            "const": "Nell"
+          },
+          "last_name": {
+            "const": "Fennwick"
+          },
+          "email": {
+            "const": "nell.fennwick@birchpost.example.com"
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "id": "h03",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": {
+        "last_name": "Fennwick",
+        "email": "nell.fennwick@birchpost.example.com"
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "Missing required field first_name must reject creation; either bad-request or validation-error status is defensible."
+    },
+    {
+      "id": "h04",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": {
+        "first_name": "Nell",
+        "email": "nell.fennwick@birchpost.example.com"
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "Missing required field last_name must reject creation; either bad-request or validation-error status is defensible."
+    },
+    {
+      "id": "h05",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": {
+        "first_name": "Nell",
+        "last_name": "Fennwick"
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "Missing required field email must reject creation; either bad-request or validation-error status is defensible."
+    },
+    {
+      "id": "h06",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": {
+        "first_name": "Nell",
+        "last_name": "Fennwick",
+        "email": "nell.fennwick-at-example.com"
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "The email lacks an at sign and is not an email address, so validation must reject it."
+    },
+    {
+      "id": "h07",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": {
+        "first_name": 123,
+        "last_name": "Fennwick",
+        "email": "nell.fennwick@birchpost.example.com"
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "A JSON number is not the required first_name string and must not be silently stored as a name."
+    },
+    {
+      "id": "h08",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": {
+        "first_name": "Nell",
+        "last_name": [
+          "Fennwick"
+        ],
+        "email": "nell.fennwick@birchpost.example.com"
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "An array is not a last_name string."
+    },
+    {
+      "id": "h09",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": {
+        "first_name": "Nell",
+        "last_name": "Fennwick",
+        "email": 123
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "A numeric email violates both the string type and email format requirements."
+    },
+    {
+      "id": "h10",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": {
+        "first_name": "Nell",
+        "last_name": "Fennwick",
+        "email": "nell.fennwick@birchpost.example.com",
+        "description": {
+          "text": "Retirement planning"
+        }
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "A description must be a string, not an object containing a string."
+    },
+    {
+      "id": "h11",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": {
+        "first_name": "Nell",
+        "last_name": "Fennwick",
+        "email": "nell.fennwick@birchpost.example.com",
+        "social_links": "https://profiles.example.com/nell-fennwick"
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "A single string is not the required social_links array."
+    },
+    {
+      "id": "h12",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": {
+        "first_name": "Nell",
+        "last_name": "Fennwick",
+        "email": "nell.fennwick@birchpost.example.com",
+        "social_links": [
+          "https://profiles.example.com/nell-fennwick",
+          42
+        ]
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "Every social_links element must be a string, so a mixed array containing a number is invalid."
+    },
+    {
+      "id": "h13",
+      "method": "POST",
+      "path": "/clients",
+      "query": {},
+      "body": null,
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "The raw request has a trailing comma and is malformed JSON, so it must fail parsing rather than create a client.",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "raw_body": "{\"first_name\":\"Nell\",\"last_name\":\"Fennwick\",\"email\":\"nell.fennwick@birchpost.example.com\",}"
+    },
+    {
+      "id": "h14",
+      "method": "POST",
+      "path": "/clients/c02/documents",
+      "query": {},
+      "body": {
+        "title": "Certified passport copy",
+        "content": "Certified passport copy for Jane Smith, specimen reference TEST-JS-NEW, checked against the original."
+      },
+      "expected_status": [
+        201
+      ],
+      "why": "An existing owner and valid title and content must create and return a Document with the owner id and generated id and creation timestamp.",
+      "expected_response_schema": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "content",
+          "client_id",
+          "created_at"
+        ],
+        "properties": {
+          "title": {
+            "const": "Certified passport copy"
+          },
+          "content": {
+            "const": "Certified passport copy for Jane Smith, specimen reference TEST-JS-NEW, checked against the original."
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "client_id": {
+            "const": "c02"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    {
+      "id": "h15",
+      "method": "POST",
+      "path": "/clients/c02/documents",
+      "query": {},
+      "body": {
+        "content": "Certified passport copy for Jane Smith, specimen reference TEST-JS-NEW, checked against the original."
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "Document title is required even when content is supplied."
+    },
+    {
+      "id": "h16",
+      "method": "POST",
+      "path": "/clients/c02/documents",
+      "query": {},
+      "body": {
+        "title": "Certified passport copy"
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "Document content is required even when title is supplied."
+    },
+    {
+      "id": "h17",
+      "method": "POST",
+      "path": "/clients/c02/documents",
+      "query": {},
+      "body": {
+        "title": {
+          "text": "Passport"
+        },
+        "content": "Certified passport copy for Jane Smith, specimen reference TEST-JS-NEW, checked against the original."
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "An object is not a document title string."
+    },
+    {
+      "id": "h18",
+      "method": "POST",
+      "path": "/clients/c02/documents",
+      "query": {},
+      "body": {
+        "title": "Certified passport copy",
+        "content": [
+          "Passport copy"
+        ]
+      },
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "An array is not a document content string."
+    },
+    {
+      "id": "h19",
+      "method": "POST",
+      "path": "/clients/nonexistent-client/documents",
+      "query": {},
+      "body": {
+        "title": "Certified passport copy",
+        "content": "Certified passport copy for Jane Smith, specimen reference TEST-JS-NEW, checked against the original."
+      },
+      "expected_status": [
+        404
+      ],
+      "why": "The identifier nonexistent-client is deliberately absent from the fixture, so the parent resource is not found and an orphan document must not be created."
+    },
+    {
+      "id": "h20",
+      "method": "POST",
+      "path": "/clients/c02/documents",
+      "query": {},
+      "body": null,
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "The raw document request is truncated JSON and must be rejected by the parser.",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "raw_body": "{\"title\":\"Passport\",\"content\":"
+    },
+    {
+      "id": "h21",
+      "method": "GET",
+      "path": "/search",
+      "query": {
+        "q": "John Doe"
+      },
+      "body": null,
+      "expected_status": [
+        200
+      ],
+      "why": "A valid search returns one top-level array containing the client and named documents judged in q003.",
+      "expected_response_schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "id"
+          ]
+        }
+      },
+      "expected_query_id": "q003"
+    },
+    {
+      "id": "h22",
+      "method": "GET",
+      "path": "/search",
+      "query": {},
+      "body": null,
+      "expected_status": [
+        400,
+        422
+      ],
+      "why": "q is required, so omitting the parameter is a request validation error rather than a blank search."
+    },
+    {
+      "id": "h23",
+      "method": "GET",
+      "path": "/search",
+      "query": {
+        "q": ""
+      },
+      "body": null,
+      "expected_status": [
+        200
+      ],
+      "why": "q is present and no minimum length is specified, so this suite expects a successful empty array as in q048.",
+      "expected_response_schema": {
+        "type": "array",
+        "maxItems": 0
+      },
+      "expected_query_id": "q048"
+    },
+    {
+      "id": "h24",
+      "method": "GET",
+      "path": "/search",
+      "query": {
+        "q": " \t\n   "
+      },
+      "body": null,
+      "expected_status": [
+        200
+      ],
+      "why": "Whitespace-only q has no search intent and is normalised to the same successful empty array as q049.",
+      "expected_response_schema": {
+        "type": "array",
+        "maxItems": 0
+      },
+      "expected_query_id": "q049"
+    },
+    {
+      "id": "h25",
+      "method": "GET",
+      "path": "/search",
+      "query": {
+        "q": "' OR 1=1 --"
+      },
+      "body": null,
+      "expected_status": [
+        200
+      ],
+      "why": "SQL-shaped text is still a valid string parameter and has no relevant result, so the request succeeds with an empty array as in q045.",
+      "expected_response_schema": {
+        "type": "array",
+        "maxItems": 0
+      },
+      "expected_query_id": "q045"
+    }
+  ]
+}

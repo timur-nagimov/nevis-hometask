@@ -1,0 +1,7419 @@
+{
+ "suite": "ds-splink-fake1000",
+ "author": "Claude subagent (mechanical build from the Splink fake_1000 cluster column), 2026-11-20",
+ "about": "Client search built mechanically from Splink's fake_1000 (repository moj-analytical-services/splink_datasets, file data/fake_1000.csv, commit 75876d806d9eff72072d21878150ee50a96d5f41; URL https://github.com/moj-analytical-services/splink_datasets/blob/75876d806d9eff72072d21878150ee50a96d5f41/data/fake_1000.csv; licence MIT). Attribution: Contains the fake_1000 dataset from Splink's splink_datasets repository, Copyright (c) 2023 MoJ Analytical Services, used under the MIT License. 1,000 synthetic records of 251 people; the cluster column is the ground truth. One client per cluster (224 clients; 27 clusters have no record with both names or no well-formed e-mail and get no client). Representative = the most frequent (first name, surname) pair, ties to the fewest missing fields, then the lowest unique_id; so a stored name or e-mail may itself carry a typo. Queries come from the other records of each cluster: relevant = that cluster's client; acceptable = other clients that contain every query word as a substring of a field, or whose own cluster has a record with the same value. Identical text (case aside) is required, swapped name order expected, typos and short forms nice (at least one relevant in the first 5, other results not scored). Negatives recombine names and e-mail parts of different clients and were checked against every client and all 1,000 records. Built by research/datasets/build/ds_splink_fake1000.py (seed 20261120).",
+ "source": [
+  {
+   "name": "Splink fake_1000",
+   "repository": "https://github.com/moj-analytical-services/splink_datasets",
+   "url": "https://github.com/moj-analytical-services/splink_datasets/blob/75876d806d9eff72072d21878150ee50a96d5f41/data/fake_1000.csv",
+   "download_url": "https://raw.githubusercontent.com/moj-analytical-services/splink_datasets/75876d806d9eff72072d21878150ee50a96d5f41/data/fake_1000.csv",
+   "commit": "75876d806d9eff72072d21878150ee50a96d5f41",
+   "file_last_changed_in_commit": "88020572c36a47ac53240c023670b7053d383db0",
+   "file_git_blob": "2b6d8fe0ff11cd0fd8d26d8e3ef7f956c35141e5",
+   "file_sha256": "66f9b8f92b9b082ef982fe18c77030fbed8780f06ce1d40d7106be5a72392e2a",
+   "licence": "MIT",
+   "licence_url": "https://github.com/moj-analytical-services/splink_datasets/blob/75876d806d9eff72072d21878150ee50a96d5f41/LICENSE",
+   "attribution": "Contains the fake_1000 dataset from Splink's splink_datasets repository, Copyright (c) 2023 MoJ Analytical Services, used under the MIT License.",
+   "local_copy": "research/datasets/raw/splink/fake_1000.csv",
+   "synthetic": "Simulated people (Splink demo data); no real persons."
+  }
+ ],
+ "corpus": {
+  "clients": [
+   {
+    "id": "c001",
+    "first_name": "Rob",
+    "last_name": "Allen",
+    "email": "roberta25@smith.net",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c002",
+    "first_name": "Grace",
+    "last_name": "Kelly",
+    "email": "grace.kelly52@jones.com",
+    "description": "Lives in Hull",
+    "social_links": []
+   },
+   {
+    "id": "c003",
+    "first_name": "Evie",
+    "last_name": "Dean",
+    "email": "evihd56@earris-bailey.net",
+    "description": "Lives in Pootsmruth",
+    "social_links": []
+   },
+   {
+    "id": "c004",
+    "first_name": "Isla",
+    "last_name": "Hall",
+    "email": "islahall97@gutierrez-bennett.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c005",
+    "first_name": "Oliver",
+    "last_name": "Griffiths",
+    "email": "o.griffiths90@reyes-coleman.com",
+    "description": "Lives in Lunton",
+    "social_links": []
+   },
+   {
+    "id": "c006",
+    "first_name": "Luas",
+    "last_name": "Coox",
+    "email": "l.c91@perez-gonzalez.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c007",
+    "first_name": "Rowe",
+    "last_name": "Caleb",
+    "email": "calebr@thompson.org",
+    "description": "Lives in Lvpreool",
+    "social_links": []
+   },
+   {
+    "id": "c008",
+    "first_name": "Darcy",
+    "last_name": "Bernass",
+    "email": "darcy.b@silva.com",
+    "description": "Lives in Southampton",
+    "social_links": []
+   },
+   {
+    "id": "c009",
+    "first_name": "Thoas",
+    "last_name": "Green",
+    "email": "thomas.green@clark.org",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c010",
+    "first_name": "Thomas",
+    "last_name": "Gabriel",
+    "email": "gabriel.t54@nnichls.info",
+    "description": "Lives in Loodon",
+    "social_links": []
+   },
+   {
+    "id": "c011",
+    "first_name": "Lola",
+    "last_name": "Brown",
+    "email": "lola.b@martinesz-jone.net",
+    "description": "Lives in Bradford",
+    "social_links": []
+   },
+   {
+    "id": "c012",
+    "first_name": "Theodore",
+    "last_name": "Morris",
+    "email": "t.m39@brooks-sawyer.com",
+    "description": "Lives in Birmingham",
+    "social_links": []
+   },
+   {
+    "id": "c013",
+    "first_name": "Sebastian",
+    "last_name": "Mitchell",
+    "email": "s.mitchell39@green.org",
+    "description": "Lives in Leeds",
+    "social_links": []
+   },
+   {
+    "id": "c014",
+    "first_name": "Erin",
+    "last_name": "Rogers",
+    "email": "e.rogers3@hopkins.org",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c015",
+    "first_name": "Jayden",
+    "last_name": "Bennett",
+    "email": "jb88@king.com",
+    "description": "Lives in Swwanea",
+    "social_links": []
+   },
+   {
+    "id": "c016",
+    "first_name": "lola",
+    "last_name": "King",
+    "email": "lola.k63@bradle-barnes.info",
+    "description": "Lives in Southend-on-Sea",
+    "social_links": []
+   },
+   {
+    "id": "c017",
+    "first_name": "Adam",
+    "last_name": "Jsneo",
+    "email": "ajones6@cortez-wilcox.com",
+    "description": "Lives in Bristol",
+    "social_links": []
+   },
+   {
+    "id": "c018",
+    "first_name": "Reggie",
+    "last_name": "Mason",
+    "email": "r.m51@leonard.net",
+    "description": "Lives in Coventry",
+    "social_links": []
+   },
+   {
+    "id": "c019",
+    "first_name": "Jones",
+    "last_name": "Willow",
+    "email": "wilowjones14@whitney-wimlkersonc.om",
+    "description": "Lives in Wolverhampton",
+    "social_links": []
+   },
+   {
+    "id": "c020",
+    "first_name": "Ronni",
+    "last_name": "Begum",
+    "email": "r.b80@ellis-berry.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c021",
+    "first_name": "Elizabeth",
+    "last_name": "Mason",
+    "email": "emason@ware.com",
+    "description": "Lives in Leicester",
+    "social_links": []
+   },
+   {
+    "id": "c022",
+    "first_name": "Ryan",
+    "last_name": "Cole",
+    "email": "r.cole1@ramirez-anthony.com",
+    "description": "Lives in Brritsol",
+    "social_links": []
+   },
+   {
+    "id": "c023",
+    "first_name": "Charlotte",
+    "last_name": "Johnson",
+    "email": "charlottej68@lee-taylor.org",
+    "description": "Lives in Telford",
+    "social_links": []
+   },
+   {
+    "id": "c024",
+    "first_name": "Lex",
+    "last_name": "Gorodon",
+    "email": "l.gordon34@french.com",
+    "description": "Lives in Birmingham",
+    "social_links": []
+   },
+   {
+    "id": "c025",
+    "first_name": "Moore",
+    "last_name": "Oscar",
+    "email": "omoore64@randall.com",
+    "description": "Lives in Liverpool",
+    "social_links": []
+   },
+   {
+    "id": "c026",
+    "first_name": "Elanor",
+    "last_name": "Eavns",
+    "email": "e.e@day.com",
+    "description": "Lives in Bristol",
+    "social_links": []
+   },
+   {
+    "id": "c027",
+    "first_name": "Alfie",
+    "last_name": "Griffiths",
+    "email": "a.griffiths@garner-bridges.com",
+    "description": "Lives in Plymouth",
+    "social_links": []
+   },
+   {
+    "id": "c028",
+    "first_name": "Miaisie",
+    "last_name": "Walsh",
+    "email": "maiie.walsoh@hodge.com",
+    "description": "Lives in Bimminghar",
+    "social_links": []
+   },
+   {
+    "id": "c029",
+    "first_name": "Oliver",
+    "last_name": "Atkinson",
+    "email": "oliver.atkinson@moran-smith.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c030",
+    "first_name": "Ryyan",
+    "last_name": "Bond",
+    "email": "rbond58@chavez.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c031",
+    "first_name": "Dylan",
+    "last_name": "Macdonald",
+    "email": "dmacdonald@rivers-glass.biz",
+    "description": "Lives in Lodon",
+    "social_links": []
+   },
+   {
+    "id": "c032",
+    "first_name": "Harley",
+    "last_name": "Kra",
+    "email": "harleyk@houston.net",
+    "description": "Lives in Mancheeser",
+    "social_links": []
+   },
+   {
+    "id": "c033",
+    "first_name": "Matilda",
+    "last_name": "Barker",
+    "email": "m.b@bell-brown.com",
+    "description": "Lives in Reading",
+    "social_links": []
+   },
+   {
+    "id": "c034",
+    "first_name": "James",
+    "last_name": "Campbell",
+    "email": "jc@herring.info",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c035",
+    "first_name": "Harry",
+    "last_name": "May",
+    "email": "hmay3@richarsson-rhooded.com",
+    "description": "Lives in Cardiff",
+    "social_links": []
+   },
+   {
+    "id": "c036",
+    "first_name": "Alfie",
+    "last_name": "Kelly",
+    "email": "alfiekelly@walters.com",
+    "description": "Lives in Birminmhag",
+    "social_links": []
+   },
+   {
+    "id": "c037",
+    "first_name": "Jacob",
+    "last_name": "Smith",
+    "email": "js37@rodriguez-vega.com",
+    "description": "Lives in Bolton",
+    "social_links": []
+   },
+   {
+    "id": "c038",
+    "first_name": "Austin",
+    "last_name": "Wright",
+    "email": "a.wright42@estrada.org",
+    "description": "Lives in Manchester",
+    "social_links": []
+   },
+   {
+    "id": "c039",
+    "first_name": "Thomson",
+    "last_name": "Holly",
+    "email": "hollythomson3@levine-jones.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c040",
+    "first_name": "Elizabeth",
+    "last_name": "Wright",
+    "email": "elizabeth.w@sullivan-anderson.info",
+    "description": "Lives in Swansea",
+    "social_links": []
+   },
+   {
+    "id": "c041",
+    "first_name": "Leah",
+    "last_name": "Russell",
+    "email": "leahrussell@charles.net",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c042",
+    "first_name": "Elelie",
+    "last_name": "Ellis",
+    "email": "elliee@guzman.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c043",
+    "first_name": "Freddie",
+    "last_name": "Holmes",
+    "email": "fholmes@duncan.com",
+    "description": "Lives in Kingston-upon-Hull",
+    "social_links": []
+   },
+   {
+    "id": "c044",
+    "first_name": "Maryam",
+    "last_name": "Lee",
+    "email": "ml@oconnell.com",
+    "description": "Lives in Manchester",
+    "social_links": []
+   },
+   {
+    "id": "c045",
+    "first_name": "Isla",
+    "last_name": "Pricie",
+    "email": "iprice@carr.com",
+    "description": "Lives in Loddon",
+    "social_links": []
+   },
+   {
+    "id": "c046",
+    "first_name": "Arthur",
+    "last_name": "Both",
+    "email": "arthurbooth25@romero-onovan.com",
+    "description": "Lives in Leeds",
+    "social_links": []
+   },
+   {
+    "id": "c047",
+    "first_name": "George",
+    "last_name": "Taylor",
+    "email": "g.t51@rodriguez.com",
+    "description": "Lives in Huddersfield",
+    "social_links": []
+   },
+   {
+    "id": "c048",
+    "first_name": "Isla",
+    "last_name": "Payne",
+    "email": "isla.payne@butler.org",
+    "description": "Lives in Mansfield",
+    "social_links": []
+   },
+   {
+    "id": "c049",
+    "first_name": "Elliot",
+    "last_name": "Page",
+    "email": "e.page13@dyer-williams.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c050",
+    "first_name": "Luca",
+    "last_name": "Stephens",
+    "email": "lucas@harrington.com",
+    "description": "Lives in Boltno",
+    "social_links": []
+   },
+   {
+    "id": "c051",
+    "first_name": "Ferguson",
+    "last_name": "Logan",
+    "email": "l.ferguson46@shah.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c052",
+    "first_name": "Julia",
+    "last_name": "Smith",
+    "email": "julia.smith@english.org",
+    "description": "Lives in Luton",
+    "social_links": []
+   },
+   {
+    "id": "c053",
+    "first_name": "George",
+    "last_name": "Davies",
+    "email": "g.davies36@ford-graves.com",
+    "description": "Lives in Londdon",
+    "social_links": []
+   },
+   {
+    "id": "c054",
+    "first_name": "Lucy",
+    "last_name": "Arnold",
+    "email": "l.a1@shelton-vaughan.com",
+    "description": "Lives in Stoke-on-Trent",
+    "social_links": []
+   },
+   {
+    "id": "c055",
+    "first_name": "Freya",
+    "last_name": "Shah",
+    "email": "f.s@flynn.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c056",
+    "first_name": "Maisie",
+    "last_name": "Breyr",
+    "email": "mberry41@richards-han.onscm",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c057",
+    "first_name": "Joshua",
+    "last_name": "Williams",
+    "email": "j.williams@levine-johnson.com",
+    "description": "Lives in Portsmouth",
+    "social_links": []
+   },
+   {
+    "id": "c058",
+    "first_name": "Sofia",
+    "last_name": "Russell",
+    "email": "sofiarussell9@rivera.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c059",
+    "first_name": "Oliver",
+    "last_name": "Hughes",
+    "email": "ohughes@page-kim.info",
+    "description": "Lives in Northampton",
+    "social_links": []
+   },
+   {
+    "id": "c060",
+    "first_name": "Simmons",
+    "last_name": "Henry",
+    "email": "hsimmons@roberts.com",
+    "description": "Lives in Leeds",
+    "social_links": []
+   },
+   {
+    "id": "c061",
+    "first_name": "Lydia",
+    "last_name": "Brooks",
+    "email": "lbrooks9@omiller.org",
+    "description": "Lives in Liverpool",
+    "social_links": []
+   },
+   {
+    "id": "c062",
+    "first_name": "Aav",
+    "last_name": "Palmer",
+    "email": "ava.p37@smith.biz",
+    "description": "Lives in Northampton",
+    "social_links": []
+   },
+   {
+    "id": "c063",
+    "first_name": "Lola",
+    "last_name": "Taylor",
+    "email": "lolat86@bishop-giles.om",
+    "description": "Lives in Aberdeen",
+    "social_links": []
+   },
+   {
+    "id": "c064",
+    "first_name": "Wilson",
+    "last_name": "Florence",
+    "email": "florencewilson@byrd.com",
+    "description": "Lives in Plymouth",
+    "social_links": []
+   },
+   {
+    "id": "c065",
+    "first_name": "Bailey",
+    "last_name": "Freddie",
+    "email": "fbailey@schneider.biz",
+    "description": "Lives in Huddersfield",
+    "social_links": []
+   },
+   {
+    "id": "c066",
+    "first_name": "Jackson",
+    "last_name": "Lee",
+    "email": "j.lee86@roberson.com",
+    "description": "Lives in Belfast",
+    "social_links": []
+   },
+   {
+    "id": "c067",
+    "first_name": "David",
+    "last_name": "Banks",
+    "email": "david.banks26@thomas-bell.com",
+    "description": "Lives in BirmBaghnm",
+    "social_links": []
+   },
+   {
+    "id": "c068",
+    "first_name": "Harrison",
+    "last_name": "Marshall",
+    "email": "harrisonm@patrick.com",
+    "description": "Lives in Southampton",
+    "social_links": []
+   },
+   {
+    "id": "c069",
+    "first_name": "Charlie",
+    "last_name": "Andrews",
+    "email": "candrews15@thompson.net",
+    "description": "Lives in Liverpool",
+    "social_links": []
+   },
+   {
+    "id": "c070",
+    "first_name": "Harley",
+    "last_name": "Ros",
+    "email": "harley.rose50@sawyer-lin.org",
+    "description": "Lives in Swindon",
+    "social_links": []
+   },
+   {
+    "id": "c071",
+    "first_name": "Lily",
+    "last_name": "Watson",
+    "email": "lilyw82@krause.org",
+    "description": "Lives in Londno",
+    "social_links": []
+   },
+   {
+    "id": "c072",
+    "first_name": "Daisy",
+    "last_name": "Hugghes",
+    "email": "dh@powell.net",
+    "description": "Lives in Manchester",
+    "social_links": []
+   },
+   {
+    "id": "c073",
+    "first_name": "Amelia",
+    "last_name": "Fletcher",
+    "email": "ameliafletcher22@diaz.com",
+    "description": "Lives in Bristo",
+    "social_links": []
+   },
+   {
+    "id": "c074",
+    "first_name": "Kai",
+    "last_name": "Turner",
+    "email": "k.t50@hernandez.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c075",
+    "first_name": "Eleanor",
+    "last_name": "Richards",
+    "email": "e.richards16@finley.info",
+    "description": "Lives in Mancester",
+    "social_links": []
+   },
+   {
+    "id": "c076",
+    "first_name": "Scarlett",
+    "last_name": "Payne",
+    "email": "scarlett.payn88@morton.info",
+    "description": "Lives in Salford",
+    "social_links": []
+   },
+   {
+    "id": "c077",
+    "first_name": "Rose",
+    "last_name": "Wood",
+    "email": "rosewood@coleman.org",
+    "description": "Lives in Readng",
+    "social_links": []
+   },
+   {
+    "id": "c078",
+    "first_name": "Finyel",
+    "last_name": "Jackson",
+    "email": "f.jackson32@moore.com",
+    "description": "Lives in Prtsmouth",
+    "social_links": []
+   },
+   {
+    "id": "c079",
+    "first_name": "William",
+    "last_name": "Nicholson",
+    "email": "williamn@curry-flores.com",
+    "description": "Lives in Reading",
+    "social_links": []
+   },
+   {
+    "id": "c080",
+    "first_name": "Scarlett",
+    "last_name": "Smith",
+    "email": "scarlett.s@brown-johnson.org",
+    "description": "Lives in Southend-on-Sea",
+    "social_links": []
+   },
+   {
+    "id": "c081",
+    "first_name": "Jayden",
+    "last_name": "Thomas",
+    "email": "j.t@pierce.bi",
+    "description": "Lives in Mansfield",
+    "social_links": []
+   },
+   {
+    "id": "c082",
+    "first_name": "Mohammed",
+    "last_name": "Fox",
+    "email": "mohammedfox24@wilson.com",
+    "description": "Lives in Cardiff",
+    "social_links": []
+   },
+   {
+    "id": "c083",
+    "first_name": "Samuel",
+    "last_name": "Campbell",
+    "email": "samuelcampbell35@hebert.com",
+    "description": "Lives in Newcastle-upon-Tyne",
+    "social_links": []
+   },
+   {
+    "id": "c084",
+    "first_name": "Rubnen",
+    "last_name": "James",
+    "email": "r.james@jack.son.com",
+    "description": "Lives in Leicester",
+    "social_links": []
+   },
+   {
+    "id": "c085",
+    "first_name": "Eliza",
+    "last_name": "Taylor",
+    "email": "elizataylor@marshall.com",
+    "description": "Lives in Glasgow",
+    "social_links": []
+   },
+   {
+    "id": "c086",
+    "first_name": "Benjamin",
+    "last_name": "Lopz",
+    "email": "benjaminlopez78@ingram.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c087",
+    "first_name": "Lottie",
+    "last_name": "Davis",
+    "email": "lottie.d7@morgan-pierce.com",
+    "description": "Lives in StSockton-on-Tees",
+    "social_links": []
+   },
+   {
+    "id": "c088",
+    "first_name": "Isaa",
+    "last_name": "James",
+    "email": "isaac.iames@smjth.com",
+    "description": "Lives in Lonndon",
+    "social_links": []
+   },
+   {
+    "id": "c089",
+    "first_name": "Evie",
+    "last_name": "Davidson",
+    "email": "evied62@bishop.info",
+    "description": "Lives in Leeds",
+    "social_links": []
+   },
+   {
+    "id": "c090",
+    "first_name": "James",
+    "last_name": "Dixon",
+    "email": "james.d@merritt-scott.com",
+    "description": "Lives in Loodnon",
+    "social_links": []
+   },
+   {
+    "id": "c091",
+    "first_name": "Lexi",
+    "last_name": "Cooe",
+    "email": "l.cooke@thompson-williams.info",
+    "description": "Lives in Sundarlend",
+    "social_links": []
+   },
+   {
+    "id": "c092",
+    "first_name": "Harry",
+    "last_name": "Martin",
+    "email": "hm24@miller-roman.om",
+    "description": "Lives in Derby",
+    "social_links": []
+   },
+   {
+    "id": "c093",
+    "first_name": "Emily",
+    "last_name": "Atkinson",
+    "email": "emilya@roberts.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c094",
+    "first_name": "Brown",
+    "last_name": "Florence",
+    "email": "fb@reese.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c095",
+    "first_name": "Scarlett",
+    "last_name": "Cunningam",
+    "email": "s.cunningham@pineda.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c096",
+    "first_name": "Alfie",
+    "last_name": "Roberts",
+    "email": "ar20@miller-torres.org",
+    "description": "Lives in Lodon",
+    "social_links": []
+   },
+   {
+    "id": "c097",
+    "first_name": "Archie",
+    "last_name": "Scott",
+    "email": "a.s@humphrey.com",
+    "description": "Lives in Liverpool",
+    "social_links": []
+   },
+   {
+    "id": "c098",
+    "first_name": "Hugo",
+    "last_name": "Kaur",
+    "email": "h.k@shhrp.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c099",
+    "first_name": "Jacob",
+    "last_name": "Campbell",
+    "email": "j.c65@ortiz.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c100",
+    "first_name": "Aisha",
+    "last_name": "Bryant",
+    "email": "aishab64@obrien-flores.com",
+    "description": "Lives in Bradford",
+    "social_links": []
+   },
+   {
+    "id": "c101",
+    "first_name": "Davies",
+    "last_name": "Reuben",
+    "email": "rd@lewis.com",
+    "description": "Lives in Swasea",
+    "social_links": []
+   },
+   {
+    "id": "c102",
+    "first_name": "Ellis",
+    "last_name": "Harvey",
+    "email": "ellivs.h@morris-davis.net",
+    "description": "Lives in Petberborough",
+    "social_links": []
+   },
+   {
+    "id": "c103",
+    "first_name": "Henry",
+    "last_name": "Williams",
+    "email": "henry.w@miller-mitheiln.lnfo",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c104",
+    "first_name": "Dixon",
+    "last_name": "Amber",
+    "email": "ad29@jones.biz",
+    "description": "Lives in Aberdeen",
+    "social_links": []
+   },
+   {
+    "id": "c105",
+    "first_name": "Scott",
+    "last_name": "Caleb",
+    "email": "c.scott@brooks.com",
+    "description": "Lives in Bristo",
+    "social_links": []
+   },
+   {
+    "id": "c106",
+    "first_name": "Poppy",
+    "last_name": "Fox",
+    "email": "poppy.fox63@rivera.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c107",
+    "first_name": "Freddie",
+    "last_name": "Gill",
+    "email": "fg60@anderson.com",
+    "description": "Lives in Bristol",
+    "social_links": []
+   },
+   {
+    "id": "c108",
+    "first_name": "Hannah",
+    "last_name": "Daivs",
+    "email": "hannahd14@cardenas.com",
+    "description": "Lives in Birmingham",
+    "social_links": []
+   },
+   {
+    "id": "c109",
+    "first_name": "Ameliee",
+    "last_name": "Oliver",
+    "email": "ao24@green.net",
+    "description": "Lives in Nottingham",
+    "social_links": []
+   },
+   {
+    "id": "c110",
+    "first_name": "Harrison",
+    "last_name": "Norman",
+    "email": "hn@martinz-reynolds.com",
+    "description": "Lives in Milton",
+    "social_links": []
+   },
+   {
+    "id": "c111",
+    "first_name": "Olivia",
+    "last_name": "Khan",
+    "email": "okhan85@daugherty-allen.com",
+    "description": "Lives in Huddersfield",
+    "social_links": []
+   },
+   {
+    "id": "c112",
+    "first_name": "Finley",
+    "last_name": "Jones",
+    "email": "f.j@sharp.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c113",
+    "first_name": "Theo",
+    "last_name": "White",
+    "email": "t.white@west-waller.net",
+    "description": "Lives in Kingston-upon-Hull",
+    "social_links": []
+   },
+   {
+    "id": "c114",
+    "first_name": "Amelia",
+    "last_name": "Morgan",
+    "email": "amelia.morgan92@davidson-taylor.com",
+    "description": "Lives in Swindon",
+    "social_links": []
+   },
+   {
+    "id": "c115",
+    "first_name": "George",
+    "last_name": "Owen",
+    "email": "go94@bradshaw-sanders.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c116",
+    "first_name": "Oliver",
+    "last_name": "Dawson",
+    "email": "odawson45@malone-cabrera.com",
+    "description": "Lives in Liverpool",
+    "social_links": []
+   },
+   {
+    "id": "c117",
+    "first_name": "Lous",
+    "last_name": "sAdams",
+    "email": "louis.a@martinez.net",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c118",
+    "first_name": "Freddie",
+    "last_name": "Gregory",
+    "email": "freddiegregory71@jensen.info",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c119",
+    "first_name": "Harry",
+    "last_name": "Andresw",
+    "email": "harryandrews@woods.biz",
+    "description": "Lives in York",
+    "social_links": []
+   },
+   {
+    "id": "c120",
+    "first_name": "Oliver",
+    "last_name": "Jones",
+    "email": "oliverjones82@bond.biz",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c121",
+    "first_name": "Riley",
+    "last_name": "King",
+    "email": "riley.k@zavala.com",
+    "description": "Lives in Aberdeen",
+    "social_links": []
+   },
+   {
+    "id": "c122",
+    "first_name": "Clark",
+    "last_name": "Violet",
+    "email": "v.clark@campbell.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c123",
+    "first_name": "Oliva",
+    "last_name": "Clarke",
+    "email": "oc34@phelps-harper.iz",
+    "description": "Lives in Loonnod",
+    "social_links": []
+   },
+   {
+    "id": "c124",
+    "first_name": "RoRyn",
+    "last_name": "Dixon",
+    "email": "roboyndixon@williams.cm",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c125",
+    "first_name": "Michael",
+    "last_name": "Sutherland",
+    "email": "michael.sutherland@hobbs.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c126",
+    "first_name": "Jessica",
+    "last_name": "Owen",
+    "email": "jessica.owen@elliott.org",
+    "description": "Lives in Walsall",
+    "social_links": []
+   },
+   {
+    "id": "c127",
+    "first_name": "Olivia",
+    "last_name": "Edwards",
+    "email": "oe56@lopez.net",
+    "description": "Lives in Duudley",
+    "social_links": []
+   },
+   {
+    "id": "c128",
+    "first_name": "Jacob",
+    "last_name": "Riley",
+    "email": "j.riley9@bennett.net",
+    "description": "Lives in Liverpool",
+    "social_links": []
+   },
+   {
+    "id": "c129",
+    "first_name": "Grace",
+    "last_name": "Kik",
+    "email": "gk@frey-robinson.org",
+    "description": "Lives in Edinburgh",
+    "social_links": []
+   },
+   {
+    "id": "c130",
+    "first_name": "Amelia",
+    "last_name": "Baxter",
+    "email": "amlia.boxter@nelsan-miller.com",
+    "description": "Lives in Kigngston-upon-Hull",
+    "social_links": []
+   },
+   {
+    "id": "c131",
+    "first_name": "Toby",
+    "last_name": "Hall",
+    "email": "toby.h@mendez.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c132",
+    "first_name": "Aielma",
+    "last_name": "Rogres",
+    "email": "ameliar@black.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c133",
+    "first_name": "Amelia",
+    "last_name": "Porter",
+    "email": "ameiiap@nlcholson.orrg",
+    "description": "Lives in Portsmouth",
+    "social_links": []
+   },
+   {
+    "id": "c134",
+    "first_name": "Lydia",
+    "last_name": "Stephnnsoe",
+    "email": "lydias51@garcia-mendez.com",
+    "description": "Lives in Birmingham",
+    "social_links": []
+   },
+   {
+    "id": "c135",
+    "first_name": "Elizabeth",
+    "last_name": "Hunt",
+    "email": "ehunt10@ramos.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c136",
+    "first_name": "Muhammad",
+    "last_name": "mJams",
+    "email": "muhammadj@cortez-trujillo.com",
+    "description": "Lives in Leeds",
+    "social_links": []
+   },
+   {
+    "id": "c137",
+    "first_name": "Olivia",
+    "last_name": "Davies",
+    "email": "od@hollowayl.ino",
+    "description": "Lives in Birmingham",
+    "social_links": []
+   },
+   {
+    "id": "c138",
+    "first_name": "George",
+    "last_name": "Davidson",
+    "email": "gdavidson@johnson-brown.com",
+    "description": "Lives in Southampton",
+    "social_links": []
+   },
+   {
+    "id": "c139",
+    "first_name": "Mason",
+    "last_name": "Hughes",
+    "email": "mh@wade.com",
+    "description": "Lives in Boton",
+    "social_links": []
+   },
+   {
+    "id": "c140",
+    "first_name": "Jacob",
+    "last_name": "Adams",
+    "email": "jacob.a83@clark.com",
+    "description": "Lives in Lonnod",
+    "social_links": []
+   },
+   {
+    "id": "c141",
+    "first_name": "Webb",
+    "last_name": "Logan",
+    "email": "l.webb66@smith.com",
+    "description": "Lives in Salford",
+    "social_links": []
+   },
+   {
+    "id": "c142",
+    "first_name": "Ryan",
+    "last_name": "Ethan",
+    "email": "ethan.r31@jone.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c143",
+    "first_name": "Oliver",
+    "last_name": "White",
+    "email": "cow@haynes-saunder.com",
+    "description": "Lives in Plymuohh",
+    "social_links": []
+   },
+   {
+    "id": "c144",
+    "first_name": "Alexander",
+    "last_name": "ShaSw",
+    "email": "a.shaw@church-rodriguez.com",
+    "description": "Lives in Mansfield",
+    "social_links": []
+   },
+   {
+    "id": "c145",
+    "first_name": "Maddison",
+    "last_name": "Jarvis",
+    "email": "maddison.jarvis@patterson-miller.biz",
+    "description": "Lives in Sou-hend-ontSea",
+    "social_links": []
+   },
+   {
+    "id": "c146",
+    "first_name": "Dylan",
+    "last_name": "Rberts",
+    "email": "droberts73@taylor-lang.com",
+    "description": "Lives in Birmingham",
+    "social_links": []
+   },
+   {
+    "id": "c147",
+    "first_name": "Benjamin",
+    "last_name": "Nemena",
+    "email": "benjamin.newman@johnson.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c148",
+    "first_name": "Charlie",
+    "last_name": "Hall",
+    "email": "charlieh@sandoval-sanders.info",
+    "description": "Lives in Birmingham",
+    "social_links": []
+   },
+   {
+    "id": "c149",
+    "first_name": "IImogen",
+    "last_name": "Wilkinson",
+    "email": "iwilkinson@bush.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c150",
+    "first_name": "Ollie",
+    "last_name": "Roe",
+    "email": "or@cox-blackwell.org",
+    "description": "Lives in Manchester",
+    "social_links": []
+   },
+   {
+    "id": "c151",
+    "first_name": "Henr",
+    "last_name": "Kennedy",
+    "email": "hk@stanley.com",
+    "description": "Lives in Warrington",
+    "social_links": []
+   },
+   {
+    "id": "c152",
+    "first_name": "Anna",
+    "last_name": "Williamson",
+    "email": "anna.w16@brandt-wyatt.org",
+    "description": "Lives in Sheffield",
+    "social_links": []
+   },
+   {
+    "id": "c153",
+    "first_name": "Elizabeth",
+    "last_name": "Shaw",
+    "email": "e.shaw@smith-hall.biz",
+    "description": "Lives in Cardiff",
+    "social_links": []
+   },
+   {
+    "id": "c154",
+    "first_name": "Rosie",
+    "last_name": "Johnston",
+    "email": "rosiej32@robinson-moran.net",
+    "description": "Lives in Sheffield",
+    "social_links": []
+   },
+   {
+    "id": "c155",
+    "first_name": "Olivia",
+    "last_name": "King",
+    "email": "olivia.k1@howell.com",
+    "description": "Lives in Newcastle-upon-Tyne",
+    "social_links": []
+   },
+   {
+    "id": "c156",
+    "first_name": "Mohammed",
+    "last_name": "rooper",
+    "email": "mohammedc@robcrts.eom",
+    "description": "Lives in Birmingham",
+    "social_links": []
+   },
+   {
+    "id": "c157",
+    "first_name": "Hunter",
+    "last_name": "Noah",
+    "email": "noahh78@diaz-clark.com",
+    "description": "Lives in Manchester",
+    "social_links": []
+   },
+   {
+    "id": "c158",
+    "first_name": "Arabella",
+    "last_name": "Rees",
+    "email": "a.r@cervanset.net",
+    "description": "Lives in Dduley",
+    "social_links": []
+   },
+   {
+    "id": "c159",
+    "first_name": "Maya",
+    "last_name": "Curtis",
+    "email": "micurtis53@simpson.com",
+    "description": "Lives in Newcastle-upon-Tyne",
+    "social_links": []
+   },
+   {
+    "id": "c160",
+    "first_name": "Mia",
+    "last_name": "Jones",
+    "email": "mia.j63@martinez.biz",
+    "description": "Lives in Ipsich",
+    "social_links": []
+   },
+   {
+    "id": "c161",
+    "first_name": "Isaac",
+    "last_name": "Jones",
+    "email": "isaac.jones54@bradford.enet",
+    "description": "Lives in Baltasf",
+    "social_links": []
+   },
+   {
+    "id": "c162",
+    "first_name": "Edward",
+    "last_name": "imith",
+    "email": "e.smith@dillon.com",
+    "description": "Lives in Huddersfield",
+    "social_links": []
+   },
+   {
+    "id": "c163",
+    "first_name": "Evelyn",
+    "last_name": "May",
+    "email": "evelynm@page.com",
+    "description": "Lives in Portstmouth",
+    "social_links": []
+   },
+   {
+    "id": "c164",
+    "first_name": "Ahmed",
+    "last_name": "Oscar",
+    "email": "oa14@lee.com",
+    "description": "Lives in Loodnn",
+    "social_links": []
+   },
+   {
+    "id": "c165",
+    "first_name": "Williams",
+    "last_name": "Oscar",
+    "email": "owilliams@smith.net",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c166",
+    "first_name": "Freddie",
+    "last_name": "Carr",
+    "email": "fcarr22@cook.com",
+    "description": "Lives in Btournemoth",
+    "social_links": []
+   },
+   {
+    "id": "c167",
+    "first_name": "Leo",
+    "last_name": "Bradley",
+    "email": "leo.bradley54@green.net",
+    "description": "Lives in Reaidng",
+    "social_links": []
+   },
+   {
+    "id": "c168",
+    "first_name": "Ella",
+    "last_name": "Young",
+    "email": "ellayoung47@cook.com",
+    "description": "Lives in Birmingham",
+    "social_links": []
+   },
+   {
+    "id": "c169",
+    "first_name": "James",
+    "last_name": "Cox",
+    "email": "j.c@wwhite.org",
+    "description": "Lives in Londoon",
+    "social_links": []
+   },
+   {
+    "id": "c170",
+    "first_name": "Henry",
+    "last_name": "Day",
+    "email": "hday48@thomas-carter.com",
+    "description": "Lives in Leeds",
+    "social_links": []
+   },
+   {
+    "id": "c171",
+    "first_name": "Arabella",
+    "last_name": "Martin",
+    "email": "amartin@navarro.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c172",
+    "first_name": "Adam",
+    "last_name": "Edwards",
+    "email": "adam.edwards38@bullock-edward.com",
+    "description": "Lives in Cardiff",
+    "social_links": []
+   },
+   {
+    "id": "c173",
+    "first_name": "Armstrong",
+    "last_name": "Eva",
+    "email": "e.armstrong16@odonnell.info",
+    "description": "Lives in Peterborouhg",
+    "social_links": []
+   },
+   {
+    "id": "c174",
+    "first_name": "Harvey",
+    "last_name": "Robertson",
+    "email": "harveyrobertson32@chavez.com",
+    "description": "Lives in Lnodon",
+    "social_links": []
+   },
+   {
+    "id": "c175",
+    "first_name": "Mila",
+    "last_name": "Evans",
+    "email": "m.e@ford.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c176",
+    "first_name": "Jackson",
+    "last_name": "Fisher",
+    "email": "j.fisher4@sullivan.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c177",
+    "first_name": "Taylor",
+    "last_name": "Joshua",
+    "email": "jt40o@combs.net",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c178",
+    "first_name": "Arlo",
+    "last_name": "West",
+    "email": "aw@thompson.com",
+    "description": "Lives in Southend-on-Sea",
+    "social_links": []
+   },
+   {
+    "id": "c179",
+    "first_name": "Joseph",
+    "last_name": "Bull",
+    "email": "joseph.bull@bailey-perry.com",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c180",
+    "first_name": "Elliott",
+    "last_name": "Byrne",
+    "email": "e.b30@little.biz",
+    "description": "Lives in Stoke-oneTr-nt",
+    "social_links": []
+   },
+   {
+    "id": "c181",
+    "first_name": "Logan",
+    "last_name": "Morgan",
+    "email": "loganmorgan43@mcbride-king.com",
+    "description": "Lives in Cventry",
+    "social_links": []
+   },
+   {
+    "id": "c182",
+    "first_name": "Noah",
+    "last_name": "Rogers",
+    "email": "noahr@hudson-broow.net",
+    "description": "Lives in Swindon",
+    "social_links": []
+   },
+   {
+    "id": "c183",
+    "first_name": "Maisie",
+    "last_name": "Elliott",
+    "email": "maisie.e96@baker.com",
+    "description": "Lives in Phlymouth",
+    "social_links": []
+   },
+   {
+    "id": "c184",
+    "first_name": "Mason",
+    "last_name": "Smith",
+    "email": "masons52@reed.com",
+    "description": "Lives in Kingson-upon-Hull",
+    "social_links": []
+   },
+   {
+    "id": "c185",
+    "first_name": "Charlotte",
+    "last_name": "Harper",
+    "email": "charper@miller.biz",
+    "description": "Lives in Plymouth",
+    "social_links": []
+   },
+   {
+    "id": "c186",
+    "first_name": "Oliver",
+    "last_name": "Watson",
+    "email": "oliverwatson97@morgan.com",
+    "description": "Lives in slaGgogw",
+    "social_links": []
+   },
+   {
+    "id": "c187",
+    "first_name": "Isabella",
+    "last_name": "Fletcher",
+    "email": "isabellafletcher@tanner.com",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c188",
+    "first_name": "Michael",
+    "last_name": "Wels",
+    "email": "m.w@cannon.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c189",
+    "first_name": "Theodore",
+    "last_name": "Marshall",
+    "email": "theodore.m@taylor.com",
+    "description": "Lives in Birmingham",
+    "social_links": []
+   },
+   {
+    "id": "c190",
+    "first_name": "Lily",
+    "last_name": "Robinson",
+    "email": "lily.robinson73@peterson.biz",
+    "description": "Lives in Salford",
+    "social_links": []
+   },
+   {
+    "id": "c191",
+    "first_name": "Reuben",
+    "last_name": "Wslion",
+    "email": "reubenw@williams-thomas.net",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c192",
+    "first_name": "Oscar",
+    "last_name": "Wantol",
+    "email": "oscarwalton19@king.com",
+    "description": "Lives in WWalverhompton",
+    "social_links": []
+   },
+   {
+    "id": "c193",
+    "first_name": "Bradley",
+    "last_name": "Freddie",
+    "email": "fb@nelson.com",
+    "description": "Lives in Liverpool",
+    "social_links": []
+   },
+   {
+    "id": "c194",
+    "first_name": "Leo",
+    "last_name": "Webster",
+    "email": "leo.webster54@moore.biez",
+    "description": "Lives in Sheffield",
+    "social_links": []
+   },
+   {
+    "id": "c195",
+    "first_name": "Jacob",
+    "last_name": "Brooks",
+    "email": "jbrooks@hall-lowe-ry.net",
+    "description": "Lives in Leed",
+    "social_links": []
+   },
+   {
+    "id": "c196",
+    "first_name": "Fox",
+    "last_name": "Noah",
+    "email": "noah.f88@gibson.cm",
+    "description": "Lives in Southampton",
+    "social_links": []
+   },
+   {
+    "id": "c197",
+    "first_name": "Ivy",
+    "last_name": "Lee",
+    "email": "ivy.lee@carson-williams.info",
+    "description": "Lives in Liverpool",
+    "social_links": []
+   },
+   {
+    "id": "c198",
+    "first_name": "Jaxon",
+    "last_name": "Rice",
+    "email": "jaxon.r@cantu.org",
+    "description": "Lives in Lonnod",
+    "social_links": []
+   },
+   {
+    "id": "c199",
+    "first_name": "Aira",
+    "last_name": "Cross",
+    "email": "a.cross58@browning-nguyen.com",
+    "description": "Lives in Newastle-upon-Tyne",
+    "social_links": []
+   },
+   {
+    "id": "c200",
+    "first_name": "Thomas",
+    "last_name": "Mnrtia",
+    "email": "tmartin5@martin-kerr.org",
+    "description": "Lives in Newcastle-upon-Tyne",
+    "social_links": []
+   },
+   {
+    "id": "c201",
+    "first_name": "Green",
+    "last_name": "Toby",
+    "email": "t.g79@walker.com",
+    "description": "Lives in TelforTd",
+    "social_links": []
+   },
+   {
+    "id": "c202",
+    "first_name": "Isabelle",
+    "last_name": "Carter",
+    "email": "isabellec@hill-williams.com",
+    "description": "Lives in Bradford",
+    "social_links": []
+   },
+   {
+    "id": "c203",
+    "first_name": "Darcy",
+    "last_name": "Rhodes",
+    "email": "drhodes16@johnson-robinson.com",
+    "description": "Lives in Birminghma",
+    "social_links": []
+   },
+   {
+    "id": "c204",
+    "first_name": "Evie",
+    "last_name": "Jones",
+    "email": "eviejones@brewer-sparks.org",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c205",
+    "first_name": "Muhammad",
+    "last_name": "Patterson",
+    "email": "muhammadp5@williams.com",
+    "description": "Lives in Bournehhoutm",
+    "social_links": []
+   },
+   {
+    "id": "c206",
+    "first_name": "Watson",
+    "last_name": "Amelia",
+    "email": "amelia.w@tyler-anderson.com",
+    "description": "Lives in Kingston-upon-Hull",
+    "social_links": []
+   },
+   {
+    "id": "c207",
+    "first_name": "Luke",
+    "last_name": "Robinson",
+    "email": "lrobinson@wolf.org",
+    "description": "Lives in Coventry",
+    "social_links": []
+   },
+   {
+    "id": "c208",
+    "first_name": "Henry",
+    "last_name": "Roberts",
+    "email": "henryr@moore.com",
+    "description": "Lives in kYorY",
+    "social_links": []
+   },
+   {
+    "id": "c209",
+    "first_name": "Isabelle",
+    "last_name": "Hall",
+    "email": "isabelleh97m@lewis-gregory.com",
+    "description": "Lives in Swansae",
+    "social_links": []
+   },
+   {
+    "id": "c210",
+    "first_name": "Francesca",
+    "last_name": "White",
+    "email": "francesca.white@jones-knight.info",
+    "description": "Lives in Hudersfield",
+    "social_links": []
+   },
+   {
+    "id": "c211",
+    "first_name": "Sarah",
+    "last_name": "Pearson",
+    "email": "sarahp77@humphrey.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c212",
+    "first_name": "George",
+    "last_name": "Davies",
+    "email": "gdavies72@conner-rose.com",
+    "description": "Lives in Middlesbrough",
+    "social_links": []
+   },
+   {
+    "id": "c213",
+    "first_name": "Oliver",
+    "last_name": "Robertson",
+    "email": "orobertson91@olson-palmer.com",
+    "description": "Lives in Edinburgh",
+    "social_links": []
+   },
+   {
+    "id": "c214",
+    "first_name": "Gerge",
+    "last_name": "Wilson",
+    "email": "gwiolson84@burton.net",
+    "description": "Lives in Lonnod",
+    "social_links": []
+   },
+   {
+    "id": "c215",
+    "first_name": "Heidi",
+    "last_name": "Mills",
+    "email": "h.m82@hill.om",
+    "description": "Lives in Lonnod",
+    "social_links": []
+   },
+   {
+    "id": "c216",
+    "first_name": "Maryam",
+    "last_name": "Jones",
+    "email": "maryam.j47@myers.com",
+    "description": "Lives in Coventry",
+    "social_links": []
+   },
+   {
+    "id": "c217",
+    "first_name": "Joseph",
+    "last_name": "Davsi",
+    "email": "joseph.d@bell.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c218",
+    "first_name": "Harrison",
+    "last_name": "Fraser",
+    "email": "hf@roberts.com",
+    "description": "Lives in Birmingham",
+    "social_links": []
+   },
+   {
+    "id": "c219",
+    "first_name": "Leon",
+    "last_name": "Armstrong",
+    "email": "l.armstrong@reyes-campbell.net",
+    "description": "Lives in Salford",
+    "social_links": []
+   },
+   {
+    "id": "c220",
+    "first_name": "Jessica",
+    "last_name": "Miller",
+    "email": "jessica.miller@johnson.com",
+    "description": "Lives in Coventry",
+    "social_links": []
+   },
+   {
+    "id": "c221",
+    "first_name": "Nancy",
+    "last_name": "lWisliaml",
+    "email": "nw54@buckley.info",
+    "description": "Lives in Birmingham",
+    "social_links": []
+   },
+   {
+    "id": "c222",
+    "first_name": "Michael",
+    "last_name": "Ducan",
+    "email": "michaelduncan43@gutierrez.com",
+    "description": "Lives in Nottingham",
+    "social_links": []
+   },
+   {
+    "id": "c223",
+    "first_name": "Emma",
+    "last_name": "Lloyd",
+    "email": "emmallod@jimenez.com",
+    "description": "Lives in London",
+    "social_links": []
+   },
+   {
+    "id": "c224",
+    "first_name": "Oliver",
+    "last_name": "Bird",
+    "email": "o.b@smith.net",
+    "description": "Lives in Reading",
+    "social_links": []
+   }
+  ],
+  "documents": []
+ },
+ "clusters": {
+  "c001": {
+   "cluster": 0,
+   "representative_unique_id": 2,
+   "cluster_unique_ids": [
+    0,
+    1,
+    2,
+    3
+   ]
+  },
+  "c002": {
+   "cluster": 1,
+   "representative_unique_id": 5,
+   "cluster_unique_ids": [
+    4,
+    5
+   ]
+  },
+  "c003": {
+   "cluster": 3,
+   "representative_unique_id": 9,
+   "cluster_unique_ids": [
+    7,
+    8,
+    9,
+    10
+   ]
+  },
+  "c004": {
+   "cluster": 4,
+   "representative_unique_id": 11,
+   "cluster_unique_ids": [
+    11,
+    12,
+    13
+   ]
+  },
+  "c005": {
+   "cluster": 5,
+   "representative_unique_id": 14,
+   "cluster_unique_ids": [
+    14
+   ]
+  },
+  "c006": {
+   "cluster": 7,
+   "representative_unique_id": 17,
+   "cluster_unique_ids": [
+    16,
+    17
+   ]
+  },
+  "c007": {
+   "cluster": 8,
+   "representative_unique_id": 19,
+   "cluster_unique_ids": [
+    18,
+    19,
+    20
+   ]
+  },
+  "c008": {
+   "cluster": 9,
+   "representative_unique_id": 21,
+   "cluster_unique_ids": [
+    21
+   ]
+  },
+  "c009": {
+   "cluster": 10,
+   "representative_unique_id": 24,
+   "cluster_unique_ids": [
+    22,
+    23,
+    24
+   ]
+  },
+  "c010": {
+   "cluster": 11,
+   "representative_unique_id": 26,
+   "cluster_unique_ids": [
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+   ]
+  },
+  "c011": {
+   "cluster": 12,
+   "representative_unique_id": 32,
+   "cluster_unique_ids": [
+    31,
+    32,
+    33,
+    34,
+    35,
+    36
+   ]
+  },
+  "c012": {
+   "cluster": 13,
+   "representative_unique_id": 37,
+   "cluster_unique_ids": [
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43
+   ]
+  },
+  "c013": {
+   "cluster": 14,
+   "representative_unique_id": 45,
+   "cluster_unique_ids": [
+    44,
+    45,
+    46
+   ]
+  },
+  "c014": {
+   "cluster": 15,
+   "representative_unique_id": 47,
+   "cluster_unique_ids": [
+    47,
+    48,
+    49,
+    50
+   ]
+  },
+  "c015": {
+   "cluster": 16,
+   "representative_unique_id": 53,
+   "cluster_unique_ids": [
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57
+   ]
+  },
+  "c016": {
+   "cluster": 18,
+   "representative_unique_id": 60,
+   "cluster_unique_ids": [
+    59,
+    60,
+    61,
+    62
+   ]
+  },
+  "c017": {
+   "cluster": 19,
+   "representative_unique_id": 63,
+   "cluster_unique_ids": [
+    63,
+    64,
+    65,
+    66,
+    67
+   ]
+  },
+  "c018": {
+   "cluster": 20,
+   "representative_unique_id": 69,
+   "cluster_unique_ids": [
+    68,
+    69,
+    70,
+    71
+   ]
+  },
+  "c019": {
+   "cluster": 21,
+   "representative_unique_id": 73,
+   "cluster_unique_ids": [
+    72,
+    73
+   ]
+  },
+  "c020": {
+   "cluster": 22,
+   "representative_unique_id": 74,
+   "cluster_unique_ids": [
+    74
+   ]
+  },
+  "c021": {
+   "cluster": 23,
+   "representative_unique_id": 77,
+   "cluster_unique_ids": [
+    75,
+    76,
+    77,
+    78
+   ]
+  },
+  "c022": {
+   "cluster": 24,
+   "representative_unique_id": 79,
+   "cluster_unique_ids": [
+    79,
+    80,
+    81,
+    82,
+    83,
+    84
+   ]
+  },
+  "c023": {
+   "cluster": 25,
+   "representative_unique_id": 85,
+   "cluster_unique_ids": [
+    85,
+    86
+   ]
+  },
+  "c024": {
+   "cluster": 26,
+   "representative_unique_id": 87,
+   "cluster_unique_ids": [
+    87,
+    88,
+    89
+   ]
+  },
+  "c025": {
+   "cluster": 27,
+   "representative_unique_id": 91,
+   "cluster_unique_ids": [
+    90,
+    91,
+    92,
+    93,
+    94,
+    95
+   ]
+  },
+  "c026": {
+   "cluster": 28,
+   "representative_unique_id": 96,
+   "cluster_unique_ids": [
+    96,
+    97,
+    98,
+    99,
+    100
+   ]
+  },
+  "c027": {
+   "cluster": 29,
+   "representative_unique_id": 101,
+   "cluster_unique_ids": [
+    101,
+    102,
+    103,
+    104,
+    105
+   ]
+  },
+  "c028": {
+   "cluster": 30,
+   "representative_unique_id": 106,
+   "cluster_unique_ids": [
+    106,
+    107,
+    108
+   ]
+  },
+  "c029": {
+   "cluster": 31,
+   "representative_unique_id": 112,
+   "cluster_unique_ids": [
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115
+   ]
+  },
+  "c030": {
+   "cluster": 32,
+   "representative_unique_id": 116,
+   "cluster_unique_ids": [
+    116
+   ]
+  },
+  "c031": {
+   "cluster": 34,
+   "representative_unique_id": 119,
+   "cluster_unique_ids": [
+    118,
+    119,
+    120,
+    121,
+    122
+   ]
+  },
+  "c032": {
+   "cluster": 35,
+   "representative_unique_id": 123,
+   "cluster_unique_ids": [
+    123,
+    124,
+    125,
+    126,
+    127
+   ]
+  },
+  "c033": {
+   "cluster": 36,
+   "representative_unique_id": 129,
+   "cluster_unique_ids": [
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134
+   ]
+  },
+  "c034": {
+   "cluster": 38,
+   "representative_unique_id": 137,
+   "cluster_unique_ids": [
+    137,
+    138,
+    139,
+    140,
+    141
+   ]
+  },
+  "c035": {
+   "cluster": 39,
+   "representative_unique_id": 143,
+   "cluster_unique_ids": [
+    142,
+    143,
+    144,
+    145,
+    146,
+    147
+   ]
+  },
+  "c036": {
+   "cluster": 40,
+   "representative_unique_id": 150,
+   "cluster_unique_ids": [
+    148,
+    149,
+    150,
+    151
+   ]
+  },
+  "c037": {
+   "cluster": 42,
+   "representative_unique_id": 153,
+   "cluster_unique_ids": [
+    153
+   ]
+  },
+  "c038": {
+   "cluster": 44,
+   "representative_unique_id": 157,
+   "cluster_unique_ids": [
+    155,
+    156,
+    157,
+    158
+   ]
+  },
+  "c039": {
+   "cluster": 45,
+   "representative_unique_id": 162,
+   "cluster_unique_ids": [
+    159,
+    160,
+    161,
+    162,
+    163,
+    164
+   ]
+  },
+  "c040": {
+   "cluster": 46,
+   "representative_unique_id": 166,
+   "cluster_unique_ids": [
+    165,
+    166,
+    167,
+    168,
+    169,
+    170
+   ]
+  },
+  "c041": {
+   "cluster": 47,
+   "representative_unique_id": 172,
+   "cluster_unique_ids": [
+    171,
+    172,
+    173,
+    174,
+    175
+   ]
+  },
+  "c042": {
+   "cluster": 48,
+   "representative_unique_id": 176,
+   "cluster_unique_ids": [
+    176,
+    177,
+    178,
+    179,
+    180
+   ]
+  },
+  "c043": {
+   "cluster": 49,
+   "representative_unique_id": 181,
+   "cluster_unique_ids": [
+    181,
+    182,
+    183,
+    184,
+    185,
+    186
+   ]
+  },
+  "c044": {
+   "cluster": 50,
+   "representative_unique_id": 187,
+   "cluster_unique_ids": [
+    187
+   ]
+  },
+  "c045": {
+   "cluster": 52,
+   "representative_unique_id": 192,
+   "cluster_unique_ids": [
+    190,
+    191,
+    192,
+    193,
+    194,
+    195
+   ]
+  },
+  "c046": {
+   "cluster": 53,
+   "representative_unique_id": 196,
+   "cluster_unique_ids": [
+    196,
+    197,
+    198,
+    199
+   ]
+  },
+  "c047": {
+   "cluster": 54,
+   "representative_unique_id": 200,
+   "cluster_unique_ids": [
+    200,
+    201,
+    202,
+    203
+   ]
+  },
+  "c048": {
+   "cluster": 55,
+   "representative_unique_id": 204,
+   "cluster_unique_ids": [
+    204,
+    205,
+    206
+   ]
+  },
+  "c049": {
+   "cluster": 56,
+   "representative_unique_id": 210,
+   "cluster_unique_ids": [
+    207,
+    208,
+    209,
+    210,
+    211,
+    212
+   ]
+  },
+  "c050": {
+   "cluster": 57,
+   "representative_unique_id": 216,
+   "cluster_unique_ids": [
+    213,
+    214,
+    215,
+    216,
+    217,
+    218,
+    219
+   ]
+  },
+  "c051": {
+   "cluster": 58,
+   "representative_unique_id": 221,
+   "cluster_unique_ids": [
+    220,
+    221,
+    222,
+    223,
+    224,
+    225
+   ]
+  },
+  "c052": {
+   "cluster": 59,
+   "representative_unique_id": 226,
+   "cluster_unique_ids": [
+    226,
+    227,
+    228
+   ]
+  },
+  "c053": {
+   "cluster": 60,
+   "representative_unique_id": 229,
+   "cluster_unique_ids": [
+    229,
+    230,
+    231,
+    232,
+    233
+   ]
+  },
+  "c054": {
+   "cluster": 61,
+   "representative_unique_id": 234,
+   "cluster_unique_ids": [
+    234,
+    235
+   ]
+  },
+  "c055": {
+   "cluster": 62,
+   "representative_unique_id": 239,
+   "cluster_unique_ids": [
+    236,
+    237,
+    238,
+    239,
+    240,
+    241,
+    242
+   ]
+  },
+  "c056": {
+   "cluster": 63,
+   "representative_unique_id": 243,
+   "cluster_unique_ids": [
+    243
+   ]
+  },
+  "c057": {
+   "cluster": 64,
+   "representative_unique_id": 244,
+   "cluster_unique_ids": [
+    244,
+    245,
+    246,
+    247,
+    248,
+    249,
+    250
+   ]
+  },
+  "c058": {
+   "cluster": 65,
+   "representative_unique_id": 257,
+   "cluster_unique_ids": [
+    251,
+    252,
+    253,
+    254,
+    255,
+    256,
+    257
+   ]
+  },
+  "c059": {
+   "cluster": 66,
+   "representative_unique_id": 260,
+   "cluster_unique_ids": [
+    258,
+    259,
+    260,
+    261,
+    262,
+    263,
+    264
+   ]
+  },
+  "c060": {
+   "cluster": 67,
+   "representative_unique_id": 265,
+   "cluster_unique_ids": [
+    265,
+    266,
+    267
+   ]
+  },
+  "c061": {
+   "cluster": 68,
+   "representative_unique_id": 271,
+   "cluster_unique_ids": [
+    268,
+    269,
+    270,
+    271
+   ]
+  },
+  "c062": {
+   "cluster": 70,
+   "representative_unique_id": 273,
+   "cluster_unique_ids": [
+    273
+   ]
+  },
+  "c063": {
+   "cluster": 71,
+   "representative_unique_id": 277,
+   "cluster_unique_ids": [
+    274,
+    275,
+    276,
+    277,
+    278,
+    279,
+    280
+   ]
+  },
+  "c064": {
+   "cluster": 72,
+   "representative_unique_id": 282,
+   "cluster_unique_ids": [
+    281,
+    282
+   ]
+  },
+  "c065": {
+   "cluster": 75,
+   "representative_unique_id": 287,
+   "cluster_unique_ids": [
+    285,
+    286,
+    287,
+    288
+   ]
+  },
+  "c066": {
+   "cluster": 76,
+   "representative_unique_id": 292,
+   "cluster_unique_ids": [
+    289,
+    290,
+    291,
+    292,
+    293,
+    294,
+    295
+   ]
+  },
+  "c067": {
+   "cluster": 77,
+   "representative_unique_id": 296,
+   "cluster_unique_ids": [
+    296,
+    297,
+    298
+   ]
+  },
+  "c068": {
+   "cluster": 79,
+   "representative_unique_id": 300,
+   "cluster_unique_ids": [
+    300,
+    301
+   ]
+  },
+  "c069": {
+   "cluster": 80,
+   "representative_unique_id": 302,
+   "cluster_unique_ids": [
+    302,
+    303,
+    304
+   ]
+  },
+  "c070": {
+   "cluster": 81,
+   "representative_unique_id": 307,
+   "cluster_unique_ids": [
+    305,
+    306,
+    307,
+    308
+   ]
+  },
+  "c071": {
+   "cluster": 84,
+   "representative_unique_id": 312,
+   "cluster_unique_ids": [
+    312,
+    313,
+    314
+   ]
+  },
+  "c072": {
+   "cluster": 85,
+   "representative_unique_id": 315,
+   "cluster_unique_ids": [
+    315,
+    316,
+    317,
+    318,
+    319
+   ]
+  },
+  "c073": {
+   "cluster": 86,
+   "representative_unique_id": 320,
+   "cluster_unique_ids": [
+    320,
+    321,
+    322,
+    323
+   ]
+  },
+  "c074": {
+   "cluster": 87,
+   "representative_unique_id": 325,
+   "cluster_unique_ids": [
+    324,
+    325,
+    326,
+    327,
+    328,
+    329
+   ]
+  },
+  "c075": {
+   "cluster": 88,
+   "representative_unique_id": 333,
+   "cluster_unique_ids": [
+    330,
+    331,
+    332,
+    333
+   ]
+  },
+  "c076": {
+   "cluster": 89,
+   "representative_unique_id": 335,
+   "cluster_unique_ids": [
+    334,
+    335,
+    336,
+    337,
+    338
+   ]
+  },
+  "c077": {
+   "cluster": 90,
+   "representative_unique_id": 339,
+   "cluster_unique_ids": [
+    339,
+    340
+   ]
+  },
+  "c078": {
+   "cluster": 91,
+   "representative_unique_id": 341,
+   "cluster_unique_ids": [
+    341
+   ]
+  },
+  "c079": {
+   "cluster": 92,
+   "representative_unique_id": 345,
+   "cluster_unique_ids": [
+    342,
+    343,
+    344,
+    345,
+    346,
+    347,
+    348
+   ]
+  },
+  "c080": {
+   "cluster": 93,
+   "representative_unique_id": 349,
+   "cluster_unique_ids": [
+    349,
+    350,
+    351,
+    352
+   ]
+  },
+  "c081": {
+   "cluster": 94,
+   "representative_unique_id": 353,
+   "cluster_unique_ids": [
+    353,
+    354,
+    355,
+    356,
+    357,
+    358
+   ]
+  },
+  "c082": {
+   "cluster": 95,
+   "representative_unique_id": 359,
+   "cluster_unique_ids": [
+    359,
+    360,
+    361,
+    362,
+    363
+   ]
+  },
+  "c083": {
+   "cluster": 96,
+   "representative_unique_id": 364,
+   "cluster_unique_ids": [
+    364,
+    365,
+    366,
+    367,
+    368,
+    369
+   ]
+  },
+  "c084": {
+   "cluster": 97,
+   "representative_unique_id": 373,
+   "cluster_unique_ids": [
+    370,
+    371,
+    372,
+    373
+   ]
+  },
+  "c085": {
+   "cluster": 98,
+   "representative_unique_id": 375,
+   "cluster_unique_ids": [
+    374,
+    375,
+    376,
+    377,
+    378,
+    379,
+    380
+   ]
+  },
+  "c086": {
+   "cluster": 99,
+   "representative_unique_id": 381,
+   "cluster_unique_ids": [
+    381,
+    382
+   ]
+  },
+  "c087": {
+   "cluster": 100,
+   "representative_unique_id": 386,
+   "cluster_unique_ids": [
+    383,
+    384,
+    385,
+    386,
+    387,
+    388
+   ]
+  },
+  "c088": {
+   "cluster": 101,
+   "representative_unique_id": 389,
+   "cluster_unique_ids": [
+    389,
+    390,
+    391,
+    392,
+    393
+   ]
+  },
+  "c089": {
+   "cluster": 102,
+   "representative_unique_id": 395,
+   "cluster_unique_ids": [
+    394,
+    395,
+    396,
+    397
+   ]
+  },
+  "c090": {
+   "cluster": 103,
+   "representative_unique_id": 402,
+   "cluster_unique_ids": [
+    398,
+    399,
+    400,
+    401,
+    402,
+    403,
+    404
+   ]
+  },
+  "c091": {
+   "cluster": 104,
+   "representative_unique_id": 407,
+   "cluster_unique_ids": [
+    405,
+    406,
+    407
+   ]
+  },
+  "c092": {
+   "cluster": 105,
+   "representative_unique_id": 408,
+   "cluster_unique_ids": [
+    408
+   ]
+  },
+  "c093": {
+   "cluster": 106,
+   "representative_unique_id": 409,
+   "cluster_unique_ids": [
+    409,
+    410,
+    411,
+    412
+   ]
+  },
+  "c094": {
+   "cluster": 108,
+   "representative_unique_id": 415,
+   "cluster_unique_ids": [
+    415,
+    416,
+    417,
+    418,
+    419
+   ]
+  },
+  "c095": {
+   "cluster": 109,
+   "representative_unique_id": 420,
+   "cluster_unique_ids": [
+    420
+   ]
+  },
+  "c096": {
+   "cluster": 110,
+   "representative_unique_id": 424,
+   "cluster_unique_ids": [
+    421,
+    422,
+    423,
+    424,
+    425,
+    426
+   ]
+  },
+  "c097": {
+   "cluster": 111,
+   "representative_unique_id": 429,
+   "cluster_unique_ids": [
+    427,
+    428,
+    429,
+    430,
+    431
+   ]
+  },
+  "c098": {
+   "cluster": 112,
+   "representative_unique_id": 433,
+   "cluster_unique_ids": [
+    432,
+    433,
+    434,
+    435,
+    436,
+    437,
+    438
+   ]
+  },
+  "c099": {
+   "cluster": 113,
+   "representative_unique_id": 441,
+   "cluster_unique_ids": [
+    439,
+    440,
+    441,
+    442,
+    443,
+    444,
+    445
+   ]
+  },
+  "c100": {
+   "cluster": 114,
+   "representative_unique_id": 446,
+   "cluster_unique_ids": [
+    446,
+    447,
+    448,
+    449,
+    450
+   ]
+  },
+  "c101": {
+   "cluster": 115,
+   "representative_unique_id": 453,
+   "cluster_unique_ids": [
+    451,
+    452,
+    453,
+    454,
+    455,
+    456
+   ]
+  },
+  "c102": {
+   "cluster": 116,
+   "representative_unique_id": 459,
+   "cluster_unique_ids": [
+    457,
+    458,
+    459,
+    460
+   ]
+  },
+  "c103": {
+   "cluster": 117,
+   "representative_unique_id": 461,
+   "cluster_unique_ids": [
+    461,
+    462,
+    463,
+    464
+   ]
+  },
+  "c104": {
+   "cluster": 118,
+   "representative_unique_id": 466,
+   "cluster_unique_ids": [
+    465,
+    466,
+    467,
+    468,
+    469,
+    470
+   ]
+  },
+  "c105": {
+   "cluster": 119,
+   "representative_unique_id": 474,
+   "cluster_unique_ids": [
+    471,
+    472,
+    473,
+    474,
+    475
+   ]
+  },
+  "c106": {
+   "cluster": 120,
+   "representative_unique_id": 477,
+   "cluster_unique_ids": [
+    476,
+    477,
+    478,
+    479,
+    480
+   ]
+  },
+  "c107": {
+   "cluster": 121,
+   "representative_unique_id": 483,
+   "cluster_unique_ids": [
+    481,
+    482,
+    483,
+    484
+   ]
+  },
+  "c108": {
+   "cluster": 122,
+   "representative_unique_id": 485,
+   "cluster_unique_ids": [
+    485,
+    486,
+    487
+   ]
+  },
+  "c109": {
+   "cluster": 123,
+   "representative_unique_id": 488,
+   "cluster_unique_ids": [
+    488,
+    489,
+    490,
+    491,
+    492
+   ]
+  },
+  "c110": {
+   "cluster": 124,
+   "representative_unique_id": 493,
+   "cluster_unique_ids": [
+    493,
+    494,
+    495,
+    496,
+    497,
+    498
+   ]
+  },
+  "c111": {
+   "cluster": 125,
+   "representative_unique_id": 500,
+   "cluster_unique_ids": [
+    499,
+    500,
+    501
+   ]
+  },
+  "c112": {
+   "cluster": 126,
+   "representative_unique_id": 502,
+   "cluster_unique_ids": [
+    502,
+    503,
+    504,
+    505,
+    506,
+    507,
+    508
+   ]
+  },
+  "c113": {
+   "cluster": 127,
+   "representative_unique_id": 513,
+   "cluster_unique_ids": [
+    509,
+    510,
+    511,
+    512,
+    513
+   ]
+  },
+  "c114": {
+   "cluster": 128,
+   "representative_unique_id": 514,
+   "cluster_unique_ids": [
+    514,
+    515,
+    516,
+    517,
+    518,
+    519,
+    520
+   ]
+  },
+  "c115": {
+   "cluster": 129,
+   "representative_unique_id": 521,
+   "cluster_unique_ids": [
+    521,
+    522,
+    523,
+    524,
+    525,
+    526
+   ]
+  },
+  "c116": {
+   "cluster": 130,
+   "representative_unique_id": 527,
+   "cluster_unique_ids": [
+    527,
+    528,
+    529
+   ]
+  },
+  "c117": {
+   "cluster": 131,
+   "representative_unique_id": 530,
+   "cluster_unique_ids": [
+    530,
+    531,
+    532
+   ]
+  },
+  "c118": {
+   "cluster": 132,
+   "representative_unique_id": 533,
+   "cluster_unique_ids": [
+    533,
+    534,
+    535,
+    536,
+    537
+   ]
+  },
+  "c119": {
+   "cluster": 133,
+   "representative_unique_id": 538,
+   "cluster_unique_ids": [
+    538,
+    539,
+    540,
+    541,
+    542,
+    543
+   ]
+  },
+  "c120": {
+   "cluster": 134,
+   "representative_unique_id": 544,
+   "cluster_unique_ids": [
+    544,
+    545,
+    546,
+    547
+   ]
+  },
+  "c121": {
+   "cluster": 135,
+   "representative_unique_id": 549,
+   "cluster_unique_ids": [
+    548,
+    549,
+    550,
+    551,
+    552,
+    553
+   ]
+  },
+  "c122": {
+   "cluster": 136,
+   "representative_unique_id": 556,
+   "cluster_unique_ids": [
+    554,
+    555,
+    556,
+    557,
+    558,
+    559,
+    560
+   ]
+  },
+  "c123": {
+   "cluster": 138,
+   "representative_unique_id": 564,
+   "cluster_unique_ids": [
+    562,
+    563,
+    564,
+    565,
+    566,
+    567
+   ]
+  },
+  "c124": {
+   "cluster": 139,
+   "representative_unique_id": 569,
+   "cluster_unique_ids": [
+    568,
+    569,
+    570
+   ]
+  },
+  "c125": {
+   "cluster": 141,
+   "representative_unique_id": 573,
+   "cluster_unique_ids": [
+    572,
+    573,
+    574
+   ]
+  },
+  "c126": {
+   "cluster": 142,
+   "representative_unique_id": 579,
+   "cluster_unique_ids": [
+    575,
+    576,
+    577,
+    578,
+    579,
+    580
+   ]
+  },
+  "c127": {
+   "cluster": 144,
+   "representative_unique_id": 584,
+   "cluster_unique_ids": [
+    582,
+    583,
+    584,
+    585,
+    586,
+    587
+   ]
+  },
+  "c128": {
+   "cluster": 145,
+   "representative_unique_id": 588,
+   "cluster_unique_ids": [
+    588,
+    589,
+    590,
+    591,
+    592
+   ]
+  },
+  "c129": {
+   "cluster": 146,
+   "representative_unique_id": 594,
+   "cluster_unique_ids": [
+    593,
+    594,
+    595,
+    596
+   ]
+  },
+  "c130": {
+   "cluster": 147,
+   "representative_unique_id": 597,
+   "cluster_unique_ids": [
+    597,
+    598
+   ]
+  },
+  "c131": {
+   "cluster": 148,
+   "representative_unique_id": 601,
+   "cluster_unique_ids": [
+    599,
+    600,
+    601,
+    602
+   ]
+  },
+  "c132": {
+   "cluster": 151,
+   "representative_unique_id": 605,
+   "cluster_unique_ids": [
+    605
+   ]
+  },
+  "c133": {
+   "cluster": 152,
+   "representative_unique_id": 606,
+   "cluster_unique_ids": [
+    606,
+    607,
+    608,
+    609
+   ]
+  },
+  "c134": {
+   "cluster": 153,
+   "representative_unique_id": 610,
+   "cluster_unique_ids": [
+    610,
+    611
+   ]
+  },
+  "c135": {
+   "cluster": 154,
+   "representative_unique_id": 612,
+   "cluster_unique_ids": [
+    612,
+    613,
+    614
+   ]
+  },
+  "c136": {
+   "cluster": 156,
+   "representative_unique_id": 616,
+   "cluster_unique_ids": [
+    616
+   ]
+  },
+  "c137": {
+   "cluster": 157,
+   "representative_unique_id": 623,
+   "cluster_unique_ids": [
+    617,
+    618,
+    619,
+    620,
+    621,
+    622,
+    623
+   ]
+  },
+  "c138": {
+   "cluster": 158,
+   "representative_unique_id": 625,
+   "cluster_unique_ids": [
+    624,
+    625,
+    626,
+    627,
+    628,
+    629,
+    630
+   ]
+  },
+  "c139": {
+   "cluster": 159,
+   "representative_unique_id": 633,
+   "cluster_unique_ids": [
+    631,
+    632,
+    633,
+    634
+   ]
+  },
+  "c140": {
+   "cluster": 160,
+   "representative_unique_id": 637,
+   "cluster_unique_ids": [
+    635,
+    636,
+    637,
+    638,
+    639
+   ]
+  },
+  "c141": {
+   "cluster": 161,
+   "representative_unique_id": 640,
+   "cluster_unique_ids": [
+    640,
+    641,
+    642
+   ]
+  },
+  "c142": {
+   "cluster": 162,
+   "representative_unique_id": 643,
+   "cluster_unique_ids": [
+    643
+   ]
+  },
+  "c143": {
+   "cluster": 163,
+   "representative_unique_id": 644,
+   "cluster_unique_ids": [
+    644,
+    645
+   ]
+  },
+  "c144": {
+   "cluster": 164,
+   "representative_unique_id": 646,
+   "cluster_unique_ids": [
+    646,
+    647
+   ]
+  },
+  "c145": {
+   "cluster": 165,
+   "representative_unique_id": 651,
+   "cluster_unique_ids": [
+    648,
+    649,
+    650,
+    651
+   ]
+  },
+  "c146": {
+   "cluster": 166,
+   "representative_unique_id": 656,
+   "cluster_unique_ids": [
+    652,
+    653,
+    654,
+    655,
+    656
+   ]
+  },
+  "c147": {
+   "cluster": 167,
+   "representative_unique_id": 658,
+   "cluster_unique_ids": [
+    657,
+    658
+   ]
+  },
+  "c148": {
+   "cluster": 168,
+   "representative_unique_id": 659,
+   "cluster_unique_ids": [
+    659,
+    660,
+    661
+   ]
+  },
+  "c149": {
+   "cluster": 169,
+   "representative_unique_id": 664,
+   "cluster_unique_ids": [
+    662,
+    663,
+    664,
+    665,
+    666,
+    667,
+    668
+   ]
+  },
+  "c150": {
+   "cluster": 170,
+   "representative_unique_id": 669,
+   "cluster_unique_ids": [
+    669,
+    670,
+    671,
+    672,
+    673
+   ]
+  },
+  "c151": {
+   "cluster": 171,
+   "representative_unique_id": 674,
+   "cluster_unique_ids": [
+    674
+   ]
+  },
+  "c152": {
+   "cluster": 172,
+   "representative_unique_id": 677,
+   "cluster_unique_ids": [
+    675,
+    676,
+    677
+   ]
+  },
+  "c153": {
+   "cluster": 174,
+   "representative_unique_id": 679,
+   "cluster_unique_ids": [
+    679,
+    680,
+    681,
+    682
+   ]
+  },
+  "c154": {
+   "cluster": 175,
+   "representative_unique_id": 687,
+   "cluster_unique_ids": [
+    683,
+    684,
+    685,
+    686,
+    687,
+    688
+   ]
+  },
+  "c155": {
+   "cluster": 176,
+   "representative_unique_id": 693,
+   "cluster_unique_ids": [
+    689,
+    690,
+    691,
+    692,
+    693
+   ]
+  },
+  "c156": {
+   "cluster": 177,
+   "representative_unique_id": 694,
+   "cluster_unique_ids": [
+    694
+   ]
+  },
+  "c157": {
+   "cluster": 178,
+   "representative_unique_id": 696,
+   "cluster_unique_ids": [
+    695,
+    696,
+    697,
+    698,
+    699,
+    700,
+    701
+   ]
+  },
+  "c158": {
+   "cluster": 179,
+   "representative_unique_id": 703,
+   "cluster_unique_ids": [
+    702,
+    703,
+    704
+   ]
+  },
+  "c159": {
+   "cluster": 180,
+   "representative_unique_id": 709,
+   "cluster_unique_ids": [
+    705,
+    706,
+    707,
+    708,
+    709,
+    710,
+    711
+   ]
+  },
+  "c160": {
+   "cluster": 182,
+   "representative_unique_id": 717,
+   "cluster_unique_ids": [
+    715,
+    716,
+    717,
+    718,
+    719,
+    720,
+    721
+   ]
+  },
+  "c161": {
+   "cluster": 183,
+   "representative_unique_id": 727,
+   "cluster_unique_ids": [
+    722,
+    723,
+    724,
+    725,
+    726,
+    727,
+    728
+   ]
+  },
+  "c162": {
+   "cluster": 184,
+   "representative_unique_id": 729,
+   "cluster_unique_ids": [
+    729
+   ]
+  },
+  "c163": {
+   "cluster": 185,
+   "representative_unique_id": 731,
+   "cluster_unique_ids": [
+    730,
+    731,
+    732,
+    733,
+    734
+   ]
+  },
+  "c164": {
+   "cluster": 187,
+   "representative_unique_id": 742,
+   "cluster_unique_ids": [
+    737,
+    738,
+    739,
+    740,
+    741,
+    742
+   ]
+  },
+  "c165": {
+   "cluster": 188,
+   "representative_unique_id": 743,
+   "cluster_unique_ids": [
+    743
+   ]
+  },
+  "c166": {
+   "cluster": 189,
+   "representative_unique_id": 744,
+   "cluster_unique_ids": [
+    744
+   ]
+  },
+  "c167": {
+   "cluster": 190,
+   "representative_unique_id": 745,
+   "cluster_unique_ids": [
+    745,
+    746
+   ]
+  },
+  "c168": {
+   "cluster": 191,
+   "representative_unique_id": 747,
+   "cluster_unique_ids": [
+    747,
+    748,
+    749
+   ]
+  },
+  "c169": {
+   "cluster": 192,
+   "representative_unique_id": 753,
+   "cluster_unique_ids": [
+    750,
+    751,
+    752,
+    753,
+    754
+   ]
+  },
+  "c170": {
+   "cluster": 193,
+   "representative_unique_id": 760,
+   "cluster_unique_ids": [
+    755,
+    756,
+    757,
+    758,
+    759,
+    760,
+    761
+   ]
+  },
+  "c171": {
+   "cluster": 194,
+   "representative_unique_id": 763,
+   "cluster_unique_ids": [
+    762,
+    763,
+    764
+   ]
+  },
+  "c172": {
+   "cluster": 195,
+   "representative_unique_id": 765,
+   "cluster_unique_ids": [
+    765,
+    766,
+    767,
+    768,
+    769
+   ]
+  },
+  "c173": {
+   "cluster": 197,
+   "representative_unique_id": 774,
+   "cluster_unique_ids": [
+    772,
+    773,
+    774,
+    775,
+    776,
+    777,
+    778
+   ]
+  },
+  "c174": {
+   "cluster": 198,
+   "representative_unique_id": 779,
+   "cluster_unique_ids": [
+    779,
+    780,
+    781,
+    782,
+    783
+   ]
+  },
+  "c175": {
+   "cluster": 199,
+   "representative_unique_id": 785,
+   "cluster_unique_ids": [
+    784,
+    785
+   ]
+  },
+  "c176": {
+   "cluster": 200,
+   "representative_unique_id": 787,
+   "cluster_unique_ids": [
+    786,
+    787,
+    788,
+    789,
+    790,
+    791
+   ]
+  },
+  "c177": {
+   "cluster": 201,
+   "representative_unique_id": 796,
+   "cluster_unique_ids": [
+    792,
+    793,
+    794,
+    795,
+    796,
+    797
+   ]
+  },
+  "c178": {
+   "cluster": 202,
+   "representative_unique_id": 798,
+   "cluster_unique_ids": [
+    798,
+    799,
+    800,
+    801,
+    802,
+    803,
+    804
+   ]
+  },
+  "c179": {
+   "cluster": 203,
+   "representative_unique_id": 805,
+   "cluster_unique_ids": [
+    805
+   ]
+  },
+  "c180": {
+   "cluster": 205,
+   "representative_unique_id": 807,
+   "cluster_unique_ids": [
+    807,
+    808,
+    809,
+    810,
+    811,
+    812,
+    813
+   ]
+  },
+  "c181": {
+   "cluster": 206,
+   "representative_unique_id": 814,
+   "cluster_unique_ids": [
+    814,
+    815,
+    816,
+    817,
+    818,
+    819,
+    820
+   ]
+  },
+  "c182": {
+   "cluster": 207,
+   "representative_unique_id": 824,
+   "cluster_unique_ids": [
+    821,
+    822,
+    823,
+    824,
+    825
+   ]
+  },
+  "c183": {
+   "cluster": 208,
+   "representative_unique_id": 827,
+   "cluster_unique_ids": [
+    826,
+    827,
+    828
+   ]
+  },
+  "c184": {
+   "cluster": 209,
+   "representative_unique_id": 830,
+   "cluster_unique_ids": [
+    829,
+    830,
+    831,
+    832,
+    833,
+    834
+   ]
+  },
+  "c185": {
+   "cluster": 210,
+   "representative_unique_id": 841,
+   "cluster_unique_ids": [
+    835,
+    836,
+    837,
+    838,
+    839,
+    840,
+    841
+   ]
+  },
+  "c186": {
+   "cluster": 211,
+   "representative_unique_id": 843,
+   "cluster_unique_ids": [
+    842,
+    843,
+    844,
+    845
+   ]
+  },
+  "c187": {
+   "cluster": 212,
+   "representative_unique_id": 846,
+   "cluster_unique_ids": [
+    846,
+    847
+   ]
+  },
+  "c188": {
+   "cluster": 213,
+   "representative_unique_id": 854,
+   "cluster_unique_ids": [
+    848,
+    849,
+    850,
+    851,
+    852,
+    853,
+    854
+   ]
+  },
+  "c189": {
+   "cluster": 214,
+   "representative_unique_id": 859,
+   "cluster_unique_ids": [
+    855,
+    856,
+    857,
+    858,
+    859,
+    860
+   ]
+  },
+  "c190": {
+   "cluster": 215,
+   "representative_unique_id": 861,
+   "cluster_unique_ids": [
+    861,
+    862,
+    863,
+    864,
+    865,
+    866
+   ]
+  },
+  "c191": {
+   "cluster": 216,
+   "representative_unique_id": 867,
+   "cluster_unique_ids": [
+    867,
+    868,
+    869
+   ]
+  },
+  "c192": {
+   "cluster": 217,
+   "representative_unique_id": 870,
+   "cluster_unique_ids": [
+    870,
+    871
+   ]
+  },
+  "c193": {
+   "cluster": 218,
+   "representative_unique_id": 874,
+   "cluster_unique_ids": [
+    872,
+    873,
+    874,
+    875,
+    876,
+    877,
+    878
+   ]
+  },
+  "c194": {
+   "cluster": 219,
+   "representative_unique_id": 879,
+   "cluster_unique_ids": [
+    879,
+    880
+   ]
+  },
+  "c195": {
+   "cluster": 220,
+   "representative_unique_id": 883,
+   "cluster_unique_ids": [
+    881,
+    882,
+    883
+   ]
+  },
+  "c196": {
+   "cluster": 221,
+   "representative_unique_id": 884,
+   "cluster_unique_ids": [
+    884,
+    885,
+    886
+   ]
+  },
+  "c197": {
+   "cluster": 222,
+   "representative_unique_id": 890,
+   "cluster_unique_ids": [
+    887,
+    888,
+    889,
+    890,
+    891,
+    892,
+    893
+   ]
+  },
+  "c198": {
+   "cluster": 223,
+   "representative_unique_id": 895,
+   "cluster_unique_ids": [
+    894,
+    895,
+    896,
+    897
+   ]
+  },
+  "c199": {
+   "cluster": 224,
+   "representative_unique_id": 900,
+   "cluster_unique_ids": [
+    898,
+    899,
+    900,
+    901,
+    902,
+    903,
+    904
+   ]
+  },
+  "c200": {
+   "cluster": 225,
+   "representative_unique_id": 905,
+   "cluster_unique_ids": [
+    905
+   ]
+  },
+  "c201": {
+   "cluster": 226,
+   "representative_unique_id": 906,
+   "cluster_unique_ids": [
+    906,
+    907
+   ]
+  },
+  "c202": {
+   "cluster": 227,
+   "representative_unique_id": 908,
+   "cluster_unique_ids": [
+    908,
+    909,
+    910
+   ]
+  },
+  "c203": {
+   "cluster": 229,
+   "representative_unique_id": 915,
+   "cluster_unique_ids": [
+    913,
+    914,
+    915,
+    916,
+    917
+   ]
+  },
+  "c204": {
+   "cluster": 230,
+   "representative_unique_id": 919,
+   "cluster_unique_ids": [
+    918,
+    919,
+    920,
+    921,
+    922
+   ]
+  },
+  "c205": {
+   "cluster": 231,
+   "representative_unique_id": 924,
+   "cluster_unique_ids": [
+    923,
+    924,
+    925
+   ]
+  },
+  "c206": {
+   "cluster": 232,
+   "representative_unique_id": 926,
+   "cluster_unique_ids": [
+    926,
+    927
+   ]
+  },
+  "c207": {
+   "cluster": 233,
+   "representative_unique_id": 929,
+   "cluster_unique_ids": [
+    928,
+    929,
+    930,
+    931,
+    932,
+    933,
+    934
+   ]
+  },
+  "c208": {
+   "cluster": 234,
+   "representative_unique_id": 935,
+   "cluster_unique_ids": [
+    935,
+    936
+   ]
+  },
+  "c209": {
+   "cluster": 235,
+   "representative_unique_id": 937,
+   "cluster_unique_ids": [
+    937,
+    938,
+    939,
+    940,
+    941,
+    942,
+    943
+   ]
+  },
+  "c210": {
+   "cluster": 236,
+   "representative_unique_id": 944,
+   "cluster_unique_ids": [
+    944,
+    945
+   ]
+  },
+  "c211": {
+   "cluster": 237,
+   "representative_unique_id": 947,
+   "cluster_unique_ids": [
+    946,
+    947,
+    948,
+    949
+   ]
+  },
+  "c212": {
+   "cluster": 238,
+   "representative_unique_id": 952,
+   "cluster_unique_ids": [
+    950,
+    951,
+    952,
+    953
+   ]
+  },
+  "c213": {
+   "cluster": 239,
+   "representative_unique_id": 956,
+   "cluster_unique_ids": [
+    954,
+    955,
+    956
+   ]
+  },
+  "c214": {
+   "cluster": 240,
+   "representative_unique_id": 957,
+   "cluster_unique_ids": [
+    957
+   ]
+  },
+  "c215": {
+   "cluster": 241,
+   "representative_unique_id": 958,
+   "cluster_unique_ids": [
+    958,
+    959,
+    960
+   ]
+  },
+  "c216": {
+   "cluster": 242,
+   "representative_unique_id": 966,
+   "cluster_unique_ids": [
+    961,
+    962,
+    963,
+    964,
+    965,
+    966
+   ]
+  },
+  "c217": {
+   "cluster": 243,
+   "representative_unique_id": 967,
+   "cluster_unique_ids": [
+    967,
+    968,
+    969
+   ]
+  },
+  "c218": {
+   "cluster": 244,
+   "representative_unique_id": 970,
+   "cluster_unique_ids": [
+    970
+   ]
+  },
+  "c219": {
+   "cluster": 245,
+   "representative_unique_id": 977,
+   "cluster_unique_ids": [
+    971,
+    972,
+    973,
+    974,
+    975,
+    976,
+    977
+   ]
+  },
+  "c220": {
+   "cluster": 246,
+   "representative_unique_id": 979,
+   "cluster_unique_ids": [
+    978,
+    979,
+    980,
+    981,
+    982,
+    983,
+    984
+   ]
+  },
+  "c221": {
+   "cluster": 247,
+   "representative_unique_id": 985,
+   "cluster_unique_ids": [
+    985,
+    986,
+    987,
+    988,
+    989,
+    990,
+    991
+   ]
+  },
+  "c222": {
+   "cluster": 248,
+   "representative_unique_id": 992,
+   "cluster_unique_ids": [
+    992
+   ]
+  },
+  "c223": {
+   "cluster": 249,
+   "representative_unique_id": 993,
+   "cluster_unique_ids": [
+    993,
+    994,
+    995,
+    996
+   ]
+  },
+  "c224": {
+   "cluster": 250,
+   "representative_unique_id": 997,
+   "cluster_unique_ids": [
+    997,
+    998,
+    999
+   ]
+  }
+ },
+ "queries": [
+  {
+   "id": "q001",
+   "q": "Ferguson Logan",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c051"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c051"
+   ],
+   "empty": false,
+   "why": "Cluster 58, record 225 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q002",
+   "q": "James Campbell",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c034"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c034"
+   ],
+   "empty": false,
+   "why": "Cluster 38, record 139 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q003",
+   "q": "Olivia King",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c155"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c155"
+   ],
+   "empty": false,
+   "why": "Cluster 176, record 690 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q004",
+   "q": "Freya Shah",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c055"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c055"
+   ],
+   "empty": false,
+   "why": "Cluster 62, record 236 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q005",
+   "q": "George Davies",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c053"
+   ],
+   "acceptable": [
+    "c212"
+   ],
+   "others": "wrong",
+   "first": [
+    "c053",
+    "c212"
+   ],
+   "empty": false,
+   "why": "Cluster 60, record 230 (relevant by the cluster column): full name as stored for the client. Acceptable: c212 (contains every query word, a record of its own cluster has this value)."
+  },
+  {
+   "id": "q006",
+   "q": "Theodore Marshall",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c189"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c189"
+   ],
+   "empty": false,
+   "why": "Cluster 214, record 855 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q007",
+   "q": "Isabelle Hall",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c209"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c209"
+   ],
+   "empty": false,
+   "why": "Cluster 235, record 938 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q008",
+   "q": "Emily Atkinson",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c093"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c093"
+   ],
+   "empty": false,
+   "why": "Cluster 106, record 411 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q009",
+   "q": "Amelia Morgan",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c114"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c114"
+   ],
+   "empty": false,
+   "why": "Cluster 128, record 518 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q010",
+   "q": "Oliver Dawson",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c116"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c116"
+   ],
+   "empty": false,
+   "why": "Cluster 130, record 528 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q011",
+   "q": "William Nicholson",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c079"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c079"
+   ],
+   "empty": false,
+   "why": "Cluster 92, record 344 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q012",
+   "q": "Anna Williamson",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c152"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c152"
+   ],
+   "empty": false,
+   "why": "Cluster 172, record 676 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q013",
+   "q": "Dixon Amber",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c104"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c104"
+   ],
+   "empty": false,
+   "why": "Cluster 118, record 470 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q014",
+   "q": "Evelyn May",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c163"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c163"
+   ],
+   "empty": false,
+   "why": "Cluster 185, record 733 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q015",
+   "q": "Jacob Riley",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c128"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c128"
+   ],
+   "empty": false,
+   "why": "Cluster 145, record 591 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q016",
+   "q": "Jayden Thomas",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c081"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c081"
+   ],
+   "empty": false,
+   "why": "Cluster 94, record 356 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q017",
+   "q": "Theodore Morris",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c012"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c012"
+   ],
+   "empty": false,
+   "why": "Cluster 13, record 39 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q018",
+   "q": "Adam Edwards",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c172"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c172"
+   ],
+   "empty": false,
+   "why": "Cluster 195, record 766 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q019",
+   "q": "Henry Day",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c170"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c170"
+   ],
+   "empty": false,
+   "why": "Cluster 193, record 761 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q020",
+   "q": "Rosie Johnston",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c154"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c154"
+   ],
+   "empty": false,
+   "why": "Cluster 175, record 686 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q021",
+   "q": "Bailey Freddie",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c065"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c065"
+   ],
+   "empty": false,
+   "why": "Cluster 75, record 286 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q022",
+   "q": "Sofia Russell",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c058"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c058"
+   ],
+   "empty": false,
+   "why": "Cluster 65, record 254 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q023",
+   "q": "Charlie Hall",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c148"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c148"
+   ],
+   "empty": false,
+   "why": "Cluster 168, record 660 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q024",
+   "q": "Alfie Roberts",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c096"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c096"
+   ],
+   "empty": false,
+   "why": "Cluster 110, record 425 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q025",
+   "q": "Harrison Norman",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c110"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c110"
+   ],
+   "empty": false,
+   "why": "Cluster 124, record 495 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q026",
+   "q": "Reggie Mason",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c018"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c018"
+   ],
+   "empty": false,
+   "why": "Cluster 20, record 71 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q027",
+   "q": "Alfie Griffiths",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c027"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c027"
+   ],
+   "empty": false,
+   "why": "Cluster 29, record 105 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q028",
+   "q": "Freddie Gregory",
+   "category": "exact-name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c118"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c118"
+   ],
+   "empty": false,
+   "why": "Cluster 132, record 537 (relevant by the cluster column): full name as stored for the client."
+  },
+  {
+   "id": "q029",
+   "q": "Young",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c168"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c168"
+   ],
+   "empty": false,
+   "why": "Cluster 191, record 748 (relevant by the cluster column): surname alone; no other client has this surname; the record has no first name, so only the surname is typed."
+  },
+  {
+   "id": "q030",
+   "q": "Carter",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c202"
+   ],
+   "acceptable": [
+    "c170"
+   ],
+   "others": "wrong",
+   "first": [
+    "c202"
+   ],
+   "empty": false,
+   "why": "Cluster 227, record 909 (relevant by the cluster column): surname alone; no other client has this surname; the record has no first name, so only the surname is typed. Acceptable: c170 (contains every query word)."
+  },
+  {
+   "id": "q031",
+   "q": "Khan",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c111"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c111"
+   ],
+   "empty": false,
+   "why": "Cluster 125, record 501 (relevant by the cluster column): surname alone; no other client has this surname; the record has no first name, so only the surname is typed."
+  },
+  {
+   "id": "q032",
+   "q": "Richards",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c075"
+   ],
+   "acceptable": [
+    "c056"
+   ],
+   "others": "wrong",
+   "first": [
+    "c075"
+   ],
+   "empty": false,
+   "why": "Cluster 88, record 330 (relevant by the cluster column): surname alone; no other client has this surname; the adviser types only the surname. Acceptable: c056 (contains every query word)."
+  },
+  {
+   "id": "q033",
+   "q": "Walsh",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c028"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c028"
+   ],
+   "empty": false,
+   "why": "Cluster 30, record 107 (relevant by the cluster column): surname alone; no other client has this surname; the adviser types only the surname."
+  },
+  {
+   "id": "q034",
+   "q": "Page",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c049"
+   ],
+   "acceptable": [
+    "c059",
+    "c163"
+   ],
+   "others": "wrong",
+   "first": [
+    "c049"
+   ],
+   "empty": false,
+   "why": "Cluster 56, record 207 (relevant by the cluster column): surname alone; no other client has this surname; the adviser types only the surname. Acceptable: c059 (contains every query word); c163 (contains every query word)."
+  },
+  {
+   "id": "q035",
+   "q": "Pearson",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c211"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c211"
+   ],
+   "empty": false,
+   "why": "Cluster 237, record 948 (relevant by the cluster column): surname alone; no other client has this surname; the record has no first name, so only the surname is typed."
+  },
+  {
+   "id": "q036",
+   "q": "Lloyd",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c223"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c223"
+   ],
+   "empty": false,
+   "why": "Cluster 249, record 994 (relevant by the cluster column): surname alone; no other client has this surname; the adviser types only the surname."
+  },
+  {
+   "id": "q037",
+   "q": "Rice",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c198"
+   ],
+   "acceptable": [
+    "c045"
+   ],
+   "others": "wrong",
+   "first": [
+    "c198"
+   ],
+   "empty": false,
+   "why": "Cluster 223, record 894 (relevant by the cluster column): surname alone; no other client has this surname; the adviser types only the surname. Acceptable: c045 (contains every query word)."
+  },
+  {
+   "id": "q038",
+   "q": "Allen",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c001"
+   ],
+   "acceptable": [
+    "c111"
+   ],
+   "others": "wrong",
+   "first": [
+    "c001"
+   ],
+   "empty": false,
+   "why": "Cluster 0, record 1 (relevant by the cluster column): surname alone; no other client has this surname; the adviser types only the surname. Acceptable: c111 (contains every query word)."
+  },
+  {
+   "id": "q039",
+   "q": "Cross",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c199"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c199"
+   ],
+   "empty": false,
+   "why": "Cluster 224, record 903 (relevant by the cluster column): surname alone; no other client has this surname; the adviser types only the surname."
+  },
+  {
+   "id": "q040",
+   "q": "Rhodes",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c203"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c203"
+   ],
+   "empty": false,
+   "why": "Cluster 229, record 914 (relevant by the cluster column): surname alone; no other client has this surname; the adviser types only the surname."
+  },
+  {
+   "id": "q041",
+   "q": "Bennett",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c015"
+   ],
+   "acceptable": [
+    "c004",
+    "c128"
+   ],
+   "others": "wrong",
+   "first": [
+    "c015"
+   ],
+   "empty": false,
+   "why": "Cluster 16, record 55 (relevant by the cluster column): surname alone; no other client has this surname; the record has no first name, so only the surname is typed. Acceptable: c004 (contains every query word); c128 (contains every query word)."
+  },
+  {
+   "id": "q042",
+   "q": "Jarvis",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c145"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c145"
+   ],
+   "empty": false,
+   "why": "Cluster 165, record 650 (relevant by the cluster column): surname alone; no other client has this surname; the adviser types only the surname."
+  },
+  {
+   "id": "q043",
+   "q": "Davis",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c087"
+   ],
+   "acceptable": [
+    "c102"
+   ],
+   "others": "wrong",
+   "first": [
+    "c087"
+   ],
+   "empty": false,
+   "why": "Cluster 100, record 384 (relevant by the cluster column): surname alone; no other client has this surname; the adviser types only the surname. Acceptable: c102 (contains every query word)."
+  },
+  {
+   "id": "q044",
+   "q": "Arnold",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c054"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c054"
+   ],
+   "empty": false,
+   "why": "Cluster 61, record 235 (relevant by the cluster column): surname alone; no other client has this surname; the adviser types only the surname."
+  },
+  {
+   "id": "q045",
+   "q": "Baxter",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c130"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c130"
+   ],
+   "empty": false,
+   "why": "Cluster 147, record 598 (relevant by the cluster column): surname alone; no other client has this surname; the adviser types only the surname."
+  },
+  {
+   "id": "q046",
+   "q": "Dean",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c003"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c003"
+   ],
+   "empty": false,
+   "why": "Cluster 3, record 8 (relevant by the cluster column): surname alone; no other client has this surname; the record has no first name, so only the surname is typed."
+  },
+  {
+   "id": "q047",
+   "q": "Macdonald",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c031"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c031"
+   ],
+   "empty": false,
+   "why": "Cluster 34, record 118 (relevant by the cluster column): surname alone; no other client has this surname; the record has no first name, so only the surname is typed."
+  },
+  {
+   "id": "q048",
+   "q": "Both",
+   "category": "surname-only",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c046"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c046"
+   ],
+   "empty": false,
+   "why": "Cluster 53, record 197 (relevant by the cluster column): surname alone; no other client has this surname; the record has no first name, so only the surname is typed."
+  },
+  {
+   "id": "q049",
+   "q": "elizataylor@marshall.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c085"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c085"
+   ],
+   "empty": false,
+   "why": "Cluster 98, record 377 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q050",
+   "q": "james.d@merritt-scott.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c090"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c090"
+   ],
+   "empty": false,
+   "why": "Cluster 103, record 399 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q051",
+   "q": "lily.robinson73@peterson.biz",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c190"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c190"
+   ],
+   "empty": false,
+   "why": "Cluster 215, record 863 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q052",
+   "q": "rosewood@coleman.org",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c077"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c077"
+   ],
+   "empty": false,
+   "why": "Cluster 90, record 340 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q053",
+   "q": "gdavidson@johnson-brown.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c138"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c138"
+   ],
+   "empty": false,
+   "why": "Cluster 158, record 628 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q054",
+   "q": "lola.k63@bradle-barnes.info",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c016"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c016"
+   ],
+   "empty": false,
+   "why": "Cluster 18, record 61 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q055",
+   "q": "e.shaw@smith-hall.biz",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c153"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c153"
+   ],
+   "empty": false,
+   "why": "Cluster 174, record 680 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q056",
+   "q": "c.scott@brooks.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c105"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c105"
+   ],
+   "empty": false,
+   "why": "Cluster 119, record 472 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q057",
+   "q": "j.fisher4@sullivan.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c176"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c176"
+   ],
+   "empty": false,
+   "why": "Cluster 200, record 789 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q058",
+   "q": "lucas@harrington.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c050"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c050"
+   ],
+   "empty": false,
+   "why": "Cluster 57, record 214 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q059",
+   "q": "maryam.j47@myers.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c216"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c216"
+   ],
+   "empty": false,
+   "why": "Cluster 242, record 962 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q060",
+   "q": "j.c65@ortiz.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c099"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c099"
+   ],
+   "empty": false,
+   "why": "Cluster 113, record 440 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q061",
+   "q": "l.c91@perez-gonzalez.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c006"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c006"
+   ],
+   "empty": false,
+   "why": "Cluster 7, record 16 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q062",
+   "q": "alfiekelly@walters.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c036"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c036"
+   ],
+   "empty": false,
+   "why": "Cluster 40, record 148 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q063",
+   "q": "aw@thompson.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c178"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c178"
+   ],
+   "empty": false,
+   "why": "Cluster 202, record 801 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q064",
+   "q": "ivy.lee@carson-williams.info",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c197"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c197"
+   ],
+   "empty": false,
+   "why": "Cluster 222, record 887 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q065",
+   "q": "ameliafletcher22@diaz.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c073"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c073"
+   ],
+   "empty": false,
+   "why": "Cluster 86, record 321 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q066",
+   "q": "oliverwatson97@morgan.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c186"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c186"
+   ],
+   "empty": false,
+   "why": "Cluster 211, record 844 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q067",
+   "q": "michael.sutherland@hobbs.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c125"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c125"
+   ],
+   "empty": false,
+   "why": "Cluster 141, record 574 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q068",
+   "q": "omoore64@randall.com",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c025"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c025"
+   ],
+   "empty": false,
+   "why": "Cluster 27, record 90 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q069",
+   "q": "harleyk@houston.net",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c032"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c032"
+   ],
+   "empty": false,
+   "why": "Cluster 35, record 126 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q070",
+   "q": "ohughes@page-kim.info",
+   "category": "exact-email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c059"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c059"
+   ],
+   "empty": false,
+   "why": "Cluster 66, record 259 (relevant by the cluster column): full e-mail address as stored for the client."
+  },
+  {
+   "id": "q071",
+   "q": "go94",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c115"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c115"
+   ],
+   "empty": false,
+   "why": "Cluster 129, record 522 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q072",
+   "q": "h.m82",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c215"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c215"
+   ],
+   "empty": false,
+   "why": "Cluster 241, record 960 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q073",
+   "q": "oliver.atkinson",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c029"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c029"
+   ],
+   "empty": false,
+   "why": "Cluster 31, record 109 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q074",
+   "q": "muhammadp5",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c205"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c205"
+   ],
+   "empty": false,
+   "why": "Cluster 231, record 923 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q075",
+   "q": "r.james",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c084"
+   ],
+   "acceptable": [
+    "c034",
+    "c090",
+    "c169"
+   ],
+   "others": "wrong",
+   "first": [
+    "c084"
+   ],
+   "empty": false,
+   "why": "Cluster 97, record 370 (relevant by the cluster column): part of the stored e-mail before the @. Acceptable: c034 (contains every query word); c090 (contains every query word); c169 (contains every query word)."
+  },
+  {
+   "id": "q076",
+   "q": "ao24",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c109"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c109"
+   ],
+   "empty": false,
+   "why": "Cluster 123, record 489 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q077",
+   "q": "calebr",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c007"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c007"
+   ],
+   "empty": false,
+   "why": "Cluster 8, record 20 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q078",
+   "q": "jessica.miller",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c220"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c220"
+   ],
+   "empty": false,
+   "why": "Cluster 246, record 978 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q079",
+   "q": "s.mitchell39",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c013"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c013"
+   ],
+   "empty": false,
+   "why": "Cluster 14, record 46 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q080",
+   "q": "j.lee86",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c066"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c066"
+   ],
+   "empty": false,
+   "why": "Cluster 76, record 293 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q081",
+   "q": "elliee",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c042"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c042"
+   ],
+   "empty": false,
+   "why": "Cluster 48, record 179 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q082",
+   "q": "francesca.white",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c210"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c210"
+   ],
+   "empty": false,
+   "why": "Cluster 236, record 945 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q083",
+   "q": "harveyrobertson32",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c174"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c174"
+   ],
+   "empty": false,
+   "why": "Cluster 198, record 780 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q084",
+   "q": "reubenw",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c191"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c191"
+   ],
+   "empty": false,
+   "why": "Cluster 216, record 868 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q085",
+   "q": "l.cooke",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c091"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c091"
+   ],
+   "empty": false,
+   "why": "Cluster 104, record 405 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q086",
+   "q": "lydias51",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c134"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c134"
+   ],
+   "empty": false,
+   "why": "Cluster 153, record 611 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q087",
+   "q": "evied62",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c089"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c089"
+   ],
+   "empty": false,
+   "why": "Cluster 102, record 396 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q088",
+   "q": "henry.w",
+   "category": "email-local-part",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c103"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c103"
+   ],
+   "empty": false,
+   "why": "Cluster 117, record 462 (relevant by the cluster column): part of the stored e-mail before the @."
+  },
+  {
+   "id": "q089",
+   "q": "Byrne Elliott",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c180"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c180"
+   ],
+   "empty": false,
+   "why": "Cluster 205, record 809 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q090",
+   "q": "Freddie Bradley",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c193"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c193"
+   ],
+   "empty": false,
+   "why": "Cluster 218, record 872 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q091",
+   "q": "Hall Isla",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c004"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c004"
+   ],
+   "empty": false,
+   "why": "Cluster 4, record 12 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q092",
+   "q": "Smith Scarlett",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c080"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c080"
+   ],
+   "empty": false,
+   "why": "Cluster 93, record 350 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q093",
+   "q": "Gabriel Thomas",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c010"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c010"
+   ],
+   "empty": false,
+   "why": "Cluster 11, record 25 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q094",
+   "q": "Noah Hunter",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c157"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c157"
+   ],
+   "empty": false,
+   "why": "Cluster 178, record 698 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q095",
+   "q": "Jones Mia",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c160"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c160"
+   ],
+   "empty": false,
+   "why": "Cluster 182, record 718 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q096",
+   "q": "Brooks Lydia",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c061"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c061"
+   ],
+   "empty": false,
+   "why": "Cluster 68, record 270 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q097",
+   "q": "Harper Charlotte",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c185"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c185"
+   ],
+   "empty": false,
+   "why": "Cluster 210, record 840 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q098",
+   "q": "Morgan Logan",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c181"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c181"
+   ],
+   "empty": false,
+   "why": "Cluster 206, record 817 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q099",
+   "q": "White Theo",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c113"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c113"
+   ],
+   "empty": false,
+   "why": "Cluster 127, record 509 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q100",
+   "q": "Barker Matilda",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c033"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c033"
+   ],
+   "empty": false,
+   "why": "Cluster 36, record 128 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q101",
+   "q": "Florence Brown",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c094"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c094"
+   ],
+   "empty": false,
+   "why": "Cluster 108, record 417 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q102",
+   "q": "Curtis Maya",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c159"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c159"
+   ],
+   "empty": false,
+   "why": "Cluster 180, record 705 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q103",
+   "q": "Taylor Lola",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c063"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c063"
+   ],
+   "empty": false,
+   "why": "Cluster 71, record 278 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q104",
+   "q": "Smith Mason",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c184"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c184"
+   ],
+   "empty": false,
+   "why": "Cluster 209, record 831 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q105",
+   "q": "Oscar Ahmed",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c164"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c164"
+   ],
+   "empty": false,
+   "why": "Cluster 187, record 739 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q106",
+   "q": "Henry Simmons",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c060"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c060"
+   ],
+   "empty": false,
+   "why": "Cluster 67, record 266 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q107",
+   "q": "Willow Jones",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c019"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c019"
+   ],
+   "empty": false,
+   "why": "Cluster 21, record 72 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q108",
+   "q": "Reuben Davies",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c101"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c101"
+   ],
+   "empty": false,
+   "why": "Cluster 115, record 455 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q109",
+   "q": "Eva Armstrong",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c173"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c173"
+   ],
+   "empty": false,
+   "why": "Cluster 197, record 776 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q110",
+   "q": "Davies George",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c212"
+   ],
+   "acceptable": [
+    "c053"
+   ],
+   "others": "wrong",
+   "first": [
+    "c053",
+    "c212"
+   ],
+   "empty": false,
+   "why": "Cluster 238, record 951 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name. Acceptable: c053 (contains every query word, a record of its own cluster has this value)."
+  },
+  {
+   "id": "q111",
+   "q": "Payne Scarlett",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c076"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c076"
+   ],
+   "empty": false,
+   "why": "Cluster 89, record 334 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q112",
+   "q": "Violet Clark",
+   "category": "name-order",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c122"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c122"
+   ],
+   "empty": false,
+   "why": "Cluster 136, record 559 (relevant by the cluster column): first name and surname swapped in the record; same words as the stored name."
+  },
+  {
+   "id": "q113",
+   "q": "Jesisia Owen",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c126"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 142, record 578 (relevant by the cluster column): first name 'Jesisia' vs stored 'Jessica' (2 edits); surname exact."
+  },
+  {
+   "id": "q114",
+   "q": "Popppy Fox",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c106"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 120, record 476 (relevant by the cluster column): first name 'Popppy' vs stored 'Poppy' (1 edit); surname exact."
+  },
+  {
+   "id": "q115",
+   "q": "Ffinley Jones",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c112"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 126, record 506 (relevant by the cluster column): first name 'FFinley' vs stored 'Finley' (1 edit); surname exact; record text 'FFinley Jones'."
+  },
+  {
+   "id": "q116",
+   "q": "Auutsin Wright",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c038"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 44, record 155 (relevant by the cluster column): first name 'Auutsin' vs stored 'Austin' (2 edits); surname exact."
+  },
+  {
+   "id": "q117",
+   "q": "Isaac James",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c088"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 101, record 393 (relevant by the cluster column): first name 'Isaac' vs stored 'Isaa' (1 edit); surname exact."
+  },
+  {
+   "id": "q118",
+   "q": "Elizaeth Wright",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c040"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 46, record 169 (relevant by the cluster column): first name 'Elizaeth' vs stored 'Elizabeth' (1 edit); surname exact."
+  },
+  {
+   "id": "q119",
+   "q": "Olirev Jones",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c120"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 134, record 545 (relevant by the cluster column): first name 'Olirev' vs stored 'Oliver' (2 edits); surname exact."
+  },
+  {
+   "id": "q120",
+   "q": "Hrarry May",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c035"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 39, record 145 (relevant by the cluster column): first name 'Hrarry' vs stored 'Harry' (1 edit); surname exact."
+  },
+  {
+   "id": "q121",
+   "q": "Harrosin Marshall",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c068"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 79, record 301 (relevant by the cluster column): first name 'Harrosin' vs stored 'Harrison' (2 edits); surname exact."
+  },
+  {
+   "id": "q122",
+   "q": "Ran Cole",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c022"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 24, record 83 (relevant by the cluster column): first name 'Ran' vs stored 'Ryan' (1 edit); surname exact."
+  },
+  {
+   "id": "q123",
+   "q": "Lukue Robinson",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c207"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 233, record 931 (relevant by the cluster column): first name 'Lukue' vs stored 'Luke' (1 edit); surname exact."
+  },
+  {
+   "id": "q124",
+   "q": "Hnoan Rogers",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c182"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 207, record 821 (relevant by the cluster column): first name 'hNoaN' vs stored 'Noah' (2 edits); surname exact; record text 'hNoaN Rogers'."
+  },
+  {
+   "id": "q125",
+   "q": "Kkai Turner",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c074"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 87, record 329 (relevant by the cluster column): first name 'KKai' vs stored 'Kai' (1 edit); surname exact; record text 'KKai Turner'."
+  },
+  {
+   "id": "q126",
+   "q": "Olivia Clarke",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c123"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 138, record 567 (relevant by the cluster column): first name 'Olivia' vs stored 'Oliva' (1 edit); surname exact."
+  },
+  {
+   "id": "q127",
+   "q": "Elzabeth Hunt",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c135"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 154, record 613 (relevant by the cluster column): first name 'Elzabeth' vs stored 'Elizabeth' (1 edit); surname exact."
+  },
+  {
+   "id": "q128",
+   "q": "Hug Kaur",
+   "category": "typo-first-name",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c098"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 112, record 437 (relevant by the cluster column): first name 'Hug' vs stored 'Hugo' (1 edit); surname exact."
+  },
+  {
+   "id": "q129",
+   "q": "Arabella Rres",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c158"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 179, record 702 (relevant by the cluster column): surname 'RRes' vs stored 'Rees' (1 edit); first name exact; record text 'Arabella RRes'."
+  },
+  {
+   "id": "q130",
+   "q": "Benjamin Lopez",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c086"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 99, record 382 (relevant by the cluster column): surname 'Lopez' vs stored 'Lopz' (1 edit); first name exact."
+  },
+  {
+   "id": "q131",
+   "q": "Erin Roers",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c014"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 15, record 50 (relevant by the cluster column): surname 'Roers' vs stored 'Rogers' (1 edit); first name exact."
+  },
+  {
+   "id": "q132",
+   "q": "Dylan Robert",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c146"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 166, record 655 (relevant by the cluster column): surname 'Robert' vs stored 'Rberts' (2 edits); first name exact."
+  },
+  {
+   "id": "q133",
+   "q": "Ollie Rowe",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c150"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 170, record 670 (relevant by the cluster column): surname 'Rowe' vs stored 'Roe' (1 edit); first name exact."
+  },
+  {
+   "id": "q134",
+   "q": "Adam Jones",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c017"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 19, record 65 (relevant by the cluster column): surname 'Jones' vs stored 'Jsneo' (2 edits); first name exact."
+  },
+  {
+   "id": "q135",
+   "q": "Grace Kiirk",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c129"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 146, record 595 (relevant by the cluster column): surname 'Kiirk' vs stored 'Kik' (2 edits); first name exact."
+  },
+  {
+   "id": "q136",
+   "q": "Jacob Adass",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c140"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 160, record 635 (relevant by the cluster column): surname 'Adass' vs stored 'Adams' (1 edit); first name exact."
+  },
+  {
+   "id": "q137",
+   "q": "Riley Kiing",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c121"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 135, record 552 (relevant by the cluster column): surname 'Kiing' vs stored 'King' (1 edit); first name exact."
+  },
+  {
+   "id": "q138",
+   "q": "Alexander Shaw",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c144"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 164, record 647 (relevant by the cluster column): surname 'Shaw' vs stored 'ShaSw' (1 edit); first name exact."
+  },
+  {
+   "id": "q139",
+   "q": "Oliver Roberton",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c213"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 239, record 954 (relevant by the cluster column): surname 'Roberton' vs stored 'Robertson' (1 edit); first name exact."
+  },
+  {
+   "id": "q140",
+   "q": "Daisy Hghes",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c072"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 85, record 319 (relevant by the cluster column): surname 'Hghes' vs stored 'Hugghes' (2 edits); first name exact."
+  },
+  {
+   "id": "q141",
+   "q": "Harley Rose",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c070"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 81, record 305 (relevant by the cluster column): surname 'Rose' vs stored 'Ros' (1 edit); first name exact."
+  },
+  {
+   "id": "q142",
+   "q": "Isabella Fltceer",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c187"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 212, record 847 (relevant by the cluster column): surname 'Fltceer' vs stored 'Fletcher' (2 edits); first name exact."
+  },
+  {
+   "id": "q143",
+   "q": "Hannah Davies",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c108"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 122, record 486 (relevant by the cluster column): surname 'Davies' vs stored 'Daivs' (2 edits); first name exact."
+  },
+  {
+   "id": "q144",
+   "q": "Leon Arnmstrong",
+   "category": "typo-surname",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c219"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 245, record 972 (relevant by the cluster column): surname 'Arnmstrong' vs stored 'Armstrong' (1 edit); first name exact."
+  },
+  {
+   "id": "q145",
+   "q": "Louis Adams",
+   "category": "typo-both-names",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c117"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 131, record 531 (relevant by the cluster column): first name 'Louis' vs stored 'Lous' (1 edit(s)), surname 'Adams' vs stored 'sAdams' (1 edit(s))."
+  },
+  {
+   "id": "q146",
+   "q": "Lolivia Daves",
+   "category": "typo-both-names",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c137"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 157, record 621 (relevant by the cluster column): first name 'lOlivia' vs stored 'Olivia' (1 edit(s)), surname 'Daves' vs stored 'Davies' (1 edit(s)); record text 'lOlivia Daves'."
+  },
+  {
+   "id": "q147",
+   "q": "Rarhry Andrews",
+   "category": "typo-both-names",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c119"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 133, record 543 (relevant by the cluster column): first name 'rarHry' vs stored 'Harry' (2 edit(s)), surname 'Andrews' vs stored 'Andresw' (1 edit(s)); record text 'rarHry Andrews'."
+  },
+  {
+   "id": "q148",
+   "q": "Imogen Wilikinson",
+   "category": "typo-both-names",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c149"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 169, record 666 (relevant by the cluster column): first name 'Imogen' vs stored 'IImogen' (1 edit(s)), surname 'Wilikinson' vs stored 'Wilkinson' (1 edit(s))."
+  },
+  {
+   "id": "q149",
+   "q": "Isal Price",
+   "category": "typo-both-names",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c045"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 52, record 193 (relevant by the cluster column): first name 'Isal' vs stored 'Isla' (1 edit(s)), surname 'Price' vs stored 'Pricie' (1 edit(s))."
+  },
+  {
+   "id": "q150",
+   "q": "Telliot Papge",
+   "category": "typo-both-names",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c049"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 56, record 208 (relevant by the cluster column): first name 'tElliot' vs stored 'Elliot' (1 edit(s)), surname 'PaPge' vs stored 'Page' (1 edit(s)); record text 'tElliot PaPge'."
+  },
+  {
+   "id": "q151",
+   "q": "Amelie Olriver",
+   "category": "typo-both-names",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c109"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 123, record 490 (relevant by the cluster column): first name 'Amelie' vs stored 'Ameliee' (1 edit(s)), surname 'Olriver' vs stored 'Oliver' (1 edit(s))."
+  },
+  {
+   "id": "q152",
+   "q": "Georee Davidvson",
+   "category": "typo-both-names",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c138"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 158, record 630 (relevant by the cluster column): first name 'Georee' vs stored 'George' (1 edit(s)), surname 'Davidvson' vs stored 'Davidson' (1 edit(s))."
+  },
+  {
+   "id": "q153",
+   "q": "Wells",
+   "category": "surname-only-typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c188"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 213, record 852 (relevant by the cluster column): the record has no first name; surname 'Wells' vs stored 'Wels' (1 edit)."
+  },
+  {
+   "id": "q154",
+   "q": "Evans",
+   "category": "surname-only-typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c026"
+   ],
+   "acceptable": [
+    "c175"
+   ],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 28, record 98 (relevant by the cluster column): the record has no first name; surname 'Evans' vs stored 'Eavns' (1 edit). Acceptable: c175 (contains every query word, a record of its own cluster has this value)."
+  },
+  {
+   "id": "q155",
+   "q": "Braynt",
+   "category": "surname-only-typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c100"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 114, record 447 (relevant by the cluster column): the record has no first name; surname 'Braynt' vs stored 'Bryant' (1 edit)."
+  },
+  {
+   "id": "q156",
+   "q": "Walton",
+   "category": "surname-only-typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c192"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 217, record 871 (relevant by the cluster column): the record has no first name; surname 'Walton' vs stored 'Wantol' (2 edits)."
+  },
+  {
+   "id": "q157",
+   "q": "Advs",
+   "category": "surname-only-typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c087"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 100, record 388 (relevant by the cluster column): the record has no first name; surname 'aDvs' vs stored 'Davis' (2 edits); record text 'aDvs'."
+  },
+  {
+   "id": "q158",
+   "q": "Cooke",
+   "category": "surname-only-typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c091"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 104, record 406 (relevant by the cluster column): the record has no first name; surname 'Cooke' vs stored 'Cooe' (1 edit)."
+  },
+  {
+   "id": "q159",
+   "q": "Rchards",
+   "category": "surname-only-typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c075"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 88, record 332 (relevant by the cluster column): the record has no first name; surname 'Rchards' vs stored 'Richards' (1 edit)."
+  },
+  {
+   "id": "q160",
+   "q": "Stehesn",
+   "category": "surname-only-typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c050"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 57, record 217 (relevant by the cluster column): the record has no first name; surname 'Stehesn' vs stored 'Stephens' (2 edits)."
+  },
+  {
+   "id": "q161",
+   "q": "ellis.h@morris-davis.net",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c102"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 116, record 457 (relevant by the cluster column): 'ellis.h@morris-davis.net' vs stored 'ellivs.h@morris-davis.net' (1 edit)."
+  },
+  {
+   "id": "q162",
+   "q": "j.c@white.org",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c169"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 192, record 750 (relevant by the cluster column): 'j.c@white.org' vs stored 'j.c@wwhite.org' (1 edit)."
+  },
+  {
+   "id": "q163",
+   "q": "ow@haynes-saunders.com",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c143"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 163, record 645 (relevant by the cluster column): 'ow@haynes-saunders.com' vs stored 'cow@haynes-saunder.com' (2 edits)."
+  },
+  {
+   "id": "q164",
+   "q": "l.gordon34cfren@h.com",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c024"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 26, record 88 (relevant by the cluster column): 'l.gordon34cfren@h.com' vs stored 'l.gordon34@french.com' (2 edits)."
+  },
+  {
+   "id": "q165",
+   "q": "em@aosn@ware.com",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c021"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 23, record 78 (relevant by the cluster column): 'em@aosn@ware.com' vs stored 'emason@ware.com' (2 edits; not a well-formed address)."
+  },
+  {
+   "id": "q166",
+   "q": "charlottej68@lee-taylor@.org",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c023"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 25, record 86 (relevant by the cluster column): 'charlottej68@lee-taylor@.org' vs stored 'charlottej68@lee-taylor.org' (1 edit; not a well-formed address)."
+  },
+  {
+   "id": "q167",
+   "q": "jt40@comsb.net",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c177"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 201, record 794 (relevant by the cluster column): 'jt40@comsb.net' vs stored 'jt40o@combs.net' (2 edits)."
+  },
+  {
+   "id": "q168",
+   "q": "robyndixon@williams.com",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c124"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 139, record 570 (relevant by the cluster column): 'robyndixon@williams.com' vs stored 'roboyndixon@williams.cm' (2 edits)."
+  },
+  {
+   "id": "q169",
+   "q": "fhoelmes@duacnn.com",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c043"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 49, record 185 (relevant by the cluster column): 'fhoelmes@duacnn.com' vs stored 'fholmes@duncan.com' (3 edits)."
+  },
+  {
+   "id": "q170",
+   "q": "josep.d@.bell.com",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c217"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 243, record 968 (relevant by the cluster column): 'josep.d@.bell.com' vs stored 'joseph.d@bell.com' (2 edits; not a well-formed address)."
+  },
+  {
+   "id": "q171",
+   "q": "mh@waoe.cadm",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c139"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 159, record 634 (relevant by the cluster column): 'mh@waoe.cadm' vs stored 'mh@wade.com' (3 edits)."
+  },
+  {
+   "id": "q172",
+   "q": "evejones@brewer-sparksi.org",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c204"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 230, record 921 (relevant by the cluster column): 'evejones@brewer-sparksi.org' vs stored 'eviejones@brewer-sparks.org' (2 edits)."
+  },
+  {
+   "id": "q173",
+   "q": "isaac.jones54@bradford.net",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c161"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 183, record 724 (relevant by the cluster column): 'isaac.jones54@bradford.net' vs stored 'isaac.jones54@bradford.enet' (1 edit)."
+  },
+  {
+   "id": "q174",
+   "q": "jbrooks@hall-lwery.net",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c195"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 220, record 881 (relevant by the cluster column): 'jbrooks@hall-lwery.net' vs stored 'jbrooks@hall-lowe-ry.net' (2 edits)."
+  },
+  {
+   "id": "q175",
+   "q": "samuelcampbel35@hebert.com",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c083"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 96, record 367 (relevant by the cluster column): 'samuelcampbel35@hebert.com' vs stored 'samuelcampbell35@hebert.com' (1 edit)."
+  },
+  {
+   "id": "q176",
+   "q": "nw5n@buckley.i4fo",
+   "category": "typo-email",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c221"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 247, record 987 (relevant by the cluster column): 'nw5n@buckley.i4fo' vs stored 'nw54@buckley.info' (2 edits; not a well-formed address)."
+  },
+  {
+   "id": "q177",
+   "q": "ameliap",
+   "category": "typo-email-local-part",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c133"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 152, record 608 (relevant by the cluster column): 'ameliap' vs stored 'ameiiap' (1 edit)."
+  },
+  {
+   "id": "q178",
+   "q": "toby.d",
+   "category": "typo-email-local-part",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c131"
+   ],
+   "acceptable": [
+    "c201"
+   ],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 148, record 600 (relevant by the cluster column): 'toby.d' vs stored 'toby.h' (1 edit). Acceptable: c201 (contains every query word)."
+  },
+  {
+   "id": "q179",
+   "q": "glolat86",
+   "category": "typo-email-local-part",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c063"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 71, record 275 (relevant by the cluster column): 'glolat86' vs stored 'lolat86' (1 edit)."
+  },
+  {
+   "id": "q180",
+   "q": "harveyrobertsoe32",
+   "category": "typo-email-local-part",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c174"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 198, record 783 (relevant by the cluster column): 'harveyrobertsoe32' vs stored 'harveyrobertson32' (1 edit)."
+  },
+  {
+   "id": "q181",
+   "q": "robert255",
+   "category": "typo-email-local-part",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c001"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 0, record 0 (relevant by the cluster column): 'robert255' vs stored 'roberta25' (2 edits)."
+  },
+  {
+   "id": "q182",
+   "q": "orobestson91",
+   "category": "typo-email-local-part",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c213"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 239, record 955 (relevant by the cluster column): 'orobestson91' vs stored 'orobertson91' (1 edit)."
+  },
+  {
+   "id": "q183",
+   "q": "emmalloyd",
+   "category": "typo-email-local-part",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c223"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 249, record 994 (relevant by the cluster column): 'emmalloyd' vs stored 'emmallod' (1 edit)."
+  },
+  {
+   "id": "q184",
+   "q": "scarlett.payne88",
+   "category": "typo-email-local-part",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c076"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 89, record 334 (relevant by the cluster column): 'scarlett.payne88' vs stored 'scarlett.payn88' (1 edit)."
+  },
+  {
+   "id": "q185",
+   "q": "ajones-",
+   "category": "typo-email-local-part",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c017"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 19, record 66 (relevant by the cluster column): 'ajones-' vs stored 'ajones6' (1 edit)."
+  },
+  {
+   "id": "q186",
+   "q": "wolivia.k1",
+   "category": "typo-email-local-part",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c155"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "Cluster 176, record 692 (relevant by the cluster column): 'wolivia.k1' vs stored 'olivia.k1' (1 edit)."
+  },
+  {
+   "id": "q187",
+   "q": "Alexander Payne",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c144, surname from c076. No client or raw record (all 1,000, any cluster) has both names in either order, as substrings in any field, or within 1 edit (up to 5 letters) / 2 edits (longer) of each word."
+  },
+  {
+   "id": "q188",
+   "q": "Alfie Macdonald",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c036, surname from c031. No client or raw record (all 1,000, any cluster) has both names in either order, as substrings in any field, or within 1 edit (up to 5 letters) / 2 edits (longer) of each word."
+  },
+  {
+   "id": "q189",
+   "q": "Charlotte Green",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c185, surname from c009. No client or raw record (all 1,000, any cluster) has both names in either order, as substrings in any field, or within 1 edit (up to 5 letters) / 2 edits (longer) of each word."
+  },
+  {
+   "id": "q190",
+   "q": "Heidi Wright",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c215, surname from c038. No client or raw record (all 1,000, any cluster) has both names in either order, as substrings in any field, or within 1 edit (up to 5 letters) / 2 edits (longer) of each word."
+  },
+  {
+   "id": "q191",
+   "q": "Jacob Noah",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c037, surname from c196. No client or raw record (all 1,000, any cluster) has both names in either order, as substrings in any field, or within 1 edit (up to 5 letters) / 2 edits (longer) of each word."
+  },
+  {
+   "id": "q192",
+   "q": "James Martin",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c090, surname from c092. No client or raw record (all 1,000, any cluster) has both names in either order, as substrings in any field, or within 1 edit (up to 5 letters) / 2 edits (longer) of each word."
+  },
+  {
+   "id": "q193",
+   "q": "Olivia Patterson",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c111, surname from c205. No client or raw record (all 1,000, any cluster) has both names in either order, as substrings in any field, or within 1 edit (up to 5 letters) / 2 edits (longer) of each word."
+  },
+  {
+   "id": "q194",
+   "q": "benjamin.kelly@johnson-brown.com",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c147, surname from c036, domain from c138. No client or raw record (all 1,000, any cluster) has an e-mail within 3 edits of it or a local part within 2 edits of 'benjamin.kelly'; no client contains the address or all of its parts; none carries both names, even with 1-2 edits."
+  },
+  {
+   "id": "q195",
+   "q": "emily.allen@ford.com",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c093, surname from c001, domain from c175. No client or raw record (all 1,000, any cluster) has an e-mail within 3 edits of it or a local part within 2 edits of 'emily.allen'; no client contains the address or all of its parts; none carries both names, even with 1-2 edits."
+  },
+  {
+   "id": "q196",
+   "q": "harry.shaw@conner-rose.com",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c092, surname from c153, domain from c212. No client or raw record (all 1,000, any cluster) has an e-mail within 3 edits of it or a local part within 2 edits of 'harry.shaw'; no client contains the address or all of its parts; none carries both names, even with 1-2 edits."
+  },
+  {
+   "id": "q197",
+   "q": "isla.elliott@walters.com",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c045, surname from c183, domain from c036. No client or raw record (all 1,000, any cluster) has an e-mail within 3 edits of it or a local part within 2 edits of 'isla.elliott'; no client contains the address or all of its parts; none carries both names, even with 1-2 edits."
+  },
+  {
+   "id": "q198",
+   "q": "joshua.jones@finley.info",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c057, surname from c161, domain from c075. No client or raw record (all 1,000, any cluster) has an e-mail within 3 edits of it or a local part within 2 edits of 'joshua.jones'; no client contains the address or all of its parts; none carries both names, even with 1-2 edits."
+  },
+  {
+   "id": "q199",
+   "q": "scarlett.lee@curry-flores.com",
+   "category": "negative",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": true,
+   "why": "Recombined: first name from c076, surname from c197, domain from c079. No client or raw record (all 1,000, any cluster) has an e-mail within 3 edits of it or a local part within 2 edits of 'scarlett.lee'; no client contains the address or all of its parts; none carries both names, even with 1-2 edits."
+  }
+ ],
+ "http_cases": []
+}

@@ -1,0 +1,4020 @@
+{
+ "suite": "existing-clients-skeptic-44",
+ "author": "Claude subagent (adversarial reviewer, wrote the cases before reading any fixture), 2026-11-20",
+ "about": "Independent adversarial client-search cases from research/_skeptic/client. Level 'nice' also holds the cases the author marked as debatable (strict reading of the requirement). Some queries deliberately contain invisible or invalid Unicode; they are stored as \\u escapes.",
+ "corpus": {
+  "clients": [
+   {
+    "id": "c_john",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@neviswealth.com",
+    "description": "Long-term client. Prefers quarterly reviews.",
+    "social_links": [
+     "https://www.linkedin.com/in/john-doe-cfa"
+    ]
+   },
+   {
+    "id": "c_jane",
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "email": "jane@doe-family.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_jon",
+    "first_name": "Jonathan",
+    "last_name": "Doering",
+    "email": "jon.doering@gmail.com",
+    "description": "Retired engineer; interested in ESG funds or green bonds",
+    "social_links": []
+   },
+   {
+    "id": "c_mary",
+    "first_name": "Mary",
+    "last_name": "Major",
+    "email": "M.Major@NEVISWEALTH.COM",
+    "description": "Head of compliance at Nevis Wealth",
+    "social_links": []
+   },
+   {
+    "id": "c_peter",
+    "first_name": "Peter",
+    "last_name": "Parker",
+    "email": "pparker@dailybugle.com",
+    "description": "Referred by a neviswealth.com advisor",
+    "social_links": []
+   },
+   {
+    "id": "c_nevisw",
+    "first_name": "Nevis",
+    "last_name": "Wealthy",
+    "email": "nevis.w@gmail.com",
+    "description": "Not related to the firm",
+    "social_links": []
+   },
+   {
+    "id": "c_sev",
+    "first_name": "S\u00e9verine",
+    "last_name": "O'Brien-M\u00fcller",
+    "email": "severine.obrien@example.co.uk",
+    "description": "N\u00e9e Dupont. Owns a caf\u00e9 in Z\u00fcrich.",
+    "social_links": []
+   },
+   {
+    "id": "c_siob",
+    "first_name": "Siobh\u00e1n",
+    "last_name": "O\u2019Connor",
+    "email": "siobhan@greenfield.ie",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_dangelo",
+    "first_name": "D\u2019Angelo",
+    "last_name": "McDonald",
+    "email": "dm@mcd-holdings.com",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_jose",
+    "first_name": "Jos\u00e9 \u00c1ngel",
+    "last_name": "Garc\u00eda M\u00e1rquez",
+    "email": "jgarcia@santander.es",
+    "description": "Empresario. 100% equity portfolio",
+    "social_links": []
+   },
+   {
+    "id": "c_zoe",
+    "first_name": "Zo\u00eb",
+    "last_name": "Smith-Jones",
+    "email": "zoe_sj@outlook.com",
+    "description": "Prefers e-mail; uses under_score handles",
+    "social_links": []
+   },
+   {
+    "id": "c_li",
+    "first_name": "Li",
+    "last_name": "Ng",
+    "email": "li.ng@hk-capital.hk",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_wang",
+    "first_name": "\u4f1f",
+    "last_name": "\u738b",
+    "email": "wang.wei@example.cn",
+    "description": "\u9ad8\u51c0\u503c\u5ba2\u6237\uff0c\u504f\u597d\u503a\u5238",
+    "social_links": []
+   },
+   {
+    "id": "c_alex",
+    "first_name": "\u0410\u043b\u0435\u043a\u0441\u0435\u0439",
+    "last_name": "\u0421\u043c\u0438\u0440\u043d\u043e\u0432",
+    "email": "a.smirnov@yandex.ru",
+    "description": "\u0418\u043d\u0442\u0435\u0440\u0435\u0441\u0443\u0435\u0442\u0441\u044f \u043e\u0431\u043b\u0438\u0433\u0430\u0446\u0438\u044f\u043c\u0438 \u0438 \u043d\u0435\u0434\u0432\u0438\u0436\u0438\u043c\u043e\u0441\u0442\u044c\u044e",
+    "social_links": []
+   },
+   {
+    "id": "c_alyona",
+    "first_name": "\u0410\u043b\u0451\u043d\u0430",
+    "last_name": "\u041a\u043e\u0440\u043e\u043b\u0451\u0432\u0430",
+    "email": "alena.k@mail.ru",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_pana",
+    "first_name": "\u03a0\u03b1\u03bd\u03b1\u03b3\u03b9\u03ce\u03c4\u03b7\u03c2",
+    "last_name": "\u03a0\u03b1\u03c0\u03b1\u03b4\u03cc\u03c0\u03bf\u03c5\u03bb\u03bf\u03c2",
+    "email": "p.papadopoulos@otenet.gr",
+    "description": "\u0395\u03c6\u03bf\u03c0\u03bb\u03b9\u03c3\u03c4\u03ae\u03c2",
+    "social_links": []
+   },
+   {
+    "id": "c_mehmet",
+    "first_name": "Mehmet",
+    "last_name": "Y\u0131ld\u0131r\u0131m",
+    "email": "mehmet.y@turkcell.com.tr",
+    "description": "\u0130stanbul'da ya\u015f\u0131yor",
+    "social_links": []
+   },
+   {
+    "id": "c_ibrahim",
+    "first_name": "\u0130brahim",
+    "last_name": "\u00c7elik",
+    "email": "ibrahim.celik@koc.com.tr",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_lukasz",
+    "first_name": "\u0141ukasz",
+    "last_name": "W\u00f3jcik",
+    "email": "lukasz.w@wp.pl",
+    "description": "W\u0142a\u015bciciel firmy transportowej",
+    "social_links": []
+   },
+   {
+    "id": "c_bjorn",
+    "first_name": "Bj\u00f8rn",
+    "last_name": "\u00d8deg\u00e5rd",
+    "email": "bjorn@fjordinvest.no",
+    "description": "Founder of \u00c6ther Capital; office at Wei\u00dfensee Stra\u00dfe 5",
+    "social_links": []
+   },
+   {
+    "id": "c_jurgen",
+    "first_name": "J\u00fcrgen",
+    "last_name": "Gro\u00df",
+    "email": "j.gross@web.de",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_nguyen",
+    "first_name": "H\u01b0\u01a1ng",
+    "last_name": "Nguy\u1ec5n Th\u1ecb",
+    "email": "huong.nt@fpt.vn",
+    "description": "\u0110\u1ea7u t\u01b0 b\u1ea5t \u0111\u1ed9ng s\u1ea3n",
+    "social_links": []
+   },
+   {
+    "id": "c_moh",
+    "first_name": "\u0645\u062d\u0645\u062f",
+    "last_name": "\u0627\u0644\u0641\u0627\u0633\u064a",
+    "email": "m.alfassi@example.ma",
+    "description": "\u0639\u0645\u064a\u0644 \u0645\u0646\u0630 \u0662\u0660\u0661\u0665",
+    "social_links": []
+   },
+   {
+    "id": "c_yael",
+    "first_name": "\u05d9\u05e2\u05dc",
+    "last_name": "\u05db\u05d4\u05df",
+    "email": "yael.cohen@example.co.il",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_renee",
+    "first_name": "Ren\u00e9e",
+    "last_name": "Leclerc",
+    "email": "renee@leclerc.fr",
+    "description": "Loves \ud83d\ude80 startups and \ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67 family trusts \ud83d\ude00",
+    "social_links": []
+   },
+   {
+    "id": "c_percy",
+    "first_name": "Percy",
+    "last_name": "Cent",
+    "email": "percy@100percent.io",
+    "description": "Wants 100% equities, 0_bonds; files in C:\\Users\\percy",
+    "social_links": []
+   },
+   {
+    "id": "c_bobby",
+    "first_name": "Robert",
+    "last_name": "Tables",
+    "email": "bobby@xkcd.com",
+    "description": "Robert'); DROP TABLE clients;--",
+    "social_links": []
+   },
+   {
+    "id": "c_anna",
+    "first_name": "Anna-Maria",
+    "last_name": "von der Heide",
+    "email": "am.vdheide@t-online.de",
+    "description": "Stiftung; family office in M\u00fcnchen",
+    "social_links": []
+   },
+   {
+    "id": "c_picard",
+    "first_name": "Jean-Luc",
+    "last_name": "Picard",
+    "email": "jl.picard@starfleet.org",
+    "description": "Captain. Make it so.",
+    "social_links": []
+   },
+   {
+    "id": "c_smith1",
+    "first_name": "John",
+    "last_name": "Smith",
+    "email": "john.smith@acme.com",
+    "description": "Referred by Jane Doe",
+    "social_links": []
+   },
+   {
+    "id": "c_smith2",
+    "first_name": "John",
+    "last_name": "Smith",
+    "email": "jsmith1975@yahoo.com",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_mike",
+    "first_name": "Mike",
+    "last_name": "Johnson",
+    "email": "mike.j@acme.com",
+    "description": "Golfs with Mr Smith on Fridays",
+    "social_links": []
+   },
+   {
+    "id": "c_bob",
+    "first_name": "Bob",
+    "last_name": "Jones",
+    "email": "bob@smithfield.com",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_null",
+    "first_name": "Null",
+    "last_name": "None",
+    "email": "null@example.com",
+    "description": "NULL",
+    "social_links": []
+   },
+   {
+    "id": "c_ab",
+    "first_name": "A",
+    "last_name": "B",
+    "email": "ab@c.de",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_olivia",
+    "first_name": "Olivia",
+    "last_name": "Stone",
+    "email": "olivia@stonecap.com",
+    "description": "",
+    "social_links": [
+     "https://linkedin.com/in/olivia-stone-cfa",
+     "https://twitter.com/quantolivia"
+    ]
+   },
+   {
+    "id": "c_sam",
+    "first_name": "Sam",
+    "last_name": "Taylor",
+    "email": "sam+wealth@proton.me",
+    "description": "Line one\nLine two\tTabbed",
+    "social_links": []
+   },
+   {
+    "id": "c_emile",
+    "first_name": "\u00c9MILE",
+    "last_name": "ZOLA",
+    "email": "EMILE.ZOLA@EXAMPLE.FR",
+    "description": "J'ACCUSE",
+    "social_links": []
+   },
+   {
+    "id": "c_kenji",
+    "first_name": "\uff2b\uff45\uff4e\uff4a\uff49",
+    "last_name": "Tanaka",
+    "email": "kenji.tanaka@example.jp",
+    "description": "\u6771\u4eac\u5728\u4f4f\u3002\ufb01nance director",
+    "social_links": []
+   },
+   {
+    "id": "c_marie",
+    "first_name": "Marie\u00a0Claire",
+    "last_name": "Dupont",
+    "email": "mc.dupont@orange.fr",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_zw",
+    "first_name": "Zero\u200bWidth",
+    "last_name": "Joiner",
+    "email": "zw@invisible.dev",
+    "description": "soft\u00adhyphen in the middle",
+    "social_links": []
+   },
+   {
+    "id": "c_dash",
+    "first_name": "Anne\u2013Sophie",
+    "last_name": "Lef\u00e8vre",
+    "email": "as.lefevre@laposte.net",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_long",
+    "first_name": "Lorem",
+    "last_name": "Ipsum",
+    "email": "lorem@ipsum.io",
+    "description": "lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet zebra-needle-9000",
+    "social_links": []
+   },
+   {
+    "id": "c_heart",
+    "first_name": "Val",
+    "last_name": "Entine",
+    "email": "val@hearts.io",
+    "description": "I \u2764\ufe0f dividends",
+    "social_links": []
+   }
+  ],
+  "documents": []
+ },
+ "queries": [
+  {
+   "id": "A01",
+   "q": "NevisWealth",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] canonical; e-mail hits should outrank the description-only hit",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ],
+   "must_not": [
+    "c_nevisw"
+   ],
+   "before": [
+    [
+     "c_john",
+     "c_peter"
+    ],
+    [
+     "c_mary",
+     "c_peter"
+    ]
+   ]
+  },
+  {
+   "id": "A02",
+   "q": "neviswealth.com",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ]
+  },
+  {
+   "id": "A03",
+   "q": "@neviswealth",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_john",
+    "c_mary"
+   ]
+  },
+  {
+   "id": "A04",
+   "q": "john.doe",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "A05",
+   "q": "doe@nevis",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "A06",
+   "q": "jon.doering@gmail.com",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_jon"
+   ]
+  },
+  {
+   "id": "A07",
+   "q": "JOHN.DOE@NEVISWEALTH.COM",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "A08",
+   "q": "wealth",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_nevisw",
+    "c_peter",
+    "c_sam"
+   ]
+  },
+  {
+   "id": "A09",
+   "q": "sam+wealth",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_sam"
+   ]
+  },
+  {
+   "id": "A10",
+   "q": "zoe_sj",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_zoe"
+   ]
+  },
+  {
+   "id": "A11",
+   "q": ".co.uk",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_sev"
+   ]
+  },
+  {
+   "id": "A12",
+   "q": "hk-capital",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_li"
+   ]
+  },
+  {
+   "id": "A13",
+   "q": "m.major@neviswealth.com",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] stored e-mail is upper case",
+   "relevant": [
+    "c_mary"
+   ]
+  },
+  {
+   "id": "A14",
+   "q": "emile.zola@example.fr",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_emile"
+   ]
+  },
+  {
+   "id": "A15",
+   "q": "gmail",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_jon",
+    "c_nevisw"
+   ]
+  },
+  {
+   "id": "A16",
+   "q": "example",
+   "category": "e-mail local parts and domains",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] e-mail local parts and domains",
+   "relevant": [
+    "c_emile",
+    "c_kenji",
+    "c_moh",
+    "c_null",
+    "c_sev",
+    "c_wang",
+    "c_yael"
+   ]
+  },
+  {
+   "id": "B01",
+   "q": "@",
+   "category": "'@' and dots, stray punctuation",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] matches every client (every e-mail has an @)",
+   "relevant": [
+    "c_john",
+    "c_jane",
+    "c_jon",
+    "c_mary",
+    "c_peter",
+    "c_nevisw",
+    "c_sev",
+    "c_siob",
+    "c_dangelo",
+    "c_jose",
+    "c_zoe",
+    "c_li",
+    "c_wang",
+    "c_alex",
+    "c_alyona",
+    "c_pana",
+    "c_mehmet",
+    "c_ibrahim",
+    "c_lukasz",
+    "c_bjorn",
+    "c_jurgen",
+    "c_nguyen",
+    "c_moh",
+    "c_yael",
+    "c_renee",
+    "c_percy",
+    "c_bobby",
+    "c_anna",
+    "c_picard",
+    "c_smith1",
+    "c_smith2",
+    "c_mike",
+    "c_bob",
+    "c_null",
+    "c_ab",
+    "c_olivia",
+    "c_sam",
+    "c_emile",
+    "c_kenji",
+    "c_marie",
+    "c_zw",
+    "c_dash",
+    "c_long",
+    "c_heart"
+   ]
+  },
+  {
+   "id": "B02",
+   "q": ".",
+   "category": "'@' and dots, stray punctuation",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] matches every client",
+   "relevant": [
+    "c_john",
+    "c_jane",
+    "c_jon",
+    "c_mary",
+    "c_peter",
+    "c_nevisw",
+    "c_sev",
+    "c_siob",
+    "c_dangelo",
+    "c_jose",
+    "c_zoe",
+    "c_li",
+    "c_wang",
+    "c_alex",
+    "c_alyona",
+    "c_pana",
+    "c_mehmet",
+    "c_ibrahim",
+    "c_lukasz",
+    "c_bjorn",
+    "c_jurgen",
+    "c_nguyen",
+    "c_moh",
+    "c_yael",
+    "c_renee",
+    "c_percy",
+    "c_bobby",
+    "c_anna",
+    "c_picard",
+    "c_smith1",
+    "c_smith2",
+    "c_mike",
+    "c_bob",
+    "c_null",
+    "c_ab",
+    "c_olivia",
+    "c_sam",
+    "c_emile",
+    "c_kenji",
+    "c_marie",
+    "c_zw",
+    "c_dash",
+    "c_long",
+    "c_heart"
+   ]
+  },
+  {
+   "id": "B03",
+   "q": "john.doe@",
+   "category": "'@' and dots, stray punctuation",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] '@' and dots, stray punctuation",
+   "relevant": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "B04",
+   "q": "j.doe",
+   "category": "'@' and dots, stray punctuation",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[debatable] initial + surname; literal substring says nothing",
+   "empty": true
+  },
+  {
+   "id": "B05",
+   "q": "doe.",
+   "category": "'@' and dots, stray punctuation",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] trailing full stop glued to the word",
+   "relevant": [
+    "c_jane",
+    "c_john"
+   ],
+   "others": "ignore"
+  },
+  {
+   "id": "B06",
+   "q": "<john.doe@neviswealth.com>",
+   "category": "'@' and dots, stray punctuation",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] pasted from a mail client",
+   "relevant": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "B07",
+   "q": "John Doe <john.doe@neviswealth.com>",
+   "category": "'@' and dots, stray punctuation",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] pasted from a mail client",
+   "relevant": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "B08",
+   "q": "\"John Doe\"",
+   "category": "'@' and dots, stray punctuation",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] quoted name",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "B09",
+   "q": "(john doe)",
+   "category": "'@' and dots, stray punctuation",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] '@' and dots, stray punctuation",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "B10",
+   "q": "john.doe@neviswealth.com,",
+   "category": "'@' and dots, stray punctuation",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] trailing comma is a separator",
+   "relevant": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "B11",
+   "q": "mailto:john.doe@neviswealth.com",
+   "category": "'@' and dots, stray punctuation",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] '@' and dots, stray punctuation",
+   "relevant": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "B12",
+   "q": "https://www.neviswealth.com",
+   "category": "'@' and dots, stray punctuation",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] company URL pasted",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ],
+   "others": "ignore"
+  },
+  {
+   "id": "C01",
+   "q": "  nEvIsWeAlTh  ",
+   "category": "case and whitespace",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] case and whitespace",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ]
+  },
+  {
+   "id": "C02",
+   "q": "\tJohn\n Doe  ",
+   "category": "case and whitespace",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] smith1 (John Smith, 'Referred by Jane Doe') legitimately matches both tokens across fields",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "must_not": [
+    "c_jane",
+    "c_jon"
+   ],
+   "first": [
+    "c_john"
+   ],
+   "before": [
+    [
+     "c_john",
+     "c_smith1"
+    ]
+   ]
+  },
+  {
+   "id": "C03",
+   "q": "John\u00a0Doe",
+   "category": "case and whitespace",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] NBSP separator",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "must_not": [
+    "c_jane"
+   ],
+   "first": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "C04",
+   "q": "marie claire",
+   "category": "case and whitespace",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] stored name has an NBSP",
+   "relevant": [
+    "c_marie"
+   ]
+  },
+  {
+   "id": "C05",
+   "q": "JOHN",
+   "category": "case and whitespace",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] whole word John before prefix Johnson",
+   "relevant": [
+    "c_john",
+    "c_mike",
+    "c_smith1",
+    "c_smith2"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_john",
+    "c_smith1",
+    "c_smith2"
+   ],
+   "before": [
+    [
+     "c_smith1",
+     "c_mike"
+    ],
+    [
+     "c_john",
+     "c_mike"
+    ]
+   ]
+  },
+  {
+   "id": "C06",
+   "q": "dOe",
+   "category": "case and whitespace",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] case and whitespace",
+   "relevant": [
+    "c_jane",
+    "c_john",
+    "c_jon",
+    "c_smith1"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_jane",
+    "c_john"
+   ],
+   "before": [
+    [
+     "c_jane",
+     "c_jon"
+    ],
+    [
+     "c_john",
+     "c_smith1"
+    ]
+   ]
+  },
+  {
+   "id": "D01",
+   "q": "doe john",
+   "category": "several words, any order",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] several words, any order",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "must_not": [
+    "c_jane"
+   ],
+   "first": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "D02",
+   "q": "Doe, John",
+   "category": "several words, any order",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] several words, any order",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "must_not": [
+    "c_jane"
+   ],
+   "first": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "D03",
+   "q": "john;doe",
+   "category": "several words, any order",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] several words, any order",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "must_not": [
+    "c_jane"
+   ],
+   "first": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "D04",
+   "q": "garcia jose angel",
+   "category": "several words, any order",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] several words, any order",
+   "relevant": [
+    "c_jose"
+   ]
+  },
+  {
+   "id": "D05",
+   "q": "m\u00e1rquez GARC\u00cdA",
+   "category": "several words, any order",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] several words, any order",
+   "relevant": [
+    "c_jose"
+   ]
+  },
+  {
+   "id": "D06",
+   "q": "esg engineer retired",
+   "category": "several words, any order",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] several words, any order",
+   "relevant": [
+    "c_jon"
+   ]
+  },
+  {
+   "id": "D07",
+   "q": "john john john",
+   "category": "several words, any order",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] duplicate tokens",
+   "relevant": [
+    "c_john",
+    "c_mike",
+    "c_smith1",
+    "c_smith2"
+   ]
+  },
+  {
+   "id": "D08",
+   "q": "john jane",
+   "category": "several words, any order",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] AND across fields: John Smith, 'Referred by Jane Doe'",
+   "relevant": [
+    "c_smith1"
+   ]
+  },
+  {
+   "id": "D09",
+   "q": "von der heide anna",
+   "category": "several words, any order",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] several words, any order",
+   "relevant": [
+    "c_anna"
+   ]
+  },
+  {
+   "id": "D10",
+   "q": "tanaka kenji",
+   "category": "several words, any order",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] stored first name is full-width",
+   "relevant": [
+    "c_kenji"
+   ]
+  },
+  {
+   "id": "D11",
+   "q": "nguyen thi huong",
+   "category": "several words, any order",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] several words, any order",
+   "relevant": [
+    "c_nguyen"
+   ]
+  },
+  {
+   "id": "D12",
+   "q": "tabbed line two one",
+   "category": "several words, any order",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] description contains newline and tab",
+   "relevant": [
+    "c_sam"
+   ]
+  },
+  {
+   "id": "D13",
+   "q": "jane smith",
+   "category": "several words, any order",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] AND across fields; surprising for a human",
+   "relevant": [
+    "c_smith1"
+   ]
+  },
+  {
+   "id": "E01",
+   "q": "john doe neviswealth",
+   "category": "name + company",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] name + company",
+   "relevant": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "E02",
+   "q": "doe neviswealth",
+   "category": "name + company",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] name + company",
+   "relevant": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "E03",
+   "q": "neviswealth mary",
+   "category": "name + company",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] name + company",
+   "relevant": [
+    "c_mary"
+   ]
+  },
+  {
+   "id": "E04",
+   "q": "smith outlook",
+   "category": "name + company",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] name + company",
+   "relevant": [
+    "c_zoe"
+   ]
+  },
+  {
+   "id": "E05",
+   "q": "picard starfleet",
+   "category": "name + company",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] name + company",
+   "relevant": [
+    "c_picard"
+   ]
+  },
+  {
+   "id": "E06",
+   "q": "john acme",
+   "category": "name + company",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] 'john' is a prefix of Johnson",
+   "relevant": [
+    "c_mike",
+    "c_smith1"
+   ],
+   "first": [
+    "c_smith1"
+   ]
+  },
+  {
+   "id": "E07",
+   "q": "smith yahoo",
+   "category": "name + company",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] name + company",
+   "relevant": [
+    "c_smith2"
+   ]
+  },
+  {
+   "id": "F01",
+   "q": "smith-jones",
+   "category": "hyphens and apostrophes",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] hyphens and apostrophes",
+   "relevant": [
+    "c_zoe"
+   ]
+  },
+  {
+   "id": "F02",
+   "q": "smith jones",
+   "category": "hyphens and apostrophes",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] bob = Bob Jones @smithfield.com",
+   "relevant": [
+    "c_bob",
+    "c_zoe"
+   ],
+   "first": [
+    "c_zoe"
+   ]
+  },
+  {
+   "id": "F03",
+   "q": "smithjones",
+   "category": "hyphens and apostrophes",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] hyphens and apostrophes",
+   "relevant": [
+    "c_zoe"
+   ],
+   "others": "ignore"
+  },
+  {
+   "id": "F04",
+   "q": "o'brien",
+   "category": "hyphens and apostrophes",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] hyphens and apostrophes",
+   "relevant": [
+    "c_sev"
+   ]
+  },
+  {
+   "id": "F05",
+   "q": "obrien",
+   "category": "hyphens and apostrophes",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] substring of the e-mail local part",
+   "relevant": [
+    "c_sev"
+   ]
+  },
+  {
+   "id": "F06",
+   "q": "o'connor",
+   "category": "hyphens and apostrophes",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] stored with U+2019",
+   "relevant": [
+    "c_siob"
+   ]
+  },
+  {
+   "id": "F07",
+   "q": "oconnor",
+   "category": "hyphens and apostrophes",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] hyphens and apostrophes",
+   "relevant": [
+    "c_siob"
+   ],
+   "others": "ignore"
+  },
+  {
+   "id": "F08",
+   "q": "O\u2019Brien",
+   "category": "hyphens and apostrophes",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] query with U+2019, stored ASCII",
+   "relevant": [
+    "c_sev"
+   ]
+  },
+  {
+   "id": "F09",
+   "q": "jean-luc",
+   "category": "hyphens and apostrophes",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] hyphens and apostrophes",
+   "relevant": [
+    "c_picard"
+   ]
+  },
+  {
+   "id": "F10",
+   "q": "jean luc",
+   "category": "hyphens and apostrophes",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] hyphens and apostrophes",
+   "relevant": [
+    "c_picard"
+   ]
+  },
+  {
+   "id": "F11",
+   "q": "jeanluc",
+   "category": "hyphens and apostrophes",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] hyphens and apostrophes",
+   "relevant": [
+    "c_picard"
+   ],
+   "others": "ignore"
+  },
+  {
+   "id": "F12",
+   "q": "anna maria",
+   "category": "hyphens and apostrophes",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] hyphens and apostrophes",
+   "relevant": [
+    "c_anna"
+   ]
+  },
+  {
+   "id": "F13",
+   "q": "d'angelo",
+   "category": "hyphens and apostrophes",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] stored with U+2019",
+   "relevant": [
+    "c_dangelo"
+   ]
+  },
+  {
+   "id": "F14",
+   "q": "anne-sophie",
+   "category": "hyphens and apostrophes",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] stored with an en dash",
+   "relevant": [
+    "c_dash"
+   ]
+  },
+  {
+   "id": "F15",
+   "q": "mcdonald",
+   "category": "hyphens and apostrophes",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] hyphens and apostrophes",
+   "relevant": [
+    "c_dangelo"
+   ]
+  },
+  {
+   "id": "G01",
+   "q": "jose",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_jose"
+   ]
+  },
+  {
+   "id": "G02",
+   "q": "JOS\u00c9 \u00c1NGEL",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_jose"
+   ]
+  },
+  {
+   "id": "G03",
+   "q": "severine",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_sev"
+   ]
+  },
+  {
+   "id": "G04",
+   "q": "zoe",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_zoe"
+   ]
+  },
+  {
+   "id": "G05",
+   "q": "zo\u00eb",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_zoe"
+   ]
+  },
+  {
+   "id": "G06",
+   "q": "muller",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_sev"
+   ]
+  },
+  {
+   "id": "G07",
+   "q": "mueller",
+   "category": "diacritics",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] German transliteration ue",
+   "relevant": [
+    "c_sev"
+   ],
+   "others": "ignore"
+  },
+  {
+   "id": "G08",
+   "q": "lukasz wojcik",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_lukasz"
+   ]
+  },
+  {
+   "id": "G09",
+   "q": "odegard",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_bjorn"
+   ]
+  },
+  {
+   "id": "G10",
+   "q": "bjorn",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_bjorn"
+   ]
+  },
+  {
+   "id": "G11",
+   "q": "bj\u00f8rn \u00f8deg\u00e5rd",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_bjorn"
+   ]
+  },
+  {
+   "id": "G12",
+   "q": "strasse",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_bjorn"
+   ]
+  },
+  {
+   "id": "G13",
+   "q": "weissensee",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_bjorn"
+   ]
+  },
+  {
+   "id": "G14",
+   "q": "aether",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_bjorn"
+   ]
+  },
+  {
+   "id": "G15",
+   "q": "yildirim",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_mehmet"
+   ]
+  },
+  {
+   "id": "G16",
+   "q": "YILDIRIM",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_mehmet"
+   ]
+  },
+  {
+   "id": "G17",
+   "q": "istanbul",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_mehmet"
+   ]
+  },
+  {
+   "id": "G18",
+   "q": "\u0130STANBUL",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_mehmet"
+   ]
+  },
+  {
+   "id": "G19",
+   "q": "ibrahim celik",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_ibrahim"
+   ]
+  },
+  {
+   "id": "G20",
+   "q": "IBRAHIM",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_ibrahim"
+   ]
+  },
+  {
+   "id": "G21",
+   "q": "gross",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_jurgen"
+   ]
+  },
+  {
+   "id": "G22",
+   "q": "GROSS",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_jurgen"
+   ]
+  },
+  {
+   "id": "G23",
+   "q": "gro\u00df",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_jurgen"
+   ]
+  },
+  {
+   "id": "G24",
+   "q": "GRO\u1e9e",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] capital sharp s U+1E9E",
+   "relevant": [
+    "c_jurgen"
+   ]
+  },
+  {
+   "id": "G25",
+   "q": "Jose\u0301",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] NFD input",
+   "relevant": [
+    "c_jose"
+   ]
+  },
+  {
+   "id": "G26",
+   "q": "emile zola",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_emile"
+   ]
+  },
+  {
+   "id": "G27",
+   "q": "\u00e9mile",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_emile"
+   ]
+  },
+  {
+   "id": "G28",
+   "q": "munchen",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_anna"
+   ]
+  },
+  {
+   "id": "G29",
+   "q": "cafe zurich",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_sev"
+   ]
+  },
+  {
+   "id": "G30",
+   "q": "lefevre",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_dash"
+   ]
+  },
+  {
+   "id": "G31",
+   "q": "dupont",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] diacritics",
+   "relevant": [
+    "c_marie",
+    "c_sev"
+   ]
+  },
+  {
+   "id": "G32",
+   "q": "siobhan",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] NULL description + diacritic",
+   "relevant": [
+    "c_siob"
+   ]
+  },
+  {
+   "id": "H01",
+   "q": "\u0441\u043c\u0438\u0440\u043d\u043e\u0432",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_alex"
+   ]
+  },
+  {
+   "id": "H02",
+   "q": "\u0421\u041c\u0418\u0420\u041d\u041e\u0412",
+   "category": "non-Latin scripts",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] non-Latin scripts",
+   "relevant": [
+    "c_alex"
+   ]
+  },
+  {
+   "id": "H03",
+   "q": "\u0430\u043b\u0435\u043a\u0441\u0435\u0439 \u0441\u043c\u0438\u0440\u043d\u043e\u0432",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_alex"
+   ]
+  },
+  {
+   "id": "H04",
+   "q": "\u043e\u0431\u043b\u0438\u0433\u0430\u0446",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_alex"
+   ]
+  },
+  {
+   "id": "H05",
+   "q": "\u0430\u043b\u0435\u043d\u0430 \u043a\u043e\u0440\u043e\u043b\u0435\u0432\u0430",
+   "category": "non-Latin scripts",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] e for yo",
+   "relevant": [
+    "c_alyona"
+   ]
+  },
+  {
+   "id": "H06",
+   "q": "\u0410\u043b\u0451\u043d\u0430",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_alyona"
+   ]
+  },
+  {
+   "id": "H07",
+   "q": "\u738b",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_wang"
+   ]
+  },
+  {
+   "id": "H08",
+   "q": "\u738b\u4f1f",
+   "category": "non-Latin scripts",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] natural CJK order: family name first, no space",
+   "relevant": [
+    "c_wang"
+   ]
+  },
+  {
+   "id": "H09",
+   "q": "\u4f1f \u738b",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_wang"
+   ]
+  },
+  {
+   "id": "H10",
+   "q": "\u9ad8\u51c0\u503c",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_wang"
+   ]
+  },
+  {
+   "id": "H11",
+   "q": "\u503a\u5238",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_wang"
+   ]
+  },
+  {
+   "id": "H12",
+   "q": "\u03c0\u03b1\u03c0\u03b1\u03b4\u03bf\u03c0\u03bf\u03c5\u03bb\u03bf\u03c2",
+   "category": "non-Latin scripts",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] non-Latin scripts",
+   "relevant": [
+    "c_pana"
+   ]
+  },
+  {
+   "id": "H13",
+   "q": "\u03a0\u0391\u03a0\u0391\u0394\u039f\u03a0\u039f\u03a5\u039b\u039f\u03a3",
+   "category": "non-Latin scripts",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] upper case: final sigma",
+   "relevant": [
+    "c_pana"
+   ]
+  },
+  {
+   "id": "H14",
+   "q": "\u03a0\u03b1\u03c0\u03b1\u03b4\u03cc\u03c0\u03bf\u03c5\u03bb\u03bf\u03c2",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_pana"
+   ]
+  },
+  {
+   "id": "H15",
+   "q": "\u0645\u062d\u0645\u062f",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_moh"
+   ]
+  },
+  {
+   "id": "H16",
+   "q": "\u0645\u064f\u062d\u064e\u0645\u064e\u0651\u062f",
+   "category": "non-Latin scripts",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] Arabic with harakat",
+   "relevant": [
+    "c_moh"
+   ]
+  },
+  {
+   "id": "H17",
+   "q": "\u05db\u05d4\u05df",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_yael"
+   ]
+  },
+  {
+   "id": "H18",
+   "q": "\uff4b\uff45\uff4e\uff4a\uff49",
+   "category": "non-Latin scripts",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] full-width query",
+   "relevant": [
+    "c_kenji"
+   ]
+  },
+  {
+   "id": "H19",
+   "q": "kenji",
+   "category": "non-Latin scripts",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] non-Latin scripts",
+   "relevant": [
+    "c_kenji"
+   ]
+  },
+  {
+   "id": "H20",
+   "q": "finance",
+   "category": "non-Latin scripts",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] stored with the fi ligature",
+   "relevant": [
+    "c_kenji"
+   ]
+  },
+  {
+   "id": "H21",
+   "q": "\u6771\u4eac",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_kenji"
+   ]
+  },
+  {
+   "id": "H22",
+   "q": "smirnov",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] Latin, matches the e-mail",
+   "relevant": [
+    "c_alex"
+   ]
+  },
+  {
+   "id": "H23",
+   "q": "\u0662\u0660\u0661\u0665",
+   "category": "non-Latin scripts",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] non-Latin scripts",
+   "relevant": [
+    "c_moh"
+   ]
+  },
+  {
+   "id": "I01",
+   "q": "\ud83d\ude80",
+   "category": "emoji",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] emoji",
+   "relevant": [
+    "c_renee"
+   ]
+  },
+  {
+   "id": "I02",
+   "q": "\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67",
+   "category": "emoji",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] ZWJ sequence",
+   "relevant": [
+    "c_renee"
+   ]
+  },
+  {
+   "id": "I03",
+   "q": "\ud83d\ude00",
+   "category": "emoji",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] emoji",
+   "relevant": [
+    "c_renee"
+   ]
+  },
+  {
+   "id": "I04",
+   "q": "\ud83d\ude80 startups",
+   "category": "emoji",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] emoji",
+   "relevant": [
+    "c_renee"
+   ]
+  },
+  {
+   "id": "I05",
+   "q": "\u2764",
+   "category": "emoji",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] query without the variation selector",
+   "relevant": [
+    "c_heart"
+   ]
+  },
+  {
+   "id": "I06",
+   "q": "\u2764\ufe0f",
+   "category": "emoji",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] emoji",
+   "relevant": [
+    "c_heart"
+   ]
+  },
+  {
+   "id": "I07",
+   "q": "\ud83d\udc69",
+   "category": "emoji",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] component of the ZWJ sequence",
+   "relevant": [
+    "c_renee"
+   ]
+  },
+  {
+   "id": "I08",
+   "q": "\ud83d\ude42",
+   "category": "emoji",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] emoji",
+   "empty": true
+  },
+  {
+   "id": "J01",
+   "q": "a",
+   "category": "one and two characters",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[rank] client 'A B': whole-word name hit",
+   "relevant": [
+    "c_ab",
+    "c_jane",
+    "c_mary"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_ab"
+   ]
+  },
+  {
+   "id": "J02",
+   "q": "li",
+   "category": "one and two characters",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[rank] one and two characters",
+   "relevant": [
+    "c_bobby",
+    "c_ibrahim",
+    "c_john",
+    "c_li",
+    "c_mary",
+    "c_olivia",
+    "c_sam"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_li"
+   ]
+  },
+  {
+   "id": "J03",
+   "q": "ng",
+   "category": "one and two characters",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[rank] one and two characters",
+   "relevant": [
+    "c_dangelo",
+    "c_john",
+    "c_jon",
+    "c_jose",
+    "c_li",
+    "c_nguyen"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_li"
+   ]
+  },
+  {
+   "id": "J04",
+   "q": "ab",
+   "category": "one and two characters",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[rank] one and two characters",
+   "relevant": [
+    "c_ab",
+    "c_bobby",
+    "c_sam"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_ab"
+   ]
+  },
+  {
+   "id": "J05",
+   "q": "\u00e9",
+   "category": "one and two characters",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[robust] normalises to 'e'",
+   "relevant": [
+    "c_john",
+    "c_jose",
+    "c_sev"
+   ],
+   "others": "ignore"
+  },
+  {
+   "id": "J06",
+   "q": "?",
+   "category": "one and two characters",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] one and two characters",
+   "empty": true
+  },
+  {
+   "id": "J07",
+   "q": "x",
+   "category": "one and two characters",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] one and two characters",
+   "relevant": [
+    "c_bobby"
+   ],
+   "others": "ignore"
+  },
+  {
+   "id": "J08",
+   "q": "b",
+   "category": "one and two characters",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[rank] one and two characters",
+   "relevant": [
+    "c_ab"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_ab"
+   ]
+  },
+  {
+   "id": "J09",
+   "q": "\u00df",
+   "category": "one and two characters",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] normalises to 'ss' (alfassi)",
+   "relevant": [
+    "c_bjorn",
+    "c_jurgen",
+    "c_moh"
+   ]
+  },
+  {
+   "id": "J10",
+   "q": "li ng",
+   "category": "one and two characters",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] 3 of the 4 hits are infix noise (client+long-term, t-online+stiftung, portfolio+angel)",
+   "relevant": [
+    "c_anna",
+    "c_john",
+    "c_jose",
+    "c_li"
+   ],
+   "first": [
+    "c_li"
+   ]
+  },
+  {
+   "id": "K01",
+   "q": "%",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_jose",
+    "c_percy"
+   ]
+  },
+  {
+   "id": "K02",
+   "q": "100%",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_jose",
+    "c_percy"
+   ]
+  },
+  {
+   "id": "K03",
+   "q": "100% equ",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_jose",
+    "c_percy"
+   ]
+  },
+  {
+   "id": "K04",
+   "q": "_",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_percy",
+    "c_zoe"
+   ]
+  },
+  {
+   "id": "K05",
+   "q": "0_bonds",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_percy"
+   ]
+  },
+  {
+   "id": "K06",
+   "q": "0xbonds",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] _ must not be a wildcard",
+   "empty": true
+  },
+  {
+   "id": "K07",
+   "q": "zoe.sj",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[debatable] wrong separator",
+   "empty": true
+  },
+  {
+   "id": "K08",
+   "q": "\\",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_percy"
+   ]
+  },
+  {
+   "id": "K09",
+   "q": "C:\\Users",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_percy"
+   ]
+  },
+  {
+   "id": "K10",
+   "q": "\\\\",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] two backslashes; stored text has single ones",
+   "empty": true
+  },
+  {
+   "id": "K11",
+   "q": "c:\\users\\percy",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_percy"
+   ]
+  },
+  {
+   "id": "K12",
+   "q": "%%",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K13",
+   "q": "_%",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K14",
+   "q": "%_",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K15",
+   "q": "'",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_bobby",
+    "c_dangelo",
+    "c_emile",
+    "c_mehmet",
+    "c_sev",
+    "c_siob"
+   ]
+  },
+  {
+   "id": "K16",
+   "q": "\"",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K17",
+   "q": "'; DROP TABLE clients;--",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_bobby"
+   ]
+  },
+  {
+   "id": "K18",
+   "q": "Robert'); DROP TABLE clients;--",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_bobby"
+   ]
+  },
+  {
+   "id": "K19",
+   "q": "' OR '1'='1",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] injection probe must not return unrelated clients",
+   "empty": true
+  },
+  {
+   "id": "K20",
+   "q": "1; SELECT pg_sleep(10)",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K21",
+   "q": "john%",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[debatable] user expects a wildcard; literal says nothing",
+   "empty": true
+  },
+  {
+   "id": "K22",
+   "q": "j_hn",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K23",
+   "q": "joh*",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[debatable] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K24",
+   "q": ".*",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K25",
+   "q": "[a-z]+",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K26",
+   "q": "(john|jane)",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K27",
+   "q": "john' --",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K28",
+   "q": "\\%",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K29",
+   "q": "%' OR 1=1 --",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K30",
+   "q": "<script>alert(1)</script>",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "K31",
+   "q": "NULL",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] SQL NULL descriptions must not match the word",
+   "relevant": [
+    "c_null"
+   ]
+  },
+  {
+   "id": "K32",
+   "q": "null none",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_null"
+   ]
+  },
+  {
+   "id": "K33",
+   "q": "--",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "relevant": [
+    "c_bobby"
+   ]
+  },
+  {
+   "id": "K34",
+   "q": ";",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] separator only",
+   "empty": true
+  },
+  {
+   "id": "K35",
+   "q": ",;, ;",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] separators only",
+   "empty": true
+  },
+  {
+   "id": "K36",
+   "q": "{{7*7}} ${jndi:ldap://x}",
+   "category": "metacharacters, quotes, SQL-looking input",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] metacharacters, quotes, SQL-looking input",
+   "empty": true
+  },
+  {
+   "id": "L03",
+   "q": "John\r\nDoe",
+   "category": "control and invisible characters",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] control and invisible characters",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "must_not": [
+    "c_jane"
+   ],
+   "first": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "L04",
+   "q": "john\u000bdoe\f",
+   "category": "control and invisible characters",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] VT and FF",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "must_not": [
+    "c_jane"
+   ],
+   "first": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "L05",
+   "q": "john\u0007doe",
+   "category": "control and invisible characters",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[debatable] BEL glued between the words",
+   "empty": true
+  },
+  {
+   "id": "L06",
+   "q": "NevisWealth\u200b",
+   "category": "control and invisible characters",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] trailing zero-width space from copy-paste",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ]
+  },
+  {
+   "id": "L07",
+   "q": "\ufeffNevisWealth",
+   "category": "control and invisible characters",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] leading BOM",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ]
+  },
+  {
+   "id": "L08",
+   "q": "Nevis\u00adWealth",
+   "category": "control and invisible characters",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] soft hyphen inside",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ]
+  },
+  {
+   "id": "L09",
+   "q": "zerowidth",
+   "category": "control and invisible characters",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] stored name contains U+200B",
+   "relevant": [
+    "c_zw"
+   ]
+  },
+  {
+   "id": "L10",
+   "q": "softhyphen",
+   "category": "control and invisible characters",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] stored text contains U+00AD",
+   "relevant": [
+    "c_zw"
+   ]
+  },
+  {
+   "id": "L11",
+   "q": "\u202eNevisWealth\u202c",
+   "category": "control and invisible characters",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] bidi override characters",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ]
+  },
+  {
+   "id": "L12",
+   "q": "john\u2028doe",
+   "category": "control and invisible characters",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] LINE SEPARATOR",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "L13",
+   "q": "john\u3000doe",
+   "category": "control and invisible characters",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[norm] ideographic space",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "must_not": [
+    "c_jane"
+   ],
+   "first": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "L14",
+   "q": "\u001f",
+   "category": "control and invisible characters",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] control and invisible characters",
+   "empty": true
+  },
+  {
+   "id": "L15",
+   "q": "\u007f",
+   "category": "control and invisible characters",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] control and invisible characters",
+   "empty": true
+  },
+  {
+   "id": "M01",
+   "q": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "category": "long queries",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[robust] long queries",
+   "empty": true
+  },
+  {
+   "id": "M02",
+   "q": "john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john ",
+   "category": "long queries",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[robust] long queries",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_john"
+   ]
+  },
+  {
+   "id": "M03",
+   "q": "x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x neviswealth",
+   "category": "long queries",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[robust] no client contains both 'x' and 'neviswealth'; left($1,100) drops the real token",
+   "empty": true
+  },
+  {
+   "id": "M04",
+   "q": "neviswealthxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+   "category": "long queries",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[robust] long queries",
+   "empty": true
+  },
+  {
+   "id": "M05",
+   "q": "john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe john doe  zzzzzz",
+   "category": "long queries",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] 106 characters (inside D8's 200 limit): the token after position 100 matches nothing",
+   "empty": true
+  },
+  {
+   "id": "M06",
+   "q": "w000qx w001qx w002qx w003qx w004qx w005qx w006qx w007qx w008qx w009qx w010qx w011qx w012qx w013qx w014qx w015qx w016qx w017qx w018qx w019qx w020qx w021qx w022qx w023qx w024qx w025qx w026qx w027qx w028qx w029qx w030qx w031qx w032qx w033qx w034qx w035qx w036qx w037qx w038qx w039qx w040qx w041qx w042qx w043qx w044qx w045qx w046qx w047qx w048qx w049qx w050qx w051qx w052qx w053qx w054qx w055qx w056qx w057qx w058qx w059qx w060qx w061qx w062qx w063qx w064qx w065qx w066qx w067qx w068qx w069qx w070qx w071qx w072qx w073qx w074qx w075qx w076qx w077qx w078qx w079qx w080qx w081qx w082qx w083qx w084qx w085qx w086qx w087qx w088qx w089qx w090qx w091qx w092qx w093qx w094qx w095qx w096qx w097qx w098qx w099qx w100qx w101qx w102qx w103qx w104qx w105qx w106qx w107qx w108qx w109qx w110qx w111qx w112qx w113qx w114qx w115qx w116qx w117qx w118qx w119qx w120qx w121qx w122qx w123qx w124qx w125qx w126qx w127qx w128qx w129qx w130qx w131qx w132qx w133qx w134qx w135qx w136qx w137qx w138qx w139qx w140qx w141qx w142qx w143qx w144qx w145qx w146qx w147qx w148qx w149qx w150qx w151qx w152qx w153qx w154qx w155qx w156qx w157qx w158qx w159qx w160qx w161qx w162qx w163qx w164qx w165qx w166qx w167qx w168qx w169qx w170qx w171qx w172qx w173qx w174qx w175qx w176qx w177qx w178qx w179qx w180qx w181qx w182qx w183qx w184qx w185qx w186qx w187qx w188qx w189qx w190qx w191qx w192qx w193qx w194qx w195qx w196qx w197qx w198qx w199qx w200qx w201qx w202qx w203qx w204qx w205qx w206qx w207qx w208qx w209qx w210qx w211qx w212qx w213qx w214qx w215qx w216qx w217qx w218qx w219qx w220qx w221qx w222qx w223qx w224qx w225qx w226qx w227qx w228qx w229qx w230qx w231qx w232qx w233qx w234qx w235qx w236qx w237qx w238qx w239qx w240qx w241qx w242qx w243qx w244qx w245qx w246qx w247qx w248qx w249qx w250qx w251qx w252qx w253qx w254qx w255qx w256qx w257qx w258qx w259qx w260qx w261qx w262qx w263qx w264qx w265qx w266qx w267qx w268qx w269qx w270qx w271qx w272qx w273qx w274qx w275qx w276qx w277qx w278qx w279qx w280qx w281qx w282qx w283qx w284qx w285qx w286qx w287qx w288qx w289qx w290qx w291qx w292qx w293qx w294qx w295qx w296qx w297qx w298qx w299qx w300qx w301qx w302qx w303qx w304qx w305qx w306qx w307qx w308qx w309qx w310qx w311qx w312qx w313qx w314qx w315qx w316qx w317qx w318qx w319qx w320qx w321qx w322qx w323qx w324qx w325qx w326qx w327qx w328qx w329qx w330qx w331qx w332qx w333qx w334qx w335qx w336qx w337qx w338qx w339qx w340qx w341qx w342qx w343qx w344qx w345qx w346qx w347qx w348qx w349qx w350qx w351qx w352qx w353qx w354qx w355qx w356qx w357qx w358qx w359qx w360qx w361qx w362qx w363qx w364qx w365qx w366qx w367qx w368qx w369qx w370qx w371qx w372qx w373qx w374qx w375qx w376qx w377qx w378qx w379qx w380qx w381qx w382qx w383qx w384qx w385qx w386qx w387qx w388qx w389qx w390qx w391qx w392qx w393qx w394qx w395qx w396qx w397qx w398qx w399qx w400qx w401qx w402qx w403qx w404qx w405qx w406qx w407qx w408qx w409qx w410qx w411qx w412qx w413qx w414qx w415qx w416qx w417qx w418qx w419qx w420qx w421qx w422qx w423qx w424qx w425qx w426qx w427qx w428qx w429qx w430qx w431qx w432qx w433qx w434qx w435qx w436qx w437qx w438qx w439qx w440qx w441qx w442qx w443qx w444qx w445qx w446qx w447qx w448qx w449qx w450qx w451qx w452qx w453qx w454qx w455qx w456qx w457qx w458qx w459qx w460qx w461qx w462qx w463qx w464qx w465qx w466qx w467qx w468qx w469qx w470qx w471qx w472qx w473qx w474qx w475qx w476qx w477qx w478qx w479qx w480qx w481qx w482qx w483qx w484qx w485qx w486qx w487qx w488qx w489qx w490qx w491qx w492qx w493qx w494qx w495qx w496qx w497qx w498qx w499qx w500qx w501qx w502qx w503qx w504qx w505qx w506qx w507qx w508qx w509qx w510qx w511qx w512qx w513qx w514qx w515qx w516qx w517qx w518qx w519qx w520qx w521qx w522qx w523qx w524qx w525qx w526qx w527qx w528qx w529qx w530qx w531qx w532qx w533qx w534qx w535qx w536qx w537qx w538qx w539qx w540qx w541qx w542qx w543qx w544qx w545qx w546qx w547qx w548qx w549qx w550qx w551qx w552qx w553qx w554qx w555qx w556qx w557qx w558qx w559qx w560qx w561qx w562qx w563qx w564qx w565qx w566qx w567qx w568qx w569qx w570qx w571qx w572qx w573qx w574qx w575qx w576qx w577qx w578qx w579qx w580qx w581qx w582qx w583qx w584qx w585qx w586qx w587qx w588qx w589qx w590qx w591qx w592qx w593qx w594qx w595qx w596qx w597qx w598qx w599qx w600qx w601qx w602qx w603qx w604qx w605qx w606qx w607qx w608qx w609qx w610qx w611qx w612qx w613qx w614qx w615qx w616qx w617qx w618qx w619qx w620qx w621qx w622qx w623qx w624qx w625qx w626qx w627qx w628qx w629qx w630qx w631qx w632qx w633qx w634qx w635qx w636qx w637qx w638qx w639qx w640qx w641qx w642qx w643qx w644qx w645qx w646qx w647qx w648qx w649qx w650qx w651qx w652qx w653qx w654qx w655qx w656qx w657qx w658qx w659qx w660qx w661qx w662qx w663qx w664qx w665qx w666qx w667qx w668qx w669qx w670qx w671qx w672qx w673qx w674qx w675qx w676qx w677qx w678qx w679qx w680qx w681qx w682qx w683qx w684qx w685qx w686qx w687qx w688qx w689qx w690qx w691qx w692qx w693qx w694qx w695qx w696qx w697qx w698qx w699qx",
+   "category": "long queries",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[robust] 5,000 chars, 700 distinct tokens",
+   "empty": true
+  },
+  {
+   "id": "N01",
+   "q": "jane doe",
+   "category": "NULL / empty description",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] NULL / empty description",
+   "relevant": [
+    "c_jane"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_jane"
+   ],
+   "before": [
+    [
+     "c_jane",
+     "c_smith1"
+    ]
+   ]
+  },
+  {
+   "id": "N02",
+   "q": "marie dupont",
+   "category": "NULL / empty description",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] empty-string description",
+   "relevant": [
+    "c_marie"
+   ]
+  },
+  {
+   "id": "N03",
+   "q": "li.ng",
+   "category": "NULL / empty description",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] NULL / empty description",
+   "relevant": [
+    "c_li"
+   ]
+  },
+  {
+   "id": "O01",
+   "q": "qwertyuiop",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O02",
+   "q": "xyzzy plugh",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O03",
+   "q": "john xyzzy",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O04",
+   "q": "neviswealth.org",
+   "category": "must return nothing",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[debatable] wrong TLD",
+   "empty": true
+  },
+  {
+   "id": "O05",
+   "q": "john.doe@gmail.com",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] no such address: identifier lookups must be precise",
+   "empty": true
+  },
+  {
+   "id": "O06",
+   "q": "12345",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O07",
+   "q": "maria gonzalez",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O08",
+   "q": "peter smith",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O09",
+   "q": "jane@doe-family.com",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] stored address ends in .org",
+   "empty": true
+  },
+  {
+   "id": "O10",
+   "q": "doejohn",
+   "category": "must return nothing",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[debatable] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O11",
+   "q": "zzzzzzzz",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O12",
+   "q": "!!!!!!",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O13",
+   "q": "-----",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O14",
+   "q": "quantolivia",
+   "category": "must return nothing",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[design] appears only in social_links",
+   "empty": true
+  },
+  {
+   "id": "O15",
+   "q": "linkedin",
+   "category": "must return nothing",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[design] appears only in social_links",
+   "empty": true
+  },
+  {
+   "id": "O16",
+   "q": "wealthy nevis doe",
+   "category": "must return nothing",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[debatable] no client has all three",
+   "empty": true
+  },
+  {
+   "id": "O17",
+   "q": "james brown",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O18",
+   "q": "wealth management firm",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O19",
+   "q": "barack obama",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O20",
+   "q": "john.smith@gmail.com",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] john.smith@acme.com exists, this one does not",
+   "empty": true
+  },
+  {
+   "id": "O21",
+   "q": "sustainable investing",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O22",
+   "q": "asdfghjkl",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O23",
+   "q": "neviswealth llc",
+   "category": "must return nothing",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[debatable] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O24",
+   "q": "wealthnevis",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O25",
+   "q": "doe.john",
+   "category": "must return nothing",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[debatable] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O26",
+   "q": "investment portfolio review",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O27",
+   "q": "2024-01-15",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "O28",
+   "q": "+1 555 0100",
+   "category": "must return nothing",
+   "level": "required",
+   "scope": "clients",
+   "why": "[req] must return nothing",
+   "empty": true
+  },
+  {
+   "id": "P01",
+   "q": "jhon doe",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P02",
+   "q": "neviswelth",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P03",
+   "q": "nevisweath",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P04",
+   "q": "newiswealth",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P05",
+   "q": "neviswaelth",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P06",
+   "q": "nevis welth",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P07",
+   "q": "severine obrian",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_sev"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P08",
+   "q": "picrad",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_picard"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P09",
+   "q": "pickard",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_picard"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P10",
+   "q": "jean-luc piccard",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_picard"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P11",
+   "q": "gracia",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_jose"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P12",
+   "q": "marques",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_jose"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P13",
+   "q": "smiht",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_smith1",
+    "c_smith2",
+    "c_zoe"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P14",
+   "q": "smyth",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_smith1",
+    "c_smith2",
+    "c_zoe"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P15",
+   "q": "jonh smith",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_smith1",
+    "c_smith2"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P16",
+   "q": "papadopulos",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_pana"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P17",
+   "q": "smirnof",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_alex"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P18",
+   "q": "\u0441\u043c\u0438\u0440\u043d\u0432",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_alex"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P19",
+   "q": "\u0441\u043c\u0435\u0440\u043d\u043e\u0432",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_alex"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P20",
+   "q": "yildrim",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_mehmet"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P21",
+   "q": "wojcick",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_lukasz"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P22",
+   "q": "odegaard",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_bjorn"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P23",
+   "q": "tanka kenji",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_kenji"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P24",
+   "q": "kenij tanaka",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_kenji"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P25",
+   "q": "jonathn doering",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_jon"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P26",
+   "q": "jonathan doring",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_jon"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P27",
+   "q": "doreing",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_jon"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P28",
+   "q": "quaterly reviews",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P29",
+   "q": "retired enginer",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_jon"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P30",
+   "q": "complience",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_mary"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P31",
+   "q": "john.doe@neviswealth.con",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P32",
+   "q": "jon.doering@gmial.com",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_jon"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P33",
+   "q": "zoe-sj",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_zoe"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P34",
+   "q": "jhon",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_john",
+    "c_smith1",
+    "c_smith2"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P35",
+   "q": "doee",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_jane",
+    "c_john"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P36",
+   "q": "mery major",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_mary"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P37",
+   "q": "marry major",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_mary"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P38",
+   "q": "leclerk",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_renee"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P39",
+   "q": "tailor",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_sam"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P40",
+   "q": "mcdonnald",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_dangelo"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P41",
+   "q": "lefebvre",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_dash"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P42",
+   "q": "anna-maria von der hiede",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_anna"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P43",
+   "q": "dupond",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_marie",
+    "c_sev"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P44",
+   "q": "olivia stoun",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_olivia"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P45",
+   "q": "starfleat",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_picard"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P46",
+   "q": "micheal johnson",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] wrong first name variant; stored Mike",
+   "relevant": [
+    "c_mike"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P47",
+   "q": "jane do",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] truncated word: actually a substring -> strict tier",
+   "relevant": [
+    "c_jane"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "P48",
+   "q": "bobby tabels",
+   "category": "typos (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] typos (target within the first 5 rows)",
+   "relevant": [
+    "c_bobby"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "R01",
+   "q": "Dr John Doe",
+   "category": "extra words (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] extra words (target within the first 5 rows)",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "R02",
+   "q": "Mr. John Doe",
+   "category": "extra words (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] extra words (target within the first 5 rows)",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "R03",
+   "q": "john doe london",
+   "category": "extra words (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] extra words (target within the first 5 rows)",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "R04",
+   "q": "john doe neviswealth ltd",
+   "category": "extra words (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] extra words (target within the first 5 rows)",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "R05",
+   "q": "who is interested in ESG",
+   "category": "extra words (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] extra words (target within the first 5 rows)",
+   "relevant": [
+    "c_jon"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "R06",
+   "q": "find jane doe",
+   "category": "extra words (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] extra words (target within the first 5 rows)",
+   "relevant": [
+    "c_jane"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "R07",
+   "q": "john michael doe",
+   "category": "extra words (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] extra words (target within the first 5 rows)",
+   "relevant": [
+    "c_john"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "R08",
+   "q": "mary major from nevis wealth",
+   "category": "extra words (target within the first 5 rows)",
+   "level": "nice",
+   "scope": "clients",
+   "why": "[nice] extra words (target within the first 5 rows)",
+   "relevant": [
+    "c_mary"
+   ],
+   "others": "ignore",
+   "within_top": 5
+  },
+  {
+   "id": "S01",
+   "q": "smith",
+   "category": "ranking and ties",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[rank] name, then e-mail, then description",
+   "relevant": [
+    "c_bob",
+    "c_mike",
+    "c_smith1",
+    "c_smith2",
+    "c_zoe"
+   ],
+   "others": "ignore",
+   "before": [
+    [
+     "c_smith1",
+     "c_bob"
+    ],
+    [
+     "c_smith2",
+     "c_bob"
+    ],
+    [
+     "c_zoe",
+     "c_bob"
+    ],
+    [
+     "c_smith1",
+     "c_mike"
+    ],
+    [
+     "c_bob",
+     "c_mike"
+    ]
+   ]
+  },
+  {
+   "id": "S02",
+   "q": "doe",
+   "category": "ranking and ties",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[rank] ranking and ties",
+   "before": [
+    [
+     "c_john",
+     "c_jon"
+    ],
+    [
+     "c_jane",
+     "c_jon"
+    ],
+    [
+     "c_john",
+     "c_smith1"
+    ],
+    [
+     "c_jane",
+     "c_smith1"
+    ]
+   ],
+   "others": "ignore"
+  },
+  {
+   "id": "S03",
+   "q": "john smith",
+   "category": "ranking and ties",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[rank] two identical names: tie must be stable",
+   "relevant": [
+    "c_smith1",
+    "c_smith2"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_smith1",
+    "c_smith2"
+   ]
+  },
+  {
+   "id": "S04",
+   "q": "nevis",
+   "category": "ranking and ties",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[rank] whole word in the name first",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_nevisw",
+    "c_peter"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_nevisw"
+   ]
+  },
+  {
+   "id": "S05",
+   "q": "jones",
+   "category": "ranking and ties",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[rank] ranking and ties",
+   "relevant": [
+    "c_bob",
+    "c_zoe"
+   ],
+   "others": "ignore",
+   "first": [
+    "c_bob",
+    "c_zoe"
+   ]
+  },
+  {
+   "id": "S06",
+   "q": "wealth",
+   "category": "ranking and ties",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[rank] only name hit is the prefix of Wealthy",
+   "first": [
+    "c_nevisw"
+   ],
+   "relevant": [
+    "c_nevisw"
+   ],
+   "others": "ignore"
+  },
+  {
+   "id": "S07",
+   "q": "com",
+   "category": "ranking and ties",
+   "level": "expected",
+   "scope": "clients",
+   "why": "[rank] common substring",
+   "relevant": [
+    "c_john",
+    "c_mary",
+    "c_peter"
+   ],
+   "others": "ignore"
+  }
+ ],
+ "http_cases": [
+  {
+   "id": "h-L01",
+   "method": "GET",
+   "path": "/search",
+   "query": {
+    "q": "john\u0000doe"
+   },
+   "body": null,
+   "expected_status": [
+    400,
+    422
+   ],
+   "why": "NUL inside: must be rejected cleanly, not crash with 500"
+  },
+  {
+   "id": "h-L02",
+   "method": "GET",
+   "path": "/search",
+   "query": {
+    "q": "\u0000"
+   },
+   "body": null,
+   "expected_status": [
+    400,
+    422
+   ],
+   "why": "NUL only: must be rejected cleanly, not crash with 500"
+  },
+  {
+   "id": "h-L16",
+   "method": "GET",
+   "path": "/search",
+   "query": {
+    "q": "\ud83d"
+   },
+   "body": null,
+   "expected_status": [
+    400,
+    422
+   ],
+   "why": "lone surrogate: must be rejected cleanly, not crash with 500"
+  }
+ ]
+}

@@ -1,0 +1,2125 @@
+{
+ "suite": "existing-clients-fixture-42",
+ "author": "Claude subagent (client-search research; the same author tuned the SQL), 2026-11-19",
+ "about": "Client-search fixture from research/client-search. Written by the author of the reference SQL, so it is not independent of that design.",
+ "corpus": {
+  "clients": [
+   {
+    "id": "c_john_doe",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@neviswealth.com",
+    "description": "Senior portfolio manager focused on sustainable investing.",
+    "social_links": [
+     "https://www.linkedin.com/in/johndoe",
+     "https://twitter.com/jdoe_invest"
+    ]
+   },
+   {
+    "id": "c_jane_doe",
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "email": "jane.doe@gmail.com",
+    "description": "Retired teacher, conservative risk profile, interested in municipal bonds.",
+    "social_links": []
+   },
+   {
+    "id": "c_sarah_connor",
+    "first_name": "Sarah",
+    "last_name": "Connor",
+    "email": "sarah.connor@neviswealth.com",
+    "description": "Compliance officer; prefers quarterly reviews.",
+    "social_links": [
+     "https://www.linkedin.com/in/sarah-connor-7b1a"
+    ]
+   },
+   {
+    "id": "c_charlotte_nevis",
+    "first_name": "Charlotte",
+    "last_name": "Nevis",
+    "email": "charlotte@outlook.com",
+    "description": "Art collector based in Geneva.",
+    "social_links": []
+   },
+   {
+    "id": "c_peter_grant",
+    "first_name": "Peter",
+    "last_name": "Grant",
+    "email": "p.grant@yahoo.com",
+    "description": "Referred by a NevisWealth advisor; first meeting pending.",
+    "social_links": []
+   },
+   {
+    "id": "c_john_smith",
+    "first_name": "John",
+    "last_name": "Smith",
+    "email": "john.smith@gmail.com",
+    "description": "Software engineer, aggressive growth strategy, tech stocks.",
+    "social_links": [
+     "https://github.com/jsmith"
+    ]
+   },
+   {
+    "id": "c_johnny_walker",
+    "first_name": "Johnny",
+    "last_name": "Walker",
+    "email": "johnny.walker@example.org",
+    "description": "Whisky distillery owner from Edinburgh.",
+    "social_links": [
+     "https://facebook.com/johnny.walker"
+    ]
+   },
+   {
+    "id": "c_emily_johnson",
+    "first_name": "Emily",
+    "last_name": "Johnson",
+    "email": "emily.johnson@proton.me",
+    "description": "Pediatric nurse saving for a first home.",
+    "social_links": []
+   },
+   {
+    "id": "c_jon_snow",
+    "first_name": "Jon",
+    "last_name": "Snow",
+    "email": "jon.snow@nightswatch.org",
+    "description": "Security consultant; does not want any crypto exposure.",
+    "social_links": []
+   },
+   {
+    "id": "c_johan_berg",
+    "first_name": "Johan",
+    "last_name": "Berg",
+    "email": "johan.berg@telia.se",
+    "description": "Shipping executive.",
+    "social_links": []
+   },
+   {
+    "id": "c_kurt_doerr",
+    "first_name": "Kurt",
+    "last_name": "Doerr",
+    "email": "kurt.doerr@kleinerperkins.com",
+    "description": "Venture investor.",
+    "social_links": []
+   },
+   {
+    "id": "c_michael_scott",
+    "first_name": "Michael",
+    "last_name": "Scott",
+    "email": "michael.scott@dundermifflin.com",
+    "description": "Regional manager of a paper company.",
+    "social_links": [
+     "https://www.linkedin.com/in/michaelscott"
+    ]
+   },
+   {
+    "id": "c_michelle_dubois",
+    "first_name": "Michelle",
+    "last_name": "Dubois",
+    "email": "michelle.dubois@free.fr",
+    "description": "Pharmacist in Lyon.",
+    "social_links": []
+   },
+   {
+    "id": "c_michaela_novak",
+    "first_name": "Michaela",
+    "last_name": "Novak",
+    "email": "m.novak@seznam.cz",
+    "description": "Architect.",
+    "social_links": []
+   },
+   {
+    "id": "c_jose_garcia",
+    "first_name": "José",
+    "last_name": "García",
+    "email": "jose.garcia@bancosol.es",
+    "description": "Empresario de Madrid; prefiere comunicarse en español.",
+    "social_links": []
+   },
+   {
+    "id": "c_jurgen_muller",
+    "first_name": "Jürgen",
+    "last_name": "Müller",
+    "email": "juergen.mueller@deutschebank.de",
+    "description": "Ingenieur aus München, plant den Ruhestand.",
+    "social_links": []
+   },
+   {
+    "id": "c_sean_obrien",
+    "first_name": "Seán",
+    "last_name": "O'Brien",
+    "email": "sean.obrien@eircom.ie",
+    "description": "Farmer; estate planning for the family land.",
+    "social_links": []
+   },
+   {
+    "id": "c_francois_lefevre",
+    "first_name": "François",
+    "last_name": "Lefèvre",
+    "email": "francois.lefevre@orange.fr",
+    "description": "Vigneron à Bordeaux.",
+    "social_links": []
+   },
+   {
+    "id": "c_lukasz_wojcik",
+    "first_name": "Łukasz",
+    "last_name": "Wójcik",
+    "email": "lukasz.wojcik@wp.pl",
+    "description": "Przedsiębiorca z Krakowa.",
+    "social_links": []
+   },
+   {
+    "id": "c_soren_ostergaard",
+    "first_name": "Søren",
+    "last_name": "Østergaard",
+    "email": "soren.ostergaard@mail.dk",
+    "description": "Wind-energy entrepreneur.",
+    "social_links": []
+   },
+   {
+    "id": "c_ivan_petrov",
+    "first_name": "Иван",
+    "last_name": "Петров",
+    "email": "ivan.petrov@yandex.ru",
+    "description": "Предприниматель, интересуется облигациями.",
+    "social_links": []
+   },
+   {
+    "id": "c_wei_li",
+    "first_name": "Wei",
+    "last_name": "Li",
+    "email": "li.wei@alibaba.example.cn",
+    "description": "来自上海的投资者，关注科技股。",
+    "social_links": []
+   },
+   {
+    "id": "c_li_wei_cjk",
+    "first_name": "伟",
+    "last_name": "李",
+    "email": "liwei88@qq.com",
+    "description": "退休教师",
+    "social_links": []
+   },
+   {
+    "id": "c_mai_ng",
+    "first_name": "Mai",
+    "last_name": "Ng",
+    "email": "mai.ng@fpt.vn",
+    "description": "Importer of specialty coffee.",
+    "social_links": []
+   },
+   {
+    "id": "c_zoe_bronte",
+    "first_name": "Zoe",
+    "last_name": "Bronte",
+    "email": "zoe.bronte@example.com",
+    "description": "Novelist; royalties income.",
+    "social_links": []
+   },
+   {
+    "id": "c_robert_brown",
+    "first_name": "Robert",
+    "last_name": "BROWN",
+    "email": "Robert.BROWN@Example.COM",
+    "description": "Owns a 100% stake in Brown & Sons Ltd.",
+    "social_links": []
+   },
+   {
+    "id": "c_mary_jane",
+    "first_name": "Mary-Jane",
+    "last_name": "Watson",
+    "email": "mary_jane.watson@dailybugle.com",
+    "description": "Actress. Target discount_rate is 5%.",
+    "social_links": [
+     "https://instagram.com/mj_watson"
+    ]
+   },
+   {
+    "id": "c_anna_schmidt",
+    "first_name": "Anna-Maria",
+    "last_name": "Schmidt",
+    "email": "anna-maria.schmidt+wealth@mail.example.co.uk",
+    "description": "Dual citizen (DE/UK), cross-border tax questions.",
+    "social_links": []
+   },
+   {
+    "id": "c_bobby_tables",
+    "first_name": "Bobby",
+    "last_name": "Tables",
+    "email": "bobby.tables@xkcd.com",
+    "description": "Nickname: Robert'; DROP TABLE clients; -- (little Bobby Tables)",
+    "social_links": []
+   },
+   {
+    "id": "c_david_slash",
+    "first_name": "David",
+    "last_name": "Slash",
+    "email": "d.slash@corp.example.com",
+    "description": "Shared folder: C:\\clients\\slash_d (legacy)",
+    "social_links": []
+   },
+   {
+    "id": "c_mia_rossi",
+    "first_name": "Mia",
+    "last_name": "Rossi",
+    "email": "mia.rossi@libero.it",
+    "description": "Loves sailing ⛵ and crypto 🚀🚀. VIP client 💎",
+    "social_links": [
+     "https://instagram.com/mia.rossi"
+    ]
+   },
+   {
+    "id": "c_henry_longfellow",
+    "first_name": "Henry",
+    "last_name": "Longfellow",
+    "email": "h.longfellow@example.com",
+    "description": "Henry first approached the firm after selling his logistics business. He holds a diversified portfolio of index funds, corporate bonds and two rental properties in Leeds. During the annual review he asked about inheritance tax mitigation, a discretionary trust for his grandchildren and whether to consolidate three legacy pensions into a single drawdown plan. He is cautious about emerging markets after a poor experience in 2015, yet open to infrastructure funds with stable yields. His spouse Margaret attends every meeting and prefers printed statements delivered by post. Action items: update the attitude-to-risk questionnaire, request transfer values from the legacy providers, model a phased drawdown starting at age sixty-seven, review the will and lasting power of attorney with the family solicitor, and schedule a follow-up call before the end of the tax year. Notes from the last call: Henry would like a simple one-page summary each quarter instead of the full valuation pack, and wants to be warned in advance about any fund switches. He also mentioned a possible gift to his daughter for a house deposit next spring, which may affect liquidity planning. No interest in speculative assets. Preferred contact time is weekday mornings.",
+    "social_links": []
+   },
+   {
+    "id": "c_olivia_stone",
+    "first_name": "Olivia",
+    "last_name": "Stone",
+    "email": "olivia.stone@icloud.com",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c_tom_compton",
+    "first_name": "Tom",
+    "last_name": "Compton",
+    "email": "t.compton@sky.net",
+    "description": "Pub landlord.",
+    "social_links": []
+   },
+   {
+    "id": "c_laura_bennett",
+    "first_name": "Laura",
+    "last_name": "Bennett",
+    "email": "laura.bennett@schools.example.edu",
+    "description": "Primary school teacher, not yet retired; saving for retirement.",
+    "social_links": []
+   },
+   {
+    "id": "c_george_hill",
+    "first_name": "George",
+    "last_name": "Hill",
+    "email": "george.hill@navy.example.mil",
+    "description": "Retired navy officer; pension rollover.",
+    "social_links": []
+   },
+   {
+    "id": "c_nora_quinn",
+    "first_name": "Nora",
+    "last_name": "Quinn",
+    "email": "nora.quinn@example.ie",
+    "description": "Teaches yoga; freelance income.",
+    "social_links": []
+   },
+   {
+    "id": "c_ana_silva",
+    "first_name": "Ana",
+    "last_name": "Silva",
+    "email": "ana.silva@sapo.pt",
+    "description": "Dentist from Porto.",
+    "social_links": []
+   },
+   {
+    "id": "c_hannah_lee",
+    "first_name": "Hannah",
+    "last_name": "Lee",
+    "email": "hannah.lee@naver.com",
+    "description": "UX designer.",
+    "social_links": []
+   },
+   {
+    "id": "c_al_baker",
+    "first_name": "Al",
+    "last_name": "Baker",
+    "email": "al.baker@example.com",
+    "description": "Bakery chain owner; expansion loan.",
+    "social_links": []
+   },
+   {
+    "id": "c_jorg_weiss",
+    "first_name": "Jörg",
+    "last_name": "Weiß",
+    "email": "joerg.weiss@gmx.de",
+    "description": "Wohnt in der Hauptstraße 5, Berlin.",
+    "social_links": []
+   },
+   {
+    "id": "c_ibrahim_yildiz",
+    "first_name": "İbrahim",
+    "last_name": "Yıldız",
+    "email": "ibrahim.yildiz@turk.example.tr",
+    "description": "Textile exporter from İstanbul.",
+    "social_links": []
+   }
+  ],
+  "documents": []
+ },
+ "queries": [
+  {
+   "id": "can-1",
+   "q": "NevisWealth",
+   "category": "canonical",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_peter_grant",
+    "c_sarah_connor"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'canonical'.",
+   "top_set": [
+    "c_john_doe",
+    "c_sarah_connor"
+   ]
+  },
+  {
+   "id": "can-2",
+   "q": "neviswealth",
+   "category": "canonical",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_peter_grant",
+    "c_sarah_connor"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'canonical'.",
+   "top_set": [
+    "c_john_doe",
+    "c_sarah_connor"
+   ]
+  },
+  {
+   "id": "can-3",
+   "q": "NEVISWEALTH",
+   "category": "canonical",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_peter_grant",
+    "c_sarah_connor"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'canonical'.",
+   "top_set": [
+    "c_john_doe",
+    "c_sarah_connor"
+   ]
+  },
+  {
+   "id": "can-4",
+   "q": "nevis",
+   "category": "canonical",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_charlotte_nevis",
+    "c_john_doe",
+    "c_peter_grant",
+    "c_sarah_connor"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'canonical'.",
+   "top_set": [
+    "c_charlotte_nevis"
+   ]
+  },
+  {
+   "id": "can-5",
+   "q": "wealth",
+   "category": "canonical",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_anna_schmidt",
+    "c_john_doe",
+    "c_peter_grant",
+    "c_sarah_connor"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'canonical'."
+  },
+  {
+   "id": "can-6",
+   "q": "nevis wealth",
+   "category": "canonical",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_peter_grant",
+    "c_sarah_connor"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'canonical'.",
+   "must_not": [
+    "c_anna_schmidt",
+    "c_charlotte_nevis"
+   ]
+  },
+  {
+   "id": "name-1",
+   "q": "joh",
+   "category": "name substring",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_emily_johnson",
+    "c_johan_berg",
+    "c_john_doe",
+    "c_john_smith",
+    "c_johnny_walker"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'name substring'.",
+   "must_not": [
+    "c_jane_doe"
+   ]
+  },
+  {
+   "id": "name-2",
+   "q": "john",
+   "category": "name substring",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_emily_johnson",
+    "c_john_doe",
+    "c_john_smith",
+    "c_johnny_walker"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'name substring'.",
+   "must_not": [
+    "c_jane_doe"
+   ],
+   "top_set": [
+    "c_john_doe",
+    "c_john_smith"
+   ]
+  },
+  {
+   "id": "name-3",
+   "q": "doe",
+   "category": "name substring",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_jane_doe",
+    "c_john_doe",
+    "c_kurt_doerr"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'name substring'.",
+   "must_not": [
+    "c_john_smith"
+   ],
+   "top_set": [
+    "c_jane_doe",
+    "c_john_doe"
+   ]
+  },
+  {
+   "id": "name-4",
+   "q": "Doe",
+   "category": "name substring",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_jane_doe",
+    "c_john_doe",
+    "c_kurt_doerr"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'name substring'.",
+   "top_set": [
+    "c_jane_doe",
+    "c_john_doe"
+   ]
+  },
+  {
+   "id": "name-5",
+   "q": "walker",
+   "category": "name substring",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_johnny_walker"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'name substring'."
+  },
+  {
+   "id": "name-6",
+   "q": "smith",
+   "category": "name substring",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_smith"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'name substring'."
+  },
+  {
+   "id": "name-7",
+   "q": "olivia",
+   "category": "name substring",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_olivia_stone"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'name substring'."
+  },
+  {
+   "id": "name-8",
+   "q": "michael",
+   "category": "name substring",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_michael_scott",
+    "c_michaela_novak"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'name substring'.",
+   "top_set": [
+    "c_michael_scott"
+   ]
+  },
+  {
+   "id": "full-1",
+   "q": "john doe",
+   "category": "full name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'full name'.",
+   "must_not": [
+    "c_jane_doe",
+    "c_john_smith"
+   ],
+   "top_set": [
+    "c_john_doe"
+   ]
+  },
+  {
+   "id": "full-2",
+   "q": "doe john",
+   "category": "full name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'full name'.",
+   "must_not": [
+    "c_jane_doe",
+    "c_john_smith"
+   ],
+   "top_set": [
+    "c_john_doe"
+   ]
+  },
+  {
+   "id": "full-3",
+   "q": "John    Doe",
+   "category": "full name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'full name'.",
+   "must_not": [
+    "c_jane_doe",
+    "c_john_smith"
+   ],
+   "top_set": [
+    "c_john_doe"
+   ]
+  },
+  {
+   "id": "full-4",
+   "q": "  john doe  ",
+   "category": "full name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'full name'.",
+   "must_not": [
+    "c_jane_doe",
+    "c_john_smith"
+   ],
+   "top_set": [
+    "c_john_doe"
+   ]
+  },
+  {
+   "id": "full-5",
+   "q": "JOHN DOE",
+   "category": "full name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'full name'.",
+   "must_not": [
+    "c_jane_doe",
+    "c_john_smith"
+   ],
+   "top_set": [
+    "c_john_doe"
+   ]
+  },
+  {
+   "id": "full-6",
+   "q": "jane doe",
+   "category": "full name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_jane_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'full name'.",
+   "must_not": [
+    "c_john_doe"
+   ],
+   "top_set": [
+    "c_jane_doe"
+   ]
+  },
+  {
+   "id": "full-7",
+   "q": "doe, john",
+   "category": "full name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'full name'.",
+   "must_not": [
+    "c_jane_doe",
+    "c_john_smith"
+   ],
+   "top_set": [
+    "c_john_doe"
+   ]
+  },
+  {
+   "id": "full-8",
+   "q": "mary-jane watson",
+   "category": "full name",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_mary_jane"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'full name'."
+  },
+  {
+   "id": "comp-1",
+   "q": "john nevis",
+   "category": "name + company",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'name + company'."
+  },
+  {
+   "id": "comp-2",
+   "q": "sarah neviswealth",
+   "category": "name + company",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_sarah_connor"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'name + company'."
+  },
+  {
+   "id": "comp-3",
+   "q": "doe gmail",
+   "category": "name + company",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jane_doe"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'name + company'."
+  },
+  {
+   "id": "comp-4",
+   "q": "smith gmail.com",
+   "category": "name + company",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_john_smith"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'name + company'."
+  },
+  {
+   "id": "mail-1",
+   "q": "john.doe",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'e-mail'.",
+   "must_not": [
+    "c_jane_doe",
+    "c_john_smith"
+   ],
+   "top_set": [
+    "c_john_doe"
+   ]
+  },
+  {
+   "id": "mail-2",
+   "q": "john.doe@neviswealth.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'e-mail'.",
+   "must_not": [
+    "c_jane_doe",
+    "c_sarah_connor"
+   ],
+   "top_set": [
+    "c_john_doe"
+   ]
+  },
+  {
+   "id": "mail-3",
+   "q": "JOHN.DOE@NEVISWEALTH.COM",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'e-mail'.",
+   "must_not": [
+    "c_jane_doe",
+    "c_sarah_connor"
+   ],
+   "top_set": [
+    "c_john_doe"
+   ]
+  },
+  {
+   "id": "mail-4",
+   "q": "neviswealth.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_sarah_connor"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'e-mail'.",
+   "top_set": [
+    "c_john_doe",
+    "c_sarah_connor"
+   ]
+  },
+  {
+   "id": "mail-5",
+   "q": "@neviswealth",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_sarah_connor"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'e-mail'.",
+   "top_set": [
+    "c_john_doe",
+    "c_sarah_connor"
+   ]
+  },
+  {
+   "id": "mail-6",
+   "q": "@gmail.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_jane_doe",
+    "c_john_smith"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'e-mail'."
+  },
+  {
+   "id": "mail-7",
+   "q": "co.uk",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_anna_schmidt"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'e-mail'."
+  },
+  {
+   "id": "mail-8",
+   "q": "+wealth",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_anna_schmidt"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'e-mail'.",
+   "top_set": [
+    "c_anna_schmidt"
+   ]
+  },
+  {
+   "id": "mail-9",
+   "q": "robert.brown@example.com",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_robert_brown"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'e-mail'.",
+   "top_set": [
+    "c_robert_brown"
+   ]
+  },
+  {
+   "id": "mail-10",
+   "q": "mary_jane",
+   "category": "e-mail",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_mary_jane"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'e-mail'."
+  },
+  {
+   "id": "desc-1",
+   "q": "retired teacher",
+   "category": "description",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_jane_doe",
+    "c_laura_bennett"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'description'.",
+   "must_not": [
+    "c_george_hill"
+   ],
+   "top_set": [
+    "c_jane_doe"
+   ]
+  },
+  {
+   "id": "desc-2",
+   "q": "teacher",
+   "category": "description",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_jane_doe",
+    "c_laura_bennett"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'description'.",
+   "must_not": [
+    "c_george_hill"
+   ]
+  },
+  {
+   "id": "desc-3",
+   "q": "municipal bonds",
+   "category": "description",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_jane_doe"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'description'."
+  },
+  {
+   "id": "desc-4",
+   "q": "sustainable investing",
+   "category": "description",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'description'."
+  },
+  {
+   "id": "desc-5",
+   "q": "paper company",
+   "category": "description",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_michael_scott"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'description'."
+  },
+  {
+   "id": "desc-6",
+   "q": "crypto",
+   "category": "description",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_jon_snow",
+    "c_mia_rossi"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'description'."
+  },
+  {
+   "id": "desc-7",
+   "q": "estate planning",
+   "category": "description",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_sean_obrien"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'description'.",
+   "must_not": [
+    "c_henry_longfellow"
+   ]
+  },
+  {
+   "id": "desc-8",
+   "q": "discretionary trust",
+   "category": "description",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c_henry_longfellow"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'description'."
+  },
+  {
+   "id": "soc-1",
+   "q": "linkedin",
+   "category": "social links",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_michael_scott",
+    "c_sarah_connor"
+   ],
+   "others": "ignore",
+   "why": "Matches only social_links; the assignment lists e-mails, name and description, so this is a nice-to-have."
+  },
+  {
+   "id": "soc-2",
+   "q": "jdoe_invest",
+   "category": "social links",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Matches only social_links; the assignment lists e-mails, name and description, so this is a nice-to-have."
+  },
+  {
+   "id": "soc-3",
+   "q": "johndoe",
+   "category": "social links",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Matches only social_links; the assignment lists e-mails, name and description, so this is a nice-to-have."
+  },
+  {
+   "id": "soc-4",
+   "q": "github.com/jsmith",
+   "category": "social links",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_john_smith"
+   ],
+   "others": "ignore",
+   "why": "Matches only social_links; the assignment lists e-mails, name and description, so this is a nice-to-have."
+  },
+  {
+   "id": "soc-5",
+   "q": "https",
+   "category": "social links",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_john_smith",
+    "c_johnny_walker",
+    "c_mary_jane",
+    "c_mia_rossi",
+    "c_michael_scott",
+    "c_sarah_connor"
+   ],
+   "others": "ignore",
+   "why": "Matches only social_links; the assignment lists e-mails, name and description, so this is a nice-to-have."
+  },
+  {
+   "id": "typo-1",
+   "q": "jhon",
+   "category": "typos",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_john_smith"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'typos'."
+  },
+  {
+   "id": "typo-2",
+   "q": "neviswelth",
+   "category": "typos",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_sarah_connor"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'typos'."
+  },
+  {
+   "id": "typo-3",
+   "q": "micheal",
+   "category": "typos",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_michael_scott"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'typos'.",
+   "top_set": [
+    "c_michael_scott"
+   ]
+  },
+  {
+   "id": "typo-4",
+   "q": "neviswealht",
+   "category": "typos",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_sarah_connor"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'typos'."
+  },
+  {
+   "id": "typo-5",
+   "q": "jonh doe",
+   "category": "typos",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'typos'."
+  },
+  {
+   "id": "typo-6",
+   "q": "retired techer",
+   "category": "typos",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_jane_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'typos'."
+  },
+  {
+   "id": "typo-7",
+   "q": "garsia",
+   "category": "typos",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_jose_garcia"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'typos'."
+  },
+  {
+   "id": "typo-8",
+   "q": "jhon.doe@neviswealth.com",
+   "category": "typos",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'typos'."
+  },
+  {
+   "id": "typo-9",
+   "q": "sarah conor",
+   "category": "typos",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_sarah_connor"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'typos'."
+  },
+  {
+   "id": "typo-10",
+   "q": "sustainble investing",
+   "category": "typos",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'typos'."
+  },
+  {
+   "id": "dia-1",
+   "q": "jose",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jose_garcia"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'diacritics'.",
+   "top_set": [
+    "c_jose_garcia"
+   ]
+  },
+  {
+   "id": "dia-2",
+   "q": "José",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jose_garcia"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'diacritics'.",
+   "top_set": [
+    "c_jose_garcia"
+   ]
+  },
+  {
+   "id": "dia-3",
+   "q": "JOSÉ GARCÍA",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jose_garcia"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-4",
+   "q": "muller",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jurgen_muller"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-5",
+   "q": "Müller",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jurgen_muller"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-6",
+   "q": "mueller",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jurgen_muller"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-7",
+   "q": "sean obrien",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_sean_obrien"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-8",
+   "q": "lukasz wojcik",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_lukasz_wojcik"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-9",
+   "q": "soren",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_soren_ostergaard"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-10",
+   "q": "francois lefevre",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_francois_lefevre"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-11",
+   "q": "Zoë Brontë",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_zoe_bronte"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-12",
+   "q": "weiss",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jorg_weiss"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-13",
+   "q": "Weiß",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jorg_weiss"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-14",
+   "q": "hauptstrasse",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jorg_weiss"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-15",
+   "q": "munchen",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jurgen_muller"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-16",
+   "q": "José",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jose_garcia"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'diacritics'.",
+   "top_set": [
+    "c_jose_garcia"
+   ]
+  },
+  {
+   "id": "dia-17",
+   "q": "İBRAHİM",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_ibrahim_yildiz"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "dia-18",
+   "q": "yildiz istanbul",
+   "category": "diacritics",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_ibrahim_yildiz"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'diacritics'."
+  },
+  {
+   "id": "uni-1",
+   "q": "петров",
+   "category": "unicode / emoji",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_ivan_petrov"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'unicode / emoji'."
+  },
+  {
+   "id": "uni-2",
+   "q": "ПЕТРОВ",
+   "category": "unicode / emoji",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_ivan_petrov"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'unicode / emoji'."
+  },
+  {
+   "id": "uni-3",
+   "q": "иван облигациями",
+   "category": "unicode / emoji",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_ivan_petrov"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'unicode / emoji'."
+  },
+  {
+   "id": "uni-4",
+   "q": "上海",
+   "category": "unicode / emoji",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_wei_li"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'unicode / emoji'."
+  },
+  {
+   "id": "uni-5",
+   "q": "李",
+   "category": "unicode / emoji",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_li_wei_cjk"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'unicode / emoji'."
+  },
+  {
+   "id": "uni-6",
+   "q": "退休教师",
+   "category": "unicode / emoji",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_li_wei_cjk"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'unicode / emoji'."
+  },
+  {
+   "id": "uni-7",
+   "q": "🚀",
+   "category": "unicode / emoji",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_mia_rossi"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'unicode / emoji'."
+  },
+  {
+   "id": "uni-8",
+   "q": "crypto 🚀",
+   "category": "unicode / emoji",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_mia_rossi"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'unicode / emoji'."
+  },
+  {
+   "id": "uni-9",
+   "q": "ｊｏｈｎ",
+   "category": "unicode / emoji",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_john_smith"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'unicode / emoji'."
+  },
+  {
+   "id": "uni-10",
+   "q": "john doe",
+   "category": "unicode / emoji",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'unicode / emoji'.",
+   "must_not": [
+    "c_jane_doe"
+   ]
+  },
+  {
+   "id": "uni-11",
+   "q": "💩",
+   "category": "unicode / emoji",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'unicode / emoji': nothing matches."
+  },
+  {
+   "id": "short-1",
+   "q": "j",
+   "category": "short (1-2 chars)",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "others": "ignore",
+   "why": "Research fixture, group 'short (1-2 chars)'.",
+   "min_results": 1
+  },
+  {
+   "id": "short-2",
+   "q": "jo",
+   "category": "short (1-2 chars)",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_emily_johnson",
+    "c_johan_berg",
+    "c_john_doe",
+    "c_john_smith",
+    "c_johnny_walker",
+    "c_jon_snow",
+    "c_jorg_weiss",
+    "c_jose_garcia"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'short (1-2 chars)'."
+  },
+  {
+   "id": "short-3",
+   "q": "li",
+   "category": "short (1-2 chars)",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_wei_li"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'short (1-2 chars)'.",
+   "top_set": [
+    "c_wei_li"
+   ]
+  },
+  {
+   "id": "short-4",
+   "q": "ng",
+   "category": "short (1-2 chars)",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_mai_ng"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'short (1-2 chars)'.",
+   "top_set": [
+    "c_mai_ng"
+   ]
+  },
+  {
+   "id": "short-5",
+   "q": "al",
+   "category": "short (1-2 chars)",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_al_baker"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'short (1-2 chars)'.",
+   "top_set": [
+    "c_al_baker"
+   ]
+  },
+  {
+   "id": "short-6",
+   "q": "a",
+   "category": "short (1-2 chars)",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "others": "ignore",
+   "why": "Research fixture, group 'short (1-2 chars)'.",
+   "min_results": 20
+  },
+  {
+   "id": "long-1",
+   "q": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "category": "long (1,000 chars)",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'long (1,000 chars)': nothing matches. The query is 1,000 characters long; an API that caps the length may answer 422 instead."
+  },
+  {
+   "id": "long-2",
+   "q": "portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio review meeting quarterly statement portfolio ",
+   "category": "long (1,000 chars)",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'long (1,000 chars)': nothing matches. The query is 1,000 characters long; an API that caps the length may answer 422 instead."
+  },
+  {
+   "id": "long-3",
+   "q": "john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john john ",
+   "category": "long (1,000 chars)",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_john_doe",
+    "c_john_smith"
+   ],
+   "others": "ignore",
+   "why": "Research fixture, group 'long (1,000 chars)'. The query is 1,000 characters long; an API that caps the length may answer 422 instead."
+  },
+  {
+   "id": "meta-1",
+   "q": "%",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_mary_jane",
+    "c_robert_brown"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'metacharacters'."
+  },
+  {
+   "id": "meta-2",
+   "q": "_",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_david_slash",
+    "c_mary_jane"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'metacharacters'."
+  },
+  {
+   "id": "meta-3",
+   "q": "\\",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_david_slash"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'metacharacters'."
+  },
+  {
+   "id": "meta-4",
+   "q": "100%",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_robert_brown"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'metacharacters'."
+  },
+  {
+   "id": "meta-5",
+   "q": "%doe%",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'metacharacters': nothing matches."
+  },
+  {
+   "id": "meta-6",
+   "q": "j_hn",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'metacharacters': nothing matches."
+  },
+  {
+   "id": "meta-7",
+   "q": "jo%n",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'metacharacters': nothing matches."
+  },
+  {
+   "id": "meta-8",
+   "q": "c:\\clients",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_david_slash"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'metacharacters'."
+  },
+  {
+   "id": "meta-9",
+   "q": "\\\\",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'metacharacters': nothing matches."
+  },
+  {
+   "id": "meta-10",
+   "q": "discount_rate",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_mary_jane"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'metacharacters'."
+  },
+  {
+   "id": "meta-11",
+   "q": "(john|jane)",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'metacharacters': nothing matches."
+  },
+  {
+   "id": "meta-12",
+   "q": ".*",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'metacharacters': nothing matches."
+  },
+  {
+   "id": "meta-13",
+   "q": "％",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_mary_jane",
+    "c_robert_brown"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'metacharacters'."
+  },
+  {
+   "id": "meta-14",
+   "q": "j＿hn",
+   "category": "metacharacters",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'metacharacters': nothing matches."
+  },
+  {
+   "id": "inj-1",
+   "q": "o'brien",
+   "category": "quotes / injection",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_sean_obrien"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'quotes / injection'."
+  },
+  {
+   "id": "inj-2",
+   "q": "O’Brien",
+   "category": "quotes / injection",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_sean_obrien"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'quotes / injection'."
+  },
+  {
+   "id": "inj-3",
+   "q": "'; DROP TABLE clients; --",
+   "category": "quotes / injection",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_bobby_tables"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'quotes / injection'."
+  },
+  {
+   "id": "inj-4",
+   "q": "\" OR 1=1 --",
+   "category": "quotes / injection",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'quotes / injection': nothing matches."
+  },
+  {
+   "id": "inj-5",
+   "q": "john' OR '1'='1",
+   "category": "quotes / injection",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'quotes / injection': nothing matches."
+  },
+  {
+   "id": "inj-6",
+   "q": "$$; SELECT pg_sleep(10); $$",
+   "category": "quotes / injection",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'quotes / injection': nothing matches."
+  },
+  {
+   "id": "inj-7",
+   "q": "--",
+   "category": "quotes / injection",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_bobby_tables"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'quotes / injection'."
+  },
+  {
+   "id": "inj-8",
+   "q": "john & doe | !smith:*",
+   "category": "quotes / injection",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'quotes / injection': nothing matches."
+  },
+  {
+   "id": "none-1",
+   "q": "zzzzqqq",
+   "category": "no match",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'no match': nothing matches."
+  },
+  {
+   "id": "none-2",
+   "q": "xylophone",
+   "category": "no match",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'no match': nothing matches."
+  },
+  {
+   "id": "none-3",
+   "q": "nobody@nowhere.test",
+   "category": "no match",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'no match': nothing matches."
+  },
+  {
+   "id": "none-4",
+   "q": "john xyzzy",
+   "category": "no match",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'no match': nothing matches."
+  },
+  {
+   "id": "none-5",
+   "q": "qwertyuiop",
+   "category": "no match",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'no match': nothing matches."
+  },
+  {
+   "id": "none-6",
+   "q": "0123456789",
+   "category": "no match",
+   "level": "expected",
+   "scope": "clients",
+   "empty": true,
+   "why": "Research fixture, group 'no match': nothing matches."
+  },
+  {
+   "id": "common-1",
+   "q": "com",
+   "category": "common substring",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "others": "ignore",
+   "why": "Research fixture, group 'common substring'.",
+   "top_set": [
+    "c_tom_compton"
+   ],
+   "min_results": 14
+  },
+  {
+   "id": "common-2",
+   "q": "gmail",
+   "category": "common substring",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c_jane_doe",
+    "c_john_smith"
+   ],
+   "others": "wrong",
+   "why": "Research fixture, group 'common substring'."
+  },
+  {
+   "id": "common-3",
+   "q": "e",
+   "category": "common substring",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "others": "ignore",
+   "why": "Research fixture, group 'common substring'.",
+   "min_results": 20
+  },
+  {
+   "id": "common-4",
+   "q": "example",
+   "category": "common substring",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "others": "ignore",
+   "why": "Research fixture, group 'common substring'.",
+   "min_results": 9
+  }
+ ],
+ "http_cases": [
+  {
+   "id": "h-blank-1",
+   "method": "GET",
+   "path": "/search",
+   "query": {
+    "q": ""
+   },
+   "body": null,
+   "expected_status": [
+    400,
+    422
+   ],
+   "why": "blank query '': q is required (an empty 200 [] is also defensible)"
+  },
+  {
+   "id": "h-blank-2",
+   "method": "GET",
+   "path": "/search",
+   "query": {
+    "q": "   "
+   },
+   "body": null,
+   "expected_status": [
+    400,
+    422
+   ],
+   "why": "blank query '   ': q is required (an empty 200 [] is also defensible)"
+  },
+  {
+   "id": "h-blank-3",
+   "method": "GET",
+   "path": "/search",
+   "query": {
+    "q": "\t\n "
+   },
+   "body": null,
+   "expected_status": [
+    400,
+    422
+   ],
+   "why": "blank query '\\t\\n ': q is required (an empty 200 [] is also defensible)"
+  },
+  {
+   "id": "h-blank-4",
+   "method": "GET",
+   "path": "/search",
+   "query": {
+    "q": " 　"
+   },
+   "body": null,
+   "expected_status": [
+    400,
+    422
+   ],
+   "why": "blank query '\\xa0\\u3000': q is required (an empty 200 [] is also defensible)"
+  }
+ ]
+}

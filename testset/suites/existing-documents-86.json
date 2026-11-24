@@ -1,0 +1,2583 @@
+{
+ "suite": "existing-documents-86",
+ "author": "Claude subagent (blind to every search design), 2026-11-19",
+ "about": "The evaluation set used for all document-search measurements in research/. Documents have no owner; one placeholder client holds them. Queries are split into dev (tuning) and test (reporting); keep that split when tuning thresholds.",
+ "corpus": {
+  "clients": [
+   {
+    "id": "c00",
+    "first_name": "Placeholder",
+    "last_name": "Owner",
+    "email": "owner@example.invalid",
+    "description": "",
+    "social_links": []
+   }
+  ],
+  "documents": [
+   {
+    "id": "d001",
+    "client_id": "c00",
+    "title": "Utility bill",
+    "content": "Utility bill for March 2025, British Gas",
+    "doc_type": "utility_bill",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d002",
+    "client_id": "c00",
+    "title": "Utility bill - electricity - Northmoor Energy",
+    "content": "Scan: utility bill (electricity), 2 pages.\n\nNORTHMOOR ENERGY\nMr Tobias Hallworth\n14 Larkspur Close, Harrogate HG2 7QD\nCustomer number 8830 5512 07. Bill date 14 March 2025.\n\nYour electricity bill for 11 December 2024 to 10 March 2025 (90 days).\nMeter 21E4470913: previous reading 41,208, latest reading 42,371 (smart meter). Electricity used: 1,163 kWh.\nUnit charges 1,163 kWh at 24.86p: £289.12\nStanding charge 90 days at 60.97p: £54.87\nVAT at 5%: £17.20\nTotal charges this period: £361.19\nPayments received, thank you (3 direct debits of £95.47): £286.41\nBalance carried forward: £74.78 debit\n\nYour monthly direct debit stays at £95.47 and is collected on the 3rd of each month. Tariff: Fixed Saver 18, ends 30 September 2025. Estimated annual cost on this tariff: £1,210.",
+    "doc_type": "utility_bill",
+    "length_class": "medium"
+   },
+   {
+    "id": "d003",
+    "client_id": "c00",
+    "title": "Gas bill - Calderbrook Gas",
+    "content": "Calderbrook Gas statement for the period 1 January to 31 March 2025. Supply address: Flat 3, 27 Wren Street, Bristol BS3 4TQ. Total due £198.20, to be collected by direct debit on 14 April 2025.",
+    "doc_type": "utility_bill",
+    "length_class": "short"
+   },
+   {
+    "id": "d004",
+    "client_id": "c00",
+    "title": "Water and sewerage charges 2025/26 - Severnvale Water",
+    "content": "SEVERNVALE WATER\nYour annual charges for 1 April 2025 to 31 March 2026\nCustomer reference 300 418 2276\nMrs E Dragomirescu, Flat 3, 27 Wren Street, Bristol BS3 4TQ\n\nUnmeasured water supply: fixed charge £48.10, rateable value charge £171.25.\nSewerage: fixed charge £86.40, rateable value charge £209.85.\nTotal for the year: £515.60\n\nYou pay by monthly direct debit: 10 payments of £51.56 on the 5th of each month from April 2025.\n\nIf you move out of the property please tell us at least five working days beforehand so that we can close your account and send a final statement. Struggling to pay? Our Assist tariff can reduce charges for households on a low income. Thinking of a meter? Most households with fewer people than bedrooms pay less on a measured tariff - apply free of charge on our website.",
+    "doc_type": "utility_bill",
+    "length_class": "medium"
+   },
+   {
+    "id": "d005",
+    "client_id": "c00",
+    "title": "Council Tax bill 2025/26",
+    "content": "Wharfedale Borough Council - Council Tax demand notice for 1 April 2025 to 31 March 2026. Mr T Hallworth, 14 Larkspur Close, Harrogate HG2 7QD, band E. Amount payable £2,412.36 in ten instalments of £241.24 starting 1 April 2025.",
+    "doc_type": "council_tax_bill",
+    "length_class": "short"
+   },
+   {
+    "id": "d006",
+    "client_id": "c00",
+    "title": "Bank statement",
+    "content": "Current account statement, April 2025, Lanchester Bank",
+    "doc_type": "bank_statement",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d007",
+    "client_id": "c00",
+    "title": "Current account statement - April 2025",
+    "content": "LANCHESTER BANK - CURRENT ACCOUNT STATEMENT\nMr Tobias J Hallworth, 14 Larkspur Close, Harrogate HG2 7QD\nAccount number 5518 2093. Statement period 1 April 2025 to 30 April 2025.\n\nOpening balance: £3,412.08\n01 Apr  Direct debit  WHARFEDALE BC COUNCIL TAX      241.24 out\n03 Apr  Direct debit  NORTHMOOR ENERGY                95.47 out\n07 Apr  Card payment  GREENGATE SUPERMARKET           86.12 out\n14 Apr  Direct debit  LANCHESTER MORTGAGE          1,485.00 out\n15 Apr  Standing order  ISA TRANSFER                 500.00 out\n22 Apr  Card payment  NORTHERN RAIL TICKETS           64.30 out\n28 Apr  BACS credit  KESTREL RIDGE ANALYTICS LTD   4,213.87 in\nClosing balance: £5,153.82\n\nTotal paid out £2,472.13. Total paid in £4,213.87. Arranged overdraft limit £1,000; no overdraft interest charged this period. Deposits are protected by the Financial Services Compensation Scheme up to £85,000.",
+    "doc_type": "bank_statement",
+    "length_class": "medium"
+   },
+   {
+    "id": "d008",
+    "client_id": "c00",
+    "title": "Tenancy agreement - Flat 3, 27 Wren Street",
+    "content": "ASSURED SHORTHOLD TENANCY AGREEMENT dated 28 August 2024.\nLandlord: Thaddeus Quillfeather. Tenants: Marcus Dragomirescu and Elena Dragomirescu.\nProperty: Flat 3, 27 Wren Street, Bristol BS3 4TQ.\nTerm: 12 months from 1 September 2024.\nRent: £1,450 per calendar month, payable in advance on the first day of each month by standing order.\nDeposit: £1,673, to be protected with the Tenancy Deposit Custodial Scheme within 30 days.\n\nThe Tenants agree to pay council tax, water, gas, electricity and broadband charges for the Property; to keep the interior in good condition; not to sublet or keep pets without written consent; and to allow inspection on 24 hours' notice. The Landlord agrees to keep the structure, exterior, heating and hot water installations in repair. Either party may end the tenancy at or after the end of the fixed term by giving two months' notice in writing.",
+    "doc_type": "tenancy_agreement",
+    "length_class": "medium"
+   },
+   {
+    "id": "d009",
+    "client_id": "c00",
+    "title": "Annual mortgage statement 2024",
+    "content": "Lanchester Bank annual statement for mortgage account MTG-00918273, 1 January to 31 December 2024. Balance outstanding £231,407.18; interest rate 4.19% fixed until 30 June 2028; payments received £17,820.00; remaining term 21 years 4 months.",
+    "doc_type": "mortgage_statement",
+    "length_class": "short"
+   },
+   {
+    "id": "d010",
+    "client_id": "c00",
+    "title": "Phone bill",
+    "content": "Mobile phone bill, February 2025, Telvanta",
+    "doc_type": "phone_bill",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d011",
+    "client_id": "c00",
+    "title": "Bill of sale",
+    "content": "Bill of sale for a 28ft sailing boat, Marlin Quay",
+    "doc_type": "bill_of_sale",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d012",
+    "client_id": "c00",
+    "title": "Proof of concept - trading algorithm",
+    "content": "Proof of concept for a momentum trading algorithm built by the client's start-up. The backtest covers 2015 to 2024 with a Sharpe ratio of 1.1; shared for information only and not part of any recommendation.",
+    "doc_type": "proof_of_concept",
+    "length_class": "short"
+   },
+   {
+    "id": "d013",
+    "client_id": "c00",
+    "title": "Newsletter mailing list",
+    "content": "E-mail address list for the quarterly newsletter",
+    "doc_type": "mailing_list",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d014",
+    "client_id": "c00",
+    "title": "E-mail: change of address",
+    "content": "Hi Daniel, just to let you know that we moved at the weekend - our new address is 9 Orchard Rise, Ilkley LS29 4BW. I will send over a council tax bill for the new place as soon as one arrives. Regards, Tobias",
+    "doc_type": "client_email",
+    "length_class": "short"
+   },
+   {
+    "id": "d015",
+    "client_id": "c00",
+    "title": "Treasury bill purchase",
+    "content": "Bought 6-month UK Treasury bills, nominal £50,000",
+    "doc_type": "trade_confirmation",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d016",
+    "client_id": "c00",
+    "title": "Proof of delivery",
+    "content": "Courier proof of delivery, signed share certificates returned",
+    "doc_type": "proof_of_delivery",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d017",
+    "client_id": "c00",
+    "title": "Passport",
+    "content": "Passport copy, United Kingdom, expires 2031",
+    "doc_type": "passport",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d018",
+    "client_id": "c00",
+    "title": "Certified copy of passport - P. Venkataraghavan",
+    "content": "Certified true copy of the photo page of the passport of Priya Venkataraghavan, Republic of India, passport no. Z4471902, issued in Chennai on 12 June 2019 and valid until 11 June 2029. Certified as a true likeness by Aldous Penhaligon, solicitor, on 3 February 2025.",
+    "doc_type": "passport",
+    "length_class": "short"
+   },
+   {
+    "id": "d019",
+    "client_id": "c00",
+    "title": "Driving licence - T. Hallworth",
+    "content": "UK photocard driving licence no. HALLW801157TJ9XA, categories B and BE, valid from 2 August 2021 to 1 August 2031. Holder: Tobias James Hallworth, 14 Larkspur Close, Harrogate HG2 7QD.",
+    "doc_type": "driving_licence",
+    "length_class": "short"
+   },
+   {
+    "id": "d020",
+    "client_id": "c00",
+    "title": "Identity card",
+    "content": "Romanian national identity card, series RX 482117, expires 2030",
+    "doc_type": "national_id_card",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d021",
+    "client_id": "c00",
+    "title": "Residence permit",
+    "content": "Biometric residence permit, valid to 2027",
+    "doc_type": "residence_permit",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d022",
+    "client_id": "c00",
+    "title": "Payslip",
+    "content": "Payslip May 2025, Kestrel Ridge Analytics",
+    "doc_type": "payslip",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d023",
+    "client_id": "c00",
+    "title": "Payslip - April 2025 - T. Hallworth",
+    "content": "KESTREL RIDGE ANALYTICS LTD - PAY ADVICE\nEmployee: Tobias J Hallworth. Employee no. 00417. NI number QQ 12 34 56 C. Tax code 1257L.\nPay date 28 April 2025. Period 01 (monthly).\n\nPayments: basic pay £6,250.00; car allowance £350.00. Gross pay £6,600.00.\nDeductions: PAYE tax £1,442.60; National Insurance £371.53; pension (5%) £312.50; share save £200.00; cycle to work £59.50. Total deductions £2,386.13.\nNet pay £4,213.87, paid by BACS to account ending 2093.\n\nYear to date: gross pay £6,600.00; taxable pay £6,228.00; tax £1,442.60; National Insurance £371.53; employee pension £312.50. Employer pension contribution this period: £312.50. Holiday remaining: 24.5 days.",
+    "doc_type": "payslip",
+    "length_class": "medium"
+   },
+   {
+    "id": "d024",
+    "client_id": "c00",
+    "title": "Contract of employment - Kestrel Ridge Analytics Ltd",
+    "content": "CONTRACT OF EMPLOYMENT between Kestrel Ridge Analytics Ltd (the Company) and Tobias James Hallworth (the Employee).\n\n1. Commencement: employment began on 4 March 2019; no previous employment counts towards continuous service.\n2. Job title: Principal Data Engineer, reporting to the Chief Technology Officer.\n3. Place of work: Leeds office, with hybrid working by agreement.\n4. Remuneration: basic salary of £75,000 per annum, paid monthly in arrears on or around the 28th; eligible for a discretionary annual bonus of up to 15% of basic salary.\n5. Hours: 37.5 per week.\n6. Holiday: 27 days plus public holidays.\n7. Pension: the Company contributes 5% of basic salary to the group personal pension, matched by the Employee.\n8. Notice: either party may terminate the employment by giving three months' written notice.\n9. Restrictive covenants: for six months after termination the Employee shall not solicit customers or key staff of the Company.\n10. Governing law: England and Wales.",
+    "doc_type": "employment_contract",
+    "length_class": "medium"
+   },
+   {
+    "id": "d025",
+    "client_id": "c00",
+    "title": "P60 End of Year Certificate 2024-25",
+    "content": "P60 for the tax year to 5 April 2025. Employee: T J Hallworth; employer: Kestrel Ridge Analytics Ltd. Total pay £78,412.00, tax deducted £18,904.60, employee National Insurance contributions £5,102.33.",
+    "doc_type": "p60",
+    "length_class": "short"
+   },
+   {
+    "id": "d026",
+    "client_id": "c00",
+    "title": "Form W-2 Wage and Tax Statement 2024",
+    "content": "W-2 for 2024. Employee: Caleb Winterbourne; employer: Halcyon Wharf Robotics Inc. Box 1 wages $214,300.00; box 2 federal tax withheld $46,118.00; box 12 code D (401(k) deferrals) $23,000.00.",
+    "doc_type": "w2",
+    "length_class": "short"
+   },
+   {
+    "id": "d027",
+    "client_id": "c00",
+    "title": "Self Assessment tax return 2023-24 - H. Osgathorpe",
+    "content": "SELF ASSESSMENT TAX RETURN 2023-24 (SA100) - summary of submission\nTaxpayer: Mrs Henrietta Osgathorpe. UTR 71904 22815. Submitted online 14 January 2025.\n\nEmployment (director's remuneration, Brambleforth Holdings Ltd): £42,000\nDividends from UK companies: £18,400\nUK property (SA105): rents received £14,200, allowable expenses £3,950, profit £10,250\nBank and building society interest: £1,120\nTotal income: £71,770\nPersonal allowance: £12,570\nIncome tax due: £14,452.50, less tax deducted at source £5,886.00\nBalance payable by 31 January 2025: £8,566.50, plus first payment on account for 2024-25 of £4,283.25\nGift Aid payments in the year: £1,200\nNo capital disposals reported.",
+    "doc_type": "tax_return",
+    "length_class": "medium"
+   },
+   {
+    "id": "d028",
+    "client_id": "c00",
+    "title": "SA302",
+    "content": "SA302 tax calculation 2023-24, HMRC",
+    "doc_type": "tax_calculation",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d029",
+    "client_id": "c00",
+    "title": "Dividend voucher - Brambleforth Holdings Ltd",
+    "content": "Brambleforth Holdings Ltd, company number 14772093. Dividend of £12,500.00 on 500 ordinary shares of £1 each, paid on 28 March 2025 to Mrs Henrietta Osgathorpe. Voucher no. DV-2025-003.",
+    "doc_type": "dividend_voucher",
+    "length_class": "short"
+   },
+   {
+    "id": "d030",
+    "client_id": "c00",
+    "title": "Bonus award letter 2024",
+    "content": "Dear Tobias, we are pleased to confirm a discretionary bonus of £11,250 for the 2024 performance year, payable with your March 2025 pay. Thank you for your contribution - Kestrel Ridge Analytics Ltd, People Team.",
+    "doc_type": "bonus_letter",
+    "length_class": "short"
+   },
+   {
+    "id": "d031",
+    "client_id": "c00",
+    "title": "Capital gains tax computation 2024-25",
+    "content": "Disposal of 4,000 shares in Tidewater Biosciences plc on 9 October 2024: proceeds £58,200, allowable cost £26,450, gain £31,750. After the £3,000 annual exempt amount, £28,750 is chargeable at 24%, giving tax of £6,900.",
+    "doc_type": "cgt_computation",
+    "length_class": "short"
+   },
+   {
+    "id": "d032",
+    "client_id": "c00",
+    "title": "Portfolio valuation",
+    "content": "Portfolio valuation Q1 2025, total £412,300",
+    "doc_type": "portfolio_valuation",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d033",
+    "client_id": "c00",
+    "title": "Quarterly valuation - 31 March 2025 - H. Osgathorpe",
+    "content": "SALTMARSH & FINCH WEALTH LLP - Valuation as at 31 March 2025\nMrs H Osgathorpe. Accounts: General Investment Account and Stocks & Shares ISA.\n\nHoldings:\nFenwick Global Equity Index Fund £212,480 (38.6%)\nPennant UK Equity Income Fund £88,900 (16.2%)\nAldermoor Renewables plc £41,250 (7.5%)\nHarcastle Sterling Corporate Bond Fund £96,310 (17.5%)\nMeridian Short-Dated Gilt Fund £74,160 (13.5%)\nCash £36,900 (6.7%)\nTotal value £550,000\n\nAsset allocation: equities 62.3%, fixed interest 31.0%, cash 6.7%.\nPerformance: +2.1% over the quarter, +8.4% over twelve months, net of charges. Income received in the quarter: £3,912.\nValuations use closing mid prices and are not a guarantee of realisable value.",
+    "doc_type": "portfolio_valuation",
+    "length_class": "medium"
+   },
+   {
+    "id": "d034",
+    "client_id": "c00",
+    "title": "Investment policy statement - Dragomirescu family",
+    "content": "INVESTMENT POLICY STATEMENT - Marcus and Elena Dragomirescu, adopted 10 January 2025.\n\nPurpose: to set out how the family portfolio is managed and reviewed.\nObjectives: grow capital ahead of inflation by 3% a year over rolling ten-year periods; fund school costs from 2030 and financial independence from 2045.\nTime horizon: 15 years or more.\nStrategic allocation: 60% global equities, 30% bonds, 10% alternatives and cash, rebalanced when any sleeve drifts by more than 5 percentage points.\nLiquidity: a reserve equal to twelve months of household spending is held outside the portfolio.\nExclusions: no direct holdings in tobacco producers, thermal coal miners or controversial weapons manufacturers; funds with a recognised sustainability label are preferred where costs are comparable.\nConstraints: no borrowing, no single holding above 10%, sterling base currency.\nBenchmark: composite of global equity and sterling bond indices.\nReview: formally each year and after any major change in circumstances.",
+    "doc_type": "investment_policy_statement",
+    "length_class": "medium"
+   },
+   {
+    "id": "d035",
+    "client_id": "c00",
+    "title": "Attitude to risk questionnaire - T. Hallworth",
+    "content": "ATTITUDE TO RISK QUESTIONNAIRE - completed by Tobias Hallworth, 21 January 2025.\n\nQ1. I would describe myself as a cautious person with investments: disagree.\nQ2. I feel comfortable when the value of my investments goes up and down: agree.\nQ3. If my portfolio fell by 20% in a year I would: hold and wait for recovery.\nQ4. I would rather take a guaranteed lower return than an uncertain higher one: disagree.\nQ5. I have experience of shares and funds: more than ten years.\nQ6. How long before you need this capital: over 15 years.\nQ7. What fall could you absorb without changing your standard of living: up to 25%.\n\nScore: 47 out of 70, profile 6 of 10 (balanced growth). Capacity for loss: moderate to high, supported by secure employment and an emergency fund of nine months' outgoings. Agreed with adviser that profile 6 is appropriate.",
+    "doc_type": "risk_profile_questionnaire",
+    "length_class": "medium"
+   },
+   {
+    "id": "d036",
+    "client_id": "c00",
+    "title": "Contract note CN-88104-A",
+    "content": "Bought 1,200 Aldermoor Renewables plc ordinary shares at 412.5p on 6 May 2025 for settlement on 8 May 2025. Consideration £4,950.00, commission £9.95, stamp duty £24.75; total debited £4,984.70.",
+    "doc_type": "trade_confirmation",
+    "length_class": "short"
+   },
+   {
+    "id": "d037",
+    "client_id": "c00",
+    "title": "Fenwick Global Equity Index Fund - factsheet April 2025",
+    "content": "FENWICK GLOBAL EQUITY INDEX FUND - Factsheet, 30 April 2025\n\nObjective: to track the performance of the Fenwick Developed World Index, before fees, by holding all or a representative sample of its constituents.\nShare class: Accumulation GBP. ISIN IE00BZ9QK417. Launch date 12 May 2014. Fund size £4.2 billion.\nOngoing charges figure 0.12%; no entry or exit charge. Number of holdings 1,482.\nRegional breakdown: North America 68.9%, Europe ex UK 13.4%, Japan 6.1%, UK 3.8%, Pacific ex Japan 3.1%, other 4.7%.\nLargest sectors: technology 25.2%, financials 15.8%, healthcare 11.3%.\nCumulative performance: 1 year +9.7%, 3 years +31.4%, 5 years +68.2%.\nRisk and reward indicator: 5 on a scale of 1 (lower) to 7 (higher).\nPast performance is not a guide to future returns; the value of investments can fall as well as rise.",
+    "doc_type": "fund_factsheet",
+    "length_class": "medium"
+   },
+   {
+    "id": "d038",
+    "client_id": "c00",
+    "title": "ISA statement",
+    "content": "Stocks and shares ISA annual statement 2024/25",
+    "doc_type": "isa_statement",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d039",
+    "client_id": "c00",
+    "title": "Pension statement",
+    "content": "Annual pension statement 2024, Aviary Life",
+    "doc_type": "pension_statement",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d040",
+    "client_id": "c00",
+    "title": "SIPP annual statement 2024-25 - Aviary Life",
+    "content": "AVIARY LIFE - SELF-INVESTED PERSONAL PENSION\nAnnual statement for the year to 5 April 2025\nMember: Tobias J Hallworth. Plan number SIPP-448201-TH.\n\nValue at start of year £251,300.00; value at end of year £286,940.00.\nPaid in during the year: member contributions £8,000.00; basic-rate tax relief £2,000.00; employer contributions £6,000.00.\nInvestment growth after charges: £19,640.00. Charges deducted: platform fee £574.00, adviser charge £1,435.00.\nHoldings: Fenwick Global Equity Index Fund 55%, Harcastle Sterling Corporate Bond Fund 25%, Meridian Short-Dated Gilt Fund 15%, cash 5%.\n\nSelected retirement age: 65. Illustration: at 65 your plan could be worth £512,000 in today's prices and provide about £21,400 a year.\nDeath benefits: expression of wish on file - 100% to spouse, Mrs Joanna Hallworth.\nAnnual allowance used this year: £16,000.",
+    "doc_type": "sipp_statement",
+    "length_class": "medium"
+   },
+   {
+    "id": "d041",
+    "client_id": "c00",
+    "title": "401(k) quarterly statement - Q4 2024",
+    "content": "Halcyon Wharf Robotics 401(k) Plan, participant Caleb Winterbourne, statement for 1 October to 31 December 2024. Closing balance $418,220.17, employee deferrals year to date $23,000.00, employer match $9,200.00, 100% vested. Allocation: 70% target-date 2045 fund, 30% US large-cap index fund.",
+    "doc_type": "401k_statement",
+    "length_class": "short"
+   },
+   {
+    "id": "d042",
+    "client_id": "c00",
+    "title": "Annuity quotation AQ-2025-1183",
+    "content": "Pension annuity quotation for a purchase price of £150,000: annuitant aged 65, level payments, guaranteed for 5 years, no dependant's benefit. Gross amount £9,870 a year, paid monthly in advance. Quotation guaranteed for 14 days from 2 May 2025.",
+    "doc_type": "annuity_quote",
+    "length_class": "short"
+   },
+   {
+    "id": "d043",
+    "client_id": "c00",
+    "title": "Transfer value statement - Marlowe Steelworks Pension Scheme",
+    "content": "Statement of cash equivalent transfer value for deferred member T J Hallworth: £342,600, guaranteed until 30 June 2025. Scheme pension at the normal pension age of 65 is currently estimated at £14,100 a year, increasing in payment.",
+    "doc_type": "pension_transfer_value",
+    "length_class": "short"
+   },
+   {
+    "id": "d044",
+    "client_id": "c00",
+    "title": "Will",
+    "content": "Signed will, stored with solicitor, 2022",
+    "doc_type": "will",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d045",
+    "client_id": "c00",
+    "title": "Last will and testament - Henrietta Osgathorpe",
+    "content": "LAST WILL AND TESTAMENT of HENRIETTA MARGARET OSGATHORPE of Fell View House, Ilkley, dated 20 March 2023.\n\n1. I revoke all earlier wills and codicils.\n2. I appoint my son Rupert Osgathorpe and my daughter Imogen Fairweather to be my executors and trustees.\n3. I give £10,000 to Wharfedale Hospice (registered charity no. 1199001) and £5,000 to each of my godchildren living at my death.\n4. I give my jewellery and personal chattels to my daughter Imogen.\n5. I give my shares in Brambleforth Holdings Ltd to my son Rupert.\n6. I give the residue of my estate, after payment of debts, funeral expenses and taxes, to my trustees to divide equally between my children Rupert and Imogen; if either dies before me, their share passes to their own children on reaching 21.\n7. My trustees may invest as if absolute owners and may apply capital for the maintenance and benefit of any minor beneficiary.\n\nSigned by the testator in our joint presence and then by us in hers: witnesses Agnes Pettifer and Cornelius Wragg.",
+    "doc_type": "will",
+    "length_class": "medium"
+   },
+   {
+    "id": "d046",
+    "client_id": "c00",
+    "title": "Deed of settlement - Osgathorpe Family Discretionary Trust",
+    "content": "THIS SETTLEMENT is made on 5 June 2023 between HENRIETTA MARGARET OSGATHORPE (the Settlor) and RUPERT OSGATHORPE and IMOGEN FAIRWEATHER (the Original Trustees). The trust shall be known as The Osgathorpe Family Discretionary Trust.\n\n1. The Settlor has paid £10 to the Trustees and may add further property; £325,000 was added on 30 June 2023.\n2. The Beneficiaries are the children and remoter issue of the Settlor, their spouses and civil partners, and any charity.\n3. The Trust Period is 125 years.\n4. The Trustees hold the Trust Fund on trust to pay or apply income and capital to or for the benefit of such of the Beneficiaries as they in their absolute discretion think fit.\n5. The Trustees have the widest powers of investment, may delegate investment management and may be paid reasonable professional charges.\n6. The Settlor and any spouse of the Settlor are excluded from all benefit.\n7. The power to appoint new trustees is vested in the Settlor during her lifetime.\n\nGoverned by the law of England and Wales.",
+    "doc_type": "trust_deed",
+    "length_class": "medium"
+   },
+   {
+    "id": "d047",
+    "client_id": "c00",
+    "title": "Lasting power of attorney - property and financial affairs",
+    "content": "Donor: Henrietta Osgathorpe. Attorneys: her son Rupert Osgathorpe and her daughter Imogen Fairweather, appointed jointly and severally. Registered with the Office of the Public Guardian on 14 January 2025, reference 7001-2283-4410.",
+    "doc_type": "power_of_attorney",
+    "length_class": "short"
+   },
+   {
+    "id": "d048",
+    "client_id": "c00",
+    "title": "LPA health and welfare",
+    "content": "Lasting power of attorney, health and welfare, registered 2023",
+    "doc_type": "power_of_attorney",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d049",
+    "client_id": "c00",
+    "title": "Pre-nuptial agreement - Dragomirescu / Constantin",
+    "content": "Agreement dated 2 August 2016 between Marcus Dragomirescu and Elena Constantin made in contemplation of their marriage. Each party keeps the property listed in their own schedule (his shares in Dragomir Logistics SRL; her flat in Cluj-Napoca) and waives any claim to it if the marriage ends. To be reviewed on the birth of a first child.",
+    "doc_type": "prenuptial_agreement",
+    "length_class": "short"
+   },
+   {
+    "id": "d050",
+    "client_id": "c00",
+    "title": "Letter of wishes to trustees",
+    "content": "To my trustees: this letter is not binding, but I would like the cost of my grandchildren's schooling and university to be given priority. Please make no outright payments of capital to any grandchild before the age of 25. Henrietta Osgathorpe, 20 March 2023.",
+    "doc_type": "letter_of_wishes",
+    "length_class": "short"
+   },
+   {
+    "id": "d051",
+    "client_id": "c00",
+    "title": "Grant of probate - estate of Edmund Hallworth",
+    "content": "Grant of probate issued by the Leeds District Probate Registry on 9 September 2024 in the estate of the late Edmund Arthur Hallworth. Net value of the estate £684,000; executor Tobias James Hallworth.",
+    "doc_type": "grant_of_probate",
+    "length_class": "short"
+   },
+   {
+    "id": "d052",
+    "client_id": "c00",
+    "title": "Life insurance",
+    "content": "Term life policy, £500,000 cover, 25 years",
+    "doc_type": "life_insurance",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d053",
+    "client_id": "c00",
+    "title": "Policy schedule - level term assurance",
+    "content": "POLICY SCHEDULE - Level Term Assurance\nInsurer: Fenchurch Mutual Assurance Society. Policy number LV-7734-0921-KX.\nLife assured: Tobias James Hallworth, born 1981, non-smoker.\nSum assured: £500,000, payable on death or diagnosis of a terminal illness during the term.\nStart date 1 October 2021; term 25 years; expiry 30 September 2046.\nPremium: £38.42 monthly, guaranteed throughout the term.\nCritical illness benefit: not included. Waiver of premium: included.\nTrust status: the policy is held in a discretionary trust dated 4 October 2021; trustees Joanna Hallworth and Miriam Hallworth; default beneficiaries are the spouse and children of the life assured.\nThis schedule forms part of the policy and should be read with the policy conditions. Please keep it in a safe place and tell your trustees where it is.",
+    "doc_type": "life_insurance",
+    "length_class": "medium"
+   },
+   {
+    "id": "d054",
+    "client_id": "c00",
+    "title": "Private medical insurance certificate",
+    "content": "Aldgrove Medical policy PMI-552-908-C, Comprehensive plan with a £250 excess, renewing on 1 October 2025. Members: Marcus Dragomirescu, Elena Dragomirescu and two children. Annual premium £3,184.20.",
+    "doc_type": "health_insurance",
+    "length_class": "short"
+   },
+   {
+    "id": "d055",
+    "client_id": "c00",
+    "title": "Home insurance schedule",
+    "content": "Fenchurch Mutual policy HX-2291-774 for 14 Larkspur Close, Harrogate: buildings sum insured £650,000, contents £85,000, accidental damage included. Premium £612.80; renewal date 12 November 2025.",
+    "doc_type": "home_insurance",
+    "length_class": "short"
+   },
+   {
+    "id": "d056",
+    "client_id": "c00",
+    "title": "Income protection",
+    "content": "Income protection policy, 60% of salary, deferred 13 weeks",
+    "doc_type": "income_protection_insurance",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d057",
+    "client_id": "c00",
+    "title": "Personal loan agreement",
+    "content": "Fixed-sum loan agreement no. PL-3390127 regulated by the Consumer Credit Act 1974 between Lanchester Bank and Marcus Dragomirescu: £25,000 repayable over 60 months at 6.9% APR, monthly repayment £493.86. Purpose: purchase of a motor vehicle.",
+    "doc_type": "loan_agreement",
+    "length_class": "short"
+   },
+   {
+    "id": "d058",
+    "client_id": "c00",
+    "title": "Credit report summary",
+    "content": "Veritas Credit Bureau report dated 2 April 2025 for Marcus Dragomirescu: score 912 out of 999 (excellent). Three active accounts, no missed payments in the last six years and no county court judgments; total outstanding balances £27,300 across one loan and two credit cards.",
+    "doc_type": "credit_report",
+    "length_class": "short"
+   },
+   {
+    "id": "d059",
+    "client_id": "c00",
+    "title": "Mortgage offer",
+    "content": "Mortgage offer, £320,000, 5-year fixed at 4.19%",
+    "doc_type": "mortgage_offer",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d060",
+    "client_id": "c00",
+    "title": "Securities-backed lending facility letter",
+    "content": "Lanchester Private Bank confirms a revolving credit facility of up to £400,000 secured by a charge over the investment portfolio held in custody, at 1.75% over base rate. Maximum loan-to-value 50%; facility reviewed annually; arrangement fee £1,500.",
+    "doc_type": "lending_facility",
+    "length_class": "short"
+   },
+   {
+    "id": "d061",
+    "client_id": "c00",
+    "title": "Screening result - P. Venkataraghavan",
+    "content": "Sanctions, PEP and adverse media screening run through Sentinel KYC on 4 February 2025 for Priya Venkataraghavan, born 1984. Result: no sanctions matches, no PEP matches, one adverse media hit reviewed and discounted as a false positive. Case reference SCR-20250204-0071; next review due in 12 months.",
+    "doc_type": "aml_screening",
+    "length_class": "short"
+   },
+   {
+    "id": "d062",
+    "client_id": "c00",
+    "title": "Source of funds declaration - H. Osgathorpe",
+    "content": "SOURCE OF FUNDS DECLARATION\n\nI, Henrietta Margaret Osgathorpe, confirm that the £480,000 I am placing under the management of Saltmarsh & Finch Wealth LLP originates from the following:\n\n(a) £420,000 out of the net amount I received from the sale of 300 ordinary shares in Brambleforth Holdings Ltd to an institutional investor, which completed on 14 February 2025 - the completion statement and my bank statement showing receipt are attached;\n(b) £60,000 from accumulated director's remuneration and dividends held on deposit with Lanchester Bank for more than three years.\n\nNone of the funds derive from third parties, gifts or loans. I founded Brambleforth Holdings Ltd in 2017 and my wider wealth consists of my remaining shareholding, my house in Ilkley and a let flat in Leeds. I undertake to provide further evidence on request.\n\nSigned: H M Osgathorpe, 3 March 2025",
+    "doc_type": "source_of_funds_declaration",
+    "length_class": "medium"
+   },
+   {
+    "id": "d063",
+    "client_id": "c00",
+    "title": "CRS and FATCA self-certification - individual",
+    "content": "Self-certification form for an individual account holder: Marcus Dragomirescu, born in Brasov, Romania. Country of tax residence: United Kingdom (UTR 55512 90317) and Romania (CNP on file); not a US citizen or US resident for tax purposes. Signed 9 January 2025.",
+    "doc_type": "crs_self_certification",
+    "length_class": "short"
+   },
+   {
+    "id": "d064",
+    "client_id": "c00",
+    "title": "Form W-8BEN",
+    "content": "W-8BEN, Certificate of Foreign Status of Beneficial Owner for United States Tax Withholding and Reporting (Individuals). Beneficial owner: Tobias James Hallworth, United Kingdom; claims the 15% treaty rate on US dividends under Article 10. Signed 3 March 2025, valid until 31 December 2028.",
+    "doc_type": "w8ben",
+    "length_class": "short"
+   },
+   {
+    "id": "d065",
+    "client_id": "c00",
+    "title": "W-9",
+    "content": "Form W-9, signed, taxpayer number ending 4821",
+    "doc_type": "w9",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d066",
+    "client_id": "c00",
+    "title": "Enhanced due diligence memo - A. Vasilache-Stroe",
+    "content": "Client is treated as a politically exposed person by association: his brother-in-law is a serving member of the Romanian parliament. Senior management approval to proceed was given on 12 May 2025, with annual review; source of wealth corroborated by audited company accounts and the share sale agreement.",
+    "doc_type": "edd_memo",
+    "length_class": "short"
+   },
+   {
+    "id": "d067",
+    "client_id": "c00",
+    "title": "Certificate of incorporation - Brambleforth Holdings Ltd",
+    "content": "Certificate of incorporation of a private limited company, company number 14772093. The Registrar of Companies for England and Wales certifies that BRAMBLEFORTH HOLDINGS LTD was incorporated under the Companies Act 2006 as a private company limited by shares on 3 April 2017.",
+    "doc_type": "certificate_of_incorporation",
+    "length_class": "short"
+   },
+   {
+    "id": "d068",
+    "client_id": "c00",
+    "title": "Shareholders' agreement - Brambleforth Holdings Ltd",
+    "content": "SHAREHOLDERS' AGREEMENT relating to Brambleforth Holdings Ltd, dated 14 February 2025, between (1) Henrietta Osgathorpe, (2) Lucian Abernethy-Rowe, (3) Tern Capital Partners LLP and (4) the Company.\n\nShareholdings on completion: Osgathorpe 500 ordinary shares (50%), Tern 300 (30%), Abernethy-Rowe 200 (20%).\nBoard: up to four directors; Tern may appoint one director and one observer.\nReserved matters requiring Tern's consent include issuing shares, borrowing above £250,000, changing the articles and paying dividends above 40% of distributable profits.\nTransfers: pre-emption rights on any transfer; drag-along if holders of 70% accept an offer; tag-along for minority holders.\nLeavers: a bad leaver must offer their shares at the lower of cost and fair value.\nDividend policy: the parties intend to distribute at least 25% of post-tax profits each year.\nDeadlock: escalation to chairs, then mediation.\nConfidentiality and non-compete undertakings apply for two years after a party ceases to hold shares.\nGoverning law: England and Wales.",
+    "doc_type": "shareholder_agreement",
+    "length_class": "medium"
+   },
+   {
+    "id": "d069",
+    "client_id": "c00",
+    "title": "Brambleforth Holdings Ltd - accounts for year ended 31 December 2024",
+    "content": "BRAMBLEFORTH HOLDINGS LTD - Abridged financial statements for the year ended 31 December 2024 (registered in England and Wales)\n\nProfit and loss account: turnover £3,842,000 (2023: £3,310,000); cost of sales £2,104,000; gross profit £1,738,000; administrative expenses £1,126,000; operating profit £612,000; tax on profit £147,000; profit for the financial year £465,000.\nBalance sheet: fixed assets £884,000; debtors £702,000; cash at bank £1,015,000; creditors due within one year £681,000; net assets £1,920,000.\nDividends paid in the year: £250,000. Average number of employees: 23.\nDirectors: H M Osgathorpe, L Abernethy-Rowe.\nThe directors have taken advantage of the small companies exemption from audit under section 477 of the Companies Act 2006. Approved by the board on 21 March 2025.",
+    "doc_type": "company_accounts",
+    "length_class": "medium"
+   },
+   {
+    "id": "d070",
+    "client_id": "c00",
+    "title": "Completion statement - sale of Brambleforth shares",
+    "content": "Completion statement for the sale by Henrietta Osgathorpe of 300 ordinary shares in Brambleforth Holdings Ltd to Tern Capital Partners LLP on 14 February 2025. Consideration £1,150,000; less legal and advisory costs £31,700; net amount of £1,118,300 remitted to her Lanchester Bank account ending 7729.",
+    "doc_type": "completion_statement",
+    "length_class": "short"
+   },
+   {
+    "id": "d071",
+    "client_id": "c00",
+    "title": "Business plan",
+    "content": "Business plan for a bakery franchise, second draft",
+    "doc_type": "business_plan",
+    "length_class": "minimal"
+   },
+   {
+    "id": "d072",
+    "client_id": "c00",
+    "title": "New client onboarding checklist - L. Achterberg",
+    "content": "NEW CLIENT ONBOARDING CHECKLIST - Leopold Achterberg, opened 17 March 2025, adviser Daniel Finch.\n\n[x] Client agreement and fee schedule signed (17 March).\n[x] Fact find completed.\n[x] Photo ID seen in original - passport, copy certified by adviser.\n[x] Residence confirmed - council tax bill 2025/26 on file.\n[x] Electronic sanctions and PEP screening - clear.\n[x] Attitude to risk questionnaire - profile 5.\n[ ] Origin of the £300,000 lump sum - awaiting solicitor's completion statement for the property sale.\n[ ] Tax residency self-certification - form sent 18 March, not yet returned.\n[ ] Letter of authority for existing pension provider - outstanding.\n[x] Marketing consent recorded.\n\nNotes: the file cannot move to the recommendation stage until the three open items are closed; chase client on 1 April.",
+    "doc_type": "onboarding_checklist",
+    "length_class": "medium"
+   },
+   {
+    "id": "d073",
+    "client_id": "c00",
+    "title": "E-mail from Elena Dragomirescu - should we be doing something?",
+    "content": "From: Elena Dragomirescu\nTo: Daniel Finch\nDate: 8 April 2025\nSubject: should we be doing something?\n\nDear Daniel,\n\nI have been watching the news all week and I can't pretend I'm relaxed about it. The portfolio is down almost £30,000 since the start of March and Marcus says the American shares have been hit hardest. I know we said we were in this for fifteen years, but with the house move coming and the baby only a few weeks old it feels very different seeing the numbers go red.\n\nShould we move some of it into cash until things calm down? Or at least stop the monthly contributions for a while? I would really value a call this week, even ten minutes.\n\nBest wishes,\nElena",
+    "doc_type": "client_email",
+    "length_class": "medium"
+   },
+   {
+    "id": "d074",
+    "client_id": "c00",
+    "title": "File note - call with Gideon Marchbanks - 19 May 2025",
+    "content": "FILE NOTE - telephone call with Gideon Marchbanks, 19 May 2025 (D. Finch)\n\nGideon rang to say that his son Callum has found a first flat in Sheffield, asking price £215,000, and is £40,000 short of the deposit. He and Ruth would like to hand over £50,000 from their cash ISAs rather than see him take a 95% mortgage.\n\nWe discussed: (1) an outright gift is a potentially exempt transfer and falls out of account after seven years; their annual £3,000 exemptions for this year and last are unused, so £12,000 of it is immediately exempt; (2) a loan with a simple written agreement would keep the capital in their estates but could be called in if Callum's relationship broke down; (3) the lender will want a gifted deposit letter confirming no repayment is expected.\n\nGideon prefers the gift. Their own plan still works with £50,000 less - cashflow rerun attached. Action: send gifted deposit letter template; note the gift on the IHT record.",
+    "doc_type": "file_note",
+    "length_class": "medium"
+   },
+   {
+    "id": "d075",
+    "client_id": "c00",
+    "title": "Initial meeting notes - Tobias Hallworth - 21 January 2025",
+    "content": "MEETING NOTE - INITIAL DISCOVERY MEETING\nClient: Tobias Hallworth (TH). Adviser: Daniel Finch (DF). Date: 21 January 2025, 10:00 to 11:40, Leeds office. Also present: Joanna Hallworth (JH) for the first half hour.\n\n1. How the introduction came about\nTH was referred by his accountant after his late father's estate was wound up last autumn. He has never used an adviser before and has run his own ISA through an online platform. He was open that he has 'no real plan' and wants someone to pull the pieces together. I explained how we work, the difference between the initial planning stage and the ongoing service, and that today's meeting is at our cost. He asked sensible questions about how we are paid and whether we are tied to any provider; I confirmed that we are independent and hold no client money.\n\n2. Personal and family\nTH is 43, married to JH (41), with two children: Felix (11) and Martha (8). Both adults are in good health; TH is a non-smoker and JH gave up five years ago. They have lived in Harrogate since 2018 and have no plans to move. Wills were written when Felix was born and have not been looked at since. Neither of them has a power of attorney in place and they had not heard of the idea before today.\n\n3. Work\nTH is Principal Data Engineer at Kestrel Ridge Analytics in Leeds, where he has been for almost six years. Basic of £75,000 plus a bonus that has paid out every year so far (the last one was about £11,000). He enjoys the job and expects to stay. JH is a part-time physiotherapist at a private clinic and earns roughly £24,000 a year, with hours that vary from month to month. Before Kestrel Ridge, TH spent nine years at Marlowe Steelworks and has a deferred pension in the old scheme there which he 'has not looked at for years'.\n\n4. What they own and owe\nThe house is worth around £560,000, with a mortgage of about £231,000 with Lanchester Bank, fixed until the middle of 2028. They have a joint current account and an easy-access account holding roughly £38,000. TH's ISA is worth about £96,000, almost entirely in a single global tracker. His workplace pension is now inside a SIPP with Aviary Life, about £280,000. JH has an NHS pension from her earlier career and a small personal pension. The inheritance from his father, £684,000 after a few final bills, is sitting in a deposit account paying very little. No credit card balances are carried from month to month and there is no car finance.\n\n5. What they want\nIn TH's words: 'not to mess up what Dad left us'. Specifically: (a) clear the mortgage, or decide deliberately not to; (b) be able to stop full-time work at 60; (c) see both children through university without them taking on large debts; (d) a bigger emergency pot now that JH's hours vary. JH added that she would like one family holiday a year ring-fenced 'so that we actually enjoy some of it'.\n\n6. Paperwork received today\nTH brought the originals we had asked for. He handed over his passport and a recent utility bill, which I copied, certified and returned to him before he left. JH did not have hers with her and will drop them in next week. TH will e-mail his last three payslips and his year-end tax certificate from work. A copy of the grant of probate is already with us, sent on by the accountant.\n\n7. Feel for investment risk\nA brief conversation only; the questionnaire is to be completed at home. TH describes himself as 'fairly relaxed' - he held his tracker through 2020 and 2022 without selling. JH is more cautious and does not want the whole sum in the markets at once. Phasing in over twelve months was mentioned as a possibility, as was keeping the amount needed for the mortgage out of shares altogether.\n\n8. Things I noticed\nThey make decisions together and JH should be invited to every meeting, not just the first. Life cover exists on TH only (a term policy taken out in 2021); nothing on JH, and no income protection for either of them beyond what the employer provides. This needs to be raised at the next meeting, along with the out-of-date wills.\n\n9. Next steps\nDF to send the client agreement and fee schedule, the risk questionnaire and a letter of authority so that we can request details of the Marlowe Steelworks scheme and the Aviary Life plan. TH to send payslips and the latest mortgage statement. JH to bring in her documents. Second meeting pencilled in for 18 February to go through a first draft of the plan.",
+    "doc_type": "meeting_notes",
+    "length_class": "long"
+   },
+   {
+    "id": "d076",
+    "client_id": "c00",
+    "title": "Suitability report - Tobias Hallworth - 14 March 2025",
+    "content": "SALTMARSH & FINCH WEALTH LLP - SUITABILITY REPORT\nPrepared for: Mr Tobias Hallworth. Prepared by: Daniel Finch, Chartered Financial Planner. Date: 14 March 2025.\n\n1. Why you are receiving this report\nYou asked us to recommend what to do with the £684,000 you received following your father's death, and to review your existing pensions and ISA. This report sets out our recommendations and the reasons for them. Please read it alongside the illustrations and key information documents enclosed. If anything in the summary of your circumstances is wrong, tell us before you proceed, because our advice depends on it.\n\n2. Your circumstances in brief\nYou are 43, married to Joanna, with two children aged 11 and 8. You are paid £75,000 a year plus bonus as Principal Data Engineer at Kestrel Ridge Analytics; Joanna is paid about £24,000 for part-time work. Your household spends roughly £4,900 a month. You have a mortgage of £231,000 fixed at 4.19% until June 2028, cash of £38,000 and no other debts. You are both in good health.\n\n3. What you want to achieve\nIn order of importance you told us: to keep six months' spending instantly available; to be free of the mortgage by the time the fixed rate ends; to be able to stop full-time work at 60; and to see Felix and Martha through university. You do not expect to need the invested capital for at least fifteen years.\n\n4. Your attitude to investment risk and capacity for loss\nYour questionnaire of 21 January produced a score of 47 out of 70, which corresponds to profile 6 on our scale of 1 to 10, 'balanced growth'. We discussed what that means in practice: a portfolio of this kind fell by about 19% between January and March 2020 and took around nine months to recover. You told us that you held your existing tracker through that period and did not lose sleep. Joanna is more cautious, and you agreed between you that the mortgage reserve should be kept entirely out of the markets. We assess your capacity for loss as moderate to high: your pay covers your outgoings comfortably, and a 25% fall in the invested amount would delay rather than derail your plans.\n\n5. What we recommend\n(a) Hold £30,000 as an emergency reserve in an easy-access account in joint names.\n(b) Place £231,000 in a ladder of fixed-term deposits and short-dated gilts maturing by June 2028, earmarked to repay the mortgage when the fixed rate ends, avoiding the early repayment charge of 3% that would apply today.\n(c) Use this year's and next year's ISA allowances for you both (£80,000 in total) and invest the remaining £343,000 in a general investment account, phased in over twelve months, in our Balanced Growth 6 model portfolio.\n(d) Make a gross pension contribution of £40,000 to your Aviary Life plan (SIPP-448201-TH) this tax year, using carry-forward of unused allowances, which reduces your higher-rate tax bill by about £9,400.\n\n6. Your deferred pension with Marlowe Steelworks\nYou asked whether you should move this pension into your SIPP so that 'everything is in one place'. We recommend that you do not. The scheme has offered a transfer value of £342,600 in exchange for a guaranteed pension currently estimated at £14,100 a year from age 65, rising with inflation and continuing at half rate to Joanna after your death. The critical yield - the return the transferred sum would have to achieve every year, after charges, to match those benefits - is 6.8%, which we do not consider achievable at profile 6. You have ample flexible savings elsewhere, so the guaranteed element is a valuable foundation rather than a constraint. We will look at this again if the scheme's funding position or your health changes.\n\n7. What it will cost\nOur initial fee for this advice and its implementation is £6,850, as set out in the client agreement you signed on 3 February. The ongoing service costs 0.75% a year of the investments we look after. The model portfolio has underlying fund costs of 0.19% a year and the platform charges 0.25% on the first £250,000 and 0.15% above that. The enclosed illustration shows the combined effect of all charges on projected returns.\n\n8. Risks you should understand\nThe value of investments can fall as well as rise and you may get back less than you put in. Phasing reduces, but does not remove, the risk of investing shortly before a fall. Fixed-term deposits cannot be accessed early without penalty. Tax rules can change, and the value of pension tax relief depends on your circumstances.\n\n9. Your right to change your mind\nYou can cancel the ISA and general investment account within 14 days, and the pension contribution within 30 days, of receiving the provider's cancellation notice. If the investments have fallen in value during that time you may not get back the full amount.\n\n10. Next steps\nIf you wish to go ahead, sign and return the enclosed application forms. We will then open the accounts and confirm each stage in writing. Your first review meeting will be in September 2025.",
+    "doc_type": "suitability_report",
+    "length_class": "long"
+   },
+   {
+    "id": "d077",
+    "client_id": "c00",
+    "title": "Annual review meeting notes - Marcus and Elena Dragomirescu - 12 June 2025",
+    "content": "ANNUAL REVIEW - MEETING NOTES\nClients: Marcus Dragomirescu (MD) and Elena Dragomirescu (ED). Adviser: Daniel Finch (DF). Date: 12 June 2025, by video call, 19:30 to 20:45.\n\n1. Portfolio since last review\nValue at 31 May 2025 was £318,400 against £289,700 a year earlier, after net contributions of £14,400; a return of 4.8% after all costs, a little behind the composite benchmark (5.3%) because of the underweight to US equities early in the year. The spring sell-off, which prompted ED's e-mail in April, has largely reversed: at its low on 9 April the portfolio was 8.9% below its February peak, and it is now 1.2% above it. We went back over the reasons for staying invested and both said they were glad they had not moved into cash. No change to the strategic allocation in the policy statement: 60% equities, 30% bonds, 10% alternatives and cash. A rebalancing trade was placed on 2 June to bring equities back from 63% to 60%.\n\n2. Changes in circumstances\nTheir second child, Sofia, was born on 14 March. ED is on maternity leave until January 2026 and then intends to return three days a week, which will cut her pay from £62,000 to about £37,000. MD's role at the freight software firm is unchanged; base £88,000, and his share options vest in 2027. The monthly surplus will fall from about £1,900 to about £600 once ED is back at work part-time and nursery fees for two start. We agreed to reduce the regular investment from £1,200 to £500 a month from September and to revisit in a year.\n\n3. House purchase\nThey have had an offer accepted on a four-bedroom house in Bishopston at £875,000 and will leave the rented flat in Wren Street when the tenancy ends. Funding: a mortgage of £520,000 agreed in principle with Castlegate Building Society (five-year fixed at 4.34%, 30-year term), £265,000 from their own cash and the house-deposit ISA, and £90,000 given to them by ED's mother, Mrs Constantin. I explained that the lender will ask Mrs Constantin to sign a declaration that the £90,000 is a gift with no interest in the house, and that for our own records we will need her bank statement showing where it was held. The gift is outside UK inheritance tax because she lives in Romania and has no UK assets, so the seven-year rule does not arise. Completion is expected in late August.\n\n4. Protection\nExisting arrangements: a joint decreasing term policy for £300,000 taken out in 2019 to match an earlier mortgage plan; MD has death-in-service of four times base through work; ED has none while on leave. With borrowing of £520,000 and two children, there would be a shortfall of roughly £220,000 if MD died and considerably more if ED did. Recommendation to follow in writing: additional decreasing term cover of £220,000 over 30 years on a joint-life, first-death basis, and family income benefit of £2,000 a month on ED's life until Sofia is 21. Indicative combined premium £41 a month. They also asked about critical illness cover; I will include a costed option.\n\n5. School fees\nThey would like both children to go to an independent secondary school from age 11: Luca in 2030, Sofia in 2036. At today's fees of about £18,000 a year each, rising faster than inflation, the total over fourteen years is of the order of £330,000 in today's terms. The plan is to treat the existing portfolio as the school fees fund for Luca, moving the amount needed for each year into cash and short-dated gilts three years ahead, and to open Junior ISAs for both children with the £9,000 a year that the grandparents have offered. ED asked whether paying fees in advance to the school is worthwhile; I will find out what discount the two schools they like currently offer.\n\n6. Wills and guardians\nTheir wills date from 2017, before either child was born, and do not name guardians. Both agreed that this is now urgent. I will introduce them to a solicitor. They were reminded that the pre-nuptial agreement provided for a review when their first child arrived, which has never happened.\n\n7. Actions\nDF: written protection recommendation by 27 June; school fee discount enquiry; solicitor introduction; update the cashflow model for the new house and the reduced contributions. MD and ED: send the mortgage offer when issued; obtain Mrs Constantin's bank statement and signed gift declaration; confirm nursery costs. Next review: June 2026, or earlier once the purchase completes.",
+    "doc_type": "meeting_notes",
+    "length_class": "long"
+   },
+   {
+    "id": "d078",
+    "client_id": "c00",
+    "title": "Client agreement and fee schedule - Saltmarsh & Finch Wealth LLP",
+    "content": "SALTMARSH & FINCH WEALTH LLP\nCLIENT AGREEMENT AND FEE SCHEDULE (version 7, January 2025)\n\nThis agreement sets out the terms on which we will act for you. Please read it carefully and ask us about anything that is unclear. It takes effect when you sign it or when we first act on your instructions, whichever is earlier.\n\n1. Who we are\nSaltmarsh & Finch Wealth LLP is a limited liability partnership registered in England and Wales, with its office at 4 Tanner's Yard, Leeds LS1 9XQ. We are authorised and regulated by the Financial Conduct Authority (firm reference number 900417).\n\n2. What we do\nWe provide independent advice, which means that we consider a sufficiently wide range of products from across the market and are not tied to any provider. Our services fall into two parts: an initial service (fact finding, analysis, a written recommendation and implementation) and an optional ongoing service (annual review meeting, valuation reports twice a year, rebalancing and access to your adviser between meetings). We advise on investments, pensions, protection and estate planning; we do not advise on mortgages, general insurance or tax returns, although we can introduce you to specialists who do.\n\n3. What we need from you\nOur advice relies on the information you give us. Please tell us promptly about changes in your health, employment, family or finances. The law requires us to verify who you are and where your funds originate before we can act; we cannot proceed until those checks are complete.\n\n4. Our fees\nInitial service: 1.5% of the first £250,000 invested or arranged and 1.0% of any amount above that, subject to a minimum of £1,500. For example, on £400,000 the initial fee is £5,250. Where you do not go ahead with our recommendation, we charge for the work done at the hourly rates below, capped at £1,500.\nOngoing service: 0.75% a year of the value of the investments we look after, calculated daily and collected monthly from your accounts. On a portfolio worth £400,000 this is £3,000 a year; it rises and falls with the value of the portfolio.\nAd hoc work outside the ongoing service: partner £220 an hour, paraplanner £120 an hour, administrator £60 an hour. We will always give you an estimate first.\nOur fees for advice on investments and pensions are currently exempt from VAT; if that changes we will tell you before charging it. You may pay fees directly or ask the product provider to deduct them. We do not accept commission from providers on investment business; any commission on protection policies is disclosed and offset against our fee.\n\n5. Your money and investments\nWe never handle cash and do not hold client money. All payments must be made to the platform or product provider, never to the firm or to an individual adviser. Your investments are held by the custodian appointed by the platform, in a nominee name, separately from its own assets.\n\n6. Conflicts of interest\nWe maintain a conflicts policy and a gifts register. If a conflict arises that we cannot manage, we will tell you and obtain your consent before continuing.\n\n7. How we use your information\nWe hold personal data under the UK General Data Protection Regulation as a controller. We share it only with providers, regulators and service firms that need it to carry out your instructions. Records are kept for at least six years after the relationship ends, and indefinitely for pension transfer advice. Our privacy notice is on our website.\n\n8. If something goes wrong\nIf you are dissatisfied with any part of our work, please write to the Compliance Partner at the above office or e-mail complaints@saltmarshfinch.example. We will acknowledge your complaint within five working days and send a final response within eight weeks. If you remain dissatisfied you may refer the matter, free of charge, to the Financial Ombudsman Service within six months of our final response. We are covered by the Financial Services Compensation Scheme: if we cannot meet our obligations, you may be entitled to compensation of up to £85,000 per person for investment business.\n\n9. Ending this agreement\nEither of us may end this agreement at any time by giving 30 days' written notice, without penalty. Fees due up to the end date remain payable, and transactions already in progress will be completed. If the ongoing service ends, you will continue to have access to your accounts directly through the platform.\n\n10. Your right to cancel\nYou may cancel this agreement within 14 days of signing it without giving a reason. Product cancellation rights are described in the documents you receive from each provider.\n\n11. General\nThis agreement is governed by the law of England and Wales. We may amend it by giving you 30 days' notice in writing. Nothing in it restricts any duty we owe you under the regulatory system.\n\nSigned by the client: ____________ Date: ________\nSigned for Saltmarsh & Finch Wealth LLP: Daniel Finch, Partner",
+    "doc_type": "fee_agreement",
+    "length_class": "long"
+   },
+   {
+    "id": "d079",
+    "client_id": "c00",
+    "title": "E-mail thread - Henrietta Osgathorpe - February to April 2025",
+    "content": "E-MAIL THREAD (filed 11 April 2025) - H. Osgathorpe / D. Finch\n\n--- 24 February 2025, 09:12, from Henrietta Osgathorpe ---\nSubject: ISA before the tax year ends\nDear Daniel, now that the share sale has gone through I would like to use this year's ISA allowance before 5 April. Can you confirm how much I have left? I think I put in £8,000 last summer. Also, should it go into the same funds as the rest, or would you keep it in cash for now given everything in the news?\n\n--- 24 February 2025, 15:40, from Daniel Finch ---\nDear Henrietta, you have subscribed £8,000 so far this tax year, so £12,000 of the £20,000 allowance remains. I suggest we fund it from the cash already on the platform and invest it in line with your existing portfolio rather than trying to time the market; the amount is small relative to the whole and your time horizon has not changed. If you are happy with that, reply 'agreed' and we will do the rest. A new allowance becomes available on 6 April and we can talk about that when we meet.\n\n--- 25 February 2025, 08:03, from Henrietta Osgathorpe ---\nAgreed, thank you.\n\n--- 18 March 2025, 21:27, from Henrietta Osgathorpe ---\nSubject: something I should have mentioned\nDear Daniel, I have been putting off telling you this because nothing is settled, but Lucian's offer to buy out the rest of my shares has set me thinking. My sister has lived near Tavira in the Algarve for ten years and I have more or less decided to join her there for good from the spring of 2026 - sell Fell View, buy something small with a garden, and come back to Yorkshire for a month each summer to see the grandchildren. Before I get carried away: what does this do to everything we have set up? Can I keep the ISAs? Would I still pay tax here? Does the trust have a problem if I am no longer in England? I would rather know now than find out afterwards.\n\n--- 20 March 2025, 11:15, from Daniel Finch ---\nDear Henrietta, thank you for telling me early - it makes a real difference. The short answers, each of which needs proper specialist confirmation:\n(1) You can keep existing ISAs after you leave, but you cannot pay into them once you stop being UK resident, and Portugal will not recognise the wrapper, so the returns may be taxable there.\n(2) Whether you remain UK tax resident is decided by the statutory residence test, which counts days spent here and ties such as available accommodation and family; a month each summer is normally compatible with becoming non-resident, and split-year treatment may apply in the year you leave.\n(3) Rental profit from the Leeds flat stays taxable in the UK wherever you live.\n(4) UK inheritance tax will continue to apply to your worldwide assets for some years after departure under the long-term residence rules.\n(5) The trust is not affected by where the settlor lives, but we should check the position of the trustees.\nI am not qualified to advise on Portuguese tax. I recommend a joint meeting with a cross-border tax adviser before you commit to a purchase, and I can suggest two firms. Nothing needs to change in the portfolio today.\n\n--- 21 March 2025, 07:48, from Henrietta Osgathorpe ---\nThat is clearer than I expected. Yes please to the introduction. No hurry - after Easter is fine.\n\n--- 9 April 2025, 16:32, from Henrietta Osgathorpe ---\nSubject: Rupert\nDear Daniel, one more thing. If I am going to be away for long stretches I want Rupert to be able to deal with you directly without my having to sign everything. The lasting power of attorney was registered in January, and Imogen is named as well, but Rupert is the one with the head for figures. What do you need from us?\n\n--- 11 April 2025, 10:05, from Daniel Finch ---\nDear Henrietta, we need a certified copy of the registered power of attorney (or the access code from the Office of the Public Guardian so that we can view it online), plus identification for Rupert and Imogen, exactly as we did for you: passport or driving licence and something recent showing a home address. Because the attorneys are appointed jointly and severally, either may give instructions alone. Even so, while you are well and able to decide for yourself, we will continue to confirm any withdrawal over £10,000 with you personally. I will send Rupert a short form to complete.",
+    "doc_type": "client_email",
+    "length_class": "long"
+   },
+   {
+    "id": "d080",
+    "client_id": "c00",
+    "title": "Financial plan and cashflow forecast - Henrietta Osgathorpe - May 2025",
+    "content": "SALTMARSH & FINCH WEALTH LLP - FINANCIAL PLAN AND CASHFLOW FORECAST\nPrepared for Mrs Henrietta Osgathorpe by Daniel Finch, 6 May 2025\n\n1. Summary\nYou are 63, widowed, and stepped back from day-to-day management of Brambleforth Holdings in February when you sold part of your shareholding. You asked three questions: can you afford to stop drawing a salary altogether, how much can you safely spend, and what would be left for Rupert and Imogen? On the central assumptions below, you can spend £52,000 a year after tax, rising with prices, for the rest of your life without running out, and without relying on any further sale of shares. The plan is robust to the two stress tests we ran. The area that needs attention is not spending but the tax your children would face on your death.\n\n2. What you have\nInvestment portfolio (general account and ISA) £550,000 at 31 March, plus £480,000 added in March from the share sale and a further £638,000 on deposit awaiting investment or other use; pensions £412,000, untouched; your house, Fell View, about £780,000; the let flat in Leeds, about £215,000, producing £10,250 a year after expenses; and your remaining 500 shares in Brambleforth, which we have valued cautiously at £1.4 million for planning purposes and excluded from the spending forecast. There are no debts.\n\n3. Assumptions\nInflation 2.5% a year. Investment returns after charges: 4.5% for the portfolio, 2.0% for deposits. State Pension of £11,970 a year from age 67. Tax rates, allowances and thresholds as currently legislated and then rising with inflation. Planning horizon to age 97, which only about one woman in ten of your age is expected to reach. Dividends from Brambleforth are treated as a bonus and not relied upon.\n\n4. Spending\nYour current outgoings are about £44,000 a year. You asked us to plan for £52,000 to allow for more travel and for the grandchildren's activities. We have assumed that this falls by a fifth in real terms from age 80, as discretionary spending usually does. Until 67 the gap between your rental profit and your spending is met from deposits and the general account, using your capital gains allowance each year; pension withdrawals begin at 67, and only to the extent needed to use the basic-rate band.\n\n5. Results\nOn the central case your liquid assets rise gently in real terms until your mid-seventies and then level off; at 97 you would still hold about £1.1 million in today's prices, before counting the houses or the shares. A 30% fall in markets in the first year, with no recovery beyond normal returns, reduces that figure to about £640,000 but never threatens your spending. Inflation at 5% for a decade is more damaging than a market fall and would require spending to be trimmed by about £4,000 a year from age 75.\n\n6. Later-life care\nWe modelled a move into residential nursing care at 85 for four years at £68,000 a year in today's prices, alongside the sale of Fell View at that point. The plan remains comfortably viable: the cost, about £270,000 in today's terms, comes out of capital you are not otherwise forecast to spend. Because your assets are well above the local authority thresholds you would be self-funding throughout, and it is worth knowing that an immediate needs annuity could cap the cost if that ever became a worry. The registered powers of attorney mean that Rupert and Imogen could manage this for you if necessary.\n\n7. Tax on your death\nThis is where the plan is weakest. If you died today, about £2.66 million of your assets would be exposed to inheritance tax: the portfolio, the deposits, Fell View and the Leeds flat. Your pensions currently fall outside the calculation, and we have assumed that business relief continues to cover the Brambleforth shares. After two nil-rate bands (your own and your late husband's unused one), roughly £2.0 million would be taxable at 40%: an estimated bill of about £805,000. The additional allowance for a home left to children is tapered away completely for estates of this size.\nThree things would reduce it: (a) regular gifts out of surplus income, which are immediately exempt if documented - you have roughly £20,000 a year of genuine surplus; (b) larger lifetime gifts or further settlements into the family trust, which fall out of account after seven years; (c) leaving the pensions untouched for as long as practical. We also suggest obtaining a price for whole-of-life cover written in trust to meet part of the bill, though at 63 the premiums are substantial. Your plans to live in Portugal do not remove the exposure in the near term.\n\n8. Recommendations\nStop drawing salary from July; invest £400,000 of the deposit balance in the existing portfolio over six months and keep the remainder as a three-year spending reserve; begin a documented pattern of gifts of £1,500 a month in total to Rupert and Imogen; meet the solicitor with us in June to consider a second settlement; review this plan each May or on any major change.",
+    "doc_type": "financial_plan",
+    "length_class": "long"
+   },
+   {
+    "id": "d081",
+    "client_id": "c00",
+    "title": "Quarterly investment commentary and model portfolio update - Q1 2025",
+    "content": "SALTMARSH & FINCH WEALTH LLP - QUARTERLY INVESTMENT COMMENTARY, FIRST QUARTER 2025\nFor clients invested in our model portfolios. Written by the Investment Committee, 11 April 2025.\n\n1. The quarter in brief\nAfter two strong years, global share prices went sideways in January and February and fell in March. Developed-market equities ended the quarter 2.9% lower in sterling terms. The pattern underneath was more interesting than the headline: European and UK shares rose, while the large American technology companies that had led the market for most of 2023 and 2024 fell by more than 10%. Bonds did their job, with UK government bonds returning 0.7% and investment-grade corporate bonds 1.1%. A balanced portfolio therefore finished the quarter roughly where it started, which will not have been obvious to anyone reading the headlines in the last week of March.\n\n2. What drove markets\nThree things mattered. First, trade policy: the announcement of new US tariffs, and the uncertainty about how far they would go, led companies to delay investment decisions and analysts to trim profit forecasts. Second, a change of mood about artificial intelligence spending, after several large firms signalled that capital expenditure would grow more slowly than investors had assumed. Third, Europe: Germany's decision to relax its borrowing limits to fund defence and infrastructure lifted growth expectations across the continent and pushed European shares to their best relative quarter in a decade.\n\n3. Interest rates and inflation\nThe Bank of England cut Bank Rate by a quarter point in February, to 4.5%, and held in March. UK inflation remains above target at 2.8%, largely because of services prices and regulated household bills, and we expect it to rise a little further over the summer before easing. Markets price two more cuts this year; we think that is reasonable. For savers, the practical consequence is that the best easy-access rates have slipped below 4.5% and one-year fixed rates below 4.3%. For borrowers, five-year fixed mortgage rates have changed little.\n\n4. Regions and sectors\nUnited States: the weakest major market over the quarter, though after a long period of leadership valuations remain higher than elsewhere. United Kingdom: helped by banks, defence and a low starting valuation; the main index is up 5% year to date. Europe: strong, as described above. Japan: flat in local currency, modestly negative in sterling. Emerging markets: slightly positive, with China recovering and India weak. Within bonds, shorter maturities outperformed longer ones as investors demanded more compensation for lending to governments for long periods.\n\n5. How the model portfolios performed\nOver the three months to 31 March the returns after fund costs were: Cautious 3, +0.4%; Balanced 5, -0.6%; Balanced Growth 6, -1.1%; Growth 8, -2.0%. Over five years the same portfolios have returned +14.8%, +29.5%, +37.2% and +51.6% respectively. The figures do not include platform or advice charges, and past performance is not a guide to future returns.\n\n6. Changes we have made\nThe committee made three changes on 2 April, applied to all models at the scheduled rebalance. First, we trimmed the US equity index fund by three percentage points in the growth-oriented models and added the proceeds to the equal-weighted global fund, reducing the dependence on a handful of very large companies. Second, we shortened the average maturity of the UK government bond holding from eleven years to seven by switching half of it into a short-dated gilt fund. Third, we introduced a 3% position in a physically backed gold exchange-traded commodity, funded from cash and absolute-return funds. Gold has no yield and we do not hold it for its recent price rise; we hold it because it has tended to keep its value in periods when both shares and bonds fall together, as they did in 2022, and because central banks continue to add to their reserves.\n\n7. Looking ahead\nWe do not forecast markets and are sceptical of those who claim to. Profits are still growing, employment is high and interest rates are falling, which is normally a supportive combination. Against that, policy is unusually unpredictable. Our response is to stay diversified, keep costs low and rebalance on schedule rather than on headlines.\n\n8. Important information\nThis commentary is for general information and is not personal advice. The value of investments and the income from them can fall as well as rise, and you may not get back the amount you invested. If your circumstances have changed, please speak to your adviser.",
+    "doc_type": "investment_commentary",
+    "length_class": "long"
+   },
+   {
+    "id": "d082",
+    "client_id": "c00",
+    "title": "Minutes of trustees' meeting - Osgathorpe Family Discretionary Trust - 8 April 2025",
+    "content": "THE OSGATHORPE FAMILY DISCRETIONARY TRUST\nMINUTES OF A MEETING OF THE TRUSTEES held at Fell View House, Ilkley, on 8 April 2025 at 2.00 pm\n\nPresent: Rupert Osgathorpe (chair), Imogen Fairweather. In attendance: Daniel Finch (Saltmarsh & Finch Wealth LLP, investment adviser), Beatrix Holroyd (Holroyd & Sedge, accountants). Apologies: none.\n\n1. Minutes of the last meeting\nThe minutes of the meeting held on 15 October 2024 were approved and signed by the chair. Matters arising: the bank mandate has been updated to require both trustees' approval for payments above £5,000; the trust's entry on the Trust Registration Service was updated on 22 November 2024 and the annual declaration made.\n\n2. Accounts\nMrs Holroyd presented the accounts for the year ended 5 April 2025 in draft. The trust fund stood at £538,900 (2024: £497,200). Income received in the year was £14,870, consisting of dividends and interest; expenses were £5,310, mainly investment and accountancy fees. No capital was added by the settlor during the year. The trustees approved the accounts subject to the final valuation and authorised the chair to sign them.\n\n3. Investment review\nMr Finch reported that the portfolio returned 6.1% over the trust year, in line with its benchmark. The trustees confirmed that the investment policy remains appropriate: a balanced approach with at least two years of expected payments held in cash and short-dated gilts, reflecting the likelihood of regular requests from beneficiaries of university age over the next decade. Mr Finch explained the changes made to the model portfolio on 2 April, including the shorter bond maturity. The trustees noted the report and made no changes. The written investment policy statement is to be re-signed, the previous one being more than two years old.\n\n4. Requests from beneficiaries\nThe trustees considered a written request from Clementine Fairweather (aged 19), who began a degree in veterinary medicine at Edinburgh in September 2024. Mrs Fairweather declared an interest as Clementine's mother and took no part in the decision, which under clause 9 of the deed may be made by the remaining trustee with the settlor's written approval; that approval was tabled. Having regard to the settlor's letter of wishes, it was RESOLVED to pay £18,000 to Clementine for the academic year 2025/26, being £9,750 for tuition and £8,250 towards accommodation, payable in three instalments at the start of each term direct to her own bank account. It was noted that a similar request is likely from Barnaby Osgathorpe (aged 17) next year. The payment will be made out of income first and then capital, and Mrs Holroyd will prepare the tax certificate (form R185) so that Clementine can reclaim tax where possible.\n\n5. Tax\nThe trust and estate tax return (SA900) for 2023-24 was filed on 9 January 2025 and tax of £4,912 paid. Mrs Holroyd reminded the trustees that the first ten-year anniversary falls on 5 June 2033 and that no periodic charge arises before then. She also drew attention to the fact that distributions of capital can give rise to an exit charge, although at present the rate is nil because the initial value was within the settlor's available nil-rate band.\n\n6. Trustees\nThe settlor has indicated that, in view of her plans to spend much of the year outside the United Kingdom, she would like a professional trustee appointed alongside her children. The trustees agreed in principle and asked Mr Finch to obtain fee proposals from two trust companies before the next meeting. Any appointment will be made by deed by the settlor under clause 7.\n\n7. Any other business\nThe trustees' indemnity insurance was renewed on 1 March 2025. There being no further business, the meeting closed at 3.25 pm.\n\n8. Next meeting\n14 October 2025 at 2.00 pm, at the same place.\n\nSigned as a correct record: R. Osgathorpe, chair",
+    "doc_type": "trustee_minutes",
+    "length_class": "long"
+   },
+   {
+    "id": "d083",
+    "client_id": "c00",
+    "title": "Source of wealth memorandum - Aurelian Vasilache-Stroe",
+    "content": "SOURCE OF WEALTH MEMORANDUM\nSubject: Mr Aurelian Vasilache-Stroe (born 1968, Romanian national, UK resident since 2022)\nPrepared by: Daniel Finch. Reviewed by: Margaret Saltmarsh, Money Laundering Reporting Officer. Date: 9 May 2025. Classification: confidential - compliance file.\n\n1. Purpose\nMr Vasilache-Stroe proposes to place approximately £2.5 million under our management. Because of the size of the relationship, the cross-border history and the family connection described in section 6, the firm's policy requires a documented understanding of how his overall wealth was built up, in addition to the origin of the specific sum being invested. This memorandum records what we were told, what we have seen and what we concluded.\n\n2. Background\nMr Vasilache-Stroe was born in Ploiesti and graduated in mechanical engineering from the Polytechnic University of Bucharest in 1991. He is married with two adult children, both of whom live in London. He and his wife have held UK residence permits since March 2022 and live in Richmond.\n\n3. Early career\nFrom 1991 to 1998 he worked as a maintenance engineer and later depot manager for the state railway freight operator. From 1998 to 2005 he was operations director of a privately owned haulage firm in Constanta. He describes his savings on leaving that job as 'a car and enough for a deposit', which is consistent with salaried employment in Romania at the time; no significant wealth is attributed to this period.\n\n4. The company\nIn 2006 he founded Carpathia Freight Systems SRL with a partner, each holding 50%, to provide container tracking and customs paperwork for forwarders using the port of Constanta. The company grew with Romania's accession to the European Union in 2007: turnover rose from the equivalent of EUR 0.4 million in 2007 to EUR 11.8 million in 2019, and it employed 140 people at its peak. He bought out his partner in 2014 for EUR 600,000, financed by a bank loan repaid from dividends by 2017. We have seen audited accounts for 2015 to 2020, which show cumulative dividends to him of EUR 2.1 million over that period, and the corresponding entries in his personal bank statements.\n\n5. The sale\nIn September 2021 he sold 100% of the company to Nordhaven Logistics Group AB, a listed Swedish freight technology company, for EUR 7.4 million: EUR 6.2 million in cash at completion and EUR 1.2 million deferred for two years, which was paid in full in October 2023. We have seen the share sale agreement, the buyer's stock exchange announcement of 14 September 2021, the notary's completion record and bank statements showing receipt of both payments. Romanian tax on the gain was paid in 2022; the tax receipt is on file. This transaction accounts for roughly three quarters of his present net worth.\n\n6. Political connection\nHis wife's brother has been a member of the Romanian Chamber of Deputies since 2020. Mr Vasilache-Stroe has never held public office, was not a supplier to the state after 1998, and the company's customer list for 2015 to 2020, which we reviewed, contains no public bodies. Screening shows no adverse media. He is nevertheless treated as politically exposed by association and the relationship has been escalated accordingly; see the separate enhanced due diligence memo.\n\n7. Property and other assets\nHe owns three apartments in Bucharest bought between 2009 and 2016 for a total of about EUR 410,000 (land registry extracts seen), two of which are let, and the family's house in Richmond bought in 2022 for £1.85 million without borrowing (completion statement and solicitor's letter seen). Cash and investments of about EUR 3.3 million are held with a bank in Vienna, from which the proposed transfer will be made. He has received no gifts or legacies of any size.\n\n8. Assessment\nThe account he gives is coherent, consistent over two meetings and supported by independent documents at each material step. Total wealth of about £6.5 million is in proportion to the dividends and sale consideration evidenced. The residual concerns are jurisdictional and the political connection, neither of which is aggravated by anything we have found.\n\n9. Decision\nRisk rating: high, because of the political exposure. Approved to proceed by Margaret Saltmarsh on 12 May 2025, subject to: funds to be received only from the Vienna account in his own name; annual review of this memorandum; any third-party payment in or out to be referred to the MLRO before it is processed.",
+    "doc_type": "source_of_wealth_memo",
+    "length_class": "long"
+   },
+   {
+    "id": "d084",
+    "client_id": "c00",
+    "title": "Fact find - Caleb Winterbourne - 2 April 2025",
+    "content": "CONFIDENTIAL FACT FIND\nClient: Caleb Winterbourne. Completed by: Daniel Finch at a meeting on 2 April 2025 and from documents supplied afterwards.\n\nA. Personal details\nFull name: Caleb Elias Winterbourne. Date of birth: 19 August 1985. Nationality: United States. Marital status: single, no children. Partner: Dr Niamh Corrigan (Irish national), not financially dependent. Health: good; non-smoker. Arrived in the UK on 6 January 2025 on a Skilled Worker visa sponsored by his employer, valid for five years. Currently renting a flat in Cambridge on a twelve-month tenancy; intends to buy within two years if the posting is extended. Previous home: Portland, Oregon.\n\nB. Employment\nEmployer: Halcyon Wharf Robotics Ltd (UK subsidiary of Halcyon Wharf Robotics Inc.). Role: Director of Perception Engineering. UK base salary £165,000 plus annual bonus target of 20% and restricted stock units in the US parent vesting quarterly (about $60,000 a year at the current share price). Relocation allowance of £25,000 paid in January. He is a member of the UK group pension plan with a 6% employer contribution but has opted out for now on the advice of his US accountant - see section E.\n\nC. Assets\n401(k) with his former US employer plan: $418,000, invested mainly in a target-date fund; no further contributions possible. Roth IRA: $74,000. Taxable brokerage account with Redwood Ledger Brokerage: $236,000, mostly US index funds, plus vested employer shares worth about $95,000. House in Portland, bought 2018, value about $640,000, let since February through a managing agent at $3,100 a month. UK current account: £31,000. US checking and savings: $42,000.\n\nD. Liabilities\nMortgage on the Portland house: $312,000 outstanding, 30-year fixed at 3.1%. No other borrowing. Credit cards are cleared monthly.\n\nE. Tax position\nThis is the dominant planning issue. As a US citizen he remains taxable in the United States on his worldwide income wherever he lives, and must continue to file Form 1040 each year together with the foreign bank account report (FBAR) for his UK accounts. He became UK tax resident on arrival and is using the four-year foreign income and gains regime, so his US rental and investment income is not taxed in the UK for now, but his UK salary is taxed in both countries with relief by foreign tax credit. Consequences for anything we recommend: (1) UK-domiciled funds, investment trusts and most ISA investments are treated by the US as passive foreign investment companies and taxed punitively - he should not buy them; (2) an ISA has no tax advantage for US purposes; (3) the UK workplace pension is broadly recognised under the treaty, and opting out is probably costing him the employer contribution for no good reason - to be confirmed with a dual-qualified tax adviser; (4) any UK adviser or platform must be willing to accept US persons and report under FATCA.\n\nF. Protection\nDeath-in-service of four times salary and income protection of 75% of salary after 26 weeks through the UK employer. A US term policy of $500,000 remains in force until 2040. Private medical cover is provided for him and his partner by the employer.\n\nG. Wills and succession\nHe signed a revocable living trust and pour-over will in Oregon in 2019, naming his sister as successor trustee and his parents and sister as beneficiaries. He has no UK will. His partner is not provided for. He was unaware that a UK-situated house would fall under English succession rules. Action: refer to a solicitor with US and English expertise once a UK purchase is in prospect.\n\nH. Objectives\nIn his words: 'do not let the move wreck my finances.' Specifically: keep his investments compliant in both countries; decide whether to keep or sell the Portland house; build a deposit of £150,000 for a UK purchase by 2027; continue to save about 20% of gross pay for the long term; understand what happens if he stays in the UK permanently.\n\nI. Attitude to risk\nExperienced investor; has held equity index funds since his twenties and added to them in 2020 and 2022. Questionnaire result: profile 7 of 10. Capacity for loss high given age, earnings and absence of dependants. Deposit fund to be kept in cash and short-dated government bonds regardless.\n\nJ. Documents received\nUS passport (copy certified), visa vignette and residence permit, tenancy agreement, three UK payslips, latest brokerage and plan statements, 2023 US tax return.",
+    "doc_type": "fact_find",
+    "length_class": "long"
+   },
+   {
+    "id": "d085",
+    "client_id": "c00",
+    "title": "File note - vulnerability and capacity review - Winifred Ashdown-Pryce",
+    "content": "FILE NOTE - VULNERABLE CLIENT REVIEW\nClient: Mrs Winifred Ashdown-Pryce (aged 84). Author: Daniel Finch. Date of meeting: 27 February 2025, at her home in Otley. Also present: her nephew, Jasper Pryce. Note written the same afternoon.\n\n1. Why this note exists\nAt the annual review in November I recorded that Mrs Ashdown-Pryce seemed less sure of herself than in previous years. Since then she has telephoned the office four times to ask for her balance, on two occasions twice in the same morning, and in January she asked our administrator who I was. Her nephew rang me on 12 February to say that the family had concerns of their own and to ask for a meeting. This note records what I saw, what I was told, and what we have changed as a result. It should be read before anyone takes an instruction from her.\n\n2. What I observed\nShe was welcoming, well dressed and the house was in good order. She knew who I was once reminded, and talked fluently about her late husband and about the garden. She could not tell me roughly what her investments were worth, or what the monthly payment from the portfolio was for, and asked three times in forty minutes whether her money was 'still safe'. When I explained the regular withdrawal she understood, agreed it should continue, and ten minutes later had no memory of the explanation. She became briefly distressed when she could not find her reading glasses, which were on the table in front of her.\n\n3. Medical position\nMr Pryce told me, with her agreement, that her GP referred her to the memory clinic in the autumn and that Alzheimer's disease at an early stage was confirmed in November 2024. She has been prescribed donepezil and will be seen again in May. The consultant's letter, which I was shown, says that she is able to make everyday decisions with support but is likely to find complex financial matters increasingly difficult. Nobody has suggested that she lacks capacity in general, and I have not treated her as though she does: the question is whether she can understand, retain and weigh a particular decision at the time it has to be made.\n\n4. Who can give instructions\nShe signed a lasting power of attorney for property and financial affairs in 2019, registered the same year, appointing Mr Pryce and her solicitor, Mrs Odette Lanyon of Lanyon Marsh, to act jointly for decisions about selling her house and separately for everything else. I have seen the registered document and taken a certified copy; both attorneys' identities were verified in 2019 and Mr Pryce's has been refreshed today. With her consent, given in front of me and recorded here, the attorneys will from now on be copied into all correspondence and Mr Pryce will attend every meeting. Where she is able to decide something herself she will continue to do so, and we will confirm it in writing to her and to him.\n\n5. Money and care\nCarers now visit twice a day at a cost of about £2,400 a month, paid from her current account. Her pensions bring in £1,850 a month after tax, so the existing withdrawal of £1,000 a month no longer covers the gap. We agreed to raise it to £1,600 from April. At that rate, and allowing for costs rising, the portfolio of £486,000 lasts well beyond age 100 on cautious assumptions, even before the house is considered. If she later needs full-time residential care the figures should be rerun.\n\n6. Investments\nThe portfolio is in our Balanced 5 model. Given the shorter horizon, the higher withdrawals and the need for her attorneys to be comfortable with what they are overseeing, I recommended a switch to Cautious 3 and a cash reserve equal to two years of withdrawals. She said, 'I don't want any excitement,' and Mr Pryce agreed. A short suitability letter will go to both of them and Mrs Lanyon before anything is done.\n\n7. Safeguards put in place today\nVulnerability marker added to her record. No instruction to be accepted from her by telephone alone; staff to call Mr Pryce back on the number we hold. No change of bank details without both attorneys' written confirmation. Paper valuations to continue because she likes to receive them, with a copy to Mr Pryce by e-mail. Her daughter-in-law in Canada is not an attorney and should not be given information.\n\n8. Review\nNext contact in three months, after the clinic appointment, and a full review in six. Sooner if the family or the carers report a change.",
+    "doc_type": "file_note",
+    "length_class": "long"
+   },
+   {
+    "id": "d086",
+    "client_id": "c00",
+    "title": "Retirement income options report - Gideon Marchbanks - 2 May 2025",
+    "content": "SALTMARSH & FINCH WEALTH LLP - RETIREMENT INCOME OPTIONS REPORT\nPrepared for Mr Gideon Marchbanks by Daniel Finch, 2 May 2025\n\n1. Where you are\nYou will be 65 on 14 July and plan to finish at the council on 31 July after thirty-one years. Ruth, who is 62, intends to carry on at the library two days a week until she is 66. You have two personal pensions built up before and alongside your council service: £338,000 with Aviary Life and £174,000 with Pennant Mutual, £512,000 in total. Your local government pension will pay £19,600 a year from August, rising with prices, and your State Pension of about £11,900 starts at 66. Ruth's own pensions will add roughly £13,000 from 66 and 67. You have £86,000 in cash ISAs, £22,000 in premium bonds and a mortgage of £74,500 on which the fixed rate ended in March.\n\n2. What you need\nYou have told us that the two of you spend about £3,300 a month and would like £3,900 for the first ten years so that you can travel while you are fit. Your guaranteed pensions cover the essentials from the day you stop work; the personal pensions are there to fund the extras, to bridge the year before your State Pension, and to provide a reserve. That is a strong position, and it shapes everything below.\n\n3. The options we considered\n(a) Buying an annuity with the whole fund. On 2 May the best quotation we obtained was £9,870 a year for each £150,000 on a level, single-life basis with a five-year guarantee, or £6,410 if it rises by 3% a year and continues at two-thirds to Ruth. An annuity is simple and cannot run out, but it is irreversible, and you already have more guaranteed income than most people.\n(b) Flexi-access drawdown for the whole fund. The money stays invested and you draw what you need. This gives control and leaves whatever is unspent to the family, but the income is not guaranteed and depends on investment returns and on your own discipline.\n(c) Taking lump sums as required directly from the existing plans. Possible with Aviary Life but not with Pennant Mutual, and the tax treatment is clumsy.\n(d) A combination.\n\n4. Tax-free cash and the mortgage\nA quarter of the fund, £128,000, can be taken tax-free. We recommend that you take it in full at the outset and use £74,500 of it to repay the mortgage. The loan now costs you 7.24% on the lender's standard variable rate, far more than the cash could safely earn, and clearing it reduces your monthly outgoings by £612. The remaining £53,500 would top up your cash reserve to roughly two years of extra spending. You asked whether it would be better to leave the tax-free amount invested and draw it gradually; in other circumstances it might, but not while you are paying that rate of interest.\n\n5. Our recommendation\nTransfer both plans into a single drawdown account. Take the tax-free cash as described. From the remaining £384,000, draw £7,200 a year (£600 a month) from August, which with your council pension keeps you within the basic-rate band, and review the level each spring. Invest the drawdown fund in our Balanced 5 model portfolio, with three years of planned withdrawals held in cash and short-dated gilts inside the account so that you are never forced to sell shares after a fall. We do not recommend an annuity now. We do recommend revisiting the question at 75, when rates for your age will be considerably higher and simplicity may matter more to you both.\n\n6. Will it last?\nOn our central assumptions (returns of 4% a year after charges, inflation of 2.5%) withdrawals of £7,200 rising with prices leave about £350,000 in today's terms at age 90. If returns are two percentage points lower throughout, the fund still lasts beyond 95. If you wanted to draw twice as much it would be exhausted at about 88, at which point your guaranteed pensions would still exceed your essential spending.\n\n7. If you die\nMoney left in drawdown does not form part of your estate under the present rules and can pass to anyone you nominate. You have completed a nomination in favour of Ruth, and then Callum and Hannah equally. If you die before 75 the beneficiaries pay no income tax on what they draw; after 75 they pay tax at their own rates. The Government has announced that unused pension funds will be brought within inheritance tax from April 2027; for a couple this does not bite on the first death, but we will need to look again at the order in which you spend your savings.\n\n8. Charges\nInitial advice and implementation: £5,760, deducted from the fund. Ongoing: our service 0.75% a year, platform 0.25%, underlying funds 0.17%. A full illustration is enclosed.\n\n9. Risks\nDrawdown funds can fall in value. High withdrawals, poor returns in the early years or living much longer than expected could all reduce what is available later. The tax rules described here may change.\n\n10. What happens next\nIf you agree, sign the transfer and drawdown application forms. Transfers typically take three to five weeks; we will time the tax-free payment to arrive shortly before your mortgage lender's next payment date.",
+    "doc_type": "retirement_options_report",
+    "length_class": "long"
+   }
+  ]
+ },
+ "queries": [
+  {
+   "id": "q001",
+   "q": "address proof",
+   "category": "concept",
+   "level": "required",
+   "scope": "documents",
+   "relevant": [
+    "d001",
+    "d002",
+    "d003",
+    "d004",
+    "d005"
+   ],
+   "acceptable": [
+    "d006",
+    "d007",
+    "d008",
+    "d009",
+    "d010",
+    "d014",
+    "d019",
+    "d055",
+    "d072",
+    "d075",
+    "d079"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Assignment's canonical example. Relevant: utility bills (d001 minimal, d002 electricity - both contain the words 'utility bill'; d003 gas; d004 water) and the council tax bill d005. Acceptable: second-tier residence evidence (bank statements, tenancy agreement, mortgage statement, mobile bill, driving licence, home insurance schedule) and records that merely mention such evidence (d014 e-mail, d072 checklist, d075 meeting notes that contain 'utility bill', d079 request for attorneys' ID). Traps: d012/d016 ('proof of ...'), d013 ('e-mail address list'), d011/d015 ('bill').",
+   "split": "dev"
+  },
+  {
+   "id": "q002",
+   "q": "proof of residence",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d001",
+    "d002",
+    "d003",
+    "d004",
+    "d005"
+   ],
+   "acceptable": [
+    "d006",
+    "d007",
+    "d008",
+    "d009",
+    "d010",
+    "d014",
+    "d019",
+    "d055",
+    "d072",
+    "d075",
+    "d079",
+    "d021"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Same need as q001, different words. d021 residence permit is only acceptable (proves immigration status, not where the client lives).",
+   "split": "test"
+  },
+  {
+   "id": "q003",
+   "q": "document confirming where the client lives",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d001",
+    "d002",
+    "d003",
+    "d004",
+    "d005"
+   ],
+   "acceptable": [
+    "d006",
+    "d007",
+    "d008",
+    "d009",
+    "d010",
+    "d014",
+    "d019",
+    "d055",
+    "d072",
+    "d075",
+    "d079"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Same need as q001 in natural language; no KYC jargon.",
+   "split": "test"
+  },
+  {
+   "id": "q004",
+   "q": "proof of identity",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d017",
+    "d018",
+    "d019",
+    "d020"
+   ],
+   "acceptable": [
+    "d021",
+    "d072",
+    "d075",
+    "d079",
+    "d084",
+    "d085"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Passports, driving licence, national identity card. Acceptable: residence permit and records that mention ID being seen/required.",
+   "split": "dev"
+  },
+  {
+   "id": "q005",
+   "q": "ID document",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d017",
+    "d018",
+    "d019",
+    "d020"
+   ],
+   "acceptable": [
+    "d021",
+    "d072",
+    "d075",
+    "d079",
+    "d084",
+    "d085"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Same need as q004.",
+   "split": "test"
+  },
+  {
+   "id": "q006",
+   "q": "income verification",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d022",
+    "d023",
+    "d025",
+    "d026",
+    "d027",
+    "d028"
+   ],
+   "acceptable": [
+    "d006",
+    "d007",
+    "d024",
+    "d029",
+    "d030",
+    "d075",
+    "d076",
+    "d077",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Payslips, P60, W-2, tax return, SA302. Acceptable: contract (states salary), bonus letter, dividend voucher, bank statements, notes and reports that state the client's pay. Traps: d056 'Income protection', d033 'income received', d086 'Retirement income options'.",
+   "split": "dev"
+  },
+  {
+   "id": "q007",
+   "q": "evidence of earnings",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d022",
+    "d023",
+    "d025",
+    "d026",
+    "d027",
+    "d028"
+   ],
+   "acceptable": [
+    "d006",
+    "d007",
+    "d024",
+    "d029",
+    "d030",
+    "d075",
+    "d076",
+    "d077",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Same need as q006.",
+   "split": "test"
+  },
+  {
+   "id": "q008",
+   "q": "salary slip",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d022",
+    "d023"
+   ],
+   "acceptable": [
+    "d025",
+    "d026",
+    "d075",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Synonym of payslip. Acceptable: year-end pay certificates and notes mentioning payslips. Trap: d024/d056 contain 'salary'.",
+   "split": "test"
+  },
+  {
+   "id": "q009",
+   "q": "source of wealth",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d062",
+    "d070",
+    "d083"
+   ],
+   "acceptable": [
+    "d051",
+    "d066",
+    "d069",
+    "d072",
+    "d075",
+    "d076",
+    "d077"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "d083 memo (title match), d062 source-of-funds declaration, d070 completion statement evidencing sale proceeds. Acceptable: probate grant (inheritance), EDD memo, company accounts, checklist item, notes on inherited/gifted sums.",
+   "split": "dev"
+  },
+  {
+   "id": "q010",
+   "q": "where did the client's money come from",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d062",
+    "d070",
+    "d083"
+   ],
+   "acceptable": [
+    "d051",
+    "d066",
+    "d069",
+    "d072",
+    "d075",
+    "d076",
+    "d077"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Same need as q009 in plain words.",
+   "split": "test"
+  },
+  {
+   "id": "q011",
+   "q": "liquidity event",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d062",
+    "d070",
+    "d083"
+   ],
+   "acceptable": [
+    "d066",
+    "d068",
+    "d072",
+    "d079",
+    "d080"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Jargon for a business-stake sale: d070, d062, d083 (section 5). Trap: d034 has a 'Liquidity:' clause (cash reserve) and is NOT relevant.",
+   "split": "test"
+  },
+  {
+   "id": "q012",
+   "q": "retirement savings",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d039",
+    "d040",
+    "d041"
+   ],
+   "acceptable": [
+    "d026",
+    "d042",
+    "d043",
+    "d075",
+    "d076",
+    "d080",
+    "d084",
+    "d086"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Pension statement, SIPP statement, 401(k) statement. Acceptable: annuity quote, DB transfer value, reports/notes that list pension pots, W-2 (401(k) deferrals).",
+   "split": "dev"
+  },
+  {
+   "id": "q013",
+   "q": "nest egg for old age",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d039",
+    "d040",
+    "d041"
+   ],
+   "acceptable": [
+    "d026",
+    "d042",
+    "d043",
+    "d075",
+    "d076",
+    "d080",
+    "d084",
+    "d086"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Same need as q012, colloquial.",
+   "split": "test"
+  },
+  {
+   "id": "q014",
+   "q": "estate planning",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d044",
+    "d045",
+    "d046",
+    "d050"
+   ],
+   "acceptable": [
+    "d040",
+    "d047",
+    "d048",
+    "d051",
+    "d074",
+    "d075",
+    "d077",
+    "d079",
+    "d080",
+    "d082",
+    "d084",
+    "d086"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Wills, trust deed, letter of wishes. Acceptable: LPAs, probate, pension nomination, IHT/gifting passages in long documents. Trap: d078 lists 'estate planning' among the firm's services (boilerplate) and is labelled NOT relevant.",
+   "split": "dev"
+  },
+  {
+   "id": "q015",
+   "q": "inheritance instructions",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d044",
+    "d045",
+    "d050"
+   ],
+   "acceptable": [
+    "d040",
+    "d046",
+    "d051",
+    "d075",
+    "d077",
+    "d080",
+    "d082",
+    "d084",
+    "d086"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Wills and letter of wishes. Acceptable: trust deed, nominations, passages about wills; d075 mentions an inheritance received and out-of-date wills.",
+   "split": "test"
+  },
+  {
+   "id": "q016",
+   "q": "what happens to the pension when the client dies",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d040",
+    "d086"
+   ],
+   "acceptable": [
+    "d076",
+    "d080"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "d086 section 7 'If you die' (near the end of a long report) and the death-benefits line of d040. Acceptable: d076 (spouse's half-rate pension), d080 (pensions outside IHT).",
+   "split": "test"
+  },
+  {
+   "id": "q017",
+   "q": "risk appetite",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d035",
+    "d076"
+   ],
+   "acceptable": [
+    "d072",
+    "d073",
+    "d075",
+    "d084",
+    "d085"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "d035 questionnaire and section 4 of the long suitability report d076. Acceptable: other notes on attitude to risk, worried-client e-mail d073. Traps: d037 fund 'risk and reward indicator', d083 AML 'risk rating'.",
+   "split": "dev"
+  },
+  {
+   "id": "q018",
+   "q": "comfort level with market ups and downs",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d035",
+    "d076"
+   ],
+   "acceptable": [
+    "d072",
+    "d073",
+    "d075",
+    "d084",
+    "d085"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Same need as q017.",
+   "split": "test"
+  },
+  {
+   "id": "q019",
+   "q": "life cover",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d052",
+    "d053"
+   ],
+   "acceptable": [
+    "d075",
+    "d077",
+    "d080",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Life policies. Acceptable: passages discussing life cover in long notes. Traps: d054 medical, d055 home, d056 income protection.",
+   "split": "dev"
+  },
+  {
+   "id": "q020",
+   "q": "protection for the family if the client dies",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d052",
+    "d053",
+    "d077"
+   ],
+   "acceptable": [
+    "d075",
+    "d080",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Life policies plus section 4 of d077 (protection shortfall on death, in the middle of a long note). Trap: d056 'Income protection' pays on illness, not death.",
+   "split": "test"
+  },
+  {
+   "id": "q021",
+   "q": "tax residency",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d063",
+    "d064"
+   ],
+   "acceptable": [
+    "d065",
+    "d072",
+    "d079",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "CRS/FATCA self-certification and W-8BEN. Acceptable: W-9, checklist item, residence-test discussion in d079, US/UK tax position in d084. Lexical overlap with d063 is unavoidable ('tax residence').",
+   "split": "dev"
+  },
+  {
+   "id": "q022",
+   "q": "who can act on the client's behalf",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d047",
+    "d048",
+    "d085"
+   ],
+   "acceptable": [
+    "d075",
+    "d079",
+    "d080"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Lasting powers of attorney (d047, d048) and section 4 'Who can give instructions' of the long file note d085. Acceptable: passages mentioning attorneys. Trustees (d046) and executors (d045) are not relevant.",
+   "split": "dev"
+  },
+  {
+   "id": "q023",
+   "q": "authority to make decisions for an incapacitated client",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d047",
+    "d048",
+    "d085"
+   ],
+   "acceptable": [
+    "d075",
+    "d079",
+    "d080"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Same need as q022.",
+   "split": "test"
+  },
+  {
+   "id": "q024",
+   "q": "home loan",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d009",
+    "d059"
+   ],
+   "acceptable": [
+    "d007",
+    "d074",
+    "d075",
+    "d076",
+    "d077",
+    "d084",
+    "d086"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Mortgage statement and mortgage offer (neither contains 'home' or 'loan'). Acceptable: passages about mortgages. Traps: d057 personal loan for a car, d060 securities-backed facility ('loan-to-value'), d055 'Home insurance'.",
+   "split": "dev"
+  },
+  {
+   "id": "q025",
+   "q": "borrowing secured on the house",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d009",
+    "d059"
+   ],
+   "acceptable": [
+    "d007",
+    "d074",
+    "d075",
+    "d076",
+    "d077",
+    "d084",
+    "d086"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Same need as q024. Trap: d060 is secured on a portfolio, not a house.",
+   "split": "test"
+  },
+  {
+   "id": "q026",
+   "q": "creditworthiness",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d058"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Credit report only. Shares the substring 'credit' with the document.",
+   "split": "dev"
+  },
+  {
+   "id": "q027",
+   "q": "money laundering checks",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d061",
+    "d066",
+    "d083"
+   ],
+   "acceptable": [
+    "d062",
+    "d072",
+    "d078"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Screening result, EDD memo, source-of-wealth memo. Acceptable: source-of-funds declaration, checklist, section 3 of the client agreement.",
+   "split": "dev"
+  },
+  {
+   "id": "q028",
+   "q": "links to politicians",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d066",
+    "d083"
+   ],
+   "acceptable": [
+    "d061",
+    "d072"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "PEP memo d066 and section 6 of d083. Acceptable: screening records with no PEP match.",
+   "split": "test"
+  },
+  {
+   "id": "q029",
+   "q": "health cover",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d054"
+   ],
+   "acceptable": [
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Private medical insurance certificate (contains neither word). Trap: d048 'LPA health and welfare'.",
+   "split": "dev"
+  },
+  {
+   "id": "q030",
+   "q": "what happens if the client is too ill to work",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d056"
+   ],
+   "acceptable": [
+    "d075",
+    "d077",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Income protection policy (minimal doc). Acceptable: passages on income protection / critical illness cover.",
+   "split": "dev"
+  },
+  {
+   "id": "q031",
+   "q": "immigration status",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d021"
+   ],
+   "acceptable": [
+    "d083",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Biometric residence permit. Acceptable: visa / residence-permit mentions in d084 and d083.",
+   "split": "test"
+  },
+  {
+   "id": "q032",
+   "q": "ethical screening",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d034"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The 'Exclusions' clause of the investment policy statement (tobacco, coal, weapons). Trap: sanctions/PEP 'screening' in d061, d072.",
+   "split": "dev"
+  },
+  {
+   "id": "q033",
+   "q": "dementia diagnosis",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d085"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Section 3 of the long file note d085 says 'Alzheimer's disease ... confirmed'; neither query word occurs.",
+   "split": "test"
+  },
+  {
+   "id": "q034",
+   "q": "paying for a care home",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d080"
+   ],
+   "acceptable": [
+    "d085"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Section 6 'Later-life care' in the middle of the long financial plan. Acceptable: d085 (carers at home, possible residential care).",
+   "split": "dev"
+  },
+  {
+   "id": "q035",
+   "q": "helping children onto the property ladder",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d074",
+    "d077"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "d074 gift to son for a first flat; section 3 of d077 (deposit gift from a parent).",
+   "split": "test"
+  },
+  {
+   "id": "q036",
+   "q": "education funding",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d050",
+    "d077",
+    "d082"
+   ],
+   "acceptable": [
+    "d034",
+    "d075",
+    "d076"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Letter of wishes (schooling/university), section 5 of d077 (school fees), section 4 of d082 (tuition payment). Acceptable: objectives that mention school/university costs.",
+   "split": "dev"
+  },
+  {
+   "id": "q037",
+   "q": "client moving abroad",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d079"
+   ],
+   "acceptable": [
+    "d080",
+    "d082",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "The 18-20 March e-mails in the middle of thread d079 (relocating to Portugal). Acceptable: brief mentions in d080/d082, and d084 (US national who relocated to the UK). Trap: d014 domestic house move.",
+   "split": "test"
+  },
+  {
+   "id": "q038",
+   "q": "what happens to assets in a divorce",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d049"
+   ],
+   "acceptable": [
+    "d077"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Pre-nuptial agreement (does not use 'assets' or 'divorce'). Acceptable: d077 mentions the agreement's review clause.",
+   "split": "dev"
+  },
+  {
+   "id": "q039",
+   "q": "charitable giving",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d027",
+    "d045"
+   ],
+   "acceptable": [
+    "d046"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Gift Aid payments on the tax return; hospice legacy in clause 3 of the will. Acceptable: trust deed lists 'any charity' as a beneficiary.",
+   "split": "test"
+  },
+  {
+   "id": "q040",
+   "q": "what to do if the client is unhappy with our service",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d078"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Section 8 'If something goes wrong' (complaints, Ombudsman) near the end of the long client agreement.",
+   "split": "dev"
+  },
+  {
+   "id": "q041",
+   "q": "how much does the client pay for electricity",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d002"
+   ],
+   "acceptable": [
+    "d001",
+    "d007"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "d002 electricity bill (charges and £95.47 monthly direct debit). Acceptable: d007 statement showing the same direct debit; d001 unspecified energy bill. Gas (d003) and water (d004) bills are not relevant.",
+   "split": "dev"
+  },
+  {
+   "id": "q042",
+   "q": "notes from the first meeting",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d075"
+   ],
+   "acceptable": [
+    "d077",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Initial discovery meeting notes. Acceptable: fact find taken at a first meeting, annual-review meeting notes (a meeting note, but not the first).",
+   "split": "test"
+  },
+  {
+   "id": "q043",
+   "q": "which documents did the client hand over at onboarding",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d072",
+    "d075",
+    "d084"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Section 6 of d075 (passport and utility bill handed over), checklist d072, section J of d084 (documents received, last lines of a long document).",
+   "split": "dev"
+  },
+  {
+   "id": "q044",
+   "q": "items still outstanding on the new client file",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d072"
+   ],
+   "acceptable": [
+    "d075"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Open items on the onboarding checklist. Acceptable: 'next steps' of d075.",
+   "split": "test"
+  },
+  {
+   "id": "q045",
+   "q": "how much does the adviser charge",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d078"
+   ],
+   "acceptable": [
+    "d040",
+    "d076",
+    "d086"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Section 4 'Our fees' in the middle of the long client agreement. Acceptable: charges sections of the two client reports, adviser charge on the SIPP statement.",
+   "split": "dev"
+  },
+  {
+   "id": "q046",
+   "q": "should the client transfer out of the Marlowe Steelworks pension",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d043",
+    "d076"
+   ],
+   "acceptable": [
+    "d075"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Transfer value statement and section 6 of the suitability report (recommendation not to transfer). Acceptable: d075 mentions the old scheme.",
+   "split": "test"
+  },
+  {
+   "id": "q047",
+   "q": "recommendation on annuity versus drawdown",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d086"
+   ],
+   "acceptable": [
+    "d042"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Retirement income options report. Acceptable: the annuity quotation itself.",
+   "split": "dev"
+  },
+  {
+   "id": "q048",
+   "q": "estimated inheritance tax bill",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d080"
+   ],
+   "acceptable": [
+    "d074",
+    "d077",
+    "d079",
+    "d082",
+    "d086"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Section 7 of the financial plan (about £805,000). Acceptable: other passages discussing IHT. Trap: the word 'bill' (utility/council tax bills are not relevant).",
+   "split": "test"
+  },
+  {
+   "id": "q049",
+   "q": "client worried about falling markets",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d073"
+   ],
+   "acceptable": [
+    "d035",
+    "d076",
+    "d077",
+    "d081"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Client e-mail d073 (shares none of the query words). Acceptable: d077 refers back to it; risk documents; market commentary.",
+   "split": "dev"
+  },
+  {
+   "id": "q050",
+   "q": "why was gold added to the model portfolio",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d081"
+   ],
+   "acceptable": [
+    "d082"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Section 6 near the end of the long investment commentary. Acceptable: trustee minutes mention the same model changes without gold.",
+   "split": "test"
+  },
+  {
+   "id": "q051",
+   "q": "trust payment for a grandchild's university costs",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d082"
+   ],
+   "acceptable": [
+    "d046",
+    "d050"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Section 4 of the trustee minutes (£18,000 to Clementine). Acceptable: trust deed, letter of wishes.",
+   "split": "dev"
+  },
+  {
+   "id": "q052",
+   "q": "sale of the freight company to a Swedish buyer",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d083"
+   ],
+   "acceptable": [
+    "d066"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Section 5 of the source-of-wealth memo. Acceptable: EDD memo for the same client. Trap: d077 'freight software firm'.",
+   "split": "test"
+  },
+  {
+   "id": "q053",
+   "q": "US citizen who still has to file American tax returns",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d084"
+   ],
+   "acceptable": [
+    "d026",
+    "d065"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Section E of the fact find. Acceptable: W-9, and the same client's W-2. Trap: d063 says 'not a US citizen'.",
+   "split": "dev"
+  },
+  {
+   "id": "q054",
+   "q": "gift from a parent towards a house deposit",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d074",
+    "d077"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "d074 (Marchbanks gift to son) and section 3 of d077 (gift from Elena's mother).",
+   "split": "test"
+  },
+  {
+   "id": "q055",
+   "q": "notice period in the employment contract",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d024"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Clause 8 of d024. Traps: notice periods in the tenancy agreement d008 and the client agreement d078.",
+   "split": "dev"
+  },
+  {
+   "id": "q056",
+   "q": "can the client keep her ISA after leaving the UK",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d079"
+   ],
+   "acceptable": [
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "The 20 March reply in thread d079. Acceptable: d084 (ISAs for a US person in the UK).",
+   "split": "test"
+  },
+  {
+   "id": "q057",
+   "q": "who are the executors of the will",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d045"
+   ],
+   "acceptable": [
+    "d044",
+    "d051",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Clause 2 of the will. Acceptable: minimal will, probate grant naming an executor, d084 (US will naming a successor trustee).",
+   "split": "dev"
+  },
+  {
+   "id": "q058",
+   "q": "outstanding balance on the mortgage",
+   "category": "paraphrase",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d009"
+   ],
+   "acceptable": [
+    "d007",
+    "d059",
+    "d075",
+    "d076",
+    "d077",
+    "d084",
+    "d086"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Annual mortgage statement. Acceptable: other documents that state or imply a mortgage balance or payment.",
+   "split": "test"
+  },
+  {
+   "id": "q059",
+   "q": "W-8BEN",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d064"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Form code; occurs only in d064. d065 (W-9) is a different form.",
+   "split": "dev"
+  },
+  {
+   "id": "q060",
+   "q": "SA302",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d028"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Form code; minimal document only.",
+   "split": "test"
+  },
+  {
+   "id": "q061",
+   "q": "LV-7734-0921-KX",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d053"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Life policy number.",
+   "split": "dev"
+  },
+  {
+   "id": "q062",
+   "q": "SIPP-448201-TH",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d040",
+    "d076"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Plan number; SIPP statement and one line in section 5 of the long suitability report.",
+   "split": "test"
+  },
+  {
+   "id": "q063",
+   "q": "Venkataraghavan",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d018",
+    "d061"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Rare surname; passport copy and screening result.",
+   "split": "dev"
+  },
+  {
+   "id": "q064",
+   "q": "Quillfeather",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d008"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Landlord's surname in the tenancy agreement.",
+   "split": "test"
+  },
+  {
+   "id": "q065",
+   "q": "MTG-00918273",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d009"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Mortgage account number.",
+   "split": "dev"
+  },
+  {
+   "id": "q066",
+   "q": "HX-2291-774",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d055"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Home insurance policy number.",
+   "split": "test"
+  },
+  {
+   "id": "q067",
+   "q": "IE00BZ9QK417",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d037"
+   ],
+   "acceptable": [
+    "d033",
+    "d040"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "ISIN on the fund factsheet. Acceptable: documents that hold the same fund by name.",
+   "split": "dev"
+  },
+  {
+   "id": "q068",
+   "q": "Tern Capital Partners",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d068",
+    "d070"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Investor name; shareholders' agreement and completion statement.",
+   "split": "test"
+  },
+  {
+   "id": "q069",
+   "q": "\"jointly and severally\"",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d047",
+    "d079"
+   ],
+   "acceptable": [
+    "d085"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Quoted phrase; LPA d047 and the last e-mail of thread d079. Acceptable: d085 says 'jointly ... and separately'.",
+   "split": "dev"
+  },
+  {
+   "id": "q070",
+   "q": "P60",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d025"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Form code; occurs only in d025.",
+   "split": "test"
+  },
+  {
+   "id": "q071",
+   "q": "company number 14772093",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d029",
+    "d067"
+   ],
+   "acceptable": [
+    "d068",
+    "d069",
+    "d070"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Number occurs in the dividend voucher and certificate of incorporation. Acceptable: other documents of the same company that do not print the number.",
+   "split": "dev"
+  },
+  {
+   "id": "q072",
+   "q": "Form 1040",
+   "category": "exact",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d084"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Occurs once, in section E in the middle of the long fact find.",
+   "split": "test"
+  },
+  {
+   "id": "q073",
+   "q": "utilty bill",
+   "category": "typo",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d001",
+    "d002",
+    "d003",
+    "d004"
+   ],
+   "acceptable": [
+    "d005",
+    "d010",
+    "d075"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Intended: 'utility bill'. All utility bills are relevant by judgement; only d001, d002 (and acceptable d075) literally contain the corrected phrase.",
+   "split": "dev"
+  },
+  {
+   "id": "q074",
+   "q": "pasport",
+   "category": "typo",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d017",
+    "d018"
+   ],
+   "acceptable": [
+    "d072",
+    "d075",
+    "d079",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Intended: 'passport'. Passports; acceptable: documents that mention a passport.",
+   "split": "test"
+  },
+  {
+   "id": "q075",
+   "q": "pensoin statment",
+   "category": "typo",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d039",
+    "d040"
+   ],
+   "acceptable": [
+    "d041",
+    "d043"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Intended: 'pension statement'. Two misspelled words. Acceptable: 401(k) statement, transfer value statement.",
+   "split": "dev"
+  },
+  {
+   "id": "q076",
+   "q": "morgage",
+   "category": "typo",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d009",
+    "d059"
+   ],
+   "acceptable": [
+    "d007",
+    "d074",
+    "d075",
+    "d076",
+    "d077",
+    "d078",
+    "d081",
+    "d084",
+    "d086"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Intended: 'mortgage'. Mortgage statement and offer; every other document that literally mentions a mortgage is acceptable.",
+   "split": "test"
+  },
+  {
+   "id": "q077",
+   "q": "payslp",
+   "category": "typo",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d022",
+    "d023"
+   ],
+   "acceptable": [
+    "d025",
+    "d026",
+    "d075",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Intended: 'payslip'. Dropped letter. Acceptable: year-end pay certificates, notes mentioning payslips.",
+   "split": "dev"
+  },
+  {
+   "id": "q078",
+   "q": "tenacy agrement",
+   "category": "typo",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d008"
+   ],
+   "acceptable": [
+    "d077",
+    "d084"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Intended: 'tenancy agreement'. Two misspelled words. Acceptable: mentions of a tenancy in long notes.",
+   "split": "test"
+  },
+  {
+   "id": "q079",
+   "q": "Venkataragavan",
+   "category": "typo",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d018",
+    "d061"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Intended: 'Venkataraghavan'. Misspelled rare surname (missing 'h').",
+   "split": "dev"
+  },
+  {
+   "id": "q080",
+   "q": "powr of atorney",
+   "category": "typo",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d047",
+    "d048"
+   ],
+   "acceptable": [
+    "d075",
+    "d079",
+    "d080",
+    "d085"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Intended: 'power of attorney'. LPAs; acceptable: documents that mention a power of attorney.",
+   "split": "test"
+  },
+  {
+   "id": "q081",
+   "q": "shareholder agreemnt",
+   "category": "typo",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d068"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Intended: 'shareholders' agreement'. Document says \"Shareholders' agreement\".",
+   "split": "dev"
+  },
+  {
+   "id": "q082",
+   "q": "counsil tax",
+   "category": "typo",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d005"
+   ],
+   "acceptable": [
+    "d007",
+    "d008",
+    "d014",
+    "d072"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Intended: 'council tax'. Council tax bill; acceptable: other literal mentions of council tax.",
+   "split": "test"
+  },
+  {
+   "id": "q083",
+   "q": "portfol valuat",
+   "category": "typo",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d032",
+    "d033"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Intended: 'portfolio valuation'. Truncated words (prefix search). d033 is titled 'Quarterly valuation'.",
+   "split": "dev"
+  },
+  {
+   "id": "q084",
+   "q": "certif of incorp",
+   "category": "typo",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d067"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Intended: 'certificate of incorporation'. Truncated words (prefix search).",
+   "split": "test"
+  },
+  {
+   "id": "q085",
+   "q": "chocolate cake recipe",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Off-domain. Lexical/semantic near-miss: d071 bakery business plan.",
+   "split": "dev"
+  },
+  {
+   "id": "q086",
+   "q": "best hiking trails in the Alps",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Off-domain.",
+   "split": "test"
+  },
+  {
+   "id": "q087",
+   "q": "how to fix a flat bicycle tyre",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Off-domain. Near-misses: 'flat' (tenancy), 'fixed' rates, 'cycle to work' on the payslip.",
+   "split": "dev"
+  },
+  {
+   "id": "q088",
+   "q": "premier league fixtures this weekend",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Off-domain.",
+   "split": "test"
+  },
+  {
+   "id": "q089",
+   "q": "weather forecast for tomorrow",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Off-domain. Near-miss: 'cashflow forecast' d080.",
+   "split": "test"
+  },
+  {
+   "id": "q090",
+   "q": "asdf qwer zxcv",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Nonsense string.",
+   "split": "dev"
+  },
+  {
+   "id": "q091",
+   "q": "xkqzj plomvw",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Nonsense string.",
+   "split": "test"
+  },
+  {
+   "id": "q092",
+   "q": "lorem ipsum dolor sit amet",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Placeholder text.",
+   "split": "dev"
+  },
+  {
+   "id": "q093",
+   "q": "aaaaaaa 12345 !!!",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Nonsense with digits and punctuation.",
+   "split": "test"
+  },
+  {
+   "id": "q094",
+   "q": "cryptocurrency mining equipment invoice",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "In-domain but absent: no crypto anywhere. Near-miss: 'thermal coal miners' in d034.",
+   "split": "dev"
+  },
+  {
+   "id": "q095",
+   "q": "student loan repayment schedule",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "In-domain but absent. Near-misses: personal loan d057, 'schedule' in insurance documents.",
+   "split": "test"
+  },
+  {
+   "id": "q096",
+   "q": "pet insurance policy for a dog",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "In-domain but absent. Near-misses: other insurance policies, 'pets' in the tenancy agreement.",
+   "split": "dev"
+  },
+  {
+   "id": "q097",
+   "q": "yacht charter contract in Monaco",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "In-domain but absent. Near-miss: d011 bill of sale for a sailing boat.",
+   "split": "test"
+  },
+  {
+   "id": "q098",
+   "q": "art collection appraisal",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "In-domain but absent. Near-misses: portfolio valuations.",
+   "split": "dev"
+  },
+  {
+   "id": "q099",
+   "q": "travel insurance claim form",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "In-domain but absent. Near-misses: other insurance documents and tax forms.",
+   "split": "test"
+  },
+  {
+   "id": "q100",
+   "q": "hedge fund subscription agreement",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "In-domain but absent. Near-misses: fund factsheet d037, shareholders' agreement d068.",
+   "split": "dev"
+  }
+ ],
+ "http_cases": []
+}

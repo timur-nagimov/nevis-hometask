@@ -1,0 +1,5489 @@
+{
+ "suite": "ds-opensanctions-names",
+ "author": "Claude subagent (built mechanically from the UK sanctions list; blind to every search design), 2026-11-20",
+ "about": "Client name search on real names from the UK sanctions list (built mechanically). Source: FCDO UK Sanctions List XML https://sanctionslist.fcdo.gov.uk/docs/UK-Sanctions-List.xml, DateGenerated 20/11/2026, Last-Modified Fri, 20 Nov 2026 11:37:31 GMT, sha256 6b558b1981c232efaff3c52e87da32369849163c7948c56646b8f3bdf7befabf (fetched 2026-11-20T16:03:46Z); licence Open Government Licence v3.0. This is the upstream file of the OpenSanctions dataset gb_fcdo_sanctions (version 20261120144740-esw), which was the intended source: data.opensanctions.org resolved to 127.0.0.1 from the build machine, the API needs a key and the matcher pairs need an account, so the pairs were not used either. Each Individual designation is mapped to FollowTheMoney Person properties as OpenSanctions does (name, firstName=Name1, middleName=Name2-5, lastName=Name6, alias = name variations, good-quality aliases and non-Latin names, weakAlias = low-quality aliases, nationality, position, birthPlace, topics=sanction). Corpus: 200 of 4065 individuals, seed 20261120: 140 drawn from entries with a Latin re-spelling or a non-Latin name, 60 from the rest. Client first_name/last_name = firstName/lastName; when either is missing the primary name is split at its last space (single-word names are not sampled); words written in capitals are Capitalised. E-mail is a placeholder '<first>.<last>@example.org' (ASCII, lower case, accents stripped, other characters to '-', a digit appended on collision). Description is built from nationality (as a demonym), positions and the first birth place: '<Demonym> national. Position: ... Born in <town>, <country>.'; social_links are empty. Labels: name queries are relevant to the entry they come from plus clients with exactly the same name words; acceptable = other clients that hold every query word as a substring of some field. Full name (required, must rank first), surname alone when no other client has it (required), surname-first order (expected). Aliases that re-spell the name (each word within 0.7 SequenceMatcher ratio of a name word) and names in other scripts are nice: relevant = every client whose list entry carries that exact name, at least one in the first 5, other results not scored. Description queries (expected): relevant = every client whose description has the value as a whole word, 2-20 clients. Negatives (expected, empty): names of other list entries that are not clients but share a surname with a client while the first names clearly differ (no word pair within 0.6 ratio), or share a first name and have a surname of 0.7-0.85 similarity; they have no common name or birth date with the look-alike, and their words are not all found in any client; must_not = the look-alike clients. The matcher pairs were not reachable, so no analyst judgements were used. The people are real, public sanctions-list entries. Built by research/datasets/build/ds_opensanctions_names.py (seed 20261120). Contains public sector information licensed under the Open Government Licence v3.0: UK Sanctions List, Foreign, Commonwealth & Development Office. The same list is republished by OpenSanctions as 'UK FCDO Sanctions List' (gb_fcdo_sanctions, https://www.opensanctions.org/datasets/gb_fcdo_sanctions/, CC BY-NC 4.0); its export was not reachable, so no OpenSanctions-processed data is included.",
+ "source": [
+  {
+   "name": "UK Sanctions List (FCDO), Individual designations",
+   "url": "https://sanctionslist.fcdo.gov.uk/docs/UK-Sanctions-List.xml",
+   "publication_page": "https://www.gov.uk/government/publications/the-uk-sanctions-list",
+   "publisher": "Foreign, Commonwealth & Development Office (FCDO), UK Sanctions List",
+   "version": "DateGenerated 20/11/2026; Last-Modified Fri, 20 Nov 2026 11:37:31 GMT",
+   "file_sha256": "6b558b1981c232efaff3c52e87da32369849163c7948c56646b8f3bdf7befabf",
+   "fetched_at_utc": "2026-11-20T16:03:46Z",
+   "raw_slice": "research/datasets/raw/opensanctions/uk_fcdo_individuals.jsonl",
+   "licence": "Open Government Licence v3.0",
+   "licence_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+   "attribution": "Contains public sector information licensed under the Open Government Licence v3.0: UK Sanctions List, Foreign, Commonwealth & Development Office."
+  },
+  {
+   "name": "OpenSanctions: UK FCDO Sanctions List (gb_fcdo_sanctions), intended source, not downloaded",
+   "url": "https://www.opensanctions.org/datasets/gb_fcdo_sanctions/",
+   "version": "20261120144740-esw",
+   "entities_url": "https://data.opensanctions.org/artifacts/gb_fcdo_sanctions/20261120144740-esw/entities.ftm.json",
+   "licence": "CC BY-NC 4.0",
+   "attribution": "The same list is republished by OpenSanctions as 'UK FCDO Sanctions List' (gb_fcdo_sanctions, https://www.opensanctions.org/datasets/gb_fcdo_sanctions/, CC BY-NC 4.0); its export was not reachable, so no OpenSanctions-processed data is included.",
+   "note": "data.opensanctions.org resolved to 127.0.0.1 from the build machine; api.opensanctions.org answers 401 without a key; the pairs mirror on Hugging Face (sanctions-er-anon/opensanctions_pairs) is gated behind an account."
+  }
+ ],
+ "corpus": {
+  "clients": [
+   {
+    "id": "c001",
+    "first_name": "Ubaidullah",
+    "last_name": "Yar Mohammad Akhund",
+    "email": "ubaidullah.yar-mohammad-akhund@example.org",
+    "description": "Afghan national. Position: Minister of Defence under the Taliban regime. Born in Sangisar village, Panjwai District,Kandahar Province, Afghanistan.",
+    "social_links": []
+   },
+   {
+    "id": "c002",
+    "first_name": "Mohammad",
+    "last_name": "Yaqoub",
+    "email": "mohammad.yaqoub@example.org",
+    "description": "Afghan national. Position: Head of Bakhtar Information Agency (BIA) under the Taliban regime. Born in Shahjoi District, Zabul Province, Afghanistan.",
+    "social_links": []
+   },
+   {
+    "id": "c003",
+    "first_name": "Sayed Esmatullah",
+    "last_name": "Abdul Quddus",
+    "email": "sayed-esmatullah.abdul-quddus@example.org",
+    "description": "Afghan national. Position: Deputy Minister of Preventing Vice and Propagating Virtue under the Taliban regime; Secretary General of the Afghan Red Crescent Society (ARCS) under the Taliban regime. Born in Qalayi Shaikh, Chaparhar District, Nangarhar Province, Afghanistan.",
+    "social_links": []
+   },
+   {
+    "id": "c004",
+    "first_name": "Habibullah",
+    "last_name": "Reshad",
+    "email": "habibullah.reshad@example.org",
+    "description": "Afghan national. Position: Head of Investigation Department, Ministry of Security (Intelligence) under the Taliban regime. Born in Waghaz District, Ghazni Province, Afghanistan.",
+    "social_links": []
+   },
+   {
+    "id": "c005",
+    "first_name": "Abdul",
+    "last_name": "Akhund",
+    "email": "abdul.akhund@example.org",
+    "description": "Afghan national. Position: Governor of Helmand Province under the Taliban regime. Born in Baghran District, Helmand Province, Afghanistan.",
+    "social_links": []
+   },
+   {
+    "id": "c006",
+    "first_name": "Mohammad Shafiqullah",
+    "last_name": "Fatih Khan",
+    "email": "mohammad-shafiqullah.fatih-khan@example.org",
+    "description": "Afghan national. Position: Governor of Samangan Province under the Taliban regime. Born in Charmistan village, Tirin Kot District, Uruzgan Province, Afghanistan.",
+    "social_links": []
+   },
+   {
+    "id": "c007",
+    "first_name": "Abdul",
+    "last_name": "Shinwari",
+    "email": "abdul.shinwari@example.org",
+    "description": "Afghan national. Position: Third Secretary, Taliban Consulate General, Karachi, Pakistan. Born in Nangarhar Province, Afghanistan.",
+    "social_links": []
+   },
+   {
+    "id": "c008",
+    "first_name": "Abd Al-Rahman",
+    "last_name": "Al-Nu'Aymi",
+    "email": "abd-al-rahman.al-nu-aymi@example.org",
+    "description": "Qatari national. Born in Doha, Qatar.",
+    "social_links": []
+   },
+   {
+    "id": "c009",
+    "first_name": "Abdur",
+    "last_name": "Rehman",
+    "email": "abdur.rehman@example.org",
+    "description": "Pakistani national. Born in Mirpur Khas, Pakistan.",
+    "social_links": []
+   },
+   {
+    "id": "c010",
+    "first_name": "Adel",
+    "last_name": "Hamdi",
+    "email": "adel.hamdi@example.org",
+    "description": "Tunisian national. Born in Tunis, Tunisia.",
+    "social_links": []
+   },
+   {
+    "id": "c011",
+    "first_name": "Bilal",
+    "last_name": "Bin Marwan",
+    "email": "bilal.bin-marwan@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c012",
+    "first_name": "Fared",
+    "last_name": "Saal",
+    "email": "fared.saal@example.org",
+    "description": "German, Algerian national. Born in Bonn, Germany.",
+    "social_links": []
+   },
+   {
+    "id": "c013",
+    "first_name": "Faycal",
+    "last_name": "Boughanemi",
+    "email": "faycal.boughanemi@example.org",
+    "description": "Tunisian national. Born in Tunis, Tunisia.",
+    "social_links": []
+   },
+   {
+    "id": "c014",
+    "first_name": "Iyad",
+    "last_name": "Ag Ghali",
+    "email": "iyad.ag-ghali@example.org",
+    "description": "Malian national. Born in Abeibara, Kidal Region, Mali.",
+    "social_links": []
+   },
+   {
+    "id": "c015",
+    "first_name": "Kevin",
+    "last_name": "Guiavarch",
+    "email": "kevin.guiavarch@example.org",
+    "description": "French national. Born in Paris, France.",
+    "social_links": []
+   },
+   {
+    "id": "c016",
+    "first_name": "Khalid",
+    "last_name": "Al-Fawaz",
+    "email": "khalid.al-fawaz@example.org",
+    "description": "Saudi national. Born in Kuwait.",
+    "social_links": []
+   },
+   {
+    "id": "c017",
+    "first_name": "Mahfouz",
+    "last_name": "Al-Walid",
+    "email": "mahfouz.al-walid@example.org",
+    "description": "Mauritanian national. Born in Mauritania.",
+    "social_links": []
+   },
+   {
+    "id": "c018",
+    "first_name": "Maxamed",
+    "last_name": "Ciise",
+    "email": "maxamed.ciise@example.org",
+    "description": "Somali national. Born in Kismaayo, Somalia.",
+    "social_links": []
+   },
+   {
+    "id": "c019",
+    "first_name": "Mohamed",
+    "last_name": "Belkalem",
+    "email": "mohamed.belkalem@example.org",
+    "description": "Algerian national. Born in Hussein Dey, Algiers, Algeria.",
+    "social_links": []
+   },
+   {
+    "id": "c020",
+    "first_name": "Mounir",
+    "last_name": "El Motassadeq",
+    "email": "mounir.el-motassadeq@example.org",
+    "description": "Moroccan national. Born in Marrakesh, Morocco.",
+    "social_links": []
+   },
+   {
+    "id": "c021",
+    "first_name": "Mu'Tassim",
+    "last_name": "Al-Rumaysh",
+    "email": "mu-tassim.al-rumaysh@example.org",
+    "description": "Yemeni national. Born in Jeddah, Saudi Arabia.",
+    "social_links": []
+   },
+   {
+    "id": "c022",
+    "first_name": "Omar",
+    "last_name": "Hussain",
+    "email": "omar.hussain@example.org",
+    "description": "British national. Born in United Kingdom.",
+    "social_links": []
+   },
+   {
+    "id": "c023",
+    "first_name": "Omar",
+    "last_name": "Uthman",
+    "email": "omar.uthman@example.org",
+    "description": "Jordanian national. Born in Bethlehem, West Bank, Occupied Palestinian Territories.",
+    "social_links": []
+   },
+   {
+    "id": "c024",
+    "first_name": "Othman",
+    "last_name": "Al-Ghamdi",
+    "email": "othman.al-ghamdi@example.org",
+    "description": "Saudi national. Born in Shabwa, Yemen.",
+    "social_links": []
+   },
+   {
+    "id": "c025",
+    "first_name": "Yassin",
+    "last_name": "Chouka",
+    "email": "yassin.chouka@example.org",
+    "description": "German, Moroccan national. Born in Bonn, Germany.",
+    "social_links": []
+   },
+   {
+    "id": "c026",
+    "first_name": "Jamal",
+    "last_name": "Zeiniye",
+    "email": "jamal.zeiniye@example.org",
+    "description": "Syrian national. Born in Tell Mnin, Syria.",
+    "social_links": []
+   },
+   {
+    "id": "c027",
+    "first_name": "Alexander",
+    "last_name": "Barsukov",
+    "email": "alexander.barsukov@example.org",
+    "description": "Belarusian national. Position: Deputy Minister of Internal Affairs of the Republic of Belarus; Chief of Public Security Police. Born in Vetkovsky/Vetkovski district of the Gomel region, Former USSR Currently Belarus.",
+    "social_links": []
+   },
+   {
+    "id": "c028",
+    "first_name": "Andrei",
+    "last_name": "Pauliuchenka",
+    "email": "andrei.pauliuchenka@example.org",
+    "description": "Position: Head of Operational-Analytical Center.",
+    "social_links": []
+   },
+   {
+    "id": "c029",
+    "first_name": "Oleg",
+    "last_name": "Beliakov",
+    "email": "oleg.beliakov@example.org",
+    "description": "Belarusian national. Position: Deputy Head of the Penal Correction Department of the Ministry of Internal Affairs/ Deputy Head of the Department for the Execution of Punishments of the Ministry of Internal Affairs.",
+    "social_links": []
+   },
+   {
+    "id": "c030",
+    "first_name": "Valentina",
+    "last_name": "Kulik",
+    "email": "valentina.kulik@example.org",
+    "description": "Belarusian national. Position: Judge of the Supreme Court of the Republic of Belarus. Born in Belarus.",
+    "social_links": []
+   },
+   {
+    "id": "c031",
+    "first_name": "Marina",
+    "last_name": "Zapasnik",
+    "email": "marina.zapasnik@example.org",
+    "description": "Belarusian national. Position: Judge at the Leninski District Court of Minsk, Deputy Chair of the Leninski District Court of Minsk. Born in Minsk, Belarus.",
+    "social_links": []
+   },
+   {
+    "id": "c032",
+    "first_name": "Igor",
+    "last_name": "Kirillov",
+    "email": "igor.kirillov@example.org",
+    "description": "Russian national. Born in Kostroma, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c033",
+    "first_name": "Brian",
+    "last_name": "Sheridan",
+    "email": "brian.sheridan@example.org",
+    "description": "British national. Born in Armagh, United Kingdom.",
+    "social_links": []
+   },
+   {
+    "id": "c034",
+    "first_name": "Muhammad",
+    "last_name": "Deif",
+    "email": "muhammad.deif@example.org",
+    "description": "Palestinian national. Position: Leader of the Izz al-Din al-Qassam Brigades. Born in Khan Younis, Gaza, Occupied Palestinian Territories.",
+    "social_links": []
+   },
+   {
+    "id": "c035",
+    "first_name": "Maksim",
+    "last_name": "Galochkin",
+    "email": "maksim.galochkin@example.org",
+    "description": "Russian national.",
+    "social_links": []
+   },
+   {
+    "id": "c036",
+    "first_name": "Ivan",
+    "last_name": "Tuchkov",
+    "email": "ivan.tuchkov@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c037",
+    "first_name": "Dmitriy",
+    "last_name": "Mikhaylov",
+    "email": "dmitriy.mikhaylov@example.org",
+    "description": "Russian national.",
+    "social_links": []
+   },
+   {
+    "id": "c038",
+    "first_name": "Andrei",
+    "last_name": "Kozlov",
+    "email": "andrei.kozlov@example.org",
+    "description": "Russian national. Position: Employee of Media Land LLC. Born in St Petersburg, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c039",
+    "first_name": "Nikolay",
+    "last_name": "Kozachek",
+    "email": "nikolay.kozachek@example.org",
+    "description": "Russian national.",
+    "social_links": []
+   },
+   {
+    "id": "c040",
+    "first_name": "Ivan",
+    "last_name": "Senin",
+    "email": "ivan.senin@example.org",
+    "description": "Russian national.",
+    "social_links": []
+   },
+   {
+    "id": "c041",
+    "first_name": "Jong-Gak",
+    "last_name": "Kim",
+    "email": "jong-gak.kim@example.org",
+    "description": "North Korean national. Position: Rector, Military University of Kim Il-Sung. Born in Pyongyang, North Korea.",
+    "social_links": []
+   },
+   {
+    "id": "c042",
+    "first_name": "Kyong",
+    "last_name": "Kim",
+    "email": "kyong.kim@example.org",
+    "description": "North Korean national. Born in Pyongyang, North Korea.",
+    "social_links": []
+   },
+   {
+    "id": "c043",
+    "first_name": "Cho",
+    "last_name": "Yon Chun",
+    "email": "cho.yon-chun@example.org",
+    "description": "Position: Vice Director of the Organization and Guidance Department, which directs key personnel appointments for the Workers’ Party of Korea and the DPRK’s military.",
+    "social_links": []
+   },
+   {
+    "id": "c044",
+    "first_name": "Choe",
+    "last_name": "Hwi",
+    "email": "choe.hwi@example.org",
+    "description": "Position: First Vice Director of the Workers' Party of Korea Propaganda and Agitation Department, which controls all DPRK media and is used by the government to control the public.",
+    "social_links": []
+   },
+   {
+    "id": "c045",
+    "first_name": "Ku",
+    "last_name": "Ja Hyong",
+    "email": "ku.ja-hyong@example.org",
+    "description": "North Korean national. Position: Ku Ja Hyong is a Foreign Trade Bank chief representative in Libya.",
+    "social_links": []
+   },
+   {
+    "id": "c046",
+    "first_name": "Son",
+    "last_name": "Jong Hyok",
+    "email": "son.jong-hyok@example.org",
+    "description": "North Korean national. Position: KOMID Official.",
+    "social_links": []
+   },
+   {
+    "id": "c047",
+    "first_name": "Ferdinand",
+    "last_name": "Luyoyo",
+    "email": "ferdinand.luyoyo@example.org",
+    "description": "Congolese national. Position: Former Commander in Chief of Legion Nationale d’Intervention (LENI), Co-ordinator, Anti-Riot Police (PNC) , Former Commander of the unit responsible for the protection of institutions and high-ranking officials (PNC), President of the Congolese Boxing Federation; Co-ordinator, Anti Riot Police (PNC). Born in Lubumbashi, Congo (Democratic Republic).",
+    "social_links": []
+   },
+   {
+    "id": "c048",
+    "first_name": "Gaston",
+    "last_name": "Iyamuremye",
+    "email": "gaston.iyamuremye@example.org",
+    "description": "Rwandan national. Position: FDLR Interim President; Major General of the FDLR-FOCA; 1st Vice-President. Born in Musanze District, Northern province, Rwanda.",
+    "social_links": []
+   },
+   {
+    "id": "c049",
+    "first_name": "Michel",
+    "last_name": "Rukunda",
+    "email": "michel.rukunda@example.org",
+    "description": "Congolese national. Position: Commander and military leader of an armed militia, Twirwaneho. Born in Minembwe, South-Kivu, Congo (Democratic Republic).",
+    "social_links": []
+   },
+   {
+    "id": "c050",
+    "first_name": "Andrey",
+    "last_name": "Pavlov",
+    "email": "andrey.pavlov@example.org",
+    "description": "Russian national. Position: Lawyer.",
+    "social_links": []
+   },
+   {
+    "id": "c051",
+    "first_name": "Rajesh",
+    "last_name": "Gupta",
+    "email": "rajesh.gupta@example.org",
+    "description": "Indian, South African national. Position: Businessperson. Born in Saharanpur, India.",
+    "social_links": []
+   },
+   {
+    "id": "c052",
+    "first_name": "Teodoro",
+    "last_name": "Mangue",
+    "email": "teodoro.mangue@example.org",
+    "description": "Nationality: Equatorial Guinea. Position: Vice President. Born in Malabo, Equatorial Guinea.",
+    "social_links": []
+   },
+   {
+    "id": "c053",
+    "first_name": "Alvaro",
+    "last_name": "Vargas",
+    "email": "alvaro.vargas@example.org",
+    "description": "Colombian national. Born in Bogota, Colombia.",
+    "social_links": []
+   },
+   {
+    "id": "c054",
+    "first_name": "Alejandro",
+    "last_name": "Giammattei Falla",
+    "email": "alejandro.giammattei-falla@example.org",
+    "description": "Guatemalan, Italian national.",
+    "social_links": []
+   },
+   {
+    "id": "c055",
+    "first_name": "Dmitry",
+    "last_name": "Kratov",
+    "email": "dmitry.kratov@example.org",
+    "description": "Russian national. Position: Chief medical officer/deputy head - Butyrka Prison.",
+    "social_links": []
+   },
+   {
+    "id": "c056",
+    "first_name": "Alexander",
+    "last_name": "Bastrykin",
+    "email": "alexander.bastrykin@example.org",
+    "description": "Russian national. Position: Head of the Investigative Committee of Russia. Born in Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c057",
+    "first_name": "Ahmed",
+    "last_name": "Al Muzaini",
+    "email": "ahmed.al-muzaini@example.org",
+    "description": "Saudi national. Position: Military Attaché.",
+    "social_links": []
+   },
+   {
+    "id": "c058",
+    "first_name": "Soe",
+    "last_name": "Win",
+    "email": "soe.win@example.org",
+    "description": "Burmese national. Position: Second in Command of the Myanmar Armed Forces (Tatmadaw). Born in Myanmar.",
+    "social_links": []
+   },
+   {
+    "id": "c059",
+    "first_name": "Yohaira",
+    "last_name": "Chirino",
+    "email": "yohaira.chirino@example.org",
+    "description": "Nicaraguan national. Position: Deputy Mayor of the City of Matagalpa. Born in Matagalpa, Nicaragua.",
+    "social_links": []
+   },
+   {
+    "id": "c060",
+    "first_name": "Andrey",
+    "last_name": "Tishenin",
+    "email": "andrey.tishenin@example.org",
+    "description": "Russian national. Position: (1) Major (until at least 2018) (2) operational authorized officer of the 1st Directorate of the Service for the Protection of the Constitutional Order and Combating Terrorism of the Directorate of the Federal Security Service (FSB) of the Russian Federation for the Republic of Crimea and Sevastopol. Born in Ukraine.",
+    "social_links": []
+   },
+   {
+    "id": "c061",
+    "first_name": "Joseph",
+    "last_name": "Duplan",
+    "email": "joseph.duplan@example.org",
+    "description": "American national. Position: Former Departmental Delegate.",
+    "social_links": []
+   },
+   {
+    "id": "c062",
+    "first_name": "Noam",
+    "last_name": "Federman",
+    "email": "noam.federman@example.org",
+    "description": "Israeli national.",
+    "social_links": []
+   },
+   {
+    "id": "c063",
+    "first_name": "Rakesh",
+    "last_name": "Pandey",
+    "email": "rakesh.pandey@example.org",
+    "description": "Indian national. Born in India.",
+    "social_links": []
+   },
+   {
+    "id": "c064",
+    "first_name": "Renel",
+    "last_name": "Destina",
+    "email": "renel.destina@example.org",
+    "description": "Haitian national. Position: Main leader of Grand Ravine gang. Born in Haiti.",
+    "social_links": []
+   },
+   {
+    "id": "c065",
+    "first_name": "Luckson",
+    "last_name": "Elan",
+    "email": "luckson.elan@example.org",
+    "description": "Haitian national. Position: Leader of Gran Grif gang.",
+    "social_links": []
+   },
+   {
+    "id": "c066",
+    "first_name": "Ali",
+    "last_name": "Shamshiri",
+    "email": "ali.shamshiri@example.org",
+    "description": "Position: IRGC Officer; Deputy for Counter-Intelligence for Ministry of Defense Armed Forces Logistics (MODAFL).",
+    "social_links": []
+   },
+   {
+    "id": "c067",
+    "first_name": "Mojtaba",
+    "last_name": "Haeri",
+    "email": "mojtaba.haeri@example.org",
+    "description": "Position: Former MODAFL Deputy for Industry.",
+    "social_links": []
+   },
+   {
+    "id": "c068",
+    "first_name": "Sayyid",
+    "last_name": "Tabatabaei",
+    "email": "sayyid.tabatabaei@example.org",
+    "description": "Iranian national. Position: Member of the IRGC-Qods Force. Born in Iran.",
+    "social_links": []
+   },
+   {
+    "id": "c069",
+    "first_name": "Mohammad",
+    "last_name": "Nejad Nouri",
+    "email": "mohammad.nejad-nouri@example.org",
+    "description": "Iranian national. Born in Iran.",
+    "social_links": []
+   },
+   {
+    "id": "c070",
+    "first_name": "Azizollah",
+    "last_name": "Rajabzadeh",
+    "email": "azizollah.rajabzadeh@example.org",
+    "description": "Position: Advisor to the Mayor of Tehran; Former Head of Tehran Disaster Mitigation Organisation (TDMO); Former Head of Tehran Police.",
+    "social_links": []
+   },
+   {
+    "id": "c071",
+    "first_name": "Mostafa",
+    "last_name": "Bozorgnia",
+    "email": "mostafa.bozorgnia@example.org",
+    "description": "Position: Head of Ward 350 of Evin Prison until at least 2010.",
+    "social_links": []
+   },
+   {
+    "id": "c072",
+    "first_name": "Moussa",
+    "last_name": "Khalilollahi",
+    "email": "moussa.khalilollahi@example.org",
+    "description": "Position: Chief Justice of East Azerbaijan province. Former Prosecutor of Tabriz (12 Apr 2010 - 25 Sep 2019).",
+    "social_links": []
+   },
+   {
+    "id": "c073",
+    "first_name": "Reza",
+    "last_name": "Taghipour",
+    "email": "reza.taghipour@example.org",
+    "description": "Position: Member of the Supreme Cyberspace Council, Member of Parliament for Tehran. Born in Maragheh, Iran.",
+    "social_links": []
+   },
+   {
+    "id": "c074",
+    "first_name": "Gholamreza",
+    "last_name": "Soleimani",
+    "email": "gholamreza.soleimani@example.org",
+    "description": "Iranian national. Position: Head of the Basij Organisation of the Islamic Revolutionary Guard Corps.",
+    "social_links": []
+   },
+   {
+    "id": "c075",
+    "first_name": "Mohammad",
+    "last_name": "Osanloo",
+    "email": "mohammad.osanloo@example.org",
+    "description": "Iranian national. Position: IRGC Ground Forces Commander (Hamzeh Sayyid al-Shohada headquarters in North-Western Iran).",
+    "social_links": []
+   },
+   {
+    "id": "c076",
+    "first_name": "Heidar",
+    "last_name": "Pasandideh",
+    "email": "heidar.pasandideh@example.org",
+    "description": "Iranian national. Position: Governor of Sanandaj Central Prison. Born in Iran.",
+    "social_links": []
+   },
+   {
+    "id": "c077",
+    "first_name": "Morteza",
+    "last_name": "Piri",
+    "email": "morteza.piri@example.org",
+    "description": "Iranian national. Position: Warden of Zahedan Central Prison. Born in Zabol, Iran.",
+    "social_links": []
+   },
+   {
+    "id": "c078",
+    "first_name": "Ahmad",
+    "last_name": "Goftar",
+    "email": "ahmad.goftar@example.org",
+    "description": "Iranian national.",
+    "social_links": []
+   },
+   {
+    "id": "c079",
+    "first_name": "Mohammad",
+    "last_name": "Zamani",
+    "email": "mohammad.zamani@example.org",
+    "description": "Iranian national.",
+    "social_links": []
+   },
+   {
+    "id": "c080",
+    "first_name": "Rafi",
+    "last_name": "Al-Tikriti",
+    "email": "rafi.al-tikriti@example.org",
+    "description": "Iraqi national. Born in Tikrit, Iraq.",
+    "social_links": []
+   },
+   {
+    "id": "c081",
+    "first_name": "Adnan",
+    "last_name": "Ahmed",
+    "email": "adnan.ahmed@example.org",
+    "description": "Iraqi national.",
+    "social_links": []
+   },
+   {
+    "id": "c082",
+    "first_name": "Muhammad",
+    "last_name": "Ahmad",
+    "email": "muhammad.ahmad@example.org",
+    "description": "Iraqi national. Born in Al-Mowall, Mosul, Iraq.",
+    "social_links": []
+   },
+   {
+    "id": "c083",
+    "first_name": "Bashar",
+    "last_name": "Al-Tikriti",
+    "email": "bashar.al-tikriti@example.org",
+    "description": "Iraqi national.",
+    "social_links": []
+   },
+   {
+    "id": "c084",
+    "first_name": "Ibrahim",
+    "last_name": "Al-Charif",
+    "email": "ibrahim.al-charif@example.org",
+    "description": "Position: Minister of Social Affairs in Colonel Qadhafi’s Government.",
+    "social_links": []
+   },
+   {
+    "id": "c085",
+    "first_name": "Francisco",
+    "last_name": "Diaz Madriz",
+    "email": "francisco.diaz-madriz@example.org",
+    "description": "Nicaraguan national. Position: Director General of the Nicaraguan National Police (NNP). Born in Chinandega, Nicaragua.",
+    "social_links": []
+   },
+   {
+    "id": "c086",
+    "first_name": "Oleg",
+    "last_name": "Lebedev",
+    "email": "oleg.lebedev@example.org",
+    "description": "Russian national. Position: Former First Deputy Chairman of the Committee on Relations with CIS Countries, Eurasian Integration and Links with Compatriots of the State Duma. Born in Moscow, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c087",
+    "first_name": "Sergei",
+    "last_name": "Mironov",
+    "email": "sergei.mironov@example.org",
+    "description": "Russian national. Position: Member of the Council of the State Duma. Born in Pushkin, Leningrad Region, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c088",
+    "first_name": "Andriy",
+    "last_name": "Purgin",
+    "email": "andriy.purgin@example.org",
+    "description": "Ukrainian national. Born in Donetsk.",
+    "social_links": []
+   },
+   {
+    "id": "c089",
+    "first_name": "Anatoly",
+    "last_name": "Antonov",
+    "email": "anatoly.antonov@example.org",
+    "description": "Russian national. Position: Former Deputy Minister of Defence of the Russian Federation. Born in Omsk, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c090",
+    "first_name": "Ekaterina",
+    "last_name": "Filippova",
+    "email": "ekaterina.filippova@example.org",
+    "description": "Russian national. Position: Former so called 'Minister of Justice' of the 'Donetsk People's Republic'; Commissioner for Human Rights of the so-called of the ‘Donetsk People's Republic.'. Born in Krasnoarmeysk (now Pokrovsk), Donetskaya oblast, Ukrainian SSR (now Ukraine).",
+    "social_links": []
+   },
+   {
+    "id": "c091",
+    "first_name": "Ramzan",
+    "last_name": "Kadyrov",
+    "email": "ramzan.kadyrov@example.org",
+    "description": "Born in Tsentaroy, Chechnya, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c092",
+    "first_name": "Yuriy",
+    "last_name": "Sivokonenko",
+    "email": "yuriy.sivokonenko@example.org",
+    "description": "Born in Stalino City (now Donetsk), Ukraine.",
+    "social_links": []
+   },
+   {
+    "id": "c093",
+    "first_name": "Aleksandr",
+    "last_name": "Totoonov",
+    "email": "aleksandr.totoonov@example.org",
+    "description": "Russian national. Position: Former member of the Committee of International Affairs of the Federation Council of the Russian Federation (until September 2017).|Currently Member of the Parliament of North Ossetia. Born in Ordzhonikidze (Vladikavkaz), North Ossetia, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c094",
+    "first_name": "Sergey",
+    "last_name": "Tsekov",
+    "email": "sergey.tsekov@example.org",
+    "description": "Ukrainian national. Born in Simferopol, The Autonomous Republic of Crimea and the city of Sevastopol, Ukraine.",
+    "social_links": []
+   },
+   {
+    "id": "c095",
+    "first_name": "Vladimir",
+    "last_name": "Vysotkiy",
+    "email": "vladimir.vysotkiy@example.org",
+    "description": "Ukrainian national. Position: Secretary of the so-called Donetsk People’s Republic Central Election Commission. Born in The Autonomous Republic of Crimea and the city of Sevastopol, Ukraine.",
+    "social_links": []
+   },
+   {
+    "id": "c096",
+    "first_name": "Yury",
+    "last_name": "Slyusar",
+    "email": "yury.slyusar@example.org",
+    "description": "Russian national. Position: Director General, United Aircraft Corporation. Born in Rostov-on-Don, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c097",
+    "first_name": "Sergey",
+    "last_name": "Altukhov",
+    "email": "sergey.altukhov@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Krasnodar, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c098",
+    "first_name": "Sergei",
+    "last_name": "Boyarsky",
+    "email": "sergei.boyarsky@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Leningrad, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c099",
+    "first_name": "Nikolai",
+    "last_name": "Buduev",
+    "email": "nikolai.buduev@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Ulan-Ude, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c100",
+    "first_name": "Alexey",
+    "last_name": "Gordeev",
+    "email": "alexey.gordeev@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Frankfurt (Oder), Germany.",
+    "social_links": []
+   },
+   {
+    "id": "c101",
+    "first_name": "Vladislav",
+    "last_name": "Davankov",
+    "email": "vladislav.davankov@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation.",
+    "social_links": []
+   },
+   {
+    "id": "c102",
+    "first_name": "Nikolai",
+    "last_name": "Doluda",
+    "email": "nikolai.doluda@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Myrolyuivka, Ukraine.",
+    "social_links": []
+   },
+   {
+    "id": "c103",
+    "first_name": "Viktor",
+    "last_name": "Zubarev",
+    "email": "viktor.zubarev@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Divnogorsk, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c104",
+    "first_name": "Maxim",
+    "last_name": "Ivanov",
+    "email": "maxim.ivanov@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Sverdlovsk, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c105",
+    "first_name": "Anatoly",
+    "last_name": "Karpov",
+    "email": "anatoly.karpov@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Zlatoust, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c106",
+    "first_name": "Alexander",
+    "last_name": "Kozlovsky",
+    "email": "alexander.kozlovsky@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Velikiye Luki, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c107",
+    "first_name": "Alexey",
+    "last_name": "Lavrinenko",
+    "email": "alexey.lavrinenko@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Nikolina Balka, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c108",
+    "first_name": "Zurab",
+    "last_name": "Makiev",
+    "email": "zurab.makiev@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Tbilisi, Georgia.",
+    "social_links": []
+   },
+   {
+    "id": "c109",
+    "first_name": "Vitaly",
+    "last_name": "Milonov",
+    "email": "vitaly.milonov@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in St.Petersburg, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c110",
+    "first_name": "Nikolay",
+    "last_name": "Pankov",
+    "email": "nikolay.pankov@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Kavley, Gorky oblast, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c111",
+    "first_name": "Oksana",
+    "last_name": "Fadina",
+    "email": "oksana.fadina@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Bolshereche, Omsk, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c112",
+    "first_name": "Sergei",
+    "last_name": "Burlakov",
+    "email": "sergei.burlakov@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Taganrog, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c113",
+    "first_name": "Anton",
+    "last_name": "Krasnoshtanov",
+    "email": "anton.krasnoshtanov@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Irkutsk city, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c114",
+    "first_name": "Irina",
+    "last_name": "Yarovaya",
+    "email": "irina.yarovaya@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Makiivak, Ukraine.",
+    "social_links": []
+   },
+   {
+    "id": "c115",
+    "first_name": "Sardana",
+    "last_name": "Avksentieva",
+    "email": "sardana.avksentieva@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Churapcha, Yakutia, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c116",
+    "first_name": "Rakhim",
+    "last_name": "Azimov",
+    "email": "rakhim.azimov@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Shurab, Tajikistan.",
+    "social_links": []
+   },
+   {
+    "id": "c117",
+    "first_name": "Nikolai",
+    "last_name": "Alekseenko",
+    "email": "nikolai.alekseenko@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Izyum, Kharkiv,, Ukraine.",
+    "social_links": []
+   },
+   {
+    "id": "c118",
+    "first_name": "Petr",
+    "last_name": "Ammosov",
+    "email": "petr.ammosov@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Yakutsk, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c119",
+    "first_name": "Anatoly",
+    "last_name": "Lesun",
+    "email": "anatoly.lesun@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Parichi, Gomel Region, Belarus.",
+    "social_links": []
+   },
+   {
+    "id": "c120",
+    "first_name": "Gennady",
+    "last_name": "Sklyar",
+    "email": "gennady.sklyar@example.org",
+    "description": "Position: Member of the State Duma of the Russian Federation. Born in Termez,, Uzbekistan.",
+    "social_links": []
+   },
+   {
+    "id": "c121",
+    "first_name": "Alexander",
+    "last_name": "Teterdinko",
+    "email": "alexander.teterdinko@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Volkhov, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c122",
+    "first_name": "Nataliya",
+    "last_name": "Poluyanova",
+    "email": "nataliya.poluyanova@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Belgorod, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c123",
+    "first_name": "Timur",
+    "last_name": "Kanokov",
+    "email": "timur.kanokov@example.org",
+    "description": "Russian national. Position: Member of the State Duma of the Russian Federation. Born in Shitkhala, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c124",
+    "first_name": "Anton",
+    "last_name": "Vaino",
+    "email": "anton.vaino@example.org",
+    "description": "Russian national. Position: Chief of Staff of the Presidential Executive Office. Member of the Russian Security Council. Born in Tallinn, Estonia.",
+    "social_links": []
+   },
+   {
+    "id": "c125",
+    "first_name": "Oleg",
+    "last_name": "Matveychev",
+    "email": "oleg.matveychev@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c126",
+    "first_name": "Sergei",
+    "last_name": "Ivanov",
+    "email": "sergei.ivanov@example.org",
+    "description": "Russian national. Position: Special Presidential Representative for Environmental Protection, Ecology and Transport. Member of the Russian Security Council. Born in St. Petersburg, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c127",
+    "first_name": "Tigran",
+    "last_name": "Keosayan",
+    "email": "tigran.keosayan@example.org",
+    "description": "Russian national. Position: Filmmaker and TV presenter, presenter of ‘International Sawmill’ programme on NTV. Born in Moscow, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c128",
+    "first_name": "Roman",
+    "last_name": "Babayan",
+    "email": "roman.babayan@example.org",
+    "description": "Russian national. Born in Baku, Azerbaijan.",
+    "social_links": []
+   },
+   {
+    "id": "c129",
+    "first_name": "Anastasiya",
+    "last_name": "Ignatova",
+    "email": "anastasiya.ignatova@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c130",
+    "first_name": "Ruslan",
+    "last_name": "Tsalikov",
+    "email": "ruslan.tsalikov@example.org",
+    "description": "Russian national. Position: First Deputy Minister of Defence of the Russian Federation. Born in Ordzhonikidze, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c131",
+    "first_name": "Stepan",
+    "last_name": "Kovalchuk",
+    "email": "stepan.kovalchuk@example.org",
+    "description": "Russian national.",
+    "social_links": []
+   },
+   {
+    "id": "c132",
+    "first_name": "Viktor",
+    "last_name": "Vekselberg",
+    "email": "viktor.vekselberg@example.org",
+    "description": "Russian national. Position: Chairman of the Board of Directors of the Renova group of companies. Born in Drohobych, Ukraine.",
+    "social_links": []
+   },
+   {
+    "id": "c133",
+    "first_name": "Taimuraz",
+    "last_name": "Mamsurov",
+    "email": "taimuraz.mamsurov@example.org",
+    "description": "Position: Member of the Federation Council of the Russian Federation. Born in Belsan, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c134",
+    "first_name": "Viktor",
+    "last_name": "Bondarev",
+    "email": "viktor.bondarev@example.org",
+    "description": "Position: Member of the Federation Council of the Russian Federation. Born in Petropavlovsky District, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c135",
+    "first_name": "Aleksey",
+    "last_name": "Mayorov",
+    "email": "aleksey.mayorov@example.org",
+    "description": "Position: Member of the Federation Council of the Russian Federation. Born in Klimovsk, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c136",
+    "first_name": "Sergey",
+    "last_name": "Bezdenezhnykh",
+    "email": "sergey.bezdenezhnykh@example.org",
+    "description": "Position: Member of the Federation Council of the Russian Federation. Born in Amursk, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c137",
+    "first_name": "Nikolai",
+    "last_name": "Kondratyuk",
+    "email": "nikolai.kondratyuk@example.org",
+    "description": "Position: Member of the Federation Council of the Russian Federation. Born in Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c138",
+    "first_name": "Alexander",
+    "last_name": "Narolin",
+    "email": "alexander.narolin@example.org",
+    "description": "Position: Member of the Federation Council of the Russian Federation. Born in Krasnogvardeisky, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c139",
+    "first_name": "Tigran",
+    "last_name": "Khudaverdyan",
+    "email": "tigran.khudaverdyan@example.org",
+    "description": "Armenian national. Position: Former Executive Director & Deputy CEO at Yandex NV. Born in Yerevan, Armenia.",
+    "social_links": []
+   },
+   {
+    "id": "c140",
+    "first_name": "Oleg",
+    "last_name": "Voloshyn",
+    "email": "oleg.voloshyn@example.org",
+    "description": "Ukrainian national. Born in Nikolaev, Ukraine.",
+    "social_links": []
+   },
+   {
+    "id": "c141",
+    "first_name": "Aleksandr",
+    "last_name": "Gromakov",
+    "email": "aleksandr.gromakov@example.org",
+    "description": "Born in Dontesk, Ukraine.",
+    "social_links": []
+   },
+   {
+    "id": "c142",
+    "first_name": "Igor",
+    "last_name": "Halepa",
+    "email": "igor.halepa@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c143",
+    "first_name": "Oksana",
+    "last_name": "Sigidina",
+    "email": "oksana.sigidina@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c144",
+    "first_name": "Alexander",
+    "last_name": "Banakh",
+    "email": "alexander.banakh@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c145",
+    "first_name": "Evgeny",
+    "last_name": "Ilyenko",
+    "email": "evgeny.ilyenko@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c146",
+    "first_name": "Sergei",
+    "last_name": "Serov",
+    "email": "sergei.serov@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c147",
+    "first_name": "Oleg",
+    "last_name": "Koval",
+    "email": "oleg.koval@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c148",
+    "first_name": "Elena",
+    "last_name": "Timchenko",
+    "email": "elena.timchenko@example.org",
+    "description": "Russian, Finnish national.",
+    "social_links": []
+   },
+   {
+    "id": "c149",
+    "first_name": "Viktor",
+    "last_name": "Medvedchuk",
+    "email": "viktor.medvedchuk@example.org",
+    "description": "Born in Pochyot, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c150",
+    "first_name": "Vagit",
+    "last_name": "Alekperov",
+    "email": "vagit.alekperov@example.org",
+    "description": "Russian national. Position: PJSC LUKOIL President and CEO; Executive Member of PJSC LUKOIL Board of Directors; Chairman of PJSC LUKOIL Management Committee. Born in Baku, Azerbaijan.",
+    "social_links": []
+   },
+   {
+    "id": "c151",
+    "first_name": "Nikolay",
+    "last_name": "Pankov",
+    "email": "nikolay.pankov2@example.org",
+    "description": "Russian national. Born in Marino, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c152",
+    "first_name": "Viacheslav",
+    "last_name": "Klobukov",
+    "email": "viacheslav.klobukov@example.org",
+    "description": "Russian national. Position: Colonel of the 64th Separate Motorised Rifle Brigade of the 35th Combined Arms Army of the Russian Federation.",
+    "social_links": []
+   },
+   {
+    "id": "c153",
+    "first_name": "Anna",
+    "last_name": "Tsiveleva",
+    "email": "anna.tsiveleva@example.org",
+    "description": "Born in Ivanovo, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c154",
+    "first_name": "Alexander",
+    "last_name": "Moor",
+    "email": "alexander.moor@example.org",
+    "description": "Russian national. Position: Governor of Tyumen Region.",
+    "social_links": []
+   },
+   {
+    "id": "c155",
+    "first_name": "Andrei",
+    "last_name": "Bocharov",
+    "email": "andrei.bocharov@example.org",
+    "description": "Russian national. Position: Governor of Volgograd Region.",
+    "social_links": []
+   },
+   {
+    "id": "c156",
+    "first_name": "Oleg",
+    "last_name": "Kuvshinnikov",
+    "email": "oleg.kuvshinnikov@example.org",
+    "description": "Russian national. Position: Governor of Vologda Region.",
+    "social_links": []
+   },
+   {
+    "id": "c157",
+    "first_name": "Simon",
+    "last_name": "Al Wakil",
+    "email": "simon.al-wakil@example.org",
+    "description": "Syrian national. Position: Commander of the National Defence Forces in the city of Maharda (Hama).",
+    "social_links": []
+   },
+   {
+    "id": "c158",
+    "first_name": "Elena",
+    "last_name": "Cherstvova",
+    "email": "elena.cherstvova@example.org",
+    "description": "Russian national. Position: Member of SOVCOMBANK’s Management Board. Born in Tolyatti, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c159",
+    "first_name": "Bella",
+    "last_name": "Zlatkis",
+    "email": "bella.zlatkis@example.org",
+    "description": "Position: Member of Sberbank’s Supervisory Board; Deputy Chairman of Sberbank’s Executive Board. Born in Moscow, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c160",
+    "first_name": "Aleksander",
+    "last_name": "Kuleshov",
+    "email": "aleksander.kuleshov@example.org",
+    "description": "Position: Member of Sberbank’s Supervisory Board.",
+    "social_links": []
+   },
+   {
+    "id": "c161",
+    "first_name": "Sergey",
+    "last_name": "Nosov",
+    "email": "sergey.nosov@example.org",
+    "description": "Russian national. Position: Governor of Magadan. Born in Magnitogorsk, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c162",
+    "first_name": "Sergey",
+    "last_name": "Melikov",
+    "email": "sergey.melikov@example.org",
+    "description": "Russian national. Position: Governor of Dagestan. Born in Orekhovo-Zuyevo, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c163",
+    "first_name": "Georgy",
+    "last_name": "Shuvaev",
+    "email": "georgy.shuvaev@example.org",
+    "description": "Russian national. Position: Head of Missile Troops and Artillery of the 1st Tank Army. Born in Stary Oskol, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c164",
+    "first_name": "Evgeny",
+    "last_name": "Shkolov",
+    "email": "evgeny.shkolov@example.org",
+    "description": "Russian national.",
+    "social_links": []
+   },
+   {
+    "id": "c165",
+    "first_name": "Majid Reza",
+    "last_name": "Niyazi-Angili",
+    "email": "majid-reza.niyazi-angili@example.org",
+    "description": "Position: Board Member of QODS AVIATION INDUSTRIES (QAI) (also known as Light Aircraft Design and Manufacturing Industries).",
+    "social_links": []
+   },
+   {
+    "id": "c166",
+    "first_name": "Aleksey",
+    "last_name": "Likhachev",
+    "email": "aleksey.likhachev@example.org",
+    "description": "Russian national. Position: Director General and Member of ROSATOM's Management Board. Born in Sarov, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c167",
+    "first_name": "Alexey",
+    "last_name": "Kozak",
+    "email": "alexey.kozak@example.org",
+    "description": "Russian national. Born in Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c168",
+    "first_name": "Alan",
+    "last_name": "Lushnikov",
+    "email": "alan.lushnikov@example.org",
+    "description": "Russian national. Position: President of JSC Concern Kalashnikov. Born in St. Petersburg, Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c169",
+    "first_name": "Anna",
+    "last_name": "Potychko",
+    "email": "anna.potychko@example.org",
+    "description": "Russian national. Position: Lawyer - General Prosecutor’s Office. Born in Russia.",
+    "social_links": []
+   },
+   {
+    "id": "c170",
+    "first_name": "Ashot",
+    "last_name": "Mkrtychev",
+    "email": "ashot.mkrtychev@example.org",
+    "description": "Slovak national. Born in Baku, Azerbaijan.",
+    "social_links": []
+   },
+   {
+    "id": "c171",
+    "first_name": "Sergei",
+    "last_name": "Shcherbakov",
+    "email": "sergei.shcherbakov@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c172",
+    "first_name": "Serafim",
+    "last_name": "Ivanov",
+    "email": "serafim.ivanov@example.org",
+    "description": "Russian national. Position: Press Secretary of the “Volunteer Squad” and the Head of the Head of the regional headquarters of Yunarmia VVPOD in the Kherson region.",
+    "social_links": []
+   },
+   {
+    "id": "c173",
+    "first_name": "Talat",
+    "last_name": "Safarov",
+    "email": "talat.safarov@example.org",
+    "description": "Azerbaijani national.",
+    "social_links": []
+   },
+   {
+    "id": "c174",
+    "first_name": "Valery",
+    "last_name": "Maiorov",
+    "email": "valery.maiorov@example.org",
+    "description": "Russian national. Position: Director of The Federal Center for the Development of Adolescent Socialization Programs.",
+    "social_links": []
+   },
+   {
+    "id": "c175",
+    "first_name": "Vladislav",
+    "last_name": "Gromov",
+    "email": "vladislav.gromov@example.org",
+    "description": "Nationality: New Zealand. Born in Belgorod-Dnestrovskiy, Ukraine.",
+    "social_links": []
+   },
+   {
+    "id": "c176",
+    "first_name": "Sergei",
+    "last_name": "Dobrinov",
+    "email": "sergei.dobrinov@example.org",
+    "description": "Russian national.",
+    "social_links": []
+   },
+   {
+    "id": "c177",
+    "first_name": "Elmir",
+    "last_name": "Saifullin",
+    "email": "elmir.saifullin@example.org",
+    "description": "Russian national.",
+    "social_links": []
+   },
+   {
+    "id": "c178",
+    "first_name": "Nikoloz",
+    "last_name": "Mzhavanadze",
+    "email": "nikoloz.mzhavanadze@example.org",
+    "description": "Georgian national. Position: Founder, Sezoni TV. Born in Georgia.",
+    "social_links": []
+   },
+   {
+    "id": "c179",
+    "first_name": "Aboud",
+    "last_name": "Mohammed",
+    "email": "aboud.mohammed@example.org",
+    "description": "Born in Lamu Island, Kenya.",
+    "social_links": []
+   },
+   {
+    "id": "c180",
+    "first_name": "Jibril",
+    "last_name": "Mayu",
+    "email": "jibril.mayu@example.org",
+    "description": "Sudanese national. Position: National Movement for Reform and Development (NMRD) Field Commander. Born in Nile District, El-Fasher, North Darfur.",
+    "social_links": []
+   },
+   {
+    "id": "c181",
+    "first_name": "Ali",
+    "last_name": "Al-Zafir",
+    "email": "ali.al-zafir@example.org",
+    "description": "Syrian national. Position: Former Minister of Communications and Technology. Born in Tartus.",
+    "social_links": []
+   },
+   {
+    "id": "c182",
+    "first_name": "Emad",
+    "last_name": "Sabouni",
+    "email": "emad.sabouni@example.org",
+    "description": "Syrian national. Position: Former Minister of Communications and Technology.",
+    "social_links": []
+   },
+   {
+    "id": "c183",
+    "first_name": "Ghassan",
+    "last_name": "Ismail",
+    "email": "ghassan.ismail@example.org",
+    "description": "Syrian national. Position: Head of the Special Missions branch of the Air Force Intelligence Agency. Born in Drekish, Tartous region.",
+    "social_links": []
+   },
+   {
+    "id": "c184",
+    "first_name": "Abdullah",
+    "last_name": "Abdullah",
+    "email": "abdullah.abdullah@example.org",
+    "description": "Syrian national. Position: State Minister.",
+    "social_links": []
+   },
+   {
+    "id": "c185",
+    "first_name": "Ali",
+    "last_name": "Heidar",
+    "email": "ali.heidar@example.org",
+    "description": "Syrian national. Position: Former Head of the National Reconciliation Agency. Born in Hama, Syria.",
+    "social_links": []
+   },
+   {
+    "id": "c186",
+    "first_name": "Hassan",
+    "last_name": "Al-Sari",
+    "email": "hassan.al-sari@example.org",
+    "description": "Syrian national. Position: Former Minister of State. Born in Hama, Syria.",
+    "social_links": []
+   },
+   {
+    "id": "c187",
+    "first_name": "Hassan",
+    "last_name": "Safiyeh",
+    "email": "hassan.safiyeh@example.org",
+    "description": "Syrian national. Position: Former Minister of Internal Trade and Consumer Protection. Born in Latakia, Syria.",
+    "social_links": []
+   },
+   {
+    "id": "c188",
+    "first_name": "Imad",
+    "last_name": "Khamis",
+    "email": "imad.khamis@example.org",
+    "description": "Syrian national. Position: Former Prime Minister (appointed in 2016, but relieved from duties in June 2020 under decree 143), and former Minister for Electricity. Born in near Damascus, Syria.",
+    "social_links": []
+   },
+   {
+    "id": "c189",
+    "first_name": "Kamal",
+    "last_name": "Cheika",
+    "email": "kamal.cheika@example.org",
+    "description": "Position: Former Minster of Water Resources. Born in Damascus.",
+    "social_links": []
+   },
+   {
+    "id": "c190",
+    "first_name": "Maan",
+    "last_name": "Jdiid",
+    "email": "maan.jdiid@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c191",
+    "first_name": "Mansour",
+    "last_name": "Azzam",
+    "email": "mansour.azzam@example.org",
+    "description": "Syrian national. Position: Minister for Presidential Affairs. Born in Sweida Province, Syria.",
+    "social_links": []
+   },
+   {
+    "id": "c192",
+    "first_name": "Mohamed",
+    "last_name": "Ibrahim",
+    "email": "mohamed.ibrahim@example.org",
+    "description": "Position: Head of Operations Branch, Political Security Directorate.",
+    "social_links": []
+   },
+   {
+    "id": "c193",
+    "first_name": "Mujahed",
+    "last_name": "Ismail",
+    "email": "mujahed.ismail@example.org",
+    "description": "",
+    "social_links": []
+   },
+   {
+    "id": "c194",
+    "first_name": "Qadri",
+    "last_name": "Jamil",
+    "email": "qadri.jamil@example.org",
+    "description": "Position: Former Vice Prime Minister for Economic Affairs; Former Minister for Domestic Trade and Consumer Protection.",
+    "social_links": []
+   },
+   {
+    "id": "c195",
+    "first_name": "Bassam",
+    "last_name": "Ibrahim",
+    "email": "bassam.ibrahim@example.org",
+    "description": "Syrian national. Position: Minister of Higher Education. Appointed in November 2018. Born in Hama, Syria.",
+    "social_links": []
+   },
+   {
+    "id": "c196",
+    "first_name": "Mohammad",
+    "last_name": "Mouayyad",
+    "email": "mohammad.mouayyad@example.org",
+    "description": "Syrian national. Position: Former State Minister. Born in Jericho, Idlib.",
+    "social_links": []
+   },
+   {
+    "id": "c197",
+    "first_name": "Yasir",
+    "last_name": "Abbas",
+    "email": "yasir.abbas@example.org",
+    "description": "Syrian national.",
+    "social_links": []
+   },
+   {
+    "id": "c198",
+    "first_name": "Mohammad",
+    "last_name": "Qatana",
+    "email": "mohammad.qatana@example.org",
+    "description": "Syrian national. Born in Damascus, Syria.",
+    "social_links": []
+   },
+   {
+    "id": "c199",
+    "first_name": "Muhammad",
+    "last_name": "Al-Qatirji",
+    "email": "muhammad.al-qatirji@example.org",
+    "description": "Syrian national. Born in Raqqah, Syria.",
+    "social_links": []
+   },
+   {
+    "id": "c200",
+    "first_name": "Caryslia",
+    "last_name": "Rodriguez Rodriguez",
+    "email": "caryslia.rodriguez-rodriguez@example.org",
+    "description": "Venezuelan national. Position: President of the Supreme Tribunal of Justice. Born in Maracay, Venezuela.",
+    "social_links": []
+   }
+  ],
+  "documents": []
+ },
+ "queries": [
+  {
+   "id": "q001",
+   "q": "Mujahed Ismail",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c193"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c193"
+   ],
+   "empty": false,
+   "why": "UK list SYR0181: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q002",
+   "q": "Muhammad Ahmad",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c082"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c082"
+   ],
+   "empty": false,
+   "why": "UK list IRQ0141: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q003",
+   "q": "Alexey Kozak",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c167"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c167"
+   ],
+   "empty": false,
+   "why": "UK list RUS1756: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q004",
+   "q": "Mohamed Ibrahim",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c192"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c192"
+   ],
+   "empty": false,
+   "why": "UK list SYR0153: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q005",
+   "q": "Sergei Ivanov",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c126"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c126"
+   ],
+   "empty": false,
+   "why": "UK list RUS0728: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q006",
+   "q": "Igor Kirillov",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c032"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c032"
+   ],
+   "empty": false,
+   "why": "UK list CHW0025: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q007",
+   "q": "Reza Taghipour",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c073"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c073"
+   ],
+   "empty": false,
+   "why": "UK list IRN0070: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q008",
+   "q": "Sergei Dobrinov",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c176"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c176"
+   ],
+   "empty": false,
+   "why": "UK list RUS3166: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q009",
+   "q": "Anna Tsiveleva",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c153"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c153"
+   ],
+   "empty": false,
+   "why": "UK list RUS1481: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q010",
+   "q": "Jamal Zeiniye",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c026"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c026"
+   ],
+   "empty": false,
+   "why": "UK list AQD0363: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q011",
+   "q": "Serafim Ivanov",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c172"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c172"
+   ],
+   "empty": false,
+   "why": "UK list RUS2312: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q012",
+   "q": "Ferdinand Luyoyo",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c047"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c047"
+   ],
+   "empty": false,
+   "why": "UK list DRC0003: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q013",
+   "q": "Abd Al-Rahman Al-Nu'Aymi",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c008"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c008"
+   ],
+   "empty": false,
+   "why": "UK list AQD0001: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q014",
+   "q": "Son Jong Hyok",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c046"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c046"
+   ],
+   "empty": false,
+   "why": "UK list DPR0273: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q015",
+   "q": "Azizollah Rajabzadeh",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c070"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c070"
+   ],
+   "empty": false,
+   "why": "UK list IRN0022: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q016",
+   "q": "Mohammad Zamani",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c079"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c079"
+   ],
+   "empty": false,
+   "why": "UK list IRN0264: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q017",
+   "q": "Sergey Melikov",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c162"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c162"
+   ],
+   "empty": false,
+   "why": "UK list RUS1678: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q018",
+   "q": "Tigran Keosayan",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c127"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c127"
+   ],
+   "empty": false,
+   "why": "UK list RUS0758: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q019",
+   "q": "Muhammad Deif",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c034"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c034"
+   ],
+   "empty": false,
+   "why": "UK list CTI0048: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q020",
+   "q": "Anatoly Karpov",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c105"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c105"
+   ],
+   "empty": false,
+   "why": "UK list RUS0416: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q021",
+   "q": "Andrey Tishenin",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c060"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c060"
+   ],
+   "empty": false,
+   "why": "UK list GHR0090: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q022",
+   "q": "Vagit Alekperov",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c150"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c150"
+   ],
+   "empty": false,
+   "why": "UK list RUS1334: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q023",
+   "q": "Elena Timchenko",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c148"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c148"
+   ],
+   "empty": false,
+   "why": "UK list RUS1312: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q024",
+   "q": "Bashar Al-Tikriti",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c083"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c083"
+   ],
+   "empty": false,
+   "why": "UK list IRQ0146: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q025",
+   "q": "Aleksey Likhachev",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c166"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c166"
+   ],
+   "empty": false,
+   "why": "UK list RUS1724: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q026",
+   "q": "Alan Lushnikov",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c168"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c168"
+   ],
+   "empty": false,
+   "why": "UK list RUS1916: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q027",
+   "q": "Sergei Boyarsky",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c098"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c098"
+   ],
+   "empty": false,
+   "why": "UK list RUS0322: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q028",
+   "q": "Anna Potychko",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c169"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c169"
+   ],
+   "empty": false,
+   "why": "UK list RUS1946: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q029",
+   "q": "Moussa Khalilollahi",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c072"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c072"
+   ],
+   "empty": false,
+   "why": "UK list IRN0067: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q030",
+   "q": "Oleg Voloshyn",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c140"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c140"
+   ],
+   "empty": false,
+   "why": "UK list RUS1054: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q031",
+   "q": "Sergey Bezdenezhnykh",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c136"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c136"
+   ],
+   "empty": false,
+   "why": "UK list RUS0957: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q032",
+   "q": "Elena Cherstvova",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c158"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c158"
+   ],
+   "empty": false,
+   "why": "UK list RUS1586: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q033",
+   "q": "Georgy Shuvaev",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c163"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c163"
+   ],
+   "empty": false,
+   "why": "UK list RUS1689: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q034",
+   "q": "Ivan Senin",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c040"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c040"
+   ],
+   "empty": false,
+   "why": "UK list CYB0129: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q035",
+   "q": "Stepan Kovalchuk",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c131"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c131"
+   ],
+   "empty": false,
+   "why": "UK list RUS0854: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q036",
+   "q": "Andrei Kozlov",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c038"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c038"
+   ],
+   "empty": false,
+   "why": "UK list CYB0103: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q037",
+   "q": "Ku Ja Hyong",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c045"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c045"
+   ],
+   "empty": false,
+   "why": "UK list DPR0245: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q038",
+   "q": "Mahfouz Al-Walid",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c017"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c017"
+   ],
+   "empty": false,
+   "why": "UK list AQD0219: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q039",
+   "q": "Majid Reza Niyazi-Angili",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c165"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c165"
+   ],
+   "empty": false,
+   "why": "UK list RUS1718: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q040",
+   "q": "Alexander Bastrykin",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c056"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c056"
+   ],
+   "empty": false,
+   "why": "UK list GHR0011: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q041",
+   "q": "Oleg Koval",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c147"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c147"
+   ],
+   "empty": false,
+   "why": "UK list RUS1308: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q042",
+   "q": "Oleg Beliakov",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c029"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c029"
+   ],
+   "empty": false,
+   "why": "UK list BEL0106: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q043",
+   "q": "Roman Babayan",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c128"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c128"
+   ],
+   "empty": false,
+   "why": "UK list RUS0762: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q044",
+   "q": "Mu'Tassim Al-Rumaysh",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c021"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c021"
+   ],
+   "empty": false,
+   "why": "UK list AQD0257: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q045",
+   "q": "Timur Kanokov",
+   "category": "name-full",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c123"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c123"
+   ],
+   "empty": false,
+   "why": "UK list RUS0682: primary name (FtM firstName + lastName) as stored for the client. Other clients holding every word are acceptable."
+  },
+  {
+   "id": "q046",
+   "q": "Ivanov Maxim",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c104"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c104"
+   ],
+   "empty": false,
+   "why": "UK list RUS0391: primary name in surname-first order (stored as 'Maxim Ivanov')."
+  },
+  {
+   "id": "q047",
+   "q": "Makiev Zurab",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c108"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c108"
+   ],
+   "empty": false,
+   "why": "UK list RUS0452: primary name in surname-first order (stored as 'Zurab Makiev')."
+  },
+  {
+   "id": "q048",
+   "q": "Yon Chun Cho",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c043"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c043"
+   ],
+   "empty": false,
+   "why": "UK list DPR0203: primary name in surname-first order (stored as 'Cho Yon Chun')."
+  },
+  {
+   "id": "q049",
+   "q": "Bin Marwan Bilal",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c011"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c011"
+   ],
+   "empty": false,
+   "why": "UK list AQD0156: primary name in surname-first order (stored as 'Bilal Bin Marwan')."
+  },
+  {
+   "id": "q050",
+   "q": "Ismail Ghassan",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c183"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c183"
+   ],
+   "empty": false,
+   "why": "UK list SYR0055: primary name in surname-first order (stored as 'Ghassan Ismail')."
+  },
+  {
+   "id": "q051",
+   "q": "Alekperov Vagit",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c150"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c150"
+   ],
+   "empty": false,
+   "why": "UK list RUS1334: primary name in surname-first order (stored as 'Vagit Alekperov')."
+  },
+  {
+   "id": "q052",
+   "q": "Federman Noam",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c062"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c062"
+   ],
+   "empty": false,
+   "why": "UK list GHR0127: primary name in surname-first order (stored as 'Noam Federman')."
+  },
+  {
+   "id": "q053",
+   "q": "Lavrinenko Alexey",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c107"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c107"
+   ],
+   "empty": false,
+   "why": "UK list RUS0445: primary name in surname-first order (stored as 'Alexey Lavrinenko')."
+  },
+  {
+   "id": "q054",
+   "q": "Jong Hyok Son",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c046"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c046"
+   ],
+   "empty": false,
+   "why": "UK list DPR0273: primary name in surname-first order (stored as 'Son Jong Hyok')."
+  },
+  {
+   "id": "q055",
+   "q": "Ibrahim Mohamed",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c192"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c192"
+   ],
+   "empty": false,
+   "why": "UK list SYR0153: primary name in surname-first order (stored as 'Mohamed Ibrahim')."
+  },
+  {
+   "id": "q056",
+   "q": "Kondratyuk Nikolai",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c137"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c137"
+   ],
+   "empty": false,
+   "why": "UK list RUS1010: primary name in surname-first order (stored as 'Nikolai Kondratyuk')."
+  },
+  {
+   "id": "q057",
+   "q": "Pandey Rakesh",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c063"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c063"
+   ],
+   "empty": false,
+   "why": "UK list GIM0065: primary name in surname-first order (stored as 'Rakesh Pandey')."
+  },
+  {
+   "id": "q058",
+   "q": "Ilyenko Evgeny",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c145"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c145"
+   ],
+   "empty": false,
+   "why": "UK list RUS1245: primary name in surname-first order (stored as 'Evgeny Ilyenko')."
+  },
+  {
+   "id": "q059",
+   "q": "Saifullin Elmir",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c177"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c177"
+   ],
+   "empty": false,
+   "why": "UK list RUS3499: primary name in surname-first order (stored as 'Elmir Saifullin')."
+  },
+  {
+   "id": "q060",
+   "q": "Altukhov Sergey",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c097"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c097"
+   ],
+   "empty": false,
+   "why": "UK list RUS0300: primary name in surname-first order (stored as 'Sergey Altukhov')."
+  },
+  {
+   "id": "q061",
+   "q": "Chouka Yassin",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c025"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c025"
+   ],
+   "empty": false,
+   "why": "UK list AQD0334: primary name in surname-first order (stored as 'Yassin Chouka')."
+  },
+  {
+   "id": "q062",
+   "q": "Akhund Abdul",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c005"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c005"
+   ],
+   "empty": false,
+   "why": "UK list AFG0072: primary name in surname-first order (stored as 'Abdul Akhund')."
+  },
+  {
+   "id": "q063",
+   "q": "Timchenko Elena",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c148"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c148"
+   ],
+   "empty": false,
+   "why": "UK list RUS1312: primary name in surname-first order (stored as 'Elena Timchenko')."
+  },
+  {
+   "id": "q064",
+   "q": "Barsukov Alexander",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c027"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c027"
+   ],
+   "empty": false,
+   "why": "UK list BEL0007: primary name in surname-first order (stored as 'Alexander Barsukov')."
+  },
+  {
+   "id": "q065",
+   "q": "Win Soe",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c058"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c058"
+   ],
+   "empty": false,
+   "why": "UK list GHR0047: primary name in surname-first order (stored as 'Soe Win')."
+  },
+  {
+   "id": "q066",
+   "q": "Osanloo Mohammad",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c075"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c075"
+   ],
+   "empty": false,
+   "why": "UK list IRN0133: primary name in surname-first order (stored as 'Mohammad Osanloo')."
+  },
+  {
+   "id": "q067",
+   "q": "Giammattei Falla Alejandro",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c054"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c054"
+   ],
+   "empty": false,
+   "why": "UK list GAC0064: primary name in surname-first order (stored as 'Alejandro Giammattei Falla')."
+  },
+  {
+   "id": "q068",
+   "q": "Totoonov Aleksandr",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c093"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c093"
+   ],
+   "empty": false,
+   "why": "UK list RUS0146: primary name in surname-first order (stored as 'Aleksandr Totoonov')."
+  },
+  {
+   "id": "q069",
+   "q": "Lebedev Oleg",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c086"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c086"
+   ],
+   "empty": false,
+   "why": "UK list RUS0018: primary name in surname-first order (stored as 'Oleg Lebedev')."
+  },
+  {
+   "id": "q070",
+   "q": "Abdul Quddus Sayed Esmatullah",
+   "category": "name-reversed",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c003"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [
+    "c003"
+   ],
+   "empty": false,
+   "why": "UK list AFG0061: primary name in surname-first order (stored as 'Sayed Esmatullah Abdul Quddus')."
+  },
+  {
+   "id": "q071",
+   "q": "El Motassadeq",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c020"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list AQD0254: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q072",
+   "q": "Al-Fawaz",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c016"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list AQD0214: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q073",
+   "q": "Taghipour",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c073"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list IRN0070: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q074",
+   "q": "Jamil",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c194"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list SYR0197: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q075",
+   "q": "Osanloo",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c075"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list IRN0133: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q076",
+   "q": "Zeiniye",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c026"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list AQD0363: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q077",
+   "q": "Keosayan",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c127"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list RUS0758: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q078",
+   "q": "Karpov",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c105"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list RUS0416: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q079",
+   "q": "Ignatova",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c129"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list RUS0789: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q080",
+   "q": "Sabouni",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c182"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list SYR0037: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q081",
+   "q": "Halepa",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c142"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list RUS1146: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q082",
+   "q": "Klobukov",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c152"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list RUS1475: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q083",
+   "q": "Al-Zafir",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c181"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list SYR0010: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q084",
+   "q": "Shamshiri",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c066"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list INU0005: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q085",
+   "q": "Alekseenko",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c117"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list RUS0607: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q086",
+   "q": "Abbas",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c197"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list SYR0350: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q087",
+   "q": "Mangue",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c052"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list GAC0024: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q088",
+   "q": "Kozak",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c167"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list RUS1756: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q089",
+   "q": "Fatih Khan",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c006"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list AFG0084: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q090",
+   "q": "Galochkin",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c035"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list CYB0031: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q091",
+   "q": "Al-Charif",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c084"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list LIB0023: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q092",
+   "q": "Niyazi-Angili",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c165"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list RUS1718: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q093",
+   "q": "Azzam",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c191"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list SYR0137: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q094",
+   "q": "Al Wakil",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c157"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list RUS1544: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q095",
+   "q": "Kozlov",
+   "category": "surname",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c038"
+   ],
+   "acceptable": [
+    "c106"
+   ],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "UK list CYB0103: surname alone; no other client has it as a name word (clients containing it as a substring are acceptable)."
+  },
+  {
+   "id": "q096",
+   "q": "Muhammad Qatarji",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c199"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list SYR0375 lists 'Muhammad Qatarji' (Primary name variation); a re-spelling of the stored name 'Muhammad Al-Qatirji'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q097",
+   "q": "Aboud Rogo Muhammad",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c179"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list SOM0011 lists 'Aboud Rogo Muhammad' (Alias, Good quality a.k.a); a re-spelling of the stored name 'Aboud Mohammed'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q098",
+   "q": "Mafouz Walad Al-Walid",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c017"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AQD0219 lists 'Mafouz Walad Al-Walid' (Alias, Good quality a.k.a); a re-spelling of the stored name 'Mahfouz Al-Walid'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q099",
+   "q": "Simon Al Waqil",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c157"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1544 lists 'Simon Al WAQIL' (Primary Name Variation); a re-spelling of the stored name 'Simon Al Wakil'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q100",
+   "q": "Bashar Sabawi Ibrahim Hasan Al-Bayjat",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c083"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list IRQ0146 lists 'Bashar Sabawi Ibrahim Hasan Al-Bayjat' (Alias, Good quality a.k.a); a re-spelling of the stored name 'Bashar Al-Tikriti'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q101",
+   "q": "Imad Mohammed Deeb Khamees",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c188"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list SYR0101 lists 'Imad Mohammed Deeb Khamees' (Primary name variation); a re-spelling of the stored name 'Imad Khamis'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q102",
+   "q": "Nikolai Fyodorovich Kondratyuk",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c137"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1010 lists 'Nikolai Fyodorovich KONDRATYUK' (Primary Name Variation); a re-spelling of the stored name 'Nikolai Kondratyuk'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q103",
+   "q": "Andriy Yevhenovych Purhin",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c088"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0058 lists 'Andriy Yevhenovych Purhin' (Primary name variation); a re-spelling of the stored name 'Andriy Purgin'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q104",
+   "q": "Ihor Anatoliiovych Kirillov",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c032"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list CHW0025 lists 'Ihor Anatoliiovych Kirillov' (Primary Name Variation); a re-spelling of the stored name 'Igor Kirillov'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q105",
+   "q": "Andrei Paulyuchenka",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c028"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list BEL0048 lists 'Andrei Paulyuchenka' (Primary name variation); a re-spelling of the stored name 'Andrei Pauliuchenka'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q106",
+   "q": "Andrey Alekseevich Pavlov",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c050"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list GAC0007 lists 'Andrey Alekseevich PAVLOV' (Primary name variation); a re-spelling of the stored name 'Andrey Pavlov'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q107",
+   "q": "Mansour Fadlallah Azam",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c191"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list SYR0137 lists 'Mansour Fadlallah Azam' (Primary name variation); a re-spelling of the stored name 'Mansour Azzam'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q108",
+   "q": "jedid",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c190"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list SYR0132 lists 'jedid' (Alias); a re-spelling of the stored name 'Maan Jdiid'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q109",
+   "q": "Uthman al-Ghamidi",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c024"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AQD0283 lists 'Uthman al-Ghamidi' (Alias, Good quality a.k.a); a re-spelling of the stored name 'Othman Al-Ghamdi'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q110",
+   "q": "Yuriy Viktorovich Sovokonenko",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c092"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0136 lists 'Yuriy Viktorovich Sovokonenko' (Primary name variation); a re-spelling of the stored name 'Yuriy Sivokonenko'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q111",
+   "q": "Teodorin",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c052"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list GAC0024 lists 'Teodorin' (Alias); a re-spelling of the stored name 'Teodoro Mangue'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q112",
+   "q": "Yasser Abas",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c197"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list SYR0350 lists 'Yasser Abas' (Primary name variation); a re-spelling of the stored name 'Yasir Abbas'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q113",
+   "q": "Vladimir Yurevich Vysotskyi",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c095"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0156 lists 'Vladimir Yurevich Vysotskyi' (Primary name variation); a re-spelling of the stored name 'Vladimir Vysotkiy'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q114",
+   "q": "Ali Heydar",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c185"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list SYR0075 lists 'Ali Heydar' (Primary name variation); a re-spelling of the stored name 'Ali Heidar'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q115",
+   "q": "Muhammad Yunis Ahmed Al-Moali",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c082"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list IRQ0141 lists 'Muhammad Yunis Ahmed Al-Moali' (Alias, Good quality a.k.a); a re-spelling of the stored name 'Muhammad Ahmad'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q116",
+   "q": "Mohammad Taghi Osanlu",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c075"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list IRN0133 lists 'Mohammad Taghi OSANLU' (Primary Name Variation); a re-spelling of the stored name 'Mohammad Osanloo'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q117",
+   "q": "Sergey Vladilenovich Shcherbakov",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c171"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1988 lists 'Sergey Vladilenovich SHCHERBAKOV' (Primary Name Variation); a re-spelling of the stored name 'Sergei Shcherbakov'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q118",
+   "q": "Oleg Nikolaevich Belyakov",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c029"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list BEL0106 lists 'Oleg Nikolaevich Belyakov' (Primary name variation); a re-spelling of the stored name 'Oleg Beliakov'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q119",
+   "q": "Emad Abdul-Ghani Al Sabuni",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c182"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list SYR0037 lists 'Emad Abdul-Ghani Al Sabuni' (Primary name variation); a re-spelling of the stored name 'Emad Sabouni'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q120",
+   "q": "Hassan Safiye",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c187"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list SYR0083 lists 'Hassan Safiye' (Primary name variation); a re-spelling of the stored name 'Hassan Safiyeh'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q121",
+   "q": "Abdul Rehman",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c009"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AQD0112 lists 'Abdul Rehman' (Alias, Good quality a.k.a); a re-spelling of the stored name 'Abdur Rehman'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q122",
+   "q": "Igor Nikolaevich Khalepa",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c142"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1146 lists 'Igor Nikolaevich KHALEPA' (Primary Name Variation); a re-spelling of the stored name 'Igor Halepa'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q123",
+   "q": "Musa Khalilollahi",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c072"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list IRN0067 lists 'Musa Khalilollahi' (Primary Name Variation); a re-spelling of the stored name 'Moussa Khalilollahi'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q124",
+   "q": "Maxsim Galochkin",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c035"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list CYB0031 lists 'Maxsim GALOCHKIN' (Primary Name Variation); a re-spelling of the stored name 'Maksim Galochkin'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q125",
+   "q": "Alyaksandr Petrovich Barsukou",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c027"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list BEL0007 lists 'Alyaksandr Petrovich Barsukou' (Primary name variation); a re-spelling of the stored name 'Alexander Barsukov'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q126",
+   "q": "Alexander Sergeyevich Banakh",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c144"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1229 lists 'Alexander Sergeyevich BANAKH' (Primary Name Variation); a re-spelling of the stored name 'Alexander Banakh'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q127",
+   "q": "Oleg Valerievich Koval",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c147"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1308 lists 'Oleg Valerievich KOVAL' (Primary Name Variation); a re-spelling of the stored name 'Oleg Koval'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q128",
+   "q": "Valiantsina Genadzeuna Kulik",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c030"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list BEL0146 lists 'Valiantsina Genadzeuna Kulik' (Primary Name Variation); a re-spelling of the stored name 'Valentina Kulik'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q129",
+   "q": "Mohammad Shafiq Ahmadi",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c006"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AFG0084 lists 'Mohammad Shafiq AHMADI' (Alias, Good quality a.k.a); a re-spelling of the stored name 'Mohammad Shafiqullah Fatih Khan'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q130",
+   "q": "Cabdullah Mayamed Ciise",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c018"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AQD0226 lists 'Cabdullah Mayamed Ciise' (Alias, Good quality a.k.a); a re-spelling of the stored name 'Maxamed Ciise'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q131",
+   "q": "Kadri Jamil",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c194"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list SYR0197 lists 'Kadri Jamil' (Primary name variation); a re-spelling of the stored name 'Qadri Jamil'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q132",
+   "q": "Faical Boughanmi",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c013"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AQD0171 lists 'Faical Boughanmi' (Alias, Good quality a.k.a); a re-spelling of the stored name 'Faycal Boughanemi'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q133",
+   "q": "Yevgeny Alexeyevich Ilyenko",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c145"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1245 lists 'Yevgeny Alexeyevich ILYENKO' (Primary Name Variation); a re-spelling of the stored name 'Evgeny Ilyenko'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q134",
+   "q": "Nikolai Aleksandrovich Pankov",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c151"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1397 lists 'Nikolai Aleksandrovich PANKOV' (Primary Name Variation); a re-spelling of the stored name 'Nikolay Pankov'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q135",
+   "q": "Andrei Vyacheslavovich Tishenin",
+   "category": "alias-latin",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c060"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list GHR0090 lists 'Andrei Vyacheslavovich Tishenin' (Primary Name Variation); a re-spelling of the stored name 'Andrey Tishenin'. Relevant = every client whose list entry has this name."
+  },
+  {
+   "id": "q136",
+   "q": "عدنان س. حسن أحمد",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c081"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list IRQ0134: name in non-Latin script (NonLatinName); stored as 'Adnan Ahmed'."
+  },
+  {
+   "id": "q137",
+   "q": "محمد يونس أحمد",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c082"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list IRQ0141: name in non-Latin script (NonLatinName); stored as 'Muhammad Ahmad'."
+  },
+  {
+   "id": "q138",
+   "q": "عبد الباری ﺁخوند",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c005"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AFG0072: name in non-Latin script (NonLatinName); stored as 'Abdul Akhund'."
+  },
+  {
+   "id": "q139",
+   "q": "عادل بن الأزهر بن يوسف حمدي",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c010"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AQD0119: name in non-Latin script (NonLatinName); stored as 'Adel Hamdi'."
+  },
+  {
+   "id": "q140",
+   "q": "مرتضی پیری",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c077"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list IRN0154: name in non-Latin script (NonLatinName, Persian); stored as 'Morteza Piri'."
+  },
+  {
+   "id": "q141",
+   "q": "اياد اغ غالي",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c014"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AQD0208: name in non-Latin script (NonLatinName); stored as 'Iyad Ag Ghali'."
+  },
+  {
+   "id": "q142",
+   "q": "عبدالغفار شینواری",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c007"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AFG0107: name in non-Latin script (NonLatinName); stored as 'Abdul Shinwari'."
+  },
+  {
+   "id": "q143",
+   "q": "محمد براء قاطرجي",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c199"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list SYR0375: name in non-Latin script (NonLatinName); stored as 'Muhammad Al-Qatirji'."
+  },
+  {
+   "id": "q144",
+   "q": "عبد العالي ابو ذر",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c019"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AQD0238: name in non-Latin script (NonLatinName); stored as 'Mohamed Belkalem'."
+  },
+  {
+   "id": "q145",
+   "q": "رافي عبد اللطيف طلفاح التكريتي",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c080"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list IRQ0076: name in non-Latin script (NonLatinName); stored as 'Rafi Al-Tikriti'."
+  },
+  {
+   "id": "q146",
+   "q": "منصور فضل الله زام",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c191"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list SYR0137: name in non-Latin script (NonLatinName); stored as 'Mansour Azzam'."
+  },
+  {
+   "id": "q147",
+   "q": "عبدالله السندي",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c009"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AQD0112: name in non-Latin script (NonLatinName); stored as 'Abdur Rehman'."
+  },
+  {
+   "id": "q148",
+   "q": "عمر محمود عثمان",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c023"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AQD0282: name in non-Latin script (NonLatinName); stored as 'Omar Uthman'."
+  },
+  {
+   "id": "q149",
+   "q": "منير المتصدق",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c020"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AQD0254: name in non-Latin script (NonLatinName); stored as 'Mounir El Motassadeq'."
+  },
+  {
+   "id": "q150",
+   "q": "عثمان أحمد عثمان الغامدي",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c024"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list AQD0283: name in non-Latin script (NonLatinName); stored as 'Othman Al-Ghamdi'."
+  },
+  {
+   "id": "q151",
+   "q": "محمدتقی اسانلو",
+   "category": "alias-script-arabic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c075"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list IRN0133: name in non-Latin script (NonLatinName, Persian); stored as 'Mohammad Osanloo'."
+  },
+  {
+   "id": "q152",
+   "q": "נעם פדרמן",
+   "category": "alias-script-hebrew",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c062"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list GHR0127: name in non-Latin script (NonLatinName, Hebrew, Hebrew); stored as 'Noam Federman'."
+  },
+  {
+   "id": "q153",
+   "q": "ნიკოლოზ მჟავანაძე",
+   "category": "alias-script-georgian",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c178"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS3732: name in non-Latin script (NonLatinName, Georgian, Georgian); stored as 'Nikoloz Mzhavanadze'."
+  },
+  {
+   "id": "q154",
+   "q": "анна цивилева",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c153"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1481: name in non-Latin script (NonLatinName); stored as 'Anna Tsiveleva'."
+  },
+  {
+   "id": "q155",
+   "q": "Сергей Константинович Носов",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c161"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1675: name in non-Latin script (NonLatinName, Cyrillic, Russian); stored as 'Sergey Nosov'."
+  },
+  {
+   "id": "q156",
+   "q": "Белякоў, Алег Мікалаевіч",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c029"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list BEL0106: name in non-Latin script (NonLatinName); stored as 'Oleg Beliakov'."
+  },
+  {
+   "id": "q157",
+   "q": "Евгений Михайлович ШКОЛОВ",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c164"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1706: name in non-Latin script (NonLatinName, Cyrillic, Russian); stored as 'Evgeny Shkolov'."
+  },
+  {
+   "id": "q158",
+   "q": "Алексей Фёдорович Лавриненко",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c107"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0445: name in non-Latin script (NonLatinName); stored as 'Alexey Lavrinenko'."
+  },
+  {
+   "id": "q159",
+   "q": "Алтухов Сергей Викторович",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c097"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0300: name in non-Latin script (NonLatinName); stored as 'Sergey Altukhov'."
+  },
+  {
+   "id": "q160",
+   "q": "ПАВЛЮЧЕНКО, Андрей Юрьевич",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c028"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list BEL0048: name in non-Latin script (NonLatinName); stored as 'Andrei Pauliuchenka'."
+  },
+  {
+   "id": "q161",
+   "q": "ВАЙНО Антон Эдуардович",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c124"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0690: name in non-Latin script (NonLatinName, Cyrillic, Russian); stored as 'Anton Vaino'."
+  },
+  {
+   "id": "q162",
+   "q": "ЦАЛИКОВ Руслан Хаджисмелович",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c130"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0836: name in non-Latin script (NonLatinName, Cyrillic, Russian); stored as 'Ruslan Tsalikov'."
+  },
+  {
+   "id": "q163",
+   "q": "Вячеслав Сергеевич КЛОБУКОВ",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c152"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1475: name in non-Latin script (NonLatinName, Cyrillic, Russian); stored as 'Viacheslav Klobukov'."
+  },
+  {
+   "id": "q164",
+   "q": "Иван Алексеевич Сенин",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c040"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list CYB0129: name in non-Latin script (NonLatinName, Cyrillic, Russian); stored as 'Ivan Senin'."
+  },
+  {
+   "id": "q165",
+   "q": "Алексеенко Николай Николаевич",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c117"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0607: name in non-Latin script (NonLatinName); stored as 'Nikolai Alekseenko'."
+  },
+  {
+   "id": "q166",
+   "q": "Таймураз Дзамбекович МАМСУРОВ",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c133"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0881: name in non-Latin script (NonLatinName); stored as 'Taimuraz Mamsurov'."
+  },
+  {
+   "id": "q167",
+   "q": "Марына Святаславаўна ЗАПАСНІК",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c031"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list BEL0154: name in non-Latin script (NonLatinName, Cyrillic, Belarusian); stored as 'Marina Zapasnik'."
+  },
+  {
+   "id": "q168",
+   "q": "Панков Николай Васильевич",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c110"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0477: name in non-Latin script (NonLatinName); stored as 'Nikolay Pankov'."
+  },
+  {
+   "id": "q169",
+   "q": "БАНАХ Александр Сергеевич",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c144"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1229: name in non-Latin script (NonLatinName, Cyrillic, Russian); stored as 'Alexander Banakh'."
+  },
+  {
+   "id": "q170",
+   "q": "Даванков Владислав Андреевич",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c101"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0362: name in non-Latin script (NonLatinName); stored as 'Vladislav Davankov'."
+  },
+  {
+   "id": "q171",
+   "q": "Лесун Анатолий Фёдорович",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c119"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0619: name in non-Latin script (NonLatinName); stored as 'Anatoly Lesun'."
+  },
+  {
+   "id": "q172",
+   "q": "Бурлаков Сергей Владимирович",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c112"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0545: name in non-Latin script (NonLatinName); stored as 'Sergei Burlakov'."
+  },
+  {
+   "id": "q173",
+   "q": "ПОТЫЧКО Анна Евгениевна",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c169"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1946: name in non-Latin script (NonLatinName, Cyrillic, Russian); stored as 'Anna Potychko'."
+  },
+  {
+   "id": "q174",
+   "q": "Милонов Виталий Валентинович",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c109"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS0456: name in non-Latin script (NonLatinName); stored as 'Vitaly Milonov'."
+  },
+  {
+   "id": "q175",
+   "q": "Оле́г Алекса́ндрович Кувши́нников",
+   "category": "alias-script-cyrillic",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c156"
+   ],
+   "acceptable": [],
+   "others": "ignore",
+   "first": [],
+   "within_top": 5,
+   "empty": false,
+   "why": "UK list RUS1525: name in non-Latin script (NonLatinName); stored as 'Oleg Kuvshinnikov'."
+  },
+  {
+   "id": "q176",
+   "q": "minister",
+   "category": "description-position",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c001",
+    "c003",
+    "c027",
+    "c084",
+    "c089",
+    "c090",
+    "c130",
+    "c181",
+    "c182",
+    "c184",
+    "c186",
+    "c187",
+    "c188",
+    "c191",
+    "c194",
+    "c195",
+    "c196"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description position word (FtM position): 'minister' appears in the description of these 17 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q177",
+   "q": "Syrian",
+   "category": "description-nationality",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c026",
+    "c157",
+    "c181",
+    "c182",
+    "c183",
+    "c184",
+    "c185",
+    "c186",
+    "c187",
+    "c188",
+    "c191",
+    "c195",
+    "c196",
+    "c197",
+    "c198",
+    "c199"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description nationality (FtM nationality, written as a demonym): 'Syrian' appears in the description of these 16 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q178",
+   "q": "deputy",
+   "category": "description-position",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c003",
+    "c027",
+    "c029",
+    "c031",
+    "c055",
+    "c059",
+    "c066",
+    "c067",
+    "c086",
+    "c089",
+    "c130",
+    "c139",
+    "c159"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description position word (FtM position): 'deputy' appears in the description of these 13 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q179",
+   "q": "Iranian",
+   "category": "description-nationality",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c068",
+    "c069",
+    "c074",
+    "c075",
+    "c076",
+    "c077",
+    "c078",
+    "c079"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description nationality (FtM nationality, written as a demonym): 'Iranian' appears in the description of these 8 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q180",
+   "q": "governor",
+   "category": "description-position",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c005",
+    "c006",
+    "c076",
+    "c154",
+    "c155",
+    "c156",
+    "c161",
+    "c162"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description position word (FtM position): 'governor' appears in the description of these 8 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q181",
+   "q": "Afghan",
+   "category": "description-nationality",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c001",
+    "c002",
+    "c003",
+    "c004",
+    "c005",
+    "c006",
+    "c007"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description nationality (FtM nationality, written as a demonym): 'Afghan' appears in the description of these 7 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q182",
+   "q": "director",
+   "category": "description-position",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c043",
+    "c044",
+    "c085",
+    "c096",
+    "c139",
+    "c166",
+    "c174"
+   ],
+   "acceptable": [
+    "c060",
+    "c132",
+    "c150",
+    "c192"
+   ],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description position word (FtM position): 'director' appears in the description of these 7 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q183",
+   "q": "general",
+   "category": "description-position",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c003",
+    "c007",
+    "c048",
+    "c085",
+    "c096",
+    "c166",
+    "c169"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description position word (FtM position): 'general' appears in the description of these 7 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q184",
+   "q": "president",
+   "category": "description-position",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c047",
+    "c048",
+    "c052",
+    "c150",
+    "c168",
+    "c200"
+   ],
+   "acceptable": [
+    "c124",
+    "c126",
+    "c191"
+   ],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description position word (FtM position): 'president' appears in the description of these 6 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q185",
+   "q": "Ukrainian",
+   "category": "description-nationality",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c088",
+    "c090",
+    "c094",
+    "c095",
+    "c140"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description nationality (FtM nationality, written as a demonym): 'Ukrainian' appears in the description of these 5 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q186",
+   "q": "commander",
+   "category": "description-position",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c047",
+    "c049",
+    "c075",
+    "c157",
+    "c180"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description position word (FtM position): 'commander' appears in the description of these 5 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q187",
+   "q": "Belarusian",
+   "category": "description-nationality",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c027",
+    "c029",
+    "c030",
+    "c031"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description nationality (FtM nationality, written as a demonym): 'Belarusian' appears in the description of these 4 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q188",
+   "q": "Donetsk",
+   "category": "description-birthplace",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c088",
+    "c090",
+    "c092",
+    "c095"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description birth place (FtM birthPlace): 'Donetsk' appears in the description of these 4 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q189",
+   "q": "Hama",
+   "category": "description-birthplace",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c157",
+    "c185",
+    "c186",
+    "c195"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description birth place (FtM birthPlace): 'Hama' appears in the description of these 4 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q190",
+   "q": "Iraqi",
+   "category": "description-nationality",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c080",
+    "c081",
+    "c082",
+    "c083"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description nationality (FtM nationality, written as a demonym): 'Iraqi' appears in the description of these 4 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q191",
+   "q": "North Korean",
+   "category": "description-nationality",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c041",
+    "c042",
+    "c045",
+    "c046"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description nationality (FtM nationality, written as a demonym): 'North Korean' appears in the description of these 4 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q192",
+   "q": "Saudi",
+   "category": "description-nationality",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c016",
+    "c021",
+    "c024",
+    "c057"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description nationality (FtM nationality, written as a demonym): 'Saudi' appears in the description of these 4 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q193",
+   "q": "chairman",
+   "category": "description-position",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c086",
+    "c132",
+    "c150",
+    "c159"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description position word (FtM position): 'chairman' appears in the description of these 4 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q194",
+   "q": "leader",
+   "category": "description-position",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c034",
+    "c049",
+    "c064",
+    "c065"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description position word (FtM position): 'leader' appears in the description of these 4 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q195",
+   "q": "Baku",
+   "category": "description-birthplace",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c128",
+    "c150",
+    "c170"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description birth place (FtM birthPlace): 'Baku' appears in the description of these 3 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q196",
+   "q": "Damascus",
+   "category": "description-birthplace",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c188",
+    "c189",
+    "c198"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description birth place (FtM birthPlace): 'Damascus' appears in the description of these 3 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q197",
+   "q": "Moscow",
+   "category": "description-birthplace",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c086",
+    "c127",
+    "c159"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description birth place (FtM birthPlace): 'Moscow' appears in the description of these 3 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q198",
+   "q": "Belgorod",
+   "category": "description-birthplace",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c122",
+    "c175"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description birth place (FtM birthPlace): 'Belgorod' appears in the description of these 2 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q199",
+   "q": "Bonn",
+   "category": "description-birthplace",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c012",
+    "c025"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description birth place (FtM birthPlace): 'Bonn' appears in the description of these 2 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q200",
+   "q": "Leningrad",
+   "category": "description-birthplace",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c087",
+    "c098"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description birth place (FtM birthPlace): 'Leningrad' appears in the description of these 2 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q201",
+   "q": "Nangarhar Province",
+   "category": "description-birthplace",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c003",
+    "c007"
+   ],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "empty": false,
+   "why": "Description birth place (FtM birthPlace): 'Nangarhar Province' appears in the description of these 2 clients. Other clients containing the word as a substring are acceptable."
+  },
+  {
+   "id": "q202",
+   "q": "Sergey Menshikov",
+   "category": "negative-near-name",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c162"
+   ],
+   "empty": true,
+   "why": "UK list RUS1748 is a different person who is not a client; shares the same first name and a surname of 0.7-0.85 similarity with c162 'Sergey Melikov' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q203",
+   "q": "Ivan Sechin",
+   "category": "negative-near-name",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c040"
+   ],
+   "empty": true,
+   "why": "UK list RUS1063 is a different person who is not a client; shares the same first name and a surname of 0.7-0.85 similarity with c040 'Ivan Senin' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q204",
+   "q": "Hassan Al-Wardian",
+   "category": "negative-near-name",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c186"
+   ],
+   "empty": true,
+   "why": "UK list CTI0061 is a different person who is not a client; shares the same first name and a surname of 0.7-0.85 similarity with c186 'Hassan Al-Sari' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q205",
+   "q": "Aleksandr Golyakov",
+   "category": "negative-near-name",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c141"
+   ],
+   "empty": true,
+   "why": "UK list GHR0122 is a different person who is not a client; shares the same first name and a surname of 0.7-0.85 similarity with c141 'Aleksandr Gromakov' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q206",
+   "q": "Sergei Abukov",
+   "category": "negative-near-name",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c112"
+   ],
+   "empty": true,
+   "why": "UK list RUS1224 is a different person who is not a client; shares the same first name and a surname of 0.7-0.85 similarity with c112 'Sergei Burlakov' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q207",
+   "q": "Alexander Burkov",
+   "category": "negative-near-name",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c027"
+   ],
+   "empty": true,
+   "why": "UK list RUS1672 is a different person who is not a client; shares the same first name and a surname of 0.7-0.85 similarity with c027 'Alexander Barsukov' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q208",
+   "q": "Alexander Karlin",
+   "category": "negative-near-name",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c138"
+   ],
+   "empty": true,
+   "why": "UK list RUS0885 is a different person who is not a client; shares the same first name and a surname of 0.7-0.85 similarity with c138 'Alexander Narolin' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q209",
+   "q": "Ibrahim Al-Asiri",
+   "category": "negative-near-name",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c084"
+   ],
+   "empty": true,
+   "why": "UK list AQD0199 is a different person who is not a client; shares the same first name and a surname of 0.7-0.85 similarity with c084 'Ibrahim Al-Charif' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q210",
+   "q": "Anatoly Artamonov",
+   "category": "negative-near-name",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c089"
+   ],
+   "empty": true,
+   "why": "UK list RUS0900 is a different person who is not a client; shares the same first name and a surname of 0.7-0.85 similarity with c089 'Anatoly Antonov' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q211",
+   "q": "Alexander Khodakovsky",
+   "category": "negative-near-name",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c106"
+   ],
+   "empty": true,
+   "why": "UK list RUS0119 is a different person who is not a client; shares the same first name and a surname of 0.7-0.85 similarity with c106 'Alexander Kozlovsky' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q212",
+   "q": "Qusay Al-Tikriti",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c080",
+    "c083"
+   ],
+   "empty": true,
+   "why": "UK list IRQ0063 is a different person who is not a client; shares the same surname (first names clearly differ) with c080 'Rafi Al-Tikriti', c083 'Bashar Al-Tikriti' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q213",
+   "q": "Monir Chouka",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c025"
+   ],
+   "empty": true,
+   "why": "UK list AQD0250 is a different person who is not a client; shares the same surname (first names clearly differ) with c025 'Yassin Chouka' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q214",
+   "q": "Vladimir Ivanov",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c104",
+    "c126",
+    "c172"
+   ],
+   "empty": true,
+   "why": "UK list RUS0390 is a different person who is not a client; shares the same surname (first names clearly differ) with c104 'Maxim Ivanov', c126 'Sergei Ivanov', c172 'Serafim Ivanov' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q215",
+   "q": "Rida Ali Khamis",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c188"
+   ],
+   "empty": true,
+   "why": "UK list CTI0060 is a different person who is not a client; shares the same surname (first names clearly differ) with c188 'Imad Khamis' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q216",
+   "q": "Alexei Kozlov",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c038"
+   ],
+   "empty": true,
+   "why": "UK list RUS1867 is a different person who is not a client; shares the same surname (first names clearly differ) with c038 'Andrei Kozlov' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q217",
+   "q": "Pavel Karpov",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c105"
+   ],
+   "empty": true,
+   "why": "UK list GAC0002 is a different person who is not a client; shares the same surname (first names clearly differ) with c105 'Anatoly Karpov' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q218",
+   "q": "Tatyana Kovalchuk",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c131"
+   ],
+   "empty": true,
+   "why": "UK list RUS0855 is a different person who is not a client; shares the same surname (first names clearly differ) with c131 'Stepan Kovalchuk' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q219",
+   "q": "Khalid Mohammed",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c179"
+   ],
+   "empty": true,
+   "why": "UK list CTI0011 is a different person who is not a client; shares the same surname (first names clearly differ) with c179 'Aboud Mohammed' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q220",
+   "q": "Mostafa Ibrahim",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c192",
+    "c195"
+   ],
+   "empty": true,
+   "why": "UK list AQD0252 is a different person who is not a client; shares the same surname (first names clearly differ) with c192 'Mohamed Ibrahim', c195 'Bassam Ibrahim' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q221",
+   "q": "Vycheslav Timchenko",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c148"
+   ],
+   "empty": true,
+   "why": "UK list RUS0974 is a different person who is not a client; shares the same surname (first names clearly differ) with c148 'Elena Timchenko' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q222",
+   "q": "Evgeny Lebedev",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c086"
+   ],
+   "empty": true,
+   "why": "UK list RUS0446 is a different person who is not a client; shares the same surname (first names clearly differ) with c086 'Oleg Lebedev' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q223",
+   "q": "Hussam Al-Qatirji",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c199"
+   ],
+   "empty": true,
+   "why": "UK list SYR0262 is a different person who is not a client; shares the same surname (first names clearly differ) with c199 'Muhammad Al-Qatirji' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q224",
+   "q": "Alexander Koval",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c147"
+   ],
+   "empty": true,
+   "why": "UK list RUS1786 is a different person who is not a client; shares the same surname (first names clearly differ) with c147 'Oleg Koval' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q225",
+   "q": "Vladimir Senin",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c040"
+   ],
+   "empty": true,
+   "why": "UK list RUS0601 is a different person who is not a client; shares the same surname (first names clearly differ) with c040 'Ivan Senin' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q226",
+   "q": "Ely Federman",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c062"
+   ],
+   "empty": true,
+   "why": "UK list GHR0115 is a different person who is not a client; shares the same surname (first names clearly differ) with c062 'Noam Federman' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q227",
+   "q": "Deepak Pandey",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c063"
+   ],
+   "empty": true,
+   "why": "UK list GIM0056 is a different person who is not a client; shares the same surname (first names clearly differ) with c063 'Rakesh Pandey' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q228",
+   "q": "Abdallah Ahmed",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c081"
+   ],
+   "empty": true,
+   "why": "UK list SUD0063 is a different person who is not a client; shares the same surname (first names clearly differ) with c081 'Adnan Ahmed' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q229",
+   "q": "Ali Abbas",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c197"
+   ],
+   "empty": true,
+   "why": "UK list SYR0408 is a different person who is not a client; shares the same surname (first names clearly differ) with c197 'Yasir Abbas' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q230",
+   "q": "Abdelhamid Abdullah",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c184"
+   ],
+   "empty": true,
+   "why": "UK list SYR0002 is a different person who is not a client; shares the same surname (first names clearly differ) with c184 'Abdullah Abdullah' (different list entries, no common name or birth date). No client contains every word of the query."
+  },
+  {
+   "id": "q231",
+   "q": "Arsen Kanokov",
+   "category": "negative-same-surname",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [],
+   "acceptable": [],
+   "others": "wrong",
+   "first": [],
+   "must_not": [
+    "c123"
+   ],
+   "empty": true,
+   "why": "UK list RUS2409 is a different person who is not a client; shares the same surname (first names clearly differ) with c123 'Timur Kanokov' (different list entries, no common name or birth date). No client contains every word of the query."
+  }
+ ],
+ "http_cases": []
+}

@@ -1,0 +1,1451 @@
+{
+  "suite": "codex-documents",
+  "author": "GPT-6",
+  "corpus": {
+    "clients": [
+      {
+        "id": "c01",
+        "first_name": "Alice",
+        "last_name": "Fenwick",
+        "email": "alice.fenwick@larchhaven.example",
+        "description": "Retired engineering director; planning phased retirement under the household label Project Copperfin.",
+        "social_links": [
+          "https://profiles.example/alice-fenwick"
+        ]
+      },
+      {
+        "id": "c02",
+        "first_name": "Alistair",
+        "last_name": "Fenwick",
+        "email": "alistair.fenwick@fenwickdesign.example",
+        "description": "Self-employed illustrator, unrelated to Alice Fenwick; reviewing retirement options after moving home.",
+        "social_links": [
+          "https://profiles.example/alistair-fenwick"
+        ]
+      },
+      {
+        "id": "c03",
+        "first_name": "Maya",
+        "last_name": "Bellamy",
+        "email": "maya.bellamy@reedglass.example",
+        "description": "Employed laboratory supervisor; saving for a first home.",
+        "social_links": [
+          "https://profiles.example/maya-bellamy"
+        ]
+      },
+      {
+        "id": "c04",
+        "first_name": "May",
+        "last_name": "Bellamy",
+        "email": "may.bellamy@maybellamy.example",
+        "description": "Independent ceramicist with rental income; arranging succession for her studio.",
+        "social_links": [
+          "https://profiles.example/may-bellamy"
+        ]
+      },
+      {
+        "id": "c05",
+        "first_name": "Imogen",
+        "last_name": "Harrowby",
+        "email": "imogen.harrowby@harrowbystudio.example",
+        "description": "Freelance exhibition designer; rents her home and is reviewing family protection.",
+        "social_links": [
+          "https://profiles.example/imogen-harrowby"
+        ]
+      },
+      {
+        "id": "c06",
+        "first_name": "Ravi",
+        "last_name": "Calderwick",
+        "email": "ravi.calderwick@calderwick.example",
+        "description": "Former Brindlebridge Energy employee; later founded and sold a precision tooling business.",
+        "social_links": [
+          "https://profiles.example/ravi-calderwick"
+        ]
+      },
+      {
+        "id": "c07",
+        "first_name": "Elina",
+        "last_name": "Vossmere",
+        "email": "elina.vossmere@vossmere.example",
+        "description": "Recently relocated consultant; onboarding includes overseas tax residency information.",
+        "social_links": [
+          "https://profiles.example/elina-vossmere"
+        ]
+      }
+    ],
+    "documents": [
+      {
+        "id": "d01",
+        "client_id": "c01",
+        "title": "Scan 0042",
+        "content": "Brindlebridge Energy. Alice Fenwick, 14 Brindle Close, Merewick. Electricity supplied to this residential address, 1 July to 30 September 2026. Account BE-482731-09. Statement issued 4 October 2026. Total due £186.42; payment by direct debit on 18 October. Meter reading 047182, actual. This utility bill records the account holder and supply address. Adviser check: current residential evidence, accepted for this onboarding file.",
+        "created_at": "2026-10-06T09:15:00Z"
+      },
+      {
+        "id": "d02",
+        "client_id": "c02",
+        "title": "Quarterly household account",
+        "content": "Hearthmere Gas. Account HG-731204-6. Alistair Fenwick, 8 Alder Quay, Merewick. Gas bill issued 6 October 2026 for domestic supply from 1 July to 30 September 2026. Amount payable £94.18 on 21 October 2026. The supply address is the customer's current home, not a correspondence-only address. Accepted as current address evidence in this client file.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d03",
+        "client_id": "c03",
+        "title": "Water charges: autumn",
+        "content": "Mossmere Water Services. Maya Bellamy, 22 Reed Lane, Merewick. Water and sewerage bill for the period 1 October 2026 to 31 March 2027. Bill date 2 October 2026. Customer number MW-665193. Charges £211.60. This is a household utility bill for the named resident at the service address; it is accepted as current evidence of residence in this onboarding file.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d04",
+        "client_id": "c04",
+        "title": "Local authority demand 2026–27",
+        "content": "Merewick Borough Council: council tax bill, issued 12 September 2026 following a change to instalments. May Bellamy is liable for the occupied dwelling at 31 Kiln Mews, Merewick, for 1 April 2026 to 31 March 2027. Council tax reference CT-820614. Annual charge £1,824.00; remaining instalments shown overleaf. The client confirms that this is her current main residence; the adviser has accepted this bill as evidence of address.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d05",
+        "client_id": "c01",
+        "title": "Current account — September",
+        "content": "Alderfen Bank. Personal bank statement for Alice Fenwick, 14 Brindle Close, Merewick, covering 1–30 September 2026; issued 1 October 2026. Account ending 7042. IBAN GB82 ALDF 1234 5600 0070 42. Closing balance £24,806.19. Debits include groceries and household direct debits; no salary, pension or business income credit appears in this period. The bank's registered residential address is current and has been accepted for address verification. This is a current account, not an investment valuation.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d06",
+        "client_id": "c05",
+        "title": "Signed occupancy agreement",
+        "content": "Residential tenancy agreement between landlord Rowan Dovell and tenant Imogen Harrowby for 6 Lantern Walk, Merewick. Term: 1 September 2026 to 31 August 2027. Rent £1,250 per calendar month. Signed by both parties on 25 August 2026; occupation began on 1 September. This is Imogen's current home. The adviser has accepted the signed agreement as residential evidence for this file under the firm's documented process; acceptance elsewhere is not implied.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d07",
+        "client_id": "c06",
+        "title": "Home loan annual summary",
+        "content": "Juniper Quay Building Society. Mortgage statement MS-409117 for Ravi Calderwick, owner-occupier of 45 Copper Lane, Merewick. Statement date 30 September 2026. Outstanding mortgage balance £218,400.00; monthly repayment £1,184.72. Security and correspondence address are both his current home. This mortgage statement has been accepted as address evidence for this client file; it is not evidence of the origin of the deposit or an income statement.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d08",
+        "client_id": "c01",
+        "title": "Certified copy — travel document",
+        "content": "Certified copy of Alice Fenwick's British passport. Passport number 682914703; expiry date 17 June 2033. Photograph and full name checked against the client on 8 October 2026; certified as a true copy of the original by the firm's authorised reviewer. Supplied for identity verification. No residential address is printed on the passport.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d09",
+        "client_id": "c02",
+        "title": "Photocard copy, front and reverse",
+        "content": "Alistair Fenwick's full UK driving licence, number FENWI801127A99XY. Photograph, name and date of birth checked against the original. Valid until 12 November 2031. Address on the card: 8 Alder Quay, Merewick, confirmed current. Retained primarily as photographic identity evidence; no separate decision on using the licence as address evidence is recorded.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d10",
+        "client_id": "c07",
+        "title": "Identity check — original seen",
+        "content": "Elina Vossmere's Portuguese national identity card, number PT-ID-72946183. Original seen on 10 October 2026; photograph and name matched to the client. Expiry 14 May 2030. Retained as photographic identity evidence. This copy does not record a UK residential address.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d11",
+        "client_id": "c03",
+        "title": "September payroll advice",
+        "content": "Reedglass Instruments Ltd. Payslip for Maya Bellamy, employee RG-0318, pay date 25 September 2026. Gross monthly pay £4,250.00; PAYE tax £610.40; employee National Insurance £245.20; pension contribution £212.50; net pay £3,181.90. Paid by bank transfer. This is the issued employee payslip, not a forecast or blank example.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d12",
+        "client_id": "c03",
+        "title": "Year-end certificate",
+        "content": "P60 End of Year Certificate, tax year 6 April 2025 to 5 April 2026. Employee Maya Bellamy; employer Reedglass Instruments Ltd; payroll reference RG-0318. Total pay in this employment £49,800.00; tax deducted £7,146.20. Employer-issued certificate supplied as evidence of annual employment income.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d13",
+        "client_id": "c04",
+        "title": "Tax computation — filed copy",
+        "content": "Self-assessment tax calculation (SA302-style computation) for May Bellamy, year ended 5 April 2026. Filing reference SA-481920-26. Declared self-employment profit £62,400.00 and taxable property profit £9,600.00; total income £72,000.00. Prepared from the submitted return by Fernlock Tax Partners and retained as historical income evidence. This calculation is not a certificate of tax residence and does not state where May is tax resident.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d14",
+        "client_id": "c05",
+        "title": "Signed professional confirmation",
+        "content": "Fernlock Tax Partners, 9 October 2026. To the adviser: we act as accountants to Imogen Harrowby, a sole trader. Accounts for the year ended 31 March 2026 show net trading profit of £58,200.00, before personal tax. We confirm that these figures are drawn from the completed accounts and are not projections. Signed, Cora Denswick, partner. This accountant's letter is supplied as independent evidence of self-employed income.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d15",
+        "client_id": "c01",
+        "title": "Estate distribution and receipt",
+        "content": "Briarcombe Probate Services — beneficiary payment confirmation. Our reference EST-761204-AF. Client: Alice Fenwick. This file concerns the estate of her fictional aunt, Nora Fenwick. The executors authorised a final cash distribution of £325,000.00 to Alice on 14 August 2026. The enclosed estate account records the entitlement and the completion note records the transfer to Alice's nominated personal account. The payment reference was NF-ESTATE-FINAL. This is a completed inheritance receipt, rather than an estimate of a possible future legacy.\n\nThe estate account explains how the distributed money was assembled. Most of the cash came from the disposal of the deceased's long-held investment portfolio; the balance came from savings held in her sole name. Funeral costs, professional charges and the estate's liabilities were settled before the distributable residue was calculated. Alice's share was paid outright, with no continuing trust and no obligation to repay the money. The executor confirmation and the receipt refer to the same beneficiary and amount.\n\nFor the adviser, the immediate source of the proposed investment is the inherited cash now held by Alice. The underlying explanation for this addition to her wealth is the legacy from Nora's estate. The supporting papers establish the relationship between the estate entitlement, the authorised payment and the money received. They do not make claims about Alice's employment income, regular retirement income or overall investment performance. The adviser should retain the estate account alongside this signed confirmation when recording the funding rationale.\n\nAlice has earmarked £200,000.00 of the receipt for a future investment proposal and wishes to keep the remainder readily available while she decides on home improvements. The allocation is an intention only and is not an instruction to trade. There is no request here to change her registered residential address. The beneficiary's contact address has intentionally been omitted from this extract because it is recorded separately in the client file. The confirmation is evidence of an actual inherited sum, not merely a will naming Alice as a prospective beneficiary, and it should not be confused with correspondence from another client asking about an inheritance that has not occurred.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d16",
+        "client_id": "c06",
+        "title": "Completion bundle — tooling disposal",
+        "content": "Sale completion record for Ravi Calderwick. Transaction reference BIZ-CW-260918. On 18 September 2026, Ravi completed the sale of his entire shareholding in Calderwick Precision Tools Ltd to Wrenhollow Manufacturing Holdings Ltd. Cash consideration was £2,400,000.00 before professional fees and the separately retained tax reserve. The signed completion statement and solicitor's receipt confirm that the consideration was paid, rather than being conditional on a future sale. There is no deferred earn-out in this transaction.\n\nRavi founded the business in 2004 and developed it from a small workshop into a supplier of specialist tooling. His ownership interest arose from his original subscription for shares and later retained business profits; it was not acquired through an unexplained recent transfer. The accompanying ownership schedule traces his holding from incorporation to completion. Those records explain how the business interest accumulated over time and why Ravi was entitled to receive the sale proceeds. The purchase agreement identifies the buyer and the shares transferred.\n\nThe net settlement was sent to Ravi's personal account after the solicitors deducted the agreed legal fees. He intends to invest £1,500,000.00 after retaining sufficient cash for known liabilities and ordinary household spending. The adviser has not treated the gross sale price as the sum available for immediate investment. The final tax liability remains a separate calculation, and this completion record does not certify any relief or tax treatment. It simply evidences the transaction and the receipt of consideration.\n\nFor source of funds review, the completed sale links the proposed investment to a specific, documented payment. For source of wealth review, the history of founding, owning and operating the business explains the origin of the asset sold. Both aspects are relevant to the client file. A generic brochure about selling a company would not establish either point for Ravi. His former employment by an energy supplier is part of his career history but is not the source of this receipt. No residential address is certified by the transaction papers. The bundle contains no pension transfer authority and makes no recommendation about an investment product; those matters require their own records and decisions.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d17",
+        "client_id": "c02",
+        "title": "Completion statement — Orchard Row",
+        "content": "Alderwick Conveyancing LLP. Client Alistair Fenwick. Property sale reference PROP-629104. Completion date 30 July 2026. The property sold was 19 Orchard Row, Merewick, a rental house that Alistair had acquired in 2012. The agreed sale price was £465,000.00. The completion statement records mortgage redemption of £112,000.00 and combined conveyancing and selling costs of £8,500.00, leaving net proceeds of £344,500.00. The solicitor confirms that this amount was remitted to Alistair on completion.\n\nThe supporting purchase history records that Alistair bought the house with accumulated illustration earnings and a mortgage. During his ownership he let it to tenants and met the mortgage payments from rental receipts and his own savings. This background explains the origin and development of the property asset; it is not a valuation of his current home. The sale contract, redemption statement and final ledger together show the route from ownership of the house to the cash now available to him. There is no outstanding condition requiring the buyer to make a further payment.\n\nThe adviser is retaining this bundle as evidence of the source of funds for a proposed investment and as supporting information about how this part of Alistair's wealth arose. Alistair plans to retain a cash reserve until his accountant has confirmed the tax position. The sale proceeds are a capital receipt, not his current salary or recurring trading income. The figures should therefore not be entered as monthly earnings in an affordability calculation. No tax conclusion is expressed in this document.\n\nOrchard Row was an investment property and was not Alistair's residence at completion. His present home is recorded elsewhere in the client file, and these papers must not be used as proof of his current residential address simply because a street address appears in the text. The document also does not concern an inheritance, a gift or the sale of a company. The payment has already occurred, so it is materially different from an estate agent's estimate or a conversation about a possible future disposal. The original completion ledger has been checked against the solicitor's signed confirmation and filed with the client record.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d18",
+        "client_id": "c07",
+        "title": "CRS and FATCA declaration",
+        "content": "Tax residency self-certification signed by Elina Vossmere on 10 October 2026. Declared jurisdictions of tax residence: United Kingdom and Portugal. Overseas tax identification number PT-TIN-729461835 (synthetic test identifier). The client declares that she is not a US person for FATCA purposes. This records the client's declaration for onboarding; it is not an HMRC certificate of residence or independent advice about residence status. Residential address is held on a separate form and is not reproduced here.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d19",
+        "client_id": "c04",
+        "title": "Executed testamentary instrument",
+        "content": "Last will and testament of May Bellamy, signed on 22 September 2026 in the presence of two witnesses. This executed copy revokes May's earlier wills and appoints her brother, Owen Bellamy, and professional executor Cora Denswick to administer her estate. The original is held by Briarcombe Private Client Solicitors under reference WILL-MB-260922. The adviser has retained a copy to understand the client's estate planning intentions; no adviser is appointed as executor by this document.\n\nThe instrument leaves May's studio tools and finished ceramic works to her niece, Ada Bellamy. The residue of the estate is to be divided equally between Owen and Ada after liabilities and administration expenses have been paid. If either beneficiary dies before May, the substitution provisions in the signed instrument determine the destination of that share. A separate schedule describes the studio items so that the executor can identify them, but it does not provide a current market valuation. The will contains no direction to make an investment during May's lifetime.\n\nMay has discussed the document with her solicitor and understands that a will concerns the administration of her estate after death. It does not authorise another person to operate her bank accounts while she is alive and does not grant an attorney authority to manage her financial affairs. Those questions are addressed, where applicable, by a separate lasting power of attorney. The file note expressly distinguishes the roles of executor and attorney to avoid the documents being treated as interchangeable during a review meeting.\n\nFor the present client record, this is an executed estate planning document, not a draft, a blank template or evidence that a beneficiary has already received an inheritance. May remains alive and there has been no distribution from her estate. Names in the beneficiary clauses should not be mistaken for additional clients in this corpus. The adviser should refer any proposed change to the appointed solicitor and obtain an updated signed copy if the arrangements are changed. The file contains no assessment of inheritance tax due and no assurance that the instructions produce a particular tax outcome. Its relevance is the client's documented succession plan and the identification of her intended executors and beneficiaries.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d20",
+        "client_id": "c04",
+        "title": "Registered financial authority",
+        "content": "Registered lasting power of attorney for property and financial affairs: donor May Bellamy; attorney Owen Bellamy. OPG reference LPA-7841-2603. Registered copy received 13 October 2026. The instrument concerns management of May's finances during her lifetime, subject to its recorded terms. This is not a health and welfare LPA and it does not appoint an executor. Original reviewed by the firm's document checker.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d21",
+        "client_id": "c06",
+        "title": "Private guidance to trustees",
+        "content": "Letter of wishes signed by Ravi Calderwick on 7 October 2026, accompanying the Calderwick Family Discretionary Trust. Ravi asks the trustees to consider education costs for younger beneficiaries before making discretionary capital appointments. The letter expresses non-binding wishes; it does not amend the trust deed, compel distributions or evidence a payment already made. Stored under reference LOW-RC-261007.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d22",
+        "client_id": "c06",
+        "title": "Settlement executed 2 October",
+        "content": "Trust deed establishing the Calderwick Family Discretionary Trust on 2 October 2026. Settlor: Ravi Calderwick. Initial trustees: Ravi Calderwick and Cora Denswick. Deed reference TR-CAL-2602. The initial settled amount is £10.00. The named class of potential beneficiaries comprises Ravi's children and remoter descendants, together with the additional persons specified in the signed schedule. This is an executed settlement instrument, not a product brochure or a proposal awaiting signature.\n\nThe trustees hold the settled property under the terms of the deed and may consider appointments of income or capital within the powers and restrictions recorded in it. No individual beneficiary is recorded as entitled to a fixed payment on a fixed date. The administrative provisions address trustee appointments, record keeping and the exercise of discretion. The adviser has retained the document to understand the structure when discussing Ravi's wider estate planning arrangements; the extract is not intended to replace reading the complete signed deed.\n\nA separately signed letter of wishes gives Ravi's personal guidance about education expenditure. That letter is distinct from this instrument and does not override the trustees' duties or the terms of the settlement. The two documents should be reviewed together when an adviser needs context, but a search for the binding trust deed should not treat the non-binding letter as the deed itself. Neither document is Ravi's will, and neither grants an attorney power to manage his personal accounts during his lifetime.\n\nOnly the nominal initial settlement is evidenced here. There has been no subsequent transfer of the proceeds of Ravi's business sale into the trust under this deed as filed. The document therefore does not establish the source of funds for a large subscription, does not show the value of Ravi's personal estate and does not confirm any investment holding. If further assets are settled, separate evidence of the transfer and its origin will be required. No conclusion about tax efficiency, residence or beneficial entitlement should be inferred beyond the signed provisions. The purpose of retaining this copy is to record the existing legal arrangement and the identities of the settlor and trustees, not to present a future funding intention as a completed transaction.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d23",
+        "client_id": "c02",
+        "title": "Retirement account annual review",
+        "content": "Moorhaven Pensions. Annual defined contribution pension statement for Alistair Fenwick, plan MP-00627184. Valuation date 30 September 2026; fund value £286,740.35. Contributions during the statement year £9,600.00. This statement describes the accumulated pension fund and is not evidence of pension income in payment. No safeguarded benefits are recorded in this plan. It is separate from Alistair's former employer's defined benefit scheme.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d24",
+        "client_id": "c02",
+        "title": "Deferred benefits quotation",
+        "content": "Thorncombe Engineering Retirement Scheme. Cash equivalent transfer value (CETV) quotation for Alistair Fenwick, member TE-449207, quote TV-2026-10483. Defined benefit transfer value £412,800.00, guaranteed until 15 December 2026. Quote issued 15 September 2026. This is a valuation for considering a transfer, not a recommendation or completed transfer instruction, and no pension is currently being paid.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d25",
+        "client_id": "c05",
+        "title": "Family protection schedule",
+        "content": "Hazelport Life Assurance. Policy HL-708426-L for life assured Imogen Harrowby. Level term life cover of £500,000.00, ending 31 August 2046; monthly premium £28.60. Pays on death during the term, subject to the policy conditions. This schedule contains no critical illness benefit and no income protection benefit. Policy commenced 1 September 2026.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d26",
+        "client_id": "c05",
+        "title": "Illness benefit schedule",
+        "content": "Hazelport Life Assurance. Standalone critical illness policy HC-934815-C for Imogen Harrowby. Sum assured £100,000.00; monthly premium £37.40; expiry 31 August 2046. Lump sum payable on a covered diagnosis under the policy definitions. This is critical illness cover, not a policy replacing monthly earnings during incapacity; there is no income protection policy in this file.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d27",
+        "client_id": "c01",
+        "title": "Household review workbook",
+        "content": "Fact find completed with Alice Fenwick on 8 October 2026. Household planning label: Project Copperfin. Alice recently retired from engineering management and wants to organise her cash before committing to a long-term investment. She has no financial dependants and expects to meet routine spending from existing resources while she reviews when to draw retirement benefits. The information below records her statements during the meeting; figures have not all been independently verified by this workbook.\n\nAlice estimates essential household spending at £2,100.00 a month and discretionary spending at £650.00 a month. She wishes to retain an accessible emergency reserve of £30,000.00 and has provisionally set aside £45,000.00 for home improvements. She has no unsecured borrowing. She regards capital needed within the next two years as unavailable for long-term market investment. The adviser recorded these constraints before discussing products so that the eventual recommendation can be tested against her practical needs.\n\nHer main objective is to preserve spending flexibility while allowing part of her capital to grow over at least ten years. She has previously held collective investments but has not traded derivatives or borrowed to invest. She says that an extended fall in markets would make her uncomfortable if it affected money needed for household bills. The separate risk questionnaire explores her attitude to volatility and the adviser will discuss capacity for loss independently. The fact find itself is not a completed risk score or a suitability recommendation.\n\nAlice also reported a recent family estate distribution, for which the signed receipt is held separately. This workbook does not independently establish the origin of that money, and it should not replace the supporting estate papers in an evidence search. No certified identity copy, residential bill or tax residence declaration forms part of this document. The review records client circumstances and objectives so that later advice can be tailored and explained. Alice agreed to check the expenditure figures and report any material omissions before the recommendation is finalised. There is no instruction to invest, transfer a pension or take out insurance at this stage, and no recommendation should be inferred from the list of products mentioned during the conversation.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d28",
+        "client_id": "c01",
+        "title": "Investor questionnaire — completed",
+        "content": "Alice Fenwick completed the investment risk questionnaire on 8 October 2026. Score 42/80, indicative profile balanced. She would tolerate temporary market falls in long-term capital but needs certainty for near-term spending. Adviser note: attitude to risk and capacity for loss were discussed separately; the score alone is not a recommendation. Signed responses are retained, not a blank questionnaire.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d29",
+        "client_id": "c01",
+        "title": "Personal recommendation — October",
+        "content": "Suitability report for Alice Fenwick, dated 16 October 2026. Household planning label: Project Copperfin. This report explains the recommendation arising from the completed fact find, the discussion of investment risk and the review of accessible reserves. Alice's objective is to invest £200,000.00 for a period of at least ten years while keeping separate cash for planned works and unforeseen expenditure. The recommendation is based on the circumstances recorded at the review and should be revisited if those circumstances change.\n\nThe proposed approach is a diversified portfolio of collective funds aligned with the agreed balanced risk profile. The adviser considered Alice's experience, her reaction to previous market falls and her ability to meet spending without selling investments at an unfavourable time. Capacity for loss was assessed separately from her willingness to accept volatility. A portfolio suitable for long-term growth may fall in value and is unsuitable for cash needed to meet near-term household commitments. The proposed accessible reserve is therefore excluded from the investment allocation.\n\nAlternatives considered included leaving all the money in cash and adopting a lower-risk investment mix. Cash would preserve nominal accessibility but would not meet the same long-term growth objective; the lower-risk mix would alter the balance between expected variability and growth potential. These comparisons explain the personalised recommendation rather than promising a return. Charges and service arrangements are set out in the accompanying disclosure, and Alice is to receive the relevant product information before deciding whether to proceed. This report does not confirm that any trade has taken place.\n\nThe file records that supporting evidence for the origin of the investment money has been reviewed separately. This report is not itself a bank receipt, estate account or certified identity document. It contains no pension transfer recommendation and no recommendation to buy life assurance. Its role is to connect Alice's needs, resources, time horizon and risk discussion to the proposed investment approach. Alice should read the report and raise any factual correction before authorising implementation. A later change in spending plans, available capital or ability to withstand loss may require a new assessment; the report is specific to the facts recorded for this review.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d30",
+        "client_id": "c03",
+        "title": "Review call record",
+        "content": "Meeting notes: Maya Bellamy and adviser, 12 October 2026. Maya's immediate priority is a house deposit within three years. She asked about saving regularly and agreed to supply an updated expenditure breakdown. No investment recommendation was made, no risk questionnaire was completed and no policy was arranged. Next review booked for 3 November 2026. This note records a conversation, not independent proof of income.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d31",
+        "client_id": "c07",
+        "title": "Please send your outstanding evidence",
+        "content": "From: onboarding@larchhaven.example. To: elina.vossmere@vossmere.example. Subject: address proof still needed. Thank you, Elina Vossmere; we still need a utility bill or bank statement for your current home. A passport is not proof of address. This e-mail requests missing evidence and has no attachments; it is not itself proof of where you live. Sent before the later broadband bill was received.",
+        "created_at": "2026-10-01T08:20:00Z"
+      },
+      {
+        "id": "d32",
+        "client_id": "c07",
+        "title": "Parcel receipt",
+        "content": "Swiftbarrow Courier: proof of delivery, tracking SW-938271046. Parcel delivered to Elina Vossmere at 12 Sedge Gardens, Merewick, on 3 October 2026. Signed by a neighbour. Delivery address was entered by the sender and has not been verified as the recipient's residence. This is a courier receipt for a document wallet, not evidence of identity or residential address.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d33",
+        "client_id": "c06",
+        "title": "Business owners newsletter",
+        "content": "Promotional e-mail addressed to Ravi Calderwick from Lanternbank Events. Subject: Your passport to a brighter retirement. Join our seminar about selling a business, inheritance planning and source of wealth evidence. Our example founder receives £2,400,000.00 after a hypothetical disposal. This is general marketing copy, not a record of Ravi's sale, a passport, a valuation, a suitability report or evidence of any client's wealth.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d34",
+        "client_id": "c04",
+        "title": "P60 example — uncompleted",
+        "content": "Blank P60 training template downloaded by May Bellamy for her bookkeeper. Employee name: [blank]. Pay: [blank]. Tax deducted: [blank]. No employer has issued this as a certificate of anyone's earnings. The words proof of income appear in the training instructions, but this uncompleted sample cannot establish May's or Maya Bellamy's income.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d35",
+        "client_id": "c05",
+        "title": "Archived electricity account — previous home",
+        "content": "Brindlebridge Energy electricity utility bill for Imogen Harrowby at 4 Pebble Court, Merewick, dated 4 February 2022. Account BE-112809-03; amount £186.42. Marked SUPERSEDED: Imogen left this address in August 2026 and now lives at Lantern Walk. Retained solely as historical correspondence; not accepted as evidence of her current address. The old account is closed.",
+        "created_at": "2022-02-05T10:00:00Z"
+      },
+      {
+        "id": "d36",
+        "client_id": "c07",
+        "title": "Customer account 019 — October",
+        "content": "SedgeNet Communications. Elina Vossmere, 12 Sedge Gardens, Merewick. Account SN-019-6624. Issued 8 October 2026. Thank you for choosing our residential service. Charges this month are £32.00; the next direct debit is due on 22 October. There are no roaming, handset or call charges. After the payment information: this is the monthly fixed-line broadband bill for service installed at the named customer's current home. The adviser has accepted this utility bill as address evidence under the firm's process for this file.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d37",
+        "client_id": "c03",
+        "title": "Appointment confirmation",
+        "content": "From: maya.bellamy@reedglass.example. To: adviser@larchhaven.example. Please confirm our meeting on 3 November 2026 at 10:30. I would also like to discuss whether life cover would be useful before I buy a home. I have no existing policy to send and have attached no documents. Regards, Maya Bellamy.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d38",
+        "client_id": "c07",
+        "title": "Shop receipt — blue travel wallet",
+        "content": "Elina Vossmere purchased one blue leather passport holder from Reedwick Stationery for £24.00 on 5 October 2026. Receipt RS-260105-884. No passport number, photograph or identity certification is included: this is a receipt for an accessory, not a travel document.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d39",
+        "client_id": "c05",
+        "title": "Question about a possible future legacy",
+        "content": "E-mail from Imogen Harrowby, 11 October 2026: My uncle has mentioned that he might leave me something in his will. He is alive, I have not seen a signed will, no amount is known and I have received no inheritance. Can we discuss how to plan if that changes? This correspondence is not evidence of received funds or of an existing estate plan for Imogen.",
+        "created_at": "2026-10-20T10:00:00Z"
+      },
+      {
+        "id": "d40",
+        "client_id": "c02",
+        "title": "New contact details",
+        "content": "E-mail from Alistair Fenwick, 2 September 2026: I have moved to 8 Alder Quay, Merewick; please update my contact address. Adviser note: this is the client's own notification, not independent address proof; the current gas bill is held separately. No attachment.",
+        "created_at": "2026-10-20T10:00:00Z"
+      }
+    ]
+  },
+  "queries": [
+    {
+      "id": "q001",
+      "q": "address proof",
+      "category": "concept",
+      "level": "required",
+      "relevant": [
+        "d01",
+        "d02",
+        "d03",
+        "d04",
+        "d05",
+        "d06",
+        "d07",
+        "d36"
+      ],
+      "acceptable": [
+        "d09",
+        "d35"
+      ],
+      "first": [],
+      "empty": false,
+      "why": "Current residential evidence is required, the licence and historical bill are reasonable secondary hits for this unqualified query, and requests or delivery receipts do not establish residence."
+    },
+    {
+      "id": "q002",
+      "q": "document confirming where the client currently lives",
+      "category": "paraphrase",
+      "level": "expected",
+      "relevant": [
+        "d01",
+        "d02",
+        "d03",
+        "d04",
+        "d05",
+        "d06",
+        "d07",
+        "d36"
+      ],
+      "acceptable": [
+        "d09",
+        "d40"
+      ],
+      "first": [],
+      "empty": false,
+      "why": "The current residential records directly answer the request, while the current licence and self-reported change of address offer additional context rather than the independently accepted evidence."
+    },
+    {
+      "id": "q003",
+      "q": "utility bill",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d01",
+        "d02",
+        "d03",
+        "d35",
+        "d36"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Electricity, gas, water and fixed-line broadband bills are household utility bills, including the archived bill because no recency constraint is given, whereas requests for a missing bill are not bills."
+    },
+    {
+      "id": "q004",
+      "q": "current proof of address for Imogen Harrowby",
+      "category": "concept",
+      "level": "expected",
+      "relevant": [
+        "d06"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The signed tenancy is accepted current evidence for Imogen, while her old electricity account is explicitly superseded and other clients’ residential evidence is irrelevant."
+    },
+    {
+      "id": "q005",
+      "q": "Elina Vossmere current utility bill",
+      "category": "concept",
+      "level": "expected",
+      "relevant": [
+        "d36"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The broadband bill supplies the requested evidence despite its generic title, whereas the earlier e-mail only requests a bill and the courier receipt does not prove residence."
+    },
+    {
+      "id": "q006",
+      "q": "gas bill",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d02"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The Hearthmere account records actual domestic gas charges even though its title does not name the document type."
+    },
+    {
+      "id": "q007",
+      "q": "water and sewerage bill",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d03"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The Mossmere document bills the client for water and sewerage services."
+    },
+    {
+      "id": "q008",
+      "q": "council tax bill",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d04"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The local authority demand is an issued council tax bill, unlike a self-assessment tax calculation."
+    },
+    {
+      "id": "q009",
+      "q": "bank statement",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d05"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The current account statement is the actual bank record, whereas an e-mail asking for a bank statement supplies no statement."
+    },
+    {
+      "id": "q010",
+      "q": "tenancy agreement",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d06"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The signed occupancy agreement contains the residential tenancy terms and both parties’ signatures."
+    },
+    {
+      "id": "q011",
+      "q": "mortgage statement",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d07"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The home loan summary is the current mortgage statement, while the property sale completion ledger merely records a mortgage redemption."
+    },
+    {
+      "id": "q012",
+      "q": "photo ID",
+      "category": "concept",
+      "level": "required",
+      "relevant": [
+        "d08",
+        "d09",
+        "d10"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The passport, photocard driving licence and national identity card each provide verified photographic identity evidence; a passport holder and a passport metaphor do not."
+    },
+    {
+      "id": "q013",
+      "q": "Imogen Harrowby e-mail about a possible future inheritance",
+      "category": "paraphrase",
+      "level": "expected",
+      "relevant": [
+        "d39"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The speculative legacy enquiry is the requested correspondence even though it cannot prove received funds, and Alice’s completed inheritance belongs to a different client."
+    },
+    {
+      "id": "q014",
+      "q": "passport",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d08"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The certified travel document is an actual passport copy, while the wallet receipt, marketing metaphor and evidence-request e-mail are not passports."
+    },
+    {
+      "id": "q015",
+      "q": "driving licence",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d09"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The photocard copy records an actual driving licence and its verification."
+    },
+    {
+      "id": "q016",
+      "q": "national identity card",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d10"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The identity check contains the verified national identity card rather than a passport or residency declaration."
+    },
+    {
+      "id": "q017",
+      "q": "proof of income",
+      "category": "concept",
+      "level": "required",
+      "relevant": [
+        "d11",
+        "d12",
+        "d13",
+        "d14"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Issued payroll, annual earnings, tax computation and accountant confirmation establish income, while capital receipts, uncompleted forms and pension valuations do not evidence recurring earnings."
+    },
+    {
+      "id": "q018",
+      "q": "documents confirming how much the client earns",
+      "category": "paraphrase",
+      "level": "expected",
+      "relevant": [
+        "d11",
+        "d12",
+        "d13",
+        "d14"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "These four records establish actual employment or self-employed income, unlike a capital sale, account balance or blank earnings template."
+    },
+    {
+      "id": "q019",
+      "q": "payslip",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d11"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The September payroll advice is an issued monthly payslip, distinct from the annual P60."
+    },
+    {
+      "id": "q020",
+      "q": "P60",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d12"
+      ],
+      "acceptable": [
+        "d34"
+      ],
+      "first": [
+        "d12"
+      ],
+      "empty": false,
+      "why": "The issued annual certificate is the primary client document, although the explicitly labelled blank P60 is a reasonable secondary hit for an unqualified type search."
+    },
+    {
+      "id": "q021",
+      "q": "issued P60 for Maya Bellamy",
+      "category": "decoy",
+      "level": "expected",
+      "relevant": [
+        "d12"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Only Maya’s completed employer certificate satisfies the request; the blank training form belongs to May and merely mentions Maya in a warning."
+    },
+    {
+      "id": "q022",
+      "q": "self-assessment tax calculation",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d13"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The filed tax computation records self-assessment income and is not a tax residency certificate."
+    },
+    {
+      "id": "q023",
+      "q": "accountant's letter",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d14"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The signed professional confirmation is expressly an accountant’s letter establishing Imogen’s completed trading profit."
+    },
+    {
+      "id": "q024",
+      "q": "source of funds evidence",
+      "category": "concept",
+      "level": "required",
+      "relevant": [
+        "d15",
+        "d16",
+        "d17"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Completed inheritance, business sale and property sale records trace actual capital receipts, whereas intentions, recommendations and generic marketing do not establish the origin of funds."
+    },
+    {
+      "id": "q025",
+      "q": "source of wealth evidence",
+      "category": "concept",
+      "level": "required",
+      "relevant": [
+        "d15",
+        "d16",
+        "d17"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The estate record identifies inherited wealth and both sale bundles explain how the underlying assets arose, while balances and a nominal trust settlement alone do not explain accumulated wealth."
+    },
+    {
+      "id": "q026",
+      "q": "paperwork showing money actually received from an inheritance",
+      "category": "paraphrase",
+      "level": "expected",
+      "relevant": [
+        "d15"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The estate distribution confirms an actual beneficiary payment, unlike a living client’s will or an enquiry about a possible future legacy."
+    },
+    {
+      "id": "q027",
+      "q": "completed business sale proceeds",
+      "category": "concept",
+      "level": "expected",
+      "relevant": [
+        "d16"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The completion bundle evidences Ravi’s completed disposal and receipt, while the newsletter’s identical headline amount is hypothetical."
+    },
+    {
+      "id": "q028",
+      "q": "proceeds from selling a house",
+      "category": "paraphrase",
+      "level": "expected",
+      "relevant": [
+        "d17"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The Orchard Row completion ledger records the realised property sale proceeds, not the outstanding balance on a current home loan."
+    },
+    {
+      "id": "q029",
+      "q": "tax residency",
+      "category": "concept",
+      "level": "required",
+      "relevant": [
+        "d18"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The self-certification declares tax residence, while tax computations and nationality on an identity card do not establish tax residency."
+    },
+    {
+      "id": "q030",
+      "q": "CRS FATCA declaration",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d18"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The signed declaration explicitly covers both CRS tax residence and FATCA status."
+    },
+    {
+      "id": "q031",
+      "q": "will",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d19"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The executed testamentary instrument is the client’s will, whereas a possible legacy enquiry and documents distinguishing themselves from a will are not wills."
+    },
+    {
+      "id": "q032",
+      "q": "lasting power of attorney",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d20"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The registered financial authority is an LPA, while the will’s explanation of attorney roles is not an LPA instrument."
+    },
+    {
+      "id": "q033",
+      "q": "letter of wishes",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d21"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The private guidance is the actual signed letter; the trust deed merely refers to the separately held letter."
+    },
+    {
+      "id": "q034",
+      "q": "trust deed",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d22"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The executed settlement establishes the trust, whereas the non-binding letter of wishes cannot substitute for the deed."
+    },
+    {
+      "id": "q035",
+      "q": "estate planning documents",
+      "category": "concept",
+      "level": "required",
+      "relevant": [
+        "d19",
+        "d20",
+        "d21",
+        "d22"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The will, financial LPA, wishes and trust deed document clients’ succession or lifetime planning, unlike probate evidence about a deceased relative or speculative correspondence."
+    },
+    {
+      "id": "q036",
+      "q": "pension statements",
+      "category": "concept",
+      "level": "required",
+      "relevant": [
+        "d23"
+      ],
+      "acceptable": [
+        "d24"
+      ],
+      "first": [
+        "d23"
+      ],
+      "empty": false,
+      "why": "The annual retirement account statement is the direct match, and the separate defined benefit valuation is a reasonable related pension record."
+    },
+    {
+      "id": "q037",
+      "q": "cash equivalent transfer value",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d24"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The deferred benefits quotation supplies a CETV; the defined contribution fund valuation is not a CETV quotation."
+    },
+    {
+      "id": "q038",
+      "q": "life cover",
+      "category": "concept",
+      "level": "required",
+      "relevant": [
+        "d25"
+      ],
+      "acceptable": [
+        "d37"
+      ],
+      "first": [],
+      "empty": false,
+      "why": "The term assurance schedule evidences existing life cover, while Maya’s e-mail is a reasonable related enquiry and standalone critical illness cover does not insure death."
+    },
+    {
+      "id": "q039",
+      "q": "critical illness cover",
+      "category": "concept",
+      "level": "required",
+      "relevant": [
+        "d26"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The standalone illness schedule provides this cover; the life policy explicitly excludes it and the insurer’s name does not change that."
+    },
+    {
+      "id": "q040",
+      "q": "income protection policy",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "No income protection policy exists in the corpus, and both protection schedules explicitly distinguish their benefits from earnings replacement."
+    },
+    {
+      "id": "q041",
+      "q": "fact find",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d27"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The household workbook is the completed fact find, whereas the suitability report’s reference to an earlier fact find does not make it that document."
+    },
+    {
+      "id": "q042",
+      "q": "risk questionnaire",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d28"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The completed scored questionnaire is the requested record, while references to it in the fact find or report do not supply the questionnaire."
+    },
+    {
+      "id": "q043",
+      "q": "suitability report",
+      "category": "literal",
+      "level": "required",
+      "relevant": [
+        "d29"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The personal recommendation is the suitability report, unlike meeting notes that record no recommendation or marketing disclaiming personalised advice."
+    },
+    {
+      "id": "q044",
+      "q": "Maya Bellamy meeting notes",
+      "category": "concept",
+      "level": "expected",
+      "relevant": [
+        "d30"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The review call record records Maya’s discussion; her appointment e-mail only arranges a later meeting and the other clients’ review documents are irrelevant."
+    },
+    {
+      "id": "q045",
+      "q": "e-mails notifying a change of home address",
+      "category": "paraphrase",
+      "level": "expected",
+      "relevant": [
+        "d40"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Alistair’s e-mail reports a completed move, whereas the onboarding request asks for evidence without notifying any change of address."
+    },
+    {
+      "id": "q046",
+      "q": "address proof still needed",
+      "category": "decoy",
+      "level": "expected",
+      "relevant": [
+        "d31"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The query seeks correspondence about outstanding evidence, so the request e-mail is relevant even though it is not itself address proof."
+    },
+    {
+      "id": "q047",
+      "q": "proof of delivery",
+      "category": "decoy",
+      "level": "required",
+      "relevant": [
+        "d32"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The courier receipt proves parcel delivery, a different purpose from proof of a client’s residential address."
+    },
+    {
+      "id": "q048",
+      "q": "passport holder receipt",
+      "category": "decoy",
+      "level": "expected",
+      "relevant": [
+        "d38"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The stationery receipt records the purchased passport accessory, so the certified passport copy is not the requested item."
+    },
+    {
+      "id": "q049",
+      "q": "blank P60 template",
+      "category": "decoy",
+      "level": "expected",
+      "relevant": [
+        "d34"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The training sample is deliberately the target when the adviser explicitly asks for a blank form, while the issued certificate is not blank."
+    },
+    {
+      "id": "q050",
+      "q": "marketing e-mail with a hypothetical business sale",
+      "category": "decoy",
+      "level": "expected",
+      "relevant": [
+        "d33"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The newsletter describes a hypothetical sale for promotion, whereas Ravi’s completion record evidences a real transaction within this synthetic corpus."
+    },
+    {
+      "id": "q051",
+      "q": "BE-482731-09",
+      "category": "identifier",
+      "level": "required",
+      "relevant": [
+        "d01"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "This exact electricity account identifier appears only in the current Brindlebridge bill."
+    },
+    {
+      "id": "q052",
+      "q": "482731",
+      "category": "identifier",
+      "level": "expected",
+      "relevant": [
+        "d01"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The distinctive account-number fragment uniquely identifies the current electricity bill without requiring the provider prefix or suffix."
+    },
+    {
+      "id": "q053",
+      "q": "GB82 ALDF 1234 5600 0070 42",
+      "category": "identifier",
+      "level": "required",
+      "relevant": [
+        "d05"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The complete synthetic IBAN is printed in the personal bank statement and identifies that document."
+    },
+    {
+      "id": "q054",
+      "q": "GB82ALDF12345600007042",
+      "category": "identifier",
+      "level": "expected",
+      "relevant": [
+        "d05"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Removing presentation spaces preserves the same IBAN and should still retrieve the bank statement."
+    },
+    {
+      "id": "q055",
+      "q": "0070 42",
+      "category": "identifier",
+      "level": "expected",
+      "relevant": [
+        "d05"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "This exact trailing IBAN fragment occurs only in the bank statement and is a reasonable partial-identifier lookup."
+    },
+    {
+      "id": "q056",
+      "q": "HL-708426-L",
+      "category": "identifier",
+      "level": "required",
+      "relevant": [
+        "d25"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The exact policy number identifies Imogen’s life assurance schedule, not her separate critical illness policy."
+    },
+    {
+      "id": "q057",
+      "q": "934815",
+      "category": "identifier",
+      "level": "expected",
+      "relevant": [
+        "d26"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The distinctive numeric fragment identifies the critical illness policy even without its prefix and suffix."
+    },
+    {
+      "id": "q058",
+      "q": "TV-2026-10483",
+      "category": "identifier",
+      "level": "required",
+      "relevant": [
+        "d24"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The exact quotation reference identifies the deferred benefits CETV document."
+    },
+    {
+      "id": "q059",
+      "q": "TR-CAL-2602",
+      "category": "identifier",
+      "level": "required",
+      "relevant": [
+        "d22"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The exact deed reference belongs to the executed trust settlement, not to its companion letter of wishes."
+    },
+    {
+      "id": "q060",
+      "q": "SW-938271046",
+      "category": "identifier",
+      "level": "required",
+      "relevant": [
+        "d32"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The tracking number retrieves the courier receipt even though that receipt is a decoy for address-evidence searches."
+    },
+    {
+      "id": "q061",
+      "q": "Brindlebridge Energy",
+      "category": "content-detail",
+      "level": "required",
+      "relevant": [
+        "c06",
+        "d01",
+        "d35"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The provider name matches two bills and Ravi’s former-employer description, so this unqualified query legitimately mixes clients and documents."
+    },
+    {
+      "id": "q062",
+      "q": "Brindlebridge Energy electricity bill",
+      "category": "decoy",
+      "level": "expected",
+      "relevant": [
+        "d01",
+        "d35"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Both current and historical bills meet the document request, while Ravi’s description only names the same company as a former employer."
+    },
+    {
+      "id": "q063",
+      "q": "£186.42",
+      "category": "content-detail",
+      "level": "required",
+      "relevant": [
+        "d01",
+        "d35"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Both bills contain this exact amount, and the query supplies no date or client restriction to exclude the archived one."
+    },
+    {
+      "id": "q064",
+      "q": "£344,500.00",
+      "category": "content-detail",
+      "level": "required",
+      "relevant": [
+        "d17"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The exact net property-sale receipt is stated in the Orchard Row completion ledger."
+    },
+    {
+      "id": "q065",
+      "q": "15 December 2026",
+      "category": "content-detail",
+      "level": "required",
+      "relevant": [
+        "d24"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "This date is the transfer value guarantee deadline in the quotation content, not a document creation timestamp."
+    },
+    {
+      "id": "q066",
+      "q": "£2,400,000.00",
+      "category": "content-detail",
+      "level": "required",
+      "relevant": [
+        "d16",
+        "d33"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "An amount-only lookup matches both the actual sale consideration and the deliberately identical hypothetical amount in the newsletter."
+    },
+    {
+      "id": "q067",
+      "q": "Ravi Calderwick completed sale for £2,400,000.00",
+      "category": "decoy",
+      "level": "expected",
+      "relevant": [
+        "d16"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Only the completion bundle records Ravi’s completed transaction; the newsletter addressed to Ravi describes an explicitly hypothetical founder."
+    },
+    {
+      "id": "q068",
+      "q": "Project Copperfin",
+      "category": "content-detail",
+      "level": "required",
+      "relevant": [
+        "c01",
+        "d27",
+        "d29"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The household label occurs in Alice’s description and in her fact find and suitability report, giving a deliberate mixed client-and-document result."
+    },
+    {
+      "id": "q069",
+      "q": "Maya Bellamy income evidence",
+      "category": "decoy",
+      "level": "expected",
+      "relevant": [
+        "d11",
+        "d12"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "Maya’s issued payroll records prove income, while the blank form mentions her only in a warning and May Bellamy’s tax computation belongs to a different person."
+    },
+    {
+      "id": "q070",
+      "q": "3 November 2026",
+      "category": "content-detail",
+      "level": "required",
+      "relevant": [
+        "d30",
+        "d37"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The review notes and appointment e-mail both give this meeting date in their content."
+    },
+    {
+      "id": "q071",
+      "q": "utilty bil",
+      "category": "typo",
+      "level": "nice",
+      "relevant": [
+        "d01",
+        "d02",
+        "d03",
+        "d35",
+        "d36"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "If typo recovery is supported, the intended query is utility bill and should retrieve actual bills including the archived one rather than missing-evidence correspondence."
+    },
+    {
+      "id": "q072",
+      "q": "passprot",
+      "category": "typo",
+      "level": "nice",
+      "relevant": [
+        "d08"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The intended document is a passport, and typo tolerance should not turn an accessory or figurative marketing phrase into identity evidence."
+    },
+    {
+      "id": "q073",
+      "q": "inheritence evidnce",
+      "category": "typo",
+      "level": "nice",
+      "relevant": [
+        "d15"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The intended inheritance-evidence query targets the completed estate receipt rather than a possible future legacy or an undistributed will."
+    },
+    {
+      "id": "q074",
+      "q": "critcal ilness",
+      "category": "typo",
+      "level": "nice",
+      "relevant": [
+        "d26"
+      ],
+      "acceptable": [],
+      "first": [],
+      "empty": false,
+      "why": "The intended critical illness query should retrieve the standalone cover and not the life policy that explicitly excludes it."
+    },
+    {
+      "id": "q075",
+      "q": "veterinary vaccination records",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "No document or client record concerns veterinary treatment or animal vaccination."
+    },
+    {
+      "id": "q076",
+      "q": "aircraft maintenance log",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "The corpus contains no aircraft maintenance records, and an engineering career or tooling business does not satisfy this request."
+    },
+    {
+      "id": "q077",
+      "q": "HMRC certificate of residence",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "The only tax-residence record is explicitly a client self-certification rather than the requested HMRC certificate, and the tax computation is not a residence certificate either."
+    },
+    {
+      "id": "q078",
+      "q": "health and welfare lasting power of attorney",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "The sole LPA covers property and financial affairs and explicitly is not a health and welfare instrument."
+    },
+    {
+      "id": "q079",
+      "q": "pension drawdown payment statement",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "Both pension records concern uncrystallised or deferred values with no pension being paid, so neither is evidence of drawdown payments."
+    },
+    {
+      "id": "q080",
+      "q": "HL-708426-X",
+      "category": "negative",
+      "level": "expected",
+      "relevant": [],
+      "acceptable": [],
+      "first": [],
+      "empty": true,
+      "why": "This complete policy identifier is absent; a one-character-neighbour identifier is not the same policy and should not silently be treated as a typo."
+    }
+  ],
+  "http_cases": []
+}

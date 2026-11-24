@@ -1,0 +1,1498 @@
+{
+ "suite": "claude-documents",
+ "author": "Claude Opus 5.5 (claude-opus-5-5)",
+ "corpus": {
+  "clients": [
+   {
+    "id": "c01",
+    "first_name": "Margaret",
+    "last_name": "Ashworth",
+    "email": "margaret.ashworth@heathermail.co.uk",
+    "description": "Retired GP living in Harrogate, widowed in 2023. Cautious investor; her son Jonathan helps with her paperwork.",
+    "social_links": []
+   },
+   {
+    "id": "c02",
+    "first_name": "Jonathan",
+    "last_name": "Ashworth",
+    "email": "jon.ashworth@ashworthcairns.co.uk",
+    "description": "Chartered surveyor and partner at Ashworth Cairns LLP in Leeds. Son of Margaret Ashworth. Holds a SIPP with us.",
+    "social_links": [
+     "https://www.linkedin.com/in/jonathan-ashworth-mrics"
+    ]
+   },
+   {
+    "id": "c03",
+    "first_name": "Daniel",
+    "last_name": "Okafor",
+    "email": "daniel@okaforprecision.co.uk",
+    "description": "Engineer and former owner of Okafor Precision Engineering Ltd, sold in 2024. Investing the sale proceeds; may relocate to Portugal.",
+    "social_links": [
+     "https://www.linkedin.com/in/daniel-okafor-engineer"
+    ]
+   },
+   {
+    "id": "c04",
+    "first_name": "Priya",
+    "last_name": "Raman",
+    "email": "priya.raman@medimail.co.uk",
+    "description": "Consultant anaesthetist in Bristol with a small private practice. Higher-rate taxpayer with two young children.",
+    "social_links": []
+   },
+   {
+    "id": "c05",
+    "first_name": "Thomas",
+    "last_name": "Whitfield",
+    "email": "tom@whitfieldmoss.co.uk",
+    "description": "Architect and partner at Whitfield & Moss Architects in Bath. Married to Eleanor; two children.",
+    "social_links": [
+     "https://www.linkedin.com/in/tom-whitfield-architect",
+     "https://www.instagram.com/whitfieldmoss.studio"
+    ]
+   },
+   {
+    "id": "c06",
+    "first_name": "Eleanor",
+    "last_name": "Whitfield",
+    "email": "eleanor.whitfield@quillpost.co.uk",
+    "description": "Part-time secondary school teacher in Bath, married to Thomas. Member of the Teachers' Pension Scheme.",
+    "social_links": []
+   },
+   {
+    "id": "c07",
+    "first_name": "Sophie",
+    "last_name": "Laurent",
+    "email": "sophie.laurent@quillpost.co.uk",
+    "description": "French national working in fund marketing in London since 2019. Moving her portfolio to us from Hartley Crane Wealth.",
+    "social_links": [
+     "https://www.linkedin.com/in/sophie-laurent-fundmarketing"
+    ]
+   },
+   {
+    "id": "c08",
+    "first_name": "Callum",
+    "last_name": "Reid",
+    "email": "callum.reid@fernmail.co.uk",
+    "description": "Software developer renting a flat in Manchester. First-time investor saving for a house deposit.",
+    "social_links": [
+     "https://github.com/callum-reid-dev"
+    ]
+   }
+  ],
+  "documents": [
+   {
+    "id": "d01",
+    "client_id": "c01",
+    "title": "Scan 0042",
+    "content": "BRIGHTWELL ENERGY  Page 1 of 2\nMrs Margaret Ashworth\n4 Larkspur Close\nHarrogate\nHG2 9QX\nAccount number: 8830 1192 45    Bill date: 3 March 2025\nYour electricity bill for 1 December 2024 to 28 February 2025\nPrevious balance £0.00. Electricity used 1,184 kWh at 24.86p per kWh = £294.34. Standing charge 90 days at 53.35p = £48.02. Less Warm Home Discount credit £150.00. VAT at 5% £9.62 (rounded). Amount due £148.62, collected by Direct Debit on or after 18 March 2025.\nTariff: Brightwell Flexible Variable. Meter serial E19K 041127.\nPage 2 of 2 - how we worked out your bill, ways to pay, and what to do if you are struggling to pay.\n[Adviser stamp] Utility bill - original seen and copied 10/03/2025, HP, Nevis Wealth."
+   },
+   {
+    "id": "d02",
+    "client_id": "c01",
+    "title": "Fernleigh District Council - annual bill 2025/26",
+    "content": "Fernleigh District Council, Revenues Section. Council Tax demand notice for the year 1 April 2025 to 31 March 2026.\nMrs M A Ashworth, 4 Larkspur Close, Harrogate HG2 9QX. Account reference 4410 2287 6. Property band D.\nAnnual charge £2,318.40. Single person discount (25%): -£579.60, applied because you have told us you are the only adult resident at this address. Amount payable £1,738.80, by 10 monthly instalments of £173.88 from 1 April 2025.\nIf another adult moves in you must tell us within 21 days. This notice is not a request for payment if you pay by Direct Debit."
+   },
+   {
+    "id": "d03",
+    "client_id": "c01",
+    "title": "Letter from Haddon & Pryce Solicitors - estate of the late Geoffrey Ashworth",
+    "content": "Haddon & Pryce LLP, Solicitors, 18 Kirkgate, Ripon. Our ref: HP/GA/22719. 2 September 2024.\nDear Mrs Ashworth,\nEstate of Geoffrey Robert Ashworth, deceased\nFurther to the grant of probate issued on 9 May 2024, we have now completed the administration of your late husband's estate. Please find enclosed the final estate accounts. After payment of funeral expenses, our costs and the remaining liabilities, the net residuary estate amounted to £684,300.00. As sole residuary beneficiary under Geoffrey's will you were entitled to the whole of this sum, which we transferred to your Yorkshire Dales Building Society account on 12 August 2024. No inheritance tax was payable because the estate passed to you as his spouse. Please keep this letter and the accounts, as your financial adviser or bank may ask for them as evidence of where the money came from.\nYours sincerely,\nAlison Pryce, Partner"
+   },
+   {
+    "id": "d04",
+    "client_id": "c01",
+    "title": "Registered LPA - property and financial affairs",
+    "content": "Lasting Power of Attorney for property and financial affairs. Office of the Public Guardian reference: 7004-2291-8836. Registered on 6 November 2023. This copy has been certified as a true copy of the original by Haddon & Pryce LLP.\nDonor: Margaret Ann Ashworth, born 14 September 1952, of 4 Larkspur Close, Harrogate HG2 9QX.\nAttorney: Jonathan Geoffrey Ashworth (son). Replacement attorney: Clare Ashworth (daughter-in-law).\nWhen can the attorney act? Only when the donor does not have mental capacity to make the decision.\nPreferences: the donor would like her investments to continue to be managed cautiously, with income paid to her current account. Instructions: none.\nCertificate provider: Dr Helen Marsh, who has known the donor for over 20 years, confirms the donor understands the purpose and scope of this LPA and that no fraud or undue pressure is being used.\nThe attorney may make gifts only on customary occasions and of a reasonable amount having regard to the size of the donor's estate.\nNote on file: attorney identity and address verified on 8 January 2025 before he was given access to his mother's portfolio. The attorney can only act once the donor has lost capacity, so for now we continue to take instructions from Mrs Ashworth herself."
+   },
+   {
+    "id": "d05",
+    "client_id": "c01",
+    "title": "Suitability report - March 2025",
+    "content": "Suitability report prepared for Mrs Margaret Ashworth by Hannah Price, Chartered Financial Planner, Nevis Wealth. Date: 17 March 2025.\n1. Why you came to us. Following the death of your husband Geoffrey, you inherited £684,300 from his estate, which is currently held in a building society account earning a variable rate of interest. You asked us how to invest this money so that it produces a reliable income to top up your NHS pension, while keeping some cash available for emergencies and for helping your grandchildren.\n2. Your circumstances. You are 72, in good health, and own your home in Harrogate outright. Your pension income is about £38,000 a year before tax and covers your regular spending. You have no debts. Your son Jonathan holds a registered lasting power of attorney but you continue to manage your own affairs.\n3. Your attitude to risk. You completed our attitude to risk questionnaire on 4 February 2025 and scored 3 on our scale of 1 to 7, which we describe as Cautious. We discussed the result and you agreed it reflects how you feel about investment losses. Your capacity for loss is moderate: a fall in value would not affect your standard of living, because your pension covers your essential spending.\n4. Our recommendation. We recommend that you invest £600,000 in our Cautious Income Portfolio through an ISA (£20,000 this tax year) and a general investment account, and keep £84,300 in an easy-access savings account. The portfolio aims to produce a natural income of around £21,000 a year, paid monthly to your current account, without drawing on capital. We will use your ISA allowance each April to move money gradually into the tax-free wrapper.\n5. Why this is suitable. The recommendation meets your objective of a regular income, matches your Cautious risk profile, and keeps enough cash for your plans. We considered leaving the money on deposit but inflation would erode its value over time.\n6. Costs. Initial advice fee 1% (£6,000). Ongoing advice fee 0.5% a year, platform charge 0.15% a year and average fund charges of 0.22% a year.\n7. Risks. The value of investments and the income from them can fall as well as rise and you may get back less than you invest. Income is not guaranteed.\nPlease read this report carefully and contact me if anything is unclear."
+   },
+   {
+    "id": "d06",
+    "client_id": "c01",
+    "title": "Proof of delivery - Swiftline consignment SWL-55710348",
+    "content": "Swiftline Couriers - Proof of Delivery. Consignment number SWL-55710348. Service: Secure Signed For, next working day. Collected from Nevis Wealth, 3rd Floor, 22 Park Row, Leeds on 13 March 2025. Delivered: 14 March 2025 at 11:42 to the recipient's home address, 4 Larkspur Close, Harrogate HG2 9QX. Received and signed for by: M ASHWORTH. Contents as declared by the sender: return of original passport and certified documents to client. Parcel weight 0.4 kg. Driver: unit 117. Photo of the parcel at the door is available on request."
+   },
+   {
+    "id": "d07",
+    "client_id": "c01",
+    "title": "Certified copy - passport bio page",
+    "content": "UNITED KINGDOM OF GREAT BRITAIN AND NORTHERN IRELAND - PASSPORT. Type P. Code GBR. Passport No. 538914772. Surname: ASHWORTH. Given names: MARGARET ANN. Nationality: BRITISH CITIZEN. Date of birth: 14 SEP 1952. Sex: F. Place of birth: YORK. Date of issue: 02 MAR 2021. Date of expiry: 02 MAR 2031. Authority: HMPO.\nP<GBRASHWORTH<<MARGARET<ANN<<<<<<<<<<<<<<<<\n5389147724GBR5209146F3103026<<<<<<<<<<<<<<04\nI certify that this is a true copy of the original document, which I have seen, and that the photograph is a true likeness of Margaret Ann Ashworth. Signed: Hannah Price, Nevis Wealth, 10 March 2025."
+   },
+   {
+    "id": "d08",
+    "client_id": "c02",
+    "title": "Kestrel SIPP - annual statement to 5 April 2025",
+    "content": "Kestrel Platform Self-Invested Personal Pension. Annual statement for the year 6 April 2024 to 5 April 2025. Member: Mr Jonathan Ashworth. Plan number SIPP-339021.\nValue at 5 April 2024: £241,880.55. Contributions paid: £19,200.00 net, plus basic-rate tax relief of £4,800.00 claimed from HMRC. Investment growth: £22,031.51. Charges: platform fee £1,500.00. Value at 5 April 2025: £287,412.06 (no benefits taken; uncrystallised).\nHoldings: Global Equity Tracker 62%, Sterling Corporate Bond Fund 18%, UK Smaller Companies Fund 12%, cash 8%.\nNominated beneficiaries (expression of wish): Clare Ashworth 100%. You can update this at any time online.\nYour selected retirement age is 65. Projected pension at 65 in today's money: £24,600 a year, assuming contributions continue. This illustration is not guaranteed."
+   },
+   {
+    "id": "d09",
+    "client_id": "c02",
+    "title": "UK utilities - sector note for SIPP discussion",
+    "content": "Research note prepared for Jonathan Ashworth, who asked whether to add UK utility shares to his SIPP. Regulated water and energy network companies earn returns set by their regulators in five-year price reviews. Household bills are expected to rise by around 20% over the next review period, which supports revenue but brings political risk if customers struggle to pay. Dividend yields across the sector are about 5%, but several companies carry high debt. Our view: a utility infrastructure fund is a more diversified way to gain exposure than individual shares. Suggested allocation no more than 5% of the SIPP. To be discussed at the next review."
+   },
+   {
+    "id": "d10",
+    "client_id": "c02",
+    "title": "Completion statement - sale of 3 Wharf Mews, Leeds",
+    "content": "Brindley Hart Solicitors, Leeds. Completion statement. Client: Jonathan Ashworth. Property: 3 Wharf Mews, Leeds LS10 1PQ (leasehold buy-to-let flat). Completion date: 21 February 2025.\nSale price received from buyer's solicitors: £245,000.00.\nLess: redemption of buy-to-let mortgage (Calder Mortgages account 55-2071-664): £96,212.40.\nLess: estate agent's commission (1.2% plus VAT): £3,528.00.\nLess: our fees, disbursements and VAT: £1,302.50.\nBalance due to you: £143,957.10, sent by bank transfer to your nominated account on 21 February 2025.\nCapital gains tax: you must report the sale to HMRC and pay any tax due within 60 days of completion."
+   },
+   {
+    "id": "d11",
+    "client_id": "c03",
+    "title": "Completion - sale of Okafor Precision Engineering Ltd",
+    "content": "Hollis Grant LLP, Corporate Department, Sheffield. 2 October 2024. Private and confidential.\nDear Daniel,\nSale of the entire issued share capital of Okafor Precision Engineering Ltd (company number 07734519) to Valcourt Industrial Group plc\nWe are pleased to confirm that completion took place on 30 September 2024 under the share purchase agreement dated the same day. The total consideration is £5,200,000, of which £4,650,000 was paid at completion and £550,000 is deferred, payable on 30 September 2026 subject to the warranty retention terms. After deduction of our fees and the corporate finance adviser's fee, we transferred net completion proceeds of £4,612,650.00 from our client account to your Thameside Bank account on 1 October 2024. You held 100% of the shares. Your accountants have advised that Business Asset Disposal Relief applies to the first £1 million of gains. We enclose a certified copy of the completion statement and the board minutes for your records; your wealth manager may need these to evidence the source of the funds.\nKind regards,\nRuth Hollis, Partner"
+   },
+   {
+    "id": "d12",
+    "client_id": "c03",
+    "title": "Thameside Bank - statement October 2024",
+    "content": "Thameside Bank plc. Current account statement. Mr Daniel Okafor, The Granary, Moor Lane, Ilkley LS29 8QT. Sort code 20-81-44. Account number 67339015. IBAN GB47 THMS 2081 4467 3390 15. BIC THMSGB2L. Statement period 1 October 2024 to 31 October 2024. Sheet 41.\nOpening balance £18,402.77.\n01 Oct CHAPS IN HOLLIS GRANT LLP CLIENT A/C REF OKAFOR SPA +£4,612,650.00\n03 Oct DD PENNINE WATER SERVICES -£57.84\n07 Oct DD CRAVENDALE COUNCIL TAX -£231.00\n09 Oct CARD ILKLEY GARDEN CENTRE -£86.15\n15 Oct DD BRIGHTWELL ENERGY -£212.40\n21 Oct TFR TO THAMESIDE INSTANT SAVER -£250,000.00\n28 Oct SO ADAEZE OKAFOR HOUSEKEEPING -£2,000.00\nClosing balance £4,378,465.38.\nThameside Bank plc is authorised by the Prudential Regulation Authority. Your eligible deposits are protected up to £85,000 by the FSCS."
+   },
+   {
+    "id": "d13",
+    "client_id": "c03",
+    "title": "Fact find - D Okafor (November 2024)",
+    "content": "Client fact find. Completed at meeting on 12 November 2024 by Hannah Price, Nevis Wealth.\nPersonal details: Daniel Chukwuma Okafor, born 3 April 1971, married to Adaeze Okafor (born 1974). Two adult children, Tobi (24) and Amara (21), both financially independent. Home: The Granary, Moor Lane, Ilkley LS29 8QT, owned jointly, estimated value £1,100,000, no mortgage. Health: good, non-smoker.\nEmployment and income: Daniel founded Okafor Precision Engineering Ltd in 2009 and sold it on 30 September 2024. He is retained by the buyer as a consultant for 12 months at £5,000 a month. Adaeze is a self-employed interior designer earning about £35,000 a year. Expected income in 2024/25: consultancy £30,000 plus deposit interest.\nAssets: Thameside Bank current and savings accounts about £4.6 million, mainly the net sale proceeds. Deferred consideration of £550,000 due in September 2026. Stocks and shares ISAs £182,000 (Daniel) and £96,000 (Adaeze). Deferred final salary pension in the Hallam Engineering Staff Pension Scheme from his earlier employment (1993-2008); a transfer value has been requested. No other pensions.\nLiabilities: none.\nProtection: no life cover since the company's group scheme ended at the sale.\nEstate planning: Daniel and Adaeze have not made wills. We explained the risks of intestacy and that their estate is now well above the inheritance tax nil-rate bands. Referral to a solicitor agreed.\nObjectives: (1) invest the sale proceeds for long-term growth while keeping £500,000 in cash; (2) consider moving to Portugal in 2025 or 2026, so they need advice on tax residency before they leave; (3) help the children buy homes; (4) decide whether to take the defined benefit pension or transfer it.\nAttitude to risk: to be assessed with the questionnaire at the next meeting. Initial discussion suggests a balanced approach.\nIdentity and address: passport and bank statement seen; source of funds evidenced by the completion letter from Hollis Grant LLP.\nNext steps: risk questionnaire, cash flow model, referral to Marlow Tax LLP on residence, request will-writing referral."
+   },
+   {
+    "id": "d14",
+    "client_id": "c03",
+    "title": "Letter from Marlow Tax LLP - 2025/26 position",
+    "content": "Marlow Tax LLP, Chartered Tax Advisers, Harrogate. Our ref MT/OKA/2025/06. 20 January 2025.\nDear Mr Okafor,\nYou asked us whether you will still be treated as resident in the UK for tax purposes if you and Adaeze move to Portugal next summer. Under the statutory residence test you are UK resident for 2024/25 because your only home is in Ilkley and you spend most of the year here. For 2025/26, if you leave on 31 August 2025, sell or let The Granary, and spend fewer than 16 days in the UK in 2026/27, you should qualify for split-year treatment, so that you are taxed in the UK only on your worldwide income up to the date you leave. You would become resident in Portugal under its domestic rules from your arrival. The UK-Portugal double tax treaty will decide residence for the overlap period. Please be aware that the temporary non-residence rules can tax gains realised abroad if you return to the UK within five years. We suggest you do not make large disposals before you have left.\nYours sincerely,\nPeter Marlow CTA"
+   },
+   {
+    "id": "d15",
+    "client_id": "c03",
+    "title": "Letter from the administrator - Hallam Engineering Staff Pension Scheme",
+    "content": "Hallam Engineering Staff Pension Scheme, administered by Fairbourne Pensions Administration. Our ref HESPS/TV/2025/0417. 14 April 2025.\nDear Mr Okafor,\nYou requested a statement of entitlement. Your deferred pension at the date of leaving was £14,220 a year; revalued to today it is £24,316 a year payable from age 65. The cash equivalent transfer value (CETV) of your benefits is £612,480.00. This value is guaranteed until 14 July 2025, provided that we receive a valid transfer application by that date. Because the value is over £30,000, you must take appropriate independent advice from an FCA-authorised adviser with pension transfer permissions before we can make the transfer. A transfer gives up a guaranteed, inflation-linked income for life and a 50% spouse's pension. Please read the enclosed scam warning leaflet."
+   },
+   {
+    "id": "d16",
+    "client_id": "c03",
+    "title": "Pennine Water - charges 2025/26",
+    "content": "Pennine Water Services. Customer reference 6620 4471 903. Mr D Okafor, The Granary, Moor Lane, Ilkley LS29 8QT. Date of issue: 25 March 2025.\nYour water and sewerage charges for 1 April 2025 to 31 March 2026. Metered supply, estimated annual use 142 cubic metres. Water supply £301.45; wastewater £276.95. Total for the year £578.40, payable by 10 monthly Direct Debit instalments of £57.84 from 3 April 2025. If you are worried about paying, ask us about our social tariff."
+   },
+   {
+    "id": "d17",
+    "client_id": "c03",
+    "title": "Email: new correspondence address from September",
+    "content": "From: Daniel Okafor <daniel@okaforprecision.co.uk>\nTo: Hannah Price <hannah.price@neviswealth.com>\nDate: 4 August 2025\nSubject: New correspondence address from September\nHi Hannah,\nJust to let you know that Adaeze and I fly out to Lisbon on 31 August. From 1 September please send any post to Rua das Gaivotas 14, 2nd floor, 1200-202 Lisboa, Portugal, and use my Portuguese mobile +351 912 448 307. The Granary is under offer, so please stop sending letters there once the sale completes. I'll send you a copy of the Portuguese rental contract when we have it.\nBest wishes,\nDaniel"
+   },
+   {
+    "id": "d18",
+    "client_id": "c04",
+    "title": "Wessex Vale payroll - February 2025",
+    "content": "Wessex Vale Hospitals NHS Foundation Trust. PAYSLIP. Pay date: 27 February 2025. Employee: Dr P Raman, Consultant Anaesthetist. Employee number 30419972. NI number JT 48 21 93 C. Tax code 0T. Pay period 11.\nPayments: basic salary £10,991.67; additional programmed activity £490.66. Total gross pay £11,482.33.\nDeductions: income tax £3,371.04; National Insurance £397.15; NHS Pension contribution (13.5%) £1,483.88.\nNet pay £6,230.26, paid to account ending 2291.\nYear to date: gross pay £126,305.63; tax £37,081.44; NI £4,368.65."
+   },
+   {
+    "id": "d19",
+    "client_id": "c04",
+    "title": "P60 2024-25",
+    "content": "P60 End of Year Certificate. Tax year to 5 April 2025. Keep this certificate in a safe place, as you will need it if you have to fill in a tax return.\nEmployee: Priya Raman. National Insurance number JT 48 21 93 C. Works/payroll number 30419972.\nEmployer: Wessex Vale Hospitals NHS Foundation Trust, PAYE reference 406/WA22817.\nPay in this employment: £114,097.20. Tax deducted in this employment: £38,098.88. Final tax code 0T.\nNational Insurance contributions in this employment: earnings above the upper earnings limit £75,733.20; employee's contributions £4,765.80.\nStudent loan deductions: £0.00."
+   },
+   {
+    "id": "d20",
+    "client_id": "c04",
+    "title": "HMRC online - tax year 2023-24 summary",
+    "content": "SA302 Tax calculation for the year ended 5 April 2024. Name: Dr Priya Raman. Unique Taxpayer Reference: 48213 90571. Issued: 31 January 2025.\nPay from employment: £109,850.00. Profit from self-employment (private anaesthetic practice): £58,200.00. UK interest: £1,310.00. Total income received: £169,360.00.\nPersonal allowance: £0 (withdrawn because income exceeds £125,140). Total income on which tax is due: £169,360.00.\nIncome tax due £61,872.50. Class 4 National Insurance £1,620.00. Less tax deducted at source through PAYE £36,401.20. Balance payable £27,091.30.\nThis calculation can be used as proof of income, for example when applying for a mortgage."
+   },
+   {
+    "id": "d21",
+    "client_id": "c04",
+    "title": "Harbourside Life - policy schedule",
+    "content": "Harbourside Life Assurance Ltd. Policy schedule. Policy number LT-7720-4815-W. Life assured: Dr Priya Raman, born 2 November 1985.\nCover: level term life insurance of £450,000 with additional critical illness cover of £150,000. The critical illness benefit is paid if you are diagnosed with one of the 52 defined conditions during the policy term and survive for 10 days; paying it does not reduce the life cover.\nTerm: 25 years from 1 June 2021 to 1 June 2046. Premium: £86.40 a month, guaranteed for the whole term.\nThe policy is not written in trust. You can place it in trust at any time at no cost."
+   },
+   {
+    "id": "d22",
+    "client_id": "c05",
+    "title": "Last Will and Testament - Thomas Edward Whitfield",
+    "content": "THIS IS THE LAST WILL of me THOMAS EDWARD WHITFIELD of 12 Quarry Rise, Bath BA1 5TL.\n1. I revoke all earlier wills and codicils.\n2. I appoint my wife Eleanor Jane Whitfield and my brother Martin Paul Whitfield to be my executors and trustees.\n3. If my wife does not survive me, I appoint Isobel Pargeter and Rhys Pargeter to be the guardians of any of my children who are under 18.\n4. I give £10,000 to the Bath Children's Hospice Trust.\n5. I give the residue of my estate to my wife if she survives me by 30 days, and if she does not, to the trustees of the Whitfield Family Discretionary Trust created by deed dated 2 May 2023, to be added to the trust fund.\n6. I wish my body to be cremated.\nSigned by the testator in our joint presence on 2 May 2023 and then by us in his presence. Witnesses: Karen Doyle, legal executive, and Simon Ellery, solicitor, both of Ellery Doyle Solicitors, Bath."
+   },
+   {
+    "id": "d23",
+    "client_id": "c05",
+    "title": "Pemberton Yeo letter 17-01-2025",
+    "content": "Pemberton Yeo, Chartered Accountants, 6 Gay Street, Bath. 17 January 2025.\nTo whom it may concern\nThomas Edward Whitfield - Whitfield & Moss Architects LLP\nWe have acted as accountants to Mr Whitfield and to Whitfield & Moss Architects LLP since 2016. We confirm that Mr Whitfield is a member of the LLP and that his share of the taxable profits was £88,950 for the year ended 30 April 2023 and £96,400 for the year ended 30 April 2024. Draft accounts indicate a share of about £104,750 for the year ended 30 April 2025. He draws £6,500 a month from the LLP, with the balance paid after the accounts are finalised. His personal tax returns are up to date and there are no outstanding liabilities to HMRC. This letter is provided at our client's request and without financial responsibility on the part of the firm.\nYours faithfully,\nPemberton Yeo"
+   },
+   {
+    "id": "d24",
+    "client_id": "c05",
+    "title": "Avonmere BS - annual mortgage statement 2024",
+    "content": "Avonmere Building Society. Annual mortgage statement for 1 January 2024 to 31 December 2024. Borrowers: Mr Thomas E Whitfield and Mrs Eleanor J Whitfield. Property and correspondence address: 12 Quarry Rise, Bath BA1 5TL. Mortgage account number MTG 0045 7781 2290.\nBalance at 1 January 2024: £336,018.90. Payments received (including an overpayment of £9,000 on 4 June 2024): £31,110.60. Interest charged: £13,534.27. Fees: £0.00. Balance at 31 December 2024: £318,442.57.\nProduct: 5-year fixed rate of 4.19% until 31 July 2027, then the society's standard variable rate. Monthly payment £1,842.55. Remaining term: 19 years 4 months. Early repayment charge: 3% of the amount repaid until 31 July 2025.\nYour home may be repossessed if you do not keep up repayments on your mortgage."
+   },
+   {
+    "id": "d25",
+    "client_id": "c05",
+    "title": "Harbourside Life - term assurance (in trust)",
+    "content": "Harbourside Life Assurance Ltd. Policy schedule and trust confirmation. Policy number LT-7720-4851-W. Life assured: Mr Thomas Edward Whitfield, born 19 July 1979.\nBenefit: level term life cover of £750,000 payable on death during the term. No critical illness benefit.\nTerm: 20 years from 15 March 2019. Premium £61.25 a month.\nTrust: this policy is held under our discretionary gift trust. Trustees: Thomas Whitfield, Eleanor Whitfield and Martin Whitfield. Potential beneficiaries: the spouse, children and grandchildren of the life assured. Because the policy is in trust, the proceeds should be paid quickly to the trustees and fall outside the estate for inheritance tax."
+   },
+   {
+    "id": "d26",
+    "client_id": "c05",
+    "title": "Whitfield Family Discretionary Trust - deed",
+    "content": "THIS DEED OF SETTLEMENT is made on 2 May 2023 between (1) THOMAS EDWARD WHITFIELD and ELEANOR JANE WHITFIELD, both of 12 Quarry Rise, Bath BA1 5TL (the Settlors) and (2) THOMAS EDWARD WHITFIELD, ELEANOR JANE WHITFIELD and MARTIN PAUL WHITFIELD (the Original Trustees).\n1. Name. The settlement shall be known as the Whitfield Family Discretionary Trust.\n2. Trust fund. The Settlors have transferred £10 to the Original Trustees, to be held on the trusts of this deed together with any property later added to it by the Settlors or anyone else, including under the Settlors' wills and the proceeds of any life policy written in trust for the Trustees.\n3. Beneficiaries. The Beneficiaries are the children and remoter descendants of the Settlors, whether born before or after the date of this deed, the spouses and civil partners and widows and widowers of those descendants, and any charity. The Settlors and any person who has added property to the trust are excluded from benefit.\n4. Trust period. The trust period ends 125 years from the date of this deed or on any earlier date the Trustees specify by deed.\n5. Discretionary trusts. During the trust period the Trustees may pay or apply the income and capital of the trust fund to or for the benefit of any one or more of the Beneficiaries, in such shares and in such manner as the Trustees in their absolute discretion think fit. Income not applied within 21 years may be accumulated and added to capital.\n6. Powers. The Trustees have the widest powers of investment, as if they were absolutely entitled to the trust fund, and may lend money to a Beneficiary interest-free, buy a home for a Beneficiary to occupy, and appoint investment managers and nominees.\n7. Trustees. There must be at least two Trustees at all times. The power to appoint new Trustees is held by the Settlors jointly during their lives and then by the survivor.\n8. Exclusion of the Settlors. No part of the trust fund may be paid or lent to, or applied for the benefit of, either Settlor in any circumstances.\n9. Law. This deed is governed by the law of England and Wales.\nRegistered with HMRC's Trust Registration Service; unique reference number XATRUST80046612.\nSigned as a deed by each of the Settlors and the Original Trustees in the presence of a witness."
+   },
+   {
+    "id": "d27",
+    "client_id": "c05",
+    "title": "Letter to our trustees - May 2023",
+    "content": "To the trustees of the Whitfield Family Discretionary Trust\n2 May 2023\nWe are writing this letter so that you know how we would like you to use your powers. We understand that it is not legally binding and that you must make your own decisions.\nOur main wish is that the trust fund is used for the education of our children, Freya and Oscar, including university costs, and later to help each of them buy a first home. We would prefer that neither of them receives large capital sums outright before the age of 25. If one of them is in financial difficulty or going through a divorce, please consider lending money rather than giving it. We would like Martin to be consulted on any major decision while he remains a trustee. This letter of wishes replaces any earlier note we may have left with our solicitors.\nThomas Whitfield, Eleanor Whitfield"
+   },
+   {
+    "id": "d28",
+    "client_id": "c05",
+    "title": "Annual review notes - Whitfields, February 2025",
+    "content": "Meeting notes. Annual review held at our Bath office on 11 February 2025. Present: Thomas and Eleanor Whitfield; Hannah Price (adviser); Luke Ferris (paraplanner, taking notes).\n1. Changes since last year. Thomas's share of LLP profits has increased; Eleanor has reduced her teaching to three days a week. Freya starts secondary school in September 2027 and they are considering independent school fees of about £21,000 a year.\n2. Pensions. Thomas has unused annual allowance from the previous three tax years. We agreed he will make a one-off personal contribution of £40,000 to his SIPP before 5 April, which will also reduce his adjusted net income. Eleanor will stay in the Teachers' Pension Scheme; we will check the effect of part-time service on her benefits when her next annual statement arrives.\n3. Protection. Thomas has £750,000 of life cover held in trust. Eleanor has stand-alone critical illness cover but no life cover of her own. With a mortgage of about £318,000 and two children, we discussed adding a joint family income benefit policy. Eleanor wants to think about the cost first.\n4. Trust and estate. The family trust holds only the initial £10. We discussed adding regular gifts out of surplus income and the inheritance tax position on second death, which we estimated at around £290,000 on current values.\n5. Investments. Both ISAs fully used. Attitude to risk reconfirmed as 5 (Balanced) after Thomas and Eleanor re-did the questionnaire online; no change to the portfolio needed.\n6. Actions. Hannah: obtain family income benefit quotes; issue the SIPP contribution paperwork; send a school fees cash flow. Thomas: send the latest letter from Pemberton Yeo showing his profit share. Eleanor: find her pension statement.\n7. Other matters. Thomas mentioned that the practice may take on a third partner in 2026, which could reduce his profit share for a year or two. Eleanor asked about saving for the children through Junior ISAs; we will cover this in the school fees cash flow. Both confirmed there have been no changes to their health.\nNext review: February 2026."
+   },
+   {
+    "id": "d29",
+    "client_id": "c06",
+    "title": "Last Will and Testament - Eleanor Jane Whitfield",
+    "content": "THIS IS THE LAST WILL of me ELEANOR JANE WHITFIELD of 12 Quarry Rise, Bath BA1 5TL. I revoke all earlier wills. I appoint my husband Thomas Edward Whitfield and my brother-in-law Martin Paul Whitfield to be my executors and trustees. If my husband does not survive me, I appoint Isobel Pargeter and Rhys Pargeter as guardians of my minor children. I give my jewellery to my daughter Freya. I give the residue of my estate to my husband if he survives me by 30 days, and otherwise to the trustees of the Whitfield Family Discretionary Trust created by deed dated 2 May 2023. Signed on 2 May 2023 in the presence of Karen Doyle and Simon Ellery of Ellery Doyle Solicitors, Bath."
+   },
+   {
+    "id": "d30",
+    "client_id": "c06",
+    "title": "Teachers' Pension - annual benefit statement 2024",
+    "content": "Teachers' Pension Scheme. Annual Benefit Statement as at 31 March 2024. Member: Mrs Eleanor Jane Whitfield. Member reference TP 7741 0326. Date of birth 8 January 1982.\nCareer average benefits: pension built up to 31 March 2024 of £13,642 a year, payable unreduced from your normal pension age of 67. You can exchange part of your pension for a tax-free lump sum at retirement.\nPensionable service: 14 years 220 days (part-time service is counted in proportion to the hours worked).\nDeath in service: a lump sum of three times your full-time equivalent salary would be paid, and a pension for your husband and eligible children.\nPlease check that your service and salary details are correct and tell your employer if they are not."
+   },
+   {
+    "id": "d31",
+    "client_id": "c06",
+    "title": "Tamarisk Protection - your cover summary",
+    "content": "Tamarisk Protection Ltd. Your cover summary. Policy number CI/0093/558217. Policyholder and life insured: Mrs Eleanor Whitfield.\nType of cover: stand-alone critical illness cover. Sum assured £100,000, paid once if you are diagnosed with a covered condition, such as specified cancers, heart attack, stroke or multiple sclerosis, and the diagnosis meets our definition. There is no life cover under this plan.\nChildren's cover: £25,000 for each eligible child.\nTerm: 15 years from 1 October 2020. Monthly premium £38.72, reviewable.\nTo make a claim call our claims team on 0800 046 1172."
+   },
+   {
+    "id": "d32",
+    "client_id": "c07",
+    "title": "Scan 0107",
+    "content": "REPUBLIQUE FRANCAISE - CARTE NATIONALE D'IDENTITE / IDENTITY CARD\nNom / Surname: LAURENT\nPrenoms / Given names: Sophie, Anne\nSexe / Sex: F    Nationalite / Nationality: FRA\nDate de naissance / Date of birth: 21 06 1989    Lieu de naissance / Place of birth: LYON\nN du document / Document No: X4RTB72K9\nDate d'expiration / Date of expiry: 21 06 2031\nIDFRALAURENT<<<<<<<<<<<<<<<<<<<<<<<<<\nX4RTB72K9<FRA8906213F3106212<<<<<<<<<<6\nCopy of both sides of the client's French national identity card. Original seen at our London office on 11 April 2025; the photograph is a good likeness. Certified by Hannah Price, Nevis Wealth."
+   },
+   {
+    "id": "d33",
+    "client_id": "c07",
+    "title": "Self-certification form (individuals)",
+    "content": "Common Reporting Standard - individual self-certification. Account holder: Sophie Anne Laurent. Current residential address: Flat 3, 41 Alder Terrace, London N16 7JH, United Kingdom. Date of birth 21 June 1989. Town and country of birth: Lyon, France.\nPart 2 - Country or countries of tax residence and taxpayer identification numbers:\n1. United Kingdom - TIN (UTR): 70519 33846.\n2. France - TIN (numero fiscal): 30 21 884 517 640. Note from client: I remain liable to French tax on rental income from my flat in Lyon, and my French tax return treats me as non-resident; please check whether France should be listed.\nAre you a US citizen or resident in the US for tax purposes? No.\nDeclaration: I undertake to notify Nevis Wealth within 30 days of any change in circumstances that affects my tax residence status. Signed: S. Laurent, 11 April 2025."
+   },
+   {
+    "id": "d34",
+    "client_id": "c07",
+    "title": "Skylark Fibre invoice - March 2025",
+    "content": "Skylark Fibre. Invoice number SKF-INV-0325-88172. Account number SKF-2093-8817. Invoice date 4 March 2025.\nMs Sophie Laurent, Flat 3, 41 Alder Terrace, London N16 7JH.\nYour services: Full Fibre 500 broadband £39.99; home phone line with evening and weekend calls £8.00; calls outside your plan £4.50. Total this month £52.49, including VAT, to be collected by Direct Debit on 18 March 2025.\nYour contract ends on 3 November 2025. Moving home? Tell us 30 days before you go."
+   },
+   {
+    "id": "d35",
+    "client_id": "c07",
+    "title": "Email: outstanding documents for your account",
+    "content": "From: Hannah Price <hannah.price@neviswealth.com>\nTo: Sophie Laurent <sophie.laurent@quillpost.co.uk>\nDate: 2 April 2025\nSubject: Outstanding documents for your account\nDear Sophie,\nThank you for your application. Before we can open your account and request the transfer from Hartley Crane Wealth, we still need: (1) photo ID - your passport, or both sides of your French national identity card; and (2) proof of address dated within the last three months, such as a household bill or a bank statement in your name. Please bring the originals to our London office or send certified copies. We cannot accept a mobile phone bill or an e-mail printout.\nKind regards,\nHannah Price, Chartered Financial Planner, Nevis Wealth"
+   },
+   {
+    "id": "d36",
+    "client_id": "c07",
+    "title": "Email: transfer from Hartley Crane",
+    "content": "From: Sophie Laurent <sophie.laurent@quillpost.co.uk>\nTo: Hannah Price <hannah.price@neviswealth.com>\nDate: 16 April 2025\nSubject: Re: transfer from Hartley Crane\nHi Hannah,\nI've signed the transfer authority for my ISA and general investment account and posted it today. Hartley Crane Wealth told me the re-registration will take four to six weeks and that they will not charge an exit fee. My account number there is HCW-448120. Could you confirm that the funds will be moved as stock rather than sold to cash? I don't want to be out of the market for a month.\nThanks,\nSophie"
+   },
+   {
+    "id": "d37",
+    "client_id": "c08",
+    "title": "Assured shorthold tenancy agreement - Flat 9, Tilbury Mill",
+    "content": "ASSURED SHORTHOLD TENANCY AGREEMENT. This agreement is made on 22 August 2024 under Part I of the Housing Act 1988.\nLandlord: Devendra Mistry, c/o Northbank Residential Lettings Ltd, 5 Dale Street, Manchester M1 2HF (the Agent).\nTenant: Callum James Reid.\nProperty: Flat 9, Tilbury Mill, 27 Cotton Street, Manchester M4 6BR, together with the use of the communal areas and bicycle store.\nTerm: a fixed term of 12 months starting on 1 September 2024 and ending on 31 August 2025, continuing afterwards as a periodic tenancy from month to month.\nRent: £1,150 per calendar month, payable in advance on the 1st of each month by standing order to the Agent.\nDeposit: £1,326, protected in a government-authorised tenancy deposit scheme within 30 days of receipt; deposit certificate number DEP-77231904. The prescribed information has been given to the tenant.\nThe tenant agrees: to pay the rent on time; to pay the council tax for the property and all charges for gas, electricity, water, broadband and telephone used during the tenancy, and to transfer each utility bill into his own name from the start date; to keep the property clean and in good condition, fair wear and tear excepted; not to sublet or take in lodgers; not to keep pets without the landlord's written consent, which will not be unreasonably withheld; to allow the landlord or agent access for inspections and repairs on at least 24 hours' written notice; and to report any disrepair promptly.\nThe landlord agrees: to allow the tenant quiet enjoyment of the property; to keep the structure, exterior and installations for water, gas, electricity, heating and sanitation in repair; to provide a valid gas safety certificate every year, an energy performance certificate (rating C) and an electrical installation condition report; and to insure the building.\nEnding the tenancy: the tenant may end the tenancy after the fixed term by giving at least one month's written notice ending on a rent day. The landlord may only end the tenancy using the procedures in the Housing Act 1988.\nSigned by the agent for the landlord and by the tenant on 22 August 2024."
+   },
+   {
+    "id": "d38",
+    "client_id": "c08",
+    "title": "IMG_20250114_093112",
+    "content": "DRIVING LICENCE    UK\n1. REID\n2. CALLUM JAMES\n3. 15.06.1995 UNITED KINGDOM\n4a. 03.02.2022  4b. 02.02.2032  4c. DVLA\n5. REID9906155CJ9AB\n7. [signature]\n8. FLAT 9, TILBURY MILL, 27 COTTON STREET, MANCHESTER, M4 6BR\n9. AM/A/B1/B/f/k/l/n/p/q\nPhotocard front, photographed by the client on his phone and uploaded through the client portal. Licence checked against the DVLA record on 14 January 2025: valid, no endorsements."
+   },
+   {
+    "id": "d39",
+    "client_id": "c08",
+    "title": "Brightwell Energy - your January statement",
+    "content": "Brightwell Energy. Mr Callum Reid, Flat 9, Tilbury Mill, 27 Cotton Street, Manchester M4 6BR. Account number 8830 5527 18. Statement date 9 January 2025, covering 10 December 2024 to 8 January 2025.\nGas: 742 kWh at 6.24p plus standing charge, £56.73. Electricity: 268 kWh at 24.86p plus standing charge, £82.58. VAT at 5% £6.97. Total charges £146.28.\nYour balance after this statement: £146.28 owed, to be collected by Direct Debit on 23 January 2025. Your monthly payment will rise from £95 to £118 from February because your usage was higher than expected."
+   },
+   {
+    "id": "d40",
+    "client_id": "c08",
+    "title": "Risk profile results - Callum Reid",
+    "content": "Attitude to risk questionnaire - results. Client: Callum Reid. Completed online on 20 January 2025.\nScore: 47 out of 65. Risk profile: 5 of 7, Moderately Adventurous.\nSelected answers: Q3 'If my investments fell by 20% in a year I would' - hold and wait for recovery. Q7 'Which matters more to you, avoiding losses or achieving higher growth?' - mostly higher growth. Q11 'How long do you plan to invest for?' - more than 10 years.\nAdviser comment: Callum plans to use part of his savings for a house deposit in about three years. That money will be kept in cash, and only the long-term monthly ISA contributions of £400 will be invested in line with this profile. Capacity for loss assessed as high for the long-term money and low for the deposit savings."
+   }
+  ]
+ },
+ "queries": [
+  {
+   "id": "q001",
+   "q": "address proof",
+   "category": "concept",
+   "level": "required",
+   "relevant": [
+    "d01",
+    "d02",
+    "d12",
+    "d16",
+    "d24",
+    "d34",
+    "d37",
+    "d39"
+   ],
+   "acceptable": [
+    "d38"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Assignment example: utility bills (d01 says 'utility bill', d16/d34/d39 do not), the council tax bill, bank statement, mortgage statement and tenancy agreement all prove address; the photocard licence shows the address and is accepted by many firms; the courier proof of delivery (d06), the chaser e-mail asking for proof of address (d35) and the change-of-address e-mail (d17) are traps."
+  },
+  {
+   "id": "q002",
+   "q": "proof of address",
+   "category": "concept",
+   "level": "required",
+   "relevant": [
+    "d01",
+    "d02",
+    "d12",
+    "d16",
+    "d24",
+    "d34",
+    "d37",
+    "d39"
+   ],
+   "acceptable": [
+    "d38"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Same need as q001 in the usual wording; only documents that evidence the client's home address count, not documents that merely mention an address."
+  },
+  {
+   "id": "q003",
+   "q": "proof of income",
+   "category": "concept",
+   "level": "required",
+   "relevant": [
+    "d18",
+    "d19",
+    "d20",
+    "d23"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Payslip, P60, SA302 tax calculation and the accountant's income letter evidence income; the 'income' wording in the suitability report, income fund holdings, trust deed and pension letters is a decoy."
+  },
+  {
+   "id": "q004",
+   "q": "photo ID",
+   "category": "concept",
+   "level": "required",
+   "relevant": [
+    "d07",
+    "d32",
+    "d38"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Passport, French national identity card and photocard driving licence are photo ID; the chaser e-mail asking for photo ID (d35), the courier note mentioning a returned passport and a parcel photo (d06) and the fact find noting 'passport seen' are traps."
+  },
+  {
+   "id": "q005",
+   "q": "source of wealth evidence",
+   "category": "concept",
+   "level": "expected",
+   "relevant": [
+    "d03",
+    "d10",
+    "d11"
+   ],
+   "acceptable": [
+    "d12"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Inheritance distribution letter, property sale completion statement and business sale completion letter evidence how the wealth arose; the bank statement showing the sale proceeds arriving is supporting evidence; documents that only carry the firm name 'Nevis Wealth' are noise."
+  },
+  {
+   "id": "q006",
+   "q": "tax residency",
+   "category": "concept",
+   "level": "expected",
+   "relevant": [
+    "d14",
+    "d33"
+   ],
+   "acceptable": [
+    "d13"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "The tax adviser's statutory residence test letter and the CRS self-certification are about tax residence; the fact find mentions the need for residency advice; the council tax bill ('only adult resident') is a decoy."
+  },
+  {
+   "id": "q007",
+   "q": "estate planning documents",
+   "category": "concept",
+   "level": "expected",
+   "relevant": [
+    "d04",
+    "d22",
+    "d26",
+    "d27",
+    "d29"
+   ],
+   "acceptable": [
+    "d25"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Wills, the LPA, the trust deed and the letter of wishes are the estate planning documents; the life policy written in trust is related; the solicitor's letter about administering the late husband's estate (d03) is estate administration, not planning."
+  },
+  {
+   "id": "q008",
+   "q": "pension statements",
+   "category": "concept",
+   "level": "expected",
+   "relevant": [
+    "d08",
+    "d30"
+   ],
+   "acceptable": [
+    "d15"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "SIPP annual statement and Teachers' Pension annual benefit statement are pension statements; the CETV statement of entitlement is a pension statement of a kind; the payslip's pension deduction and the meeting note asking Eleanor to find her statement are not."
+  },
+  {
+   "id": "q009",
+   "q": "protection policies",
+   "category": "concept",
+   "level": "expected",
+   "relevant": [
+    "d21",
+    "d25",
+    "d31"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Both Harbourside life policies and the Tamarisk critical illness policy are protection policies; meeting notes and the fact find only discuss cover."
+  },
+  {
+   "id": "q010",
+   "q": "emails",
+   "category": "concept",
+   "level": "expected",
+   "relevant": [
+    "d17",
+    "d35",
+    "d36"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The three e-mail documents; scanned letters are correspondence but not e-mails, and client records with an e-mail field are not what is asked for."
+  },
+  {
+   "id": "q011",
+   "q": "proof of residence",
+   "category": "concept",
+   "level": "expected",
+   "relevant": [
+    "d01",
+    "d02",
+    "d12",
+    "d16",
+    "d24",
+    "d34",
+    "d37",
+    "d39"
+   ],
+   "acceptable": [
+    "d38",
+    "d14",
+    "d33"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "In onboarding 'proof of residence' means proof of address; because the phrase can also be read as tax residence, the residence letter and self-certification are acceptable."
+  },
+  {
+   "id": "q012",
+   "q": "document confirming where the client lives",
+   "category": "paraphrase",
+   "level": "expected",
+   "relevant": [
+    "d01",
+    "d02",
+    "d12",
+    "d16",
+    "d24",
+    "d34",
+    "d37",
+    "d39"
+   ],
+   "acceptable": [
+    "d38"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Paraphrase of address proof with no shared keywords; the self-declared address in the CRS form and the client's own change-of-address e-mail do not confirm anything."
+  },
+  {
+   "id": "q013",
+   "q": "evidence of earnings",
+   "category": "paraphrase",
+   "level": "expected",
+   "relevant": [
+    "d18",
+    "d19",
+    "d20",
+    "d23"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Paraphrase of proof of income: payslip, P60, SA302 and accountant's confirmation of profit share."
+  },
+  {
+   "id": "q014",
+   "q": "where did the money come from",
+   "category": "paraphrase",
+   "level": "expected",
+   "relevant": [
+    "d03",
+    "d10",
+    "d11"
+   ],
+   "acceptable": [
+    "d12"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Plain-English source of funds question: inheritance, property sale and business sale evidence, with the bank statement showing receipt as supporting evidence."
+  },
+  {
+   "id": "q015",
+   "q": "how much is his final salary pension worth if he transfers it out",
+   "category": "paraphrase",
+   "level": "expected",
+   "relevant": [
+    "d15"
+   ],
+   "acceptable": [
+    "d13"
+   ],
+   "first": [
+    "d15"
+   ],
+   "empty": false,
+   "why": "Describes a cash equivalent transfer value without using the term; the fact find only says a transfer value was requested."
+  },
+  {
+   "id": "q016",
+   "q": "who looks after the children if the parents die",
+   "category": "paraphrase",
+   "level": "expected",
+   "relevant": [
+    "d22",
+    "d29"
+   ],
+   "acceptable": [
+    "d27"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Both Whitfield wills appoint guardians; the letter of wishes covers the children's money, not their care."
+  },
+  {
+   "id": "q017",
+   "q": "money left to her by her late husband",
+   "category": "paraphrase",
+   "level": "expected",
+   "relevant": [
+    "d03"
+   ],
+   "acceptable": [
+    "d05"
+   ],
+   "first": [
+    "d03"
+   ],
+   "empty": false,
+   "why": "The solicitor's letter confirms the inheritance from Geoffrey's estate; the suitability report about investing it is a reasonable secondary hit."
+  },
+  {
+   "id": "q018",
+   "q": "permission for her son to manage her finances",
+   "category": "paraphrase",
+   "level": "expected",
+   "relevant": [
+    "d04"
+   ],
+   "acceptable": [
+    "c01"
+   ],
+   "first": [
+    "d04"
+   ],
+   "empty": false,
+   "why": "Describes Margaret's property and financial affairs LPA with Jonathan as attorney; her client record mentions her son helping."
+  },
+  {
+   "id": "q019",
+   "q": "will he still pay UK tax after moving to Portugal",
+   "category": "paraphrase",
+   "level": "expected",
+   "relevant": [
+    "d14"
+   ],
+   "acceptable": [
+    "d13",
+    "d17"
+   ],
+   "first": [
+    "d14"
+   ],
+   "empty": false,
+   "why": "The Marlow Tax letter answers this; the fact find and the e-mail about moving to Lisbon give context only."
+  },
+  {
+   "id": "q020",
+   "q": "what happens to the cover if she gets cancer",
+   "category": "paraphrase",
+   "level": "expected",
+   "relevant": [
+    "d21",
+    "d31"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Cancer is a critical illness condition: Priya's policy has additional critical illness cover and Eleanor's is stand-alone critical illness cover; Thomas's policy has no critical illness benefit."
+  },
+  {
+   "id": "q021",
+   "q": "utility bill",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d01",
+    "d16",
+    "d34",
+    "d39"
+   ],
+   "acceptable": [
+    "d02"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Electricity, water, broadband/landline and dual fuel bills are utility bills although only d01 contains the words; the council tax bill is often filed with them; the tenancy clause about utility bills (d37), the utilities sector note (d09) and the bank statement's direct debits are decoys."
+  },
+  {
+   "id": "q022",
+   "q": "council tax bill",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d02"
+   ],
+   "acceptable": [],
+   "first": [
+    "d02"
+   ],
+   "empty": false,
+   "why": "The Fernleigh demand notice is the only council tax bill; the council tax direct debit on the bank statement and the tenancy clause about paying council tax are decoys."
+  },
+  {
+   "id": "q023",
+   "q": "bank statement",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d12"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Only d12 is a bank statement; the mortgage, SIPP, completion and energy 'statements' and the documents that merely say 'bank statement' (d13, d35) are decoys."
+  },
+  {
+   "id": "q024",
+   "q": "tenancy agreement",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d37"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The assured shorthold tenancy agreement for Callum's flat."
+  },
+  {
+   "id": "q025",
+   "q": "mortgage statement",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d24"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Avonmere annual mortgage statement; the completion statement's buy-to-let mortgage redemption and mentions of a mortgage in notes and the SA302 are decoys."
+  },
+  {
+   "id": "q026",
+   "q": "passport",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d07"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Only d07 is a passport; the courier note about returning the original passport, the fact find ('passport seen') and the chaser e-mail asking for a passport are decoys."
+  },
+  {
+   "id": "q027",
+   "q": "driving licence",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d38"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The photocard licence is filed under a camera file name and the type appears only in its OCR text."
+  },
+  {
+   "id": "q028",
+   "q": "national identity card",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d32"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The French identity card is titled 'Scan 0107'; the chaser e-mail that mentions an identity card is a decoy."
+  },
+  {
+   "id": "q029",
+   "q": "payslip",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d18"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The February 2025 payslip, titled only as a payroll document."
+  },
+  {
+   "id": "q030",
+   "q": "P60",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d19"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The P60 end of year certificate; no other document uses the term."
+  },
+  {
+   "id": "q031",
+   "q": "self assessment tax calculation",
+   "category": "literal",
+   "level": "expected",
+   "relevant": [
+    "d20"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The SA302 is HMRC's self assessment tax calculation, though the text says 'SA302 Tax calculation' rather than 'self assessment'."
+  },
+  {
+   "id": "q032",
+   "q": "accountant's letter",
+   "category": "literal",
+   "level": "expected",
+   "relevant": [
+    "d23"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Pemberton Yeo's letter confirming Thomas's profit share; the business sale letter's reference to 'your accountants' and the meeting action to send the letter are not it."
+  },
+  {
+   "id": "q033",
+   "q": "will",
+   "category": "literal",
+   "level": "expected",
+   "relevant": [
+    "d22",
+    "d29"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Only the two Whitfield wills; 'will' as a verb is everywhere, and the letter mentioning Geoffrey's will (d03), the fact find saying no wills exist (d13) and the trust deed's reference to the settlors' wills are decoys."
+  },
+  {
+   "id": "q034",
+   "q": "lasting power of attorney",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d04"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Margaret's registered LPA; the suitability report only mentions it in passing."
+  },
+  {
+   "id": "q035",
+   "q": "letter of wishes",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d27"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The letter to the trustees, which names its type only near the end; the SIPP expression of wish line in d08 is a different instrument."
+  },
+  {
+   "id": "q036",
+   "q": "trust deed",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d26"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The deed of settlement for the family trust; the policy written in trust and the wills that refer to a trust 'created by deed' are decoys."
+  },
+  {
+   "id": "q037",
+   "q": "transfer value",
+   "category": "literal",
+   "level": "expected",
+   "relevant": [
+    "d15"
+   ],
+   "acceptable": [
+    "d13"
+   ],
+   "first": [
+    "d15"
+   ],
+   "empty": false,
+   "why": "The CETV letter states the transfer value; the fact find says one was requested; portfolio transfers (d36) and bank transfers are decoys."
+  },
+  {
+   "id": "q038",
+   "q": "suitability report",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d05"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The March 2025 suitability report for Margaret."
+  },
+  {
+   "id": "q039",
+   "q": "fact find",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d13"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Daniel's fact find."
+  },
+  {
+   "id": "q040",
+   "q": "risk questionnaire",
+   "category": "literal",
+   "level": "expected",
+   "relevant": [
+    "d40"
+   ],
+   "acceptable": [
+    "d05",
+    "d28"
+   ],
+   "first": [
+    "d40"
+   ],
+   "empty": false,
+   "why": "Callum's attitude to risk questionnaire results; the suitability report and review notes record other clients' questionnaire scores, while the fact find only says one is to be done."
+  },
+  {
+   "id": "q041",
+   "q": "meeting notes",
+   "category": "literal",
+   "level": "expected",
+   "relevant": [
+    "d28"
+   ],
+   "acceptable": [
+    "d13"
+   ],
+   "first": [
+    "d28"
+   ],
+   "empty": false,
+   "why": "The Whitfields' annual review notes; the fact find was also completed at a meeting and is a reasonable extra."
+  },
+  {
+   "id": "q042",
+   "q": "critical illness cover",
+   "category": "literal",
+   "level": "required",
+   "relevant": [
+    "d21",
+    "d31"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Priya's policy includes critical illness cover and Eleanor's is stand-alone critical illness cover; Thomas's policy says it has no critical illness benefit, and the meeting notes only discuss cover."
+  },
+  {
+   "id": "q043",
+   "q": "life cover",
+   "category": "decoy",
+   "level": "expected",
+   "relevant": [
+    "d21",
+    "d25"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The two Harbourside life policies; Eleanor's critical illness policy says 'life insured' but explicitly has no life cover, and the notes and fact find only talk about cover."
+  },
+  {
+   "id": "q044",
+   "q": "GB47 THMS 2081 4467 3390 15",
+   "category": "identifier",
+   "level": "expected",
+   "relevant": [
+    "d12"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Exact IBAN printed on Daniel's bank statement."
+  },
+  {
+   "id": "q045",
+   "q": "GB47THMS20814467339015",
+   "category": "identifier",
+   "level": "nice",
+   "relevant": [
+    "d12"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The same IBAN typed without spaces, as advisers often paste it; matching it needs normalisation."
+  },
+  {
+   "id": "q046",
+   "q": "LT-7720-4815-W",
+   "category": "identifier",
+   "level": "expected",
+   "relevant": [
+    "d21"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Priya's policy number; Thomas's policy LT-7720-4851-W differs by two transposed digits and is a wrong answer."
+  },
+  {
+   "id": "q047",
+   "q": "LT-7720-4851-W",
+   "category": "identifier",
+   "level": "expected",
+   "relevant": [
+    "d25"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Thomas's policy number; the near-identical LT-7720-4815-W belongs to Priya's policy."
+  },
+  {
+   "id": "q048",
+   "q": "8830 1192 45",
+   "category": "identifier",
+   "level": "expected",
+   "relevant": [
+    "d01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Margaret's Brightwell account number; Callum's Brightwell account 8830 5527 18 shares only the first block."
+  },
+  {
+   "id": "q049",
+   "q": "XATRUST80046612",
+   "category": "identifier",
+   "level": "expected",
+   "relevant": [
+    "d26"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Trust Registration Service reference in the trust deed."
+  },
+  {
+   "id": "q050",
+   "q": "7004-2291-8836",
+   "category": "identifier",
+   "level": "expected",
+   "relevant": [
+    "d04"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Office of the Public Guardian reference on Margaret's LPA."
+  },
+  {
+   "id": "q051",
+   "q": "REID9906155CJ9AB",
+   "category": "identifier",
+   "level": "expected",
+   "relevant": [
+    "d38"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Driving licence number on Callum's photocard scan."
+  },
+  {
+   "id": "q052",
+   "q": "538914772",
+   "category": "identifier",
+   "level": "expected",
+   "relevant": [
+    "d07"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Margaret's passport number, which also appears inside the machine-readable zone."
+  },
+  {
+   "id": "q053",
+   "q": "JT 48 21 93 C",
+   "category": "identifier",
+   "level": "expected",
+   "relevant": [
+    "d18",
+    "d19"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Priya's National Insurance number appears on both her payslip and her P60."
+  },
+  {
+   "id": "q054",
+   "q": "MTG 0045 7781",
+   "category": "identifier",
+   "level": "expected",
+   "relevant": [
+    "d24"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Leading fragment of the mortgage account number MTG 0045 7781 2290."
+  },
+  {
+   "id": "q055",
+   "q": "SWL-55710348",
+   "category": "identifier",
+   "level": "expected",
+   "relevant": [
+    "d06"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Searching the consignment number makes the courier proof of delivery the right answer, although it is a decoy for address queries."
+  },
+  {
+   "id": "q056",
+   "q": "HCW-448120",
+   "category": "identifier",
+   "level": "expected",
+   "relevant": [
+    "d36"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Sophie's account number at Hartley Crane quoted in her e-mail."
+  },
+  {
+   "id": "q057",
+   "q": "£612,480",
+   "category": "content-detail",
+   "level": "expected",
+   "relevant": [
+    "d15"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The CETV amount in the scheme administrator's letter."
+  },
+  {
+   "id": "q058",
+   "q": "684,300",
+   "category": "content-detail",
+   "level": "expected",
+   "relevant": [
+    "d03",
+    "d05"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "The inherited sum appears in the solicitor's letter and in the suitability report; both contain the figure the adviser typed."
+  },
+  {
+   "id": "q059",
+   "q": "Brightwell Energy",
+   "category": "content-detail",
+   "level": "expected",
+   "relevant": [
+    "d01",
+    "d39"
+   ],
+   "acceptable": [
+    "d12"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Provider name: Margaret's and Callum's Brightwell bills; Daniel's bank statement only shows a Brightwell direct debit."
+  },
+  {
+   "id": "q060",
+   "q": "Hartley Crane",
+   "category": "content-detail",
+   "level": "required",
+   "relevant": [
+    "c07",
+    "d35",
+    "d36"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Sophie's client description names her previous firm (client-description match is assignment behaviour 1) and both e-mails about the transfer mention it."
+  },
+  {
+   "id": "q061",
+   "q": "Tilbury Mill",
+   "category": "content-detail",
+   "level": "expected",
+   "relevant": [
+    "d37",
+    "d38",
+    "d39"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Callum's address appears in the tenancy agreement, on his driving licence and on his energy statement."
+  },
+  {
+   "id": "q062",
+   "q": "split-year treatment",
+   "category": "content-detail",
+   "level": "expected",
+   "relevant": [
+    "d14"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Term used only in the Marlow Tax residence letter."
+  },
+  {
+   "id": "q063",
+   "q": "Business Asset Disposal Relief",
+   "category": "content-detail",
+   "level": "expected",
+   "relevant": [
+    "d11"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Mentioned only in the business sale completion letter."
+  },
+  {
+   "id": "q064",
+   "q": "investing in utility companies",
+   "category": "decoy",
+   "level": "expected",
+   "relevant": [
+    "d09"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Here the utilities sector note is the target and the utility bills are the decoys."
+  },
+  {
+   "id": "q065",
+   "q": "evidence of inheritance",
+   "category": "decoy",
+   "level": "expected",
+   "relevant": [
+    "d03"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Only the solicitor's letter evidences an inheritance; documents about inheritance tax (d13, d25, d28), the wills and the suitability report that invests the money are not evidence."
+  },
+  {
+   "id": "q066",
+   "q": "client notified a change of address",
+   "category": "decoy",
+   "level": "expected",
+   "relevant": [
+    "d17"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Daniel's e-mail giving his new Lisbon address; the broadband bill's 'Moving home? Tell us' line and the council tax notice's 'tell us within 21 days' are decoys, and address proofs are not notifications."
+  },
+  {
+   "id": "q067",
+   "q": "Margaret Ashworth passport",
+   "category": "client+type",
+   "level": "expected",
+   "relevant": [
+    "d07"
+   ],
+   "acceptable": [
+    "c01"
+   ],
+   "first": [
+    "d07"
+   ],
+   "empty": false,
+   "why": "Margaret's certified passport copy must lead; her client record is reasonable; her courier note mentioning the returned passport and other clients' ID are wrong."
+  },
+  {
+   "id": "q068",
+   "q": "Eleanor Whitfield will",
+   "category": "client+type",
+   "level": "expected",
+   "relevant": [
+    "d29"
+   ],
+   "acceptable": [
+    "c06",
+    "d22"
+   ],
+   "first": [
+    "d29"
+   ],
+   "empty": false,
+   "why": "Eleanor's own will must lead; Thomas's mirror will names her as executor and beneficiary, so it is acceptable but not required."
+  },
+  {
+   "id": "q069",
+   "q": "Thomas Whitfield life cover",
+   "category": "client+type",
+   "level": "expected",
+   "relevant": [
+    "d25"
+   ],
+   "acceptable": [
+    "c05"
+   ],
+   "first": [
+    "d25"
+   ],
+   "empty": false,
+   "why": "Thomas's term assurance policy; Priya's life policy from the same insurer with a near-identical number is wrong."
+  },
+  {
+   "id": "q070",
+   "q": "utilty bill",
+   "category": "typo",
+   "level": "nice",
+   "relevant": [
+    "d01",
+    "d16",
+    "d34",
+    "d39"
+   ],
+   "acceptable": [
+    "d02"
+   ],
+   "first": [],
+   "empty": false,
+   "why": "Misspelling of 'utility bill'; same answer as q021."
+  },
+  {
+   "id": "q071",
+   "q": "pasport",
+   "category": "typo",
+   "level": "nice",
+   "relevant": [
+    "d07"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Misspelling of 'passport'; same answer as q026."
+  },
+  {
+   "id": "q072",
+   "q": "tenancy agrement",
+   "category": "typo",
+   "level": "nice",
+   "relevant": [
+    "d37"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Misspelling of 'tenancy agreement'."
+  },
+  {
+   "id": "q073",
+   "q": "lasting power of atorney",
+   "category": "typo",
+   "level": "nice",
+   "relevant": [
+    "d04"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Misspelling of 'attorney'; same answer as q034."
+  },
+  {
+   "id": "q074",
+   "q": "critcal ilness",
+   "category": "typo",
+   "level": "nice",
+   "relevant": [
+    "d21",
+    "d31"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Two misspellings of 'critical illness'; same answer as q042."
+  },
+  {
+   "id": "q075",
+   "q": "chocolate cake recipe",
+   "category": "negative",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Off-domain; nothing in the corpus is relevant."
+  },
+  {
+   "id": "q076",
+   "q": "Premier League fixtures",
+   "category": "negative",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Off-domain; nothing in the corpus is relevant."
+  },
+  {
+   "id": "q077",
+   "q": "marriage certificate",
+   "category": "negative",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "In-domain but absent: no marriage certificate is held; 'married' in client descriptions and the fact find is a decoy."
+  },
+  {
+   "id": "q078",
+   "q": "birth certificate",
+   "category": "negative",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "In-domain but absent: ID documents show a date of birth and other documents are 'certificates' (P60, gas safety, deposit), but none is a birth certificate."
+  },
+  {
+   "id": "q079",
+   "q": "equity release",
+   "category": "negative",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "In-domain but absent: no client has an equity release plan or quote."
+  },
+  {
+   "id": "q080",
+   "q": "divorce settlement",
+   "category": "negative",
+   "level": "expected",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "In-domain but absent: the letter of wishes only mentions divorce as a hypothetical, and the trust's 'deed of settlement' is not a divorce settlement."
+  }
+ ],
+ "http_cases": []
+}

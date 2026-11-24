@@ -1,0 +1,308 @@
+{
+ "suite": "tools-mini-6",
+ "author": "lead (Claude), 2026-11-20",
+ "about": "The shared mini set on which Elasticsearch, Meilisearch, Typesense, ParadeDB, PostgreSQL built-ins and vector stacks were compared (research/tools/).",
+ "corpus": {
+  "clients": [
+   {
+    "id": "c01",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@neviswealth.com",
+    "description": "Senior partner at a law firm; prefers contact by e-mail.",
+    "social_links": []
+   },
+   {
+    "id": "c02",
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "email": "jane.smith@example.org",
+    "description": "Referred by a colleague; interested in consolidating pensions.",
+    "social_links": []
+   },
+   {
+    "id": "c03",
+    "first_name": "Zoë",
+    "last_name": "Müller",
+    "email": "zoe.mueller@alpenbank.ch",
+    "description": "Swiss resident; holds accounts in Zürich.",
+    "social_links": []
+   }
+  ],
+  "documents": [
+   {
+    "id": "d01",
+    "client_id": "c01",
+    "title": "Utility bill",
+    "content": "Utility bill for March 2025 from British Gas. Account holder John Doe, 14 Larkspur Close, Harrogate. Amount due 74.78 GBP."
+   },
+   {
+    "id": "d02",
+    "client_id": "c01",
+    "title": "Passport",
+    "content": "Scanned copy of the passport of the client, valid until 2031."
+   },
+   {
+    "id": "d03",
+    "client_id": "c01",
+    "title": "Tax return",
+    "content": "Self-assessment tax return for the 2023/24 tax year."
+   },
+   {
+    "id": "d04",
+    "client_id": "c01",
+    "title": "Proof of delivery",
+    "content": "Courier proof of delivery for the documents sent to the home address of the client."
+   },
+   {
+    "id": "d05",
+    "client_id": "c02",
+    "title": "Scan 0042",
+    "content": "Northmoor Energy. Electricity statement for the period 11 December 2024 to 10 March 2025. This utility bill is addressed to Mr T Hallworth, 14 Larkspur Close, Harrogate. Total charges 361.19 GBP."
+   },
+   {
+    "id": "d06",
+    "client_id": "c01",
+    "title": "Meeting notes",
+    "content": "Annual review meeting. Discussed retirement plans and attitude to risk. The client will send a recent payslip."
+   }
+  ]
+ },
+ "queries": [
+  {
+   "id": "q001",
+   "q": "NevisWealth",
+   "category": "email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [
+    "c01"
+   ],
+   "empty": false,
+   "why": "Assignment example 1."
+  },
+  {
+   "id": "q002",
+   "q": "neviswealth",
+   "category": "email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Case must not matter."
+  },
+  {
+   "id": "q003",
+   "q": "nevis",
+   "category": "email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Prefix of the e-mail domain."
+  },
+  {
+   "id": "q004",
+   "q": "wealth",
+   "category": "email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Substring in the middle of the e-mail domain."
+  },
+  {
+   "id": "q005",
+   "q": "john.doe",
+   "category": "email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Local part of the e-mail."
+  },
+  {
+   "id": "q006",
+   "q": "doe@nevis",
+   "category": "email",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Fragment across the @ sign."
+  },
+  {
+   "id": "q007",
+   "q": "Jon Doe",
+   "category": "typo",
+   "level": "nice",
+   "scope": "clients",
+   "relevant": [
+    "c01"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Typo in the first name."
+  },
+  {
+   "id": "q008",
+   "q": "zoe muller",
+   "category": "unicode",
+   "level": "expected",
+   "scope": "clients",
+   "relevant": [
+    "c03"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Typed without the accents."
+  },
+  {
+   "id": "q009",
+   "q": "pension",
+   "category": "description",
+   "level": "required",
+   "scope": "clients",
+   "relevant": [
+    "c02"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Word from the description (pensions)."
+  },
+  {
+   "id": "q010",
+   "q": "address proof",
+   "category": "concept",
+   "level": "required",
+   "scope": "documents",
+   "relevant": [
+    "d01",
+    "d05"
+   ],
+   "acceptable": [],
+   "first": [
+    "d01",
+    "d05"
+   ],
+   "empty": false,
+   "why": "Assignment example 2; the courier proof of delivery (d04) shares both words but is not address evidence and must not be first."
+  },
+  {
+   "id": "q011",
+   "q": "proof of address",
+   "category": "concept",
+   "level": "required",
+   "scope": "documents",
+   "relevant": [
+    "d01",
+    "d05"
+   ],
+   "acceptable": [],
+   "first": [
+    "d01",
+    "d05"
+   ],
+   "empty": false,
+   "why": "Common wording of the same need."
+  },
+  {
+   "id": "q012",
+   "q": "utility bill",
+   "category": "literal",
+   "level": "required",
+   "scope": "documents",
+   "relevant": [
+    "d01",
+    "d05"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Literal document type; d05 says it only in the text."
+  },
+  {
+   "id": "q013",
+   "q": "utilty bill",
+   "category": "typo",
+   "level": "nice",
+   "scope": "documents",
+   "relevant": [
+    "d01",
+    "d05"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "Typo of the literal type."
+  },
+  {
+   "id": "q014",
+   "q": "ID document",
+   "category": "concept",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [
+    "d02"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "A passport is the identity document."
+  },
+  {
+   "id": "q015",
+   "q": "proof of income",
+   "category": "concept",
+   "level": "nice",
+   "scope": "documents",
+   "relevant": [
+    "d06"
+   ],
+   "acceptable": [],
+   "first": [],
+   "empty": false,
+   "why": "No real income evidence in the corpus; the meeting notes mention a payslip (debatable)."
+  },
+  {
+   "id": "q016",
+   "q": "chocolate cake recipe",
+   "category": "negative",
+   "level": "expected",
+   "scope": "documents",
+   "relevant": [],
+   "acceptable": [],
+   "first": [],
+   "empty": true,
+   "why": "Off-domain: nothing should be returned."
+  }
+ ],
+ "http_cases": []
+}

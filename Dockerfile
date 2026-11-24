@@ -76,6 +76,7 @@ COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project
 COPY tests ./tests
+COPY testset ./testset
 COPY scripts ./scripts
 USER 10001:10001
 # /app is not writable for this user: no pytest cache directory
