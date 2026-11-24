@@ -1,0 +1,61 @@
+"""A known limitation, recorded: a courier's "Proof of delivery" ranks among the bills for `address proof`.
+
+Its text ("... sent to the home address ...") holds every word of `address proof` and `proof of address`, so
+it is a lexical hit, while the bills are concept hits through their "proof of address" tag. Lexical and
+concept hits get the same score for the same cosine, so only meaning orders them, and nothing in the design
+tells a delivery note from address evidence. The test therefore asserts how each document is found, not the
+order, and prints the note's rank and its score margin to the lower bill (run with -s). Measured: rank 3 of 3
+for both queries; margin +0.0101 for `address proof` and +0.0043 for `proof of address`. A negative margin
+would put the note above a bill.
+"""
+
+import json
+from pathlib import Path
+
+import pytest
+from fastapi.testclient import TestClient
+
+from tests.integration.helpers import post_client, post_document
+
+SUITE = Path(__file__).resolve().parents[2] / 'testset' / 'suites' / 'tools-mini-6.json'
+BILLS = ('d01', 'd05')  # "Utility bill", "Scan 0042"
+TRAP = 'd04'  # "Proof of delivery"
+CLIENT_FIELDS = ('first_name', 'last_name', 'email', 'description', 'social_links')
+
+
+@pytest.fixture(scope='module')
+def suite_ids(app_client: TestClient) -> dict[str, str]:
+    """API document id -> suite id, for the suite's clients and documents posted once, in file order."""
+    corpus = json.loads(SUITE.read_text(encoding='utf-8'))['corpus']
+    client_ids: dict[str, str] = {}
+    for client in corpus['clients']:
+        fields = {key: client[key] for key in CLIENT_FIELDS}
+        client_ids[client['id']] = post_client(app_client, **fields)['id']
+    document_ids: dict[str, str] = {}
+    for document in corpus['documents']:
+        client_id = client_ids[document['client_id']]
+        created = post_document(app_client, client_id, document['title'], document['content'])
+        document_ids[created['id']] = document['id']
+    return document_ids
+
+
+@pytest.mark.parametrize('q', ['address proof', 'proof of address'])
+def test_proof_of_delivery_is_found_by_its_words_and_the_bills_by_their_tags(
+    app_client: TestClient, suite_ids: dict[str, str], q: str
+) -> None:
+    response = app_client.get('/search', params={'q': q, 'type': 'document'})
+    assert response.status_code == 200, response.text
+    items = response.json()
+    ranked = [suite_ids[item['id']] for item in items]
+    found = {suite_ids[item['id']]: item for item in items}
+
+    assert {*BILLS, TRAP} <= found.keys(), ranked
+    assert {found[bill]['match_type'] for bill in BILLS} == {'concept'}
+    assert found[TRAP]['match_type'] == 'lexical'
+
+    # recorded, not asserted
+    margin = min(found[bill]['score'] for bill in BILLS) - found[TRAP]['score']
+    print(
+        f"\nTRAP q={q!r}: 'Proof of delivery' rank {ranked.index(TRAP) + 1} of {len(ranked)}, "
+        f'score {found[TRAP]["score"]:.4f}, margin to the lower bill {margin:+.4f}'
+    )
