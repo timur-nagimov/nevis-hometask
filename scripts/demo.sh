@@ -24,15 +24,13 @@ for attempt in $(seq 1 120); do
   sleep 1
 done
 
-# POST the JSON body $2 to the path $1 and print the response. On an HTTP error print it and stop.
+# POST the JSON body $2 to the path $1 and keep the answer in $response. On an HTTP error print it and stop.
 post() {
-  local response
   if ! response=$(printf '%s' "$2" | curl -sS --fail-with-body -X POST \
     -H 'Content-Type: application/json' --data-binary @- "$API$1"); then
     echo "POST $1 failed: $response" >&2
     exit 1
   fi
-  printf '%s\n' "$response"
 }
 
 # Print a GET request as a command that can be pasted as is, then its answer. $1: the URL-encoded path.
@@ -43,14 +41,17 @@ show() {
 
 # Upload a document ($1: JSON with title and content) for $client_id; print its title and the tags it got.
 add_document() {
-  post "/clients/$client_id/documents" "$1" | python3 -c '
+  post "/clients/$client_id/documents" "$1"
+  printf '%s' "$response" | python3 -c '
 import json, sys
 d = json.load(sys.stdin)
 print("  document %-20s tags: %s" % (repr(d["title"]), ", ".join(d["tags"]) or "(none)"))'
 }
 
 echo "== Demo data on $API"
-client_id=$(curl -sS --fail-with-body "$API/search?type=client&q=john.doe%40neviswealth.com" | python3 -c '
+# Not one pipeline: a failed request must stop the script (set -e) before python3 reads its answer
+found=$(curl -sS --fail-with-body "$API/search?type=client&q=john.doe%40neviswealth.com")
+client_id=$(printf '%s' "$found" | python3 -c '
 import json, sys
 for client in json.load(sys.stdin):
     if client["email"] == sys.argv[1]:
@@ -60,8 +61,8 @@ for client in json.load(sys.stdin):
 if [ -n "$client_id" ]; then
   echo "John Doe ($EMAIL) already exists as client $client_id: nothing created."
 else
-  client_id=$(post /clients '{"first_name": "John", "last_name": "Doe", "email": "john.doe@neviswealth.com", "description": "Founder of a logistics company; prefers ESG funds.", "social_links": ["https://www.linkedin.com/in/johndoe"]}' |
-    python3 -c 'import json, sys; print(json.load(sys.stdin)["id"])')
+  post /clients '{"first_name": "John", "last_name": "Doe", "email": "john.doe@neviswealth.com", "description": "Founder of a logistics company; prefers ESG funds.", "social_links": ["https://www.linkedin.com/in/johndoe"]}'
+  client_id=$(printf '%s' "$response" | python3 -c 'import json, sys; print(json.load(sys.stdin)["id"])')
   echo "Created client John Doe ($EMAIL): $client_id"
   add_document '{"title": "Utility bill", "content": "British Gas utility bill for March 2025. Account holder John Doe, 14 Larkspur Close, Harrogate. Amount due £84.20."}'
   add_document '{"title": "Passport", "content": "Copy of the passport of John Doe, United Kingdom. Passport number 533401372, expires 12 May 2031."}'
