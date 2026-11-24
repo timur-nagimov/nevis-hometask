@@ -5,8 +5,8 @@ Standard library only, so the stage can run it before anything is installed:
 Every file is checked against its pinned sha256 and size and tried several times; when all attempts fail,
 the error says what the download needs.
 
-Environment: HF_ENDPOINT, a mirror (unset or empty: Hugging Face itself); urllib honours HTTPS_PROXY and
-SSL_CERT_FILE.
+Environment: HF_ENDPOINT, a mirror (unset or empty: Hugging Face itself);
+urllib honours HTTPS_PROXY and SSL_CERT_FILE.
 """
 
 import argparse

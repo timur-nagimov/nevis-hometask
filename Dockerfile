@@ -7,9 +7,10 @@
 #   test     app + dev dependencies + tests + scripts   docker compose --profile test run --rm --no-deps tests
 #   runtime  app + start command; LAST, so it is the default target   docker compose up --build -d
 #
-# Portable between Docker BuildKit and podman/buildah: fully qualified image names; files are COPYed, never bind-mounted; no HEALTHCHECK instruction (podman drops
-# it; docker-compose.yml defines the health checks). The two base images are build arguments so that the
-# linux/amd64 check can pin them by digest without re-tagging the local arm64 images.
+# Portable between Docker BuildKit and podman/buildah: fully qualified image names; files are COPYed,
+# never bind-mounted; no HEALTHCHECK instruction (podman drops it; docker-compose.yml has the health checks).
+# The two base images are build arguments so that the linux/amd64 check can pin them by digest
+# without re-tagging the local arm64 images.
 
 ARG PYTHON_IMAGE=docker.io/library/python:3.14-slim-trixie
 ARG UV_IMAGE=ghcr.io/astral-sh/uv:0.13.9

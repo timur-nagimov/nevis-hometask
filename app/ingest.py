@@ -81,8 +81,8 @@ def _split_long(paragraph: str, max_words: int) -> list[str]:
 def _content_chunks(content: str, max_words: int = CHUNK_WORDS) -> list[str]:
     """Content of at most max_words words is one chunk, verbatim.
 
-    Otherwise paragraphs (split on blank lines) are packed greedily up to max_words and joined by a blank
-    line; no overlap.
+    Otherwise paragraphs (split on blank lines) are packed greedily up to max_words
+    and joined by a blank line; no overlap.
     """
     if len(content.split()) <= max_words:
         return [content]
@@ -242,8 +242,8 @@ def tag_document(services: Services, title: str, content: str) -> Tagging:
 
 
 def create_document(services: Services, client_id: UUID, payload: DocumentCreate) -> Document:
-    """Tag, summarise, chunk, embed and store one document. The caller has validated the payload and checked
-    that the client exists."""
+    """Tag, summarise, chunk, embed and store one document.
+    The caller has validated the payload and checked that the client exists."""
     tagging = tag_document(services, payload.title, payload.content)
     summary = lead_summary(payload.content)
     texts = chunk_document(payload.title, payload.content)

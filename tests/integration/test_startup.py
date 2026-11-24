@@ -1,7 +1,7 @@
 """Start-up through the lifespan: create the schema on an empty database, load the concept map and the model,
-open the connection pool, log one line at start and one at stop; refuse to start when the database cannot be
-reached, the concept map is broken or the model is missing; answer 503 when the database goes away while
-/health keeps answering."""
+open the connection pool, log one line at start and one at stop;
+refuse to start when the database cannot be reached, the concept map is broken or the model is missing;
+answer 503 when the database goes away while /health keeps answering."""
 
 import dataclasses
 import logging

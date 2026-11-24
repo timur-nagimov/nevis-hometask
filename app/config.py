@@ -88,8 +88,8 @@ TAGS_CHUNK_NO = -1  # chunk_no of the embedded tags; the content chunks are numb
 MAX_CONCURRENT_UPLOADS = 4  # documents processed at once; further uploads wait without holding a thread
 
 # Embedding model, pinned to a Hugging Face commit so the files behind it cannot change.
-# scripts/fetch_model.py downloads the same repository, revision and files; it cannot import this module, so a
-# unit test compares them.
+# scripts/fetch_model.py downloads the same repository, revision and files;
+# it cannot import this module, so a unit test compares them.
 MODEL_REPO = 'MongoDB/mdbr-leaf-ir'
 MODEL_REVISION = '4262131b32c3182bd06e67e92ae69d7bd66e0c5c'
 MODEL_FILE = 'onnx/model.onnx'  # in the model directory; its weights sit beside it in model.onnx_data

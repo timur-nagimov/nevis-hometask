@@ -90,8 +90,8 @@ def test_no_concept_map_means_no_tags(tagger: Services) -> None:
 
 
 def test_each_matched_entry_comes_once_in_entry_order_with_where_it_matched(fresh_dsn: str) -> None:
-    # Sorting is off for this session, so the database groups the matches by hashing: the entry order has to
-    # come from the statement itself
+    # Sorting is off for this session, so the database groups the matches by hashing:
+    # the entry order has to come from the statement itself
     engine = db.open_engine(Settings(database_url=make_conninfo(fresh_dsn, options='-c enable_sort=off')))
     entries = [5, 3, 0, 4, 1, 3, 2, 5, 0]
     phrases = [
