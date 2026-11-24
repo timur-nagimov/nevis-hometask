@@ -179,6 +179,9 @@ def test_constants_keep_their_values() -> None:
     assert config.ELLIPSIS == '…'  # one character, not three full stops
     assert config.EXTRACTIVE == 'extractive'
     assert (config.TAGS_CHUNK_NO, config.MAX_CONCURRENT_UPLOADS) == (-1, 4)
+    assert (config.LLM_SUMMARY_CHARS, config.LLM_MAX_CONCEPTS, config.LLM_MAX_PHRASES) == (600, 5, 10)
+    assert (config.LLM_PHRASE_CHARS, config.LLM_MAX_TOKENS, config.LLM_PARALLEL) == (60, 1024, 2)
+    assert config.LLM_CONNECT_SECONDS == 3.0
     assert config.EMBED_BATCH == 4
     assert config.QUERY_PREFIX == 'Represent this sentence for searching relevant passages: '
     assert config.MAX_BODY_BYTES == 2 * 1024 * 1024

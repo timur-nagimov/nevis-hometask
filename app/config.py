@@ -105,6 +105,15 @@ EXTRACTIVE: SummaryMethod = 'extractive'  # the lead summary, taken from the con
 TAGS_CHUNK_NO = -1  # chunk_no of the embedded tags; the content chunks are numbered from 0
 MAX_CONCURRENT_UPLOADS = 4  # documents processed at once; further uploads wait without holding a thread
 
+# Claude enrichment at upload: the limits of an answer (longer values are clipped, not rejected) and of a call
+LLM_SUMMARY_CHARS = 600  # summary written by Claude
+LLM_MAX_CONCEPTS = 5  # concept names per document
+LLM_MAX_PHRASES = 10  # search phrases per document
+LLM_PHRASE_CHARS = 60  # per phrase, and for document_type
+LLM_MAX_TOKENS = 1024  # output cap per call; the answer needs about 300 tokens
+LLM_PARALLEL = 2  # calls in flight; a third upload takes the offline path at once
+LLM_CONNECT_SECONDS = 3.0  # to connect; NEVIS_LLM_TIMEOUT_SECONDS limits the wait for the answer
+
 # Embedding model, pinned to a Hugging Face commit so the files behind it cannot change.
 # scripts/fetch_model.py downloads the same repository, revision and files;
 # it cannot import this module, so a unit test compares them.
