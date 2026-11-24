@@ -197,6 +197,44 @@ def test_every_failure_takes_the_offline_path_and_logs_its_reason(
     assert llm.stats()[f'fallback_{reason}'] == 1 and 'ok' not in llm.stats()
 
 
+@pytest.mark.parametrize(
+    'outcome',
+    [
+        json.JSONDecodeError('UPSTREAM-MARKER', '{broken', 1),
+        UnicodeDecodeError('utf-8', b'\xff', 0, 1, 'UPSTREAM-MARKER'),
+        anthropic.APIResponseValidationError(
+            response=httpx2.Response(200, request=REQUEST),
+            body='UPSTREAM-MARKER',
+            message='UPSTREAM-MARKER',
+        ),
+    ],
+    ids=['malformed-json', 'invalid-encoding', 'invalid-response-schema'],
+)
+@pytest.mark.parametrize('warm_up', [False, True], ids=['upload', 'warm-up'])
+def test_malformed_upstream_response_falls_back_without_logging_it(
+    outcome: Exception, warm_up: bool, caplog: pytest.LogCaptureFixture
+) -> None:
+    caplog.set_level(logging.DEBUG)
+    llm, fake = enricher_with(outcome)
+
+    if warm_up:
+        llm.warm_up()
+        assert llm.stats() == {}
+        assert 'llm warm-up failed reason=invalid_response' in caplog.text
+    else:
+        assert llm.enrich('TITLE-MARKER', 'CONTENT-MARKER') is None
+        assert llm.stats() == {
+            'calls': 1,
+            'fallback_invalid_response': 1,
+            'input_tokens': 0,
+            'output_tokens': 0,
+        }
+
+    assert len(fake.messages.calls) == 1
+    assert 'llm enrichment fallback reason=invalid_response ' in caplog.text
+    assert all(marker not in caplog.text for marker in ('UPSTREAM-MARKER', 'TITLE-MARKER', 'CONTENT-MARKER'))
+
+
 def test_a_call_over_the_parallel_limit_does_not_wait(caplog: pytest.LogCaptureFixture) -> None:
     inside = threading.Barrier(LLM_PARALLEL + 1)
     release = threading.Event()

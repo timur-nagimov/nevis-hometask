@@ -6,6 +6,7 @@ was measured with: change what they return only together with a new measurement.
 
 import difflib
 import hashlib
+import json
 import logging
 import re
 import threading
@@ -548,6 +549,8 @@ class LlmEnricher:
             return self._fallback('connection_error', started)
         except anthropic.APIStatusError as exc:  # any 4xx or 5xx, 429 and 529 included: never retried
             return self._fallback(f'api_error_{exc.status_code}', started)
+        except json.JSONDecodeError, UnicodeDecodeError, anthropic.APIResponseValidationError:
+            return self._fallback('invalid_response', started)
         finally:
             self._slots.release()
         tokens = (response.usage.input_tokens, response.usage.output_tokens)
