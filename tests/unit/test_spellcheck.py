@@ -30,7 +30,7 @@ def test_a_misspelt_concept_phrase_is_corrected(concepts: Concepts, q: str) -> N
 @pytest.mark.parametrize(
     'q',
     [
-        'address proof',  # a trigger itself
+        'Address Proof',  # a trigger itself, as people type it
         'proof of name',  # 0.857 to "proof of income": below SPELL_CUTOFF
         '????',  # nothing is left after normalising
     ],

@@ -1,7 +1,7 @@
 """Document ingest: what is stored and embedded for an uploaded document.
 
-The lead summary, the chunker and the tagging rules are the code the search quality was measured with:
-change what they return only together with a new measurement.
+The lead summary, the chunker, the tagging rules and the concept spell-check are the code the search quality
+was measured with: change what they return only together with a new measurement.
 """
 
 import difflib
@@ -126,7 +126,8 @@ _ENTRY_KEYS = tuple(ConceptEntry.__annotations__)
 
 
 class Concepts:
-    """The concept map, loaded once at start-up: its entries in file order and the phrases they match."""
+    """The concept map, loaded once at start-up: its entries in file order, the phrases they match, and the
+    spell-check of queries against its concept names and triggers."""
 
     def __init__(self, entries: list[ConceptEntry], sha256: str) -> None:
         self.entries = entries
@@ -161,8 +162,10 @@ class Concepts:
     def alt(self, q: str) -> tuple[str | None, float | None]:
         """The concept name or trigger that `q` misspells, and their similarity; (None, None) if none.
 
-        That is the candidate closest to the normalised query, from a similarity of SPELL_CUTOFF on. A query
-        that is a concept name or trigger itself is not corrected.
+        The phrase is the one difflib.get_close_matches picks for the normalised query at SPELL_CUTOFF. The
+        similarity is the ratio of the query to the phrase; difflib picks by the ratio of the phrase to the
+        query, which can differ slightly, so the similarity may be just below SPELL_CUTOFF. A query that is
+        a concept name or trigger itself is not corrected.
         """
         normalised = self.norm(q)
         if not normalised or normalised in self.known:
