@@ -1,6 +1,7 @@
-# CI: build both images, start the stack, wait for /health, run every test in the tests container, show the
-# logs when something failed, remove everything. ubuntu-latest is x86_64, so this is also the linux/amd64
-# check of the image.
+# CI, two jobs in parallel. build-and-test: build both images, start the stack, wait for /health, run every
+# test in the tests container. demo: start the stack, run the demo twice (the second run must create nothing)
+# and check both assignment examples. Each job shows the logs when something failed and removes everything.
+# ubuntu-latest is x86_64, so this is also the linux/amd64 check of the image.
 name: ci
 
 on:
@@ -41,6 +42,37 @@ jobs:
       - name: Run all tests (unit and integration) in the tests container
         timeout-minutes: 10
         run: docker compose --profile test run --rm --no-deps -T tests
+
+      - name: Show the containers and their logs
+        if: failure() || cancelled()
+        run: |
+          docker compose ps -a
+          docker compose logs --no-color
+
+      - name: Stop and remove the containers and the database volume
+        if: always()
+        run: docker compose down -v
+
+  demo:
+    name: demo (both assignment examples)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Build and start the stack
+        timeout-minutes: 15
+        run: docker compose up --build -d
+
+      - name: Run the demo twice; the second run must create nothing
+        run: |
+          set -o pipefail  # the default shell has no pipefail: tee would hide a failed second run
+          scripts/demo.sh
+          scripts/demo.sh | tee second-run.txt
+          grep -q "already exists" second-run.txt
+
+      - name: Check both examples and that nothing was duplicated
+        run: python3 scripts/check_demo.py
 
       - name: Show the containers and their logs
         if: failure() || cancelled()
