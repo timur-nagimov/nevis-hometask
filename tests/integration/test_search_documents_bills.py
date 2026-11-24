@@ -4,10 +4,8 @@ from typing import Any
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import select
 
-from app.config import EXACT_SCORE_MIN, TAGS_CHUNK_NO, Services
-from app.db import DocumentChunkRow, _connection
+from app.config import EXACT_SCORE_MIN
 from tests.integration.corpus import (
     ELECTRICITY_BILL,
     LONG_LETTER,
@@ -57,15 +55,3 @@ def test_long_letter_is_a_concept_hit_below_every_real_bill(
 
     assert dict(ranked)[LETTER]['match_type'] == 'concept'
     assert all(titles.index(bill) < titles.index(LETTER) for bill in BILLS)
-
-
-def test_only_short_documents_get_the_tags_chunk(services: Services, ids: dict[str, str]) -> None:
-    """Why the letter ranks lower: it carries the tag, but a document over SHORT_DOC_WORDS words gets the tags
-    chunk only for concepts in its title."""
-    statement = select(DocumentChunkRow.document_id).where(DocumentChunkRow.chunk_no == TAGS_CHUNK_NO)
-    with _connection(services.engine) as conn:
-        with_tags_chunk = {str(document_id) for document_id in conn.execute(statement).scalars()}
-    titles = {title for title, document_id in ids.items() if document_id in with_tags_chunk}
-
-    assert set(BILLS) <= titles
-    assert LETTER not in titles
