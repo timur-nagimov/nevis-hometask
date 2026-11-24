@@ -1,11 +1,10 @@
 """Latency of /search and /health while the documents of existing-documents-86 are uploaded in parallel.
 
-A measurement, not a benchmark gate: it prints one LOAD line and asserts only that every request succeeded and
-that /health kept answering. A plain run deselects it; run it with -m slow -s.
+A measurement, not a benchmark gate: it prints one LOAD line and asserts only that every request under load
+succeeded and that /health kept answering. A plain run deselects it; run it with -m slow -s.
 
-The limit on concurrent uploads, the embedder's own lane for queries and the async /health matter only when
-requests reach a real server over HTTP, so the test calls the application that the base_url fixture serves
-with uvicorn, as `python -m app` serves it, on its own fresh database. The requests use the standard library.
+The limit on concurrent uploads, the embedder's own lane for queries and the async /health show their effect
+only over real HTTP, so the requests go to the uvicorn server of the base_url fixture, on a fresh database.
 """
 
 import json
@@ -111,15 +110,15 @@ def test_search_and_health_keep_answering_during_parallel_uploads(base_url: str,
 
     assert len(search_ms) >= MIN_PROBES, 'the uploads ended before the probes had measured enough'
     assert len(health_ms) >= MIN_PROBES, 'the uploads ended before the probes had measured enough'
+    upload_statuses = [status for status, _ in uploads]
     upload_ms = [ms for _, ms in uploads]
     health_p95_ms = percentile(health_ms, 0.95)
     result = {
         'condition': f'{UPLOADERS} parallel uploads of the {len(uploads)} documents of {SUITE.stem}, '
         'uvicorn with one worker',
-        'statuses': sorted({status for status, _ in uploads} | set(probe_statuses)),
+        'statuses': sorted(set(upload_statuses) | set(probe_statuses)),
         'cpus': os.cpu_count(),
-        # the settings base_url creates the application with: the same database and environment
-        'embed_threads': Settings(database_url=fresh_dsn).embed_threads,
+        'embed_threads': Settings(database_url=fresh_dsn).embed_threads,  # the settings base_url serves with
         'upload_wall_s': round(upload_wall_s, 1),
         'upload_p50_ms': percentile(upload_ms, 0.5),
         'upload_p95_ms': percentile(upload_ms, 0.95),
@@ -136,6 +135,6 @@ def test_search_and_health_keep_answering_during_parallel_uploads(base_url: str,
         'idle_health_p50_ms': percentile(idle_health_ms, 0.5),
     }
     print('\nLOAD ' + json.dumps(result))
-    assert [status for status, _ in uploads] == [201] * len(uploads)
+    assert set(upload_statuses) == {201}
     assert set(probe_statuses) == {200}
     assert health_p95_ms < HEALTH_P95_LIMIT_MS, '/health must keep answering during uploads (async, no I/O)'
