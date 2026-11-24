@@ -189,7 +189,7 @@ def render(board: Scoreboard, config: str, skipped: list[str]) -> str:
         )
     lines += [
         '',
-        '### The assignment examples (strict pass, every suite that has the query)',
+        '### The assignment examples (strict pass over all their queries in the test set)',
         '',
         '| | passed |',
         '|---|---|',

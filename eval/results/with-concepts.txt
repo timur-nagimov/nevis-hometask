@@ -25,11 +25,11 @@ Skipped records (the API would reject them): existing-clients-skeptic-44/c_long 
 | existing-documents-86 dev | 0.56 | 0.76 | 0.646 | 0.88 | 0.75 (6/8) |
 | existing-documents-86 test | 0.64 | 0.56 | 0.595 | 0.76 | 0.62 (5/8) |
 
-### The assignment examples (strict pass, every suite that has the query)
+### The assignment examples (strict pass over all their queries in the test set)
 
 | | passed |
 |---|---|
 | `neviswealth` | 16/16 |
 | `address proof` | 0/10 |
 
-Run time: 1 min 13 s (loading 1 min 03 s, queries 8 s); model revision 4262131
+Run time: 1 min 17 s (loading 1 min 07 s, queries 8 s); model revision 4262131
