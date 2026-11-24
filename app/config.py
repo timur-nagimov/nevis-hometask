@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Literal
 
 import psycopg
 from psycopg.conninfo import conninfo_to_dict
-from pydantic import Field, SecretStr, field_validator
+from pydantic import AliasChoices, Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import Engine
 
@@ -36,6 +36,17 @@ class Settings(BaseSettings):
     log_level: Literal['DEBUG', 'INFO', 'WARNING', 'ERROR'] = 'INFO'
     host: str = '127.0.0.1'  # the container image sets 0.0.0.0
     port: int = Field(default=8000, ge=1, le=65535)
+
+    # Claude enrichment at upload. Claude is called only when both the flag and the key are set: a key that
+    # happens to be in the environment sends nothing on its own.
+    llm_enabled: bool = False
+    llm_model: str = 'claude-haiku-5-5'  # the request is shaped for this model; another may refuse it
+    llm_timeout_seconds: float = Field(default=10.0, gt=0)  # a slower answer is dropped, the upload goes on
+    # read from ANTHROPIC_API_KEY, the SDK's own name, not from a NEVIS_ variable; the field name is for
+    # passing the key to the constructor
+    anthropic_api_key: SecretStr | None = Field(
+        default=None, validation_alias=AliasChoices('ANTHROPIC_API_KEY', 'anthropic_api_key')
+    )
 
     @field_validator('database_url')
     @classmethod

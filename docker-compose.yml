@@ -35,7 +35,7 @@ services:
       context: .
       target: runtime
     restart: unless-stopped
-    env_file:  # NEVIS_* settings from .env, when the file exists; `environment` below wins
+    env_file:  # NEVIS_* settings and ANTHROPIC_API_KEY from .env, when it exists; `environment` below wins
       - path: .env
         required: false
     environment:

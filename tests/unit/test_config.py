@@ -111,6 +111,9 @@ def test_every_setting_is_read_from_its_nevis_variable(monkeypatch: pytest.Monke
     monkeypatch.setenv('NEVIS_DB_STATEMENT_TIMEOUT_MS', '300')
     monkeypatch.setenv('NEVIS_HOST', '0.0.0.0')
     monkeypatch.setenv('NEVIS_PORT', '9000')
+    monkeypatch.setenv('NEVIS_LLM_ENABLED', 'true')
+    monkeypatch.setenv('NEVIS_LLM_MODEL', 'claude-other')
+    monkeypatch.setenv('NEVIS_LLM_TIMEOUT_SECONDS', '2.5')
 
     assert Settings().model_dump() == {
         'database_url': SecretStr('postgresql://other/db'),
@@ -125,6 +128,10 @@ def test_every_setting_is_read_from_its_nevis_variable(monkeypatch: pytest.Monke
         'log_level': 'DEBUG',
         'host': '0.0.0.0',
         'port': 9000,
+        'llm_enabled': True,
+        'llm_model': 'claude-other',
+        'llm_timeout_seconds': 2.5,
+        'anthropic_api_key': None,  # read from ANTHROPIC_API_KEY, which has no NEVIS_ prefix
     }
 
 
@@ -145,6 +152,7 @@ def test_invalid_values_are_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv('NEVIS_EMBED_THREADS', '0')
     monkeypatch.setenv('NEVIS_LOG_LEVEL', 'LOUD')
     monkeypatch.setenv('NEVIS_PORT', '0')
+    monkeypatch.setenv('NEVIS_LLM_TIMEOUT_SECONDS', '0')
 
     with pytest.raises(ValidationError) as error:
         Settings()
@@ -157,6 +165,7 @@ def test_invalid_values_are_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
         ('embed_threads',),
         ('log_level',),
         ('port',),
+        ('llm_timeout_seconds',),
     ]
 
 

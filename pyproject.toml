@@ -16,6 +16,7 @@ dependencies = [
     "tokenizers==0.23.3",
     "numpy==2.5.5",
     "pyyaml==6.0.3",
+    "anthropic==2.13.0",
 ]
 
 [dependency-groups]
