@@ -13,24 +13,22 @@ PROBLEM_REF = {'$ref': '#/components/schemas/Problem'}
 # 500 and 503 on every operation that uses the database; /health does not use it
 EXPECTED = {
     ('/clients', 'post'): {'201', '400', '413', '415', '422', '500', '503'},
-    ('/clients/{}', 'get'): {'200', '404', '500', '503'},
-    ('/clients/{}/documents', 'post'): {'201', '400', '404', '413', '415', '422', '500', '503'},
-    ('/clients/{}/documents/{}', 'get'): {'200', '404', '500', '503'},
+    ('/clients/{client_id}', 'get'): {'200', '404', '500', '503'},
+    ('/clients/{client_id}/documents', 'post'): {'201', '400', '404', '413', '415', '422', '500', '503'},
+    ('/clients/{client_id}/documents/{document_id}', 'get'): {'200', '404', '500', '503'},
     ('/search', 'get'): {'200', '400', '422', '500', '503'},
     ('/health', 'get'): {'200'},
 }
 
 
 def _schema() -> dict[str, Any]:
-    """The app's schema as JSON sees it: the file holds JSON, so JSON is compared with JSON."""
-    schema: dict[str, Any] = json.loads(json.dumps(create_app().openapi()))
-    return schema
+    return create_app().openapi()
 
 
 def _operations(schema: dict[str, Any]) -> dict[tuple[str, str], dict[str, Any]]:
-    """Operations keyed by (path with every {parameter} written as {}, method)."""
+    """Operations keyed by (path, method)."""
     return {
-        (re.sub(r'\{[^}]+\}', '{}', path), method): operation
+        (path, method): operation
         for path, item in schema['paths'].items()
         for method, operation in item.items()
     }
@@ -62,13 +60,13 @@ def test_every_reference_resolves() -> None:
 
 def test_413_may_be_plain_text() -> None:
     operations = _operations(_schema())
-    for key in [('/clients', 'post'), ('/clients/{}/documents', 'post')]:
+    for key in [('/clients', 'post'), ('/clients/{client_id}/documents', 'post')]:
         assert {'text/plain', PROBLEM_JSON} <= set(operations[key]['responses']['413']['content'])
 
 
 def test_location_and_retry_after_headers_are_declared() -> None:
     operations = _operations(_schema())
-    for key in [('/clients', 'post'), ('/clients/{}/documents', 'post')]:
+    for key in [('/clients', 'post'), ('/clients/{client_id}/documents', 'post')]:
         assert 'Location' in operations[key]['responses']['201']['headers']
     for key, statuses in EXPECTED.items():
         if '503' in statuses:
