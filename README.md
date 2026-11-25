@@ -298,7 +298,7 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
   [GitHub Actions](https://github.com/timur-nagimov/nevis-hometask/actions/workflows/ci.yml); Docker Desktop on
   Windows was not tried.
 - **Deployed:** https://d5db1cnp9cksolkc8ki5.fovt0b64.apigw.yandexcloud.net (Yandex Cloud, Russia); demo-only,
-  Claude off; HTTPS via Yandex API Gateway; HTTP Basic (credentials on request); `/health` open.
+  Claude off; HTTP Basic (credentials on request); `/health` open.
   Overseas reachability unverified.
 
 ## How LLMs were used
@@ -309,11 +309,11 @@ With `NEVIS_LLM_ENABLED=true` and an Anthropic key, Claude Haiku writes the summ
 documents it took p50 2.1 s and p95 3.6 s, about $0.0003 per document. Document titles and text go to Anthropic.
 
 **During development** I used AI agents throughout. Claude Code researched, designed and wrote most of the code
-test-first; Codex wrote part of the Claude enrichment and the final review fixes (12 commits) and reviewed the code;
+test-first; Codex wrote part of the Claude enrichment and the final review fixes (18 commits) and reviewed the code;
 separate agents reviewed the design. Agents wrote 10 suites (Codex and Claude wrote 6 blind), built 8 from open
-datasets and drafted the concept map. Scripts reproduce quality/cosine tables; CI compares README cells with
-stored `eval/results/`, without recomputing relevance. Transcripts are captured; image builds require a
-model self-check.
+datasets and drafted the concept map. Scripts reproduce quality/cosine tables; CI compares README cells with stored
+`eval/results/`, without recomputing relevance; "design-time" numbers predate the code. Transcripts are captured;
+image builds require a model self-check.
 
 ## Repository map
 
