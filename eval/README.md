@@ -47,6 +47,23 @@ diff <(grep '^|' eval/results/with-concepts.txt) \
 `docker compose --profile test run --rm --no-deps tests python -m eval.cosine_table` prints the README's
 three-document cosine table ([results/cosines.md](results/cosines.md)).
 
+## Rejected search variants
+
+Six variants were measured independently on all 1,887 queries with the concept map enabled and Claude off.
+Acceptance required strict pass counts over all queries and over the 621 required by the assignment to stay at
+least at baseline; first-10 F1 could fall by at most 0.005. All six were rejected. Their patches are not part of
+the repository.
+
+| Variant | Strict pass, all | Strict pass, required | Precision@10 | Recall@10 | F1@10 | Relevant hit@10 | No-answer empty |
+|---|---|---|---|---|---|---|---|
+| Baseline | 1323/1887 (70 %) | 544/621 (88 %) | 0.80 | 0.74 | 0.766 | 0.86 | 0.67 (154/230) |
+| Typo matches next to exact client matches | 1221/1887 (65 %) | 482/621 (78 %) | 0.75 | 0.74 | 0.744 | 0.86 | 0.67 (154/230) |
+| Remove relative semantic cutoff | 1326/1887 (70 %) | 538/621 (87 %) | 0.78 | 0.75 | 0.763 | 0.87 | 0.67 (154/230) |
+| Compare semantic-only candidates for the cutoff | 1308/1887 (69 %) | 538/621 (87 %) | 0.78 | 0.74 | 0.760 | 0.86 | 0.67 (154/230) |
+| Title overlap and cosine ≥0.40 bypass the cutoff | 1319/1887 (70 %) | 541/621 (87 %) | 0.79 | 0.74 | 0.767 | 0.86 | 0.67 (154/230) |
+| Title-only concept tags | 1326/1887 (70 %) | 545/621 (88 %) | 0.81 | 0.71 | 0.757 | 0.85 | 0.67 (155/230) |
+| Title-only tags plus body-only lexical demotion | 1320/1887 (70 %) | 544/621 (88 %) | 0.82 | 0.70 | 0.756 | 0.85 | 0.67 (155/230) |
+
 ## Claude at upload
 
 Measured on 2026-11-24 with `claude-haiku-5-5`:
