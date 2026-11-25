@@ -30,6 +30,24 @@ docker compose --profile test run --rm --no-deps tests    # unit and integration
 - **Evaluation.** `docker compose --profile test run --rm --no-deps tests python -m eval.run_testset` scores this
   code on the 1,887-query test set in under a minute and a half; see [eval/README.md](eval/README.md).
 
+## Try the deployed copy
+
+A copy of `main` with the demo data runs in Yandex Cloud: Claude off, HTTP basic auth on everything but
+`/health` (credentials sent separately). In a browser, open `/docs`.
+
+```bash
+API=https://d5db1cnp9cksolkc8ki5.fovt0b64.apigw.yandexcloud.net
+AUTH='<login>:<password>'
+curl -s "$API/health"
+curl -s -u "$AUTH" "$API/search?q=NevisWealth" | python3 -m json.tool
+CLIENT=$(curl -s -u "$AUTH" -H 'Content-Type: application/json' "$API/clients" \
+  -d '{"first_name": "Anna", "last_name": "Schmidt", "email": "anna.schmidt@example.com"}' \
+  | python3 -c 'import json, sys; print(json.load(sys.stdin)["id"])')
+curl -s -u "$AUTH" -H 'Content-Type: application/json' "$API/clients/$CLIENT/documents" \
+  -d '{"title": "Council tax bill", "content": "Council tax bill for 2025, 3 Lake Road, Zurich. Amount due CHF 1,240."}'
+curl -s -u "$AUTH" "$API/search?q=address%20proof" | python3 -m json.tool
+```
+
 ## The two examples from the assignment
 
 Captured with `scripts/demo.sh` on an empty database (full output: [docs/demo-transcript.txt](docs/demo-transcript.txt));
@@ -147,9 +165,8 @@ Measured 2026-11-24: 86 sequential uploads using `eval/post_latency.py`, API on 
 | on | 2109 ms | 3645 ms | 3968 ms | llm 86, no fallback |
 
 87 calls including warm-up used 148,635 input and 24,604 output tokens: about $0.027 total, about $0.0003 per
-document at $0.10 / $0.50 per million tokens. Enabled measurements ran on the host: this corporate network resolves
-Anthropic to IPv6 only, but its podman containers have IPv4 only and fall back with `connection_error`.
-On a normal network the containers reach the API. [Evaluation details](eval/README.md#claude-at-upload) include
+document at $0.10 / $0.50 per million tokens. Enabled measurements ran on the host, as this network's podman
+containers cannot reach Anthropic (IPv6 only). [Evaluation details](eval/README.md#claude-at-upload) include
 the 4 passing live tests and the earlier injection failures.
 
 **Data flow.** Opt-in: each uploaded title and content (up to 50,000 characters) go to Anthropic.
@@ -265,7 +282,7 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
   measured.
 - Results carry whole documents, like the assignment's Document model: at most 50 documents of 50,000 characters,
   about 2.5 MB of Latin text and up to about 7.5 MB in other scripts; a few kilobytes on the demo data.
-- Swagger UI offers both assignment queries as examples; `scripts/demo.sh` shows the create calls with curl.
+- Swagger UI offers both assignment queries as examples.
 
 ## Limits
 
@@ -297,9 +314,7 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
 - **Platforms.** Built and tested with podman on Apple Silicon (arm64) and with Docker on x86_64 in
   [GitHub Actions](https://github.com/timur-nagimov/nevis-hometask/actions/workflows/ci.yml); Docker Desktop on
   Windows was not tried.
-- **Deployed:** https://d5db1cnp9cksolkc8ki5.fovt0b64.apigw.yandexcloud.net (Yandex Cloud, Russia); demo-only,
-  Claude off; HTTP Basic (credentials on request); `/health` open.
-  Overseas reachability unverified.
+- **Deployed copy.** Reachability from outside Russia was not verified.
 
 ## How LLMs were used
 
