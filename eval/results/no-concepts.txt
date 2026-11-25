@@ -32,4 +32,4 @@ Skipped records (the API would reject them): existing-clients-skeptic-44/c_long 
 | `neviswealth` | 16/16 |
 | `address proof` | 0/10 |
 
-Run time: 1 min 06 s (loading 55 s, queries 10 s); model revision 4262131
+Run time: 56 s (loading 47 s, queries 7 s); model revision 4262131
