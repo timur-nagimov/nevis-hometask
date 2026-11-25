@@ -21,6 +21,7 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    Numeric,
     Select,
     Text,
     all_,
@@ -64,6 +65,7 @@ from app.config import (
     MIN_STOP_WORDS_CHARS,
     MIN_WORD_CHARS,
     NAME_WEIGHT,
+    SCORE_DECIMALS,
     T_FALLBACK,
     T_STRONG,
     TAU_TITLE,
@@ -332,7 +334,7 @@ def client_exists(engine: Engine, client_id: UUID) -> bool:
 def search_clients(engine: Engine, q: str, limit: int) -> list[dict[str, Any]]:
     """Clients for a prepared query, best first, at most `limit`.
 
-    Rows: id, match_type ('exact' or 'fuzzy'), score (unrounded), first_name, last_name, email, description,
+    Rows: id, match_type ('exact' or 'fuzzy'), score (rounded), first_name, last_name, email, description,
     social_links. `exact`: every word of the normalised query occurs in the client's search_text, even inside
     a longer word; score EXACT_SCORE_MIN to 1. `fuzzy`, only when nothing is exact and the query has at least
     MIN_FUZZY_CHARS letters and digits: a typo match by trigram word similarity; score 0 to FUZZY_SCORE_MAX.
@@ -389,9 +391,10 @@ def search_clients(engine: Engine, q: str, limit: int) -> list[dict[str, Any]]:
         DESCRIPTION_WEIGHT
         * func.word_similarity(query.c.norm, func.public.search_normalize(found.c.description)),
     )
-    score = case(
+    raw_score = case(
         (found.c.exact, EXACT_SCORE_MIN + (1 - EXACT_SCORE_MIN) * best), else_=FUZZY_SCORE_MAX * best
-    ).label('score')
+    )
+    score = cast(func.round(cast(raw_score, Numeric), SCORE_DECIMALS), Double).label('score')
     statement = (
         select(
             found.c.id,
@@ -404,7 +407,7 @@ def search_clients(engine: Engine, q: str, limit: int) -> list[dict[str, Any]]:
             found.c.social_links,
         )
         .select_from(found.join(query, true()))
-        .order_by(score.desc(), found.c.last_name, found.c.first_name, found.c.id)
+        .order_by(score.desc(), found.c.id)
         .limit(limit)
     )
     with _connection(engine) as conn:
@@ -653,11 +656,12 @@ def _search_documents_statement() -> Select[Any]:
     )
     found = select(marked, func.bool_or(marked.c.strong).over().label('any_strong')).subquery('m')
     clamped_cos = func.least(func.greatest(found.c.cos, 0), 1)
-    score = case(
+    raw_score = case(
         (found.c.lex_hit, EXACT_SCORE_MIN + (1 - EXACT_SCORE_MIN) * clamped_cos),
         (found.c.fs.is_not(None), FUZZY_SCORE_MAX * found.c.fs),
         else_=EXACT_SCORE_MIN * clamped_cos,
-    ).label('score')
+    )
+    score = cast(func.round(cast(raw_score, Numeric), SCORE_DECIMALS), Double).label('score')
     match_type = case(
         (found.c.in_text, 'lexical'),
         (found.c.lex_hit, 'concept'),
@@ -691,7 +695,7 @@ def search_documents(
     """Documents for a prepared query, best first, at most `limit`.
 
     `qvec` is the query's vector; `alt` is the concept phrase the query misspells and `alt_sim` its similarity
-    to the query, or both are None. Rows: the document's columns, score (unrounded), match_type and cos (of
+    to the query, or both are None. Rows: the document's columns, score (rounded), match_type and cos (of
     the best chunk).
     - `lexical`: every query word is in the title or the content (stemmed, stop words ignored); a query of
       nothing but stop words (`will`) can match only titles, by its words as typed. `concept`: only with the

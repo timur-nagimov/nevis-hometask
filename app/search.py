@@ -31,7 +31,7 @@ ResultType = Literal['client', 'document']  # the type of a search item
 
 
 def search(services: Services, q: str, type_: ResultType | None, limit: int) -> list[dict[str, Any]]:
-    """Ask the client search and the document search for `limit` rows each (unrounded scores), then merge.
+    """Ask each search for `limit` rows, ordered by rounded score and id, then merge.
 
     `q` is prepared and validated already (QueryText). Each result is a flat dict: the API fields plus
     `type`, `score` and `match_type`.

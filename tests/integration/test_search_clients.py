@@ -1,7 +1,4 @@
-"""The client search (db.search_clients) on a real database.
-
-Scores are unrounded here: the API rounds them (app.search.merge).
-"""
+"""The client search (db.search_clients) on a real database."""
 
 from typing import Any
 
