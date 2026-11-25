@@ -161,8 +161,8 @@ may record search terms. [Data-flow details](docs/DESIGN.md#11-privacy-and-data-
 ## How search decides
 
 **Clients.** Query and record use Unicode NFKC, accent removal and case folding. `exact` requires every query word
-in name, e-mail or description: `neviswealth`, `wealth`, `john.doe`, `Doe John` find John Doe. With no matches and
-at least 5 letters/digits, trigrams handle typos (`NevisWelth`, `Jon Doe` → `fuzzy`).
+in name, e-mail or description: `neviswealth`, `wealth`, `john.doe`, `Doe John` find John Doe. Only without exact matches
+and with at least 5 letters/digits, trigrams handle typos (`NevisWelth`, `Jon Doe` → `fuzzy`).
 
 **Documents.** Documents are cut into fragments of up to 200 words, each with a vector; a document's cosine is its
 best fragment's. One SQL statement, four ways in:
@@ -174,7 +174,8 @@ best fragment's. One SQL statement, four ways in:
 4. *weak guess*, only if nothing above matched: up to three nearest documents with a cosine of at least 0.32 →
    `semantic`.
 
-Both kinds are fetched with `limit` each, merged, sorted by score, type and id, and cut to `limit` (1-50, default 10).
+Each SQL query rounds scores to four decimals and sorts by score descending, then id, before taking `limit`.
+The merge uses score, type and id, then `limit` (1-50, default 10), so ties keep their order across limits.
 
 | Score | Meaning | `match_type` |
 |---|---|---|
@@ -210,8 +211,8 @@ topics and identifiers. Four cite official lists (GOV.UK, Bona Vacantia, DBS, JM
 
 ## Measured quality
 
-`eval/run_testset.py` runs the 1,887 queries of `testset/` (18 suites) against this code, once with the concept map
-and once without, with Claude off. Both columns come from `eval/results/`.
+`eval/run_testset.py` scores 1,887 queries across 18 suites with Claude off. Both columns in `eval/results/`
+were reproduced on host PostgreSQL 18 (2026-11-25); the baseline matched the container results.
 Claude raises first-10 recall (0.74→0.79), barely changes strict pass (1,323→1,324), and loses four required queries
 (544→540); see [evaluation results](eval/README.md#claude-at-upload).
 
@@ -269,9 +270,8 @@ Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads
 
 ## Limits
 
-- **What a document is for** (`proof of income`, `photo ID`) is the weakest kind of query: the map is a closed list,
-  so phrasings it lacks ("Council Tax demand notice") get no tag, and documents that merely mention the words, or carry
-  a neighbouring tag, come back too.
+- **Purpose queries** (`proof of income`, `photo ID`): missing phrasings get no tag; mentions and requests can rank
+  like evidence. The relative semantic cutoff can omit "Electricity bill" for `utility bill`.
 - **`address proof`** with Claude off also returns "Proof of delivery … home address" and letters asking for proof
   of address. With Claude, still 0/10.
 - **Client substrings inside words:** `Chester` finds Manchester, `Ng` finds England. Test authors disagree;
