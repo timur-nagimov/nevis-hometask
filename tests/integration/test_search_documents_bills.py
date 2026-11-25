@@ -47,20 +47,46 @@ def test_body_only_bill_and_electricity_bill_are_concept_hits(
         assert found[title]['score'] >= EXACT_SCORE_MIN
 
 
-def test_long_letter_is_a_concept_hit_below_every_real_bill(
-    app_client: TestClient, titles: dict[str, str]
-) -> None:
-    ranked = hits(app_client, titles, 'address proof')
-    order = [title for title, _ in ranked]
+def test_real_bills_rank_first_for_address_proof(app_client: TestClient, titles: dict[str, str]) -> None:
+    order = [title for title, _ in hits(app_client, titles, 'address proof')]
 
-    assert dict(ranked)[LETTER]['match_type'] == 'concept'
-    assert all(order.index(bill) < order.index(LETTER) for bill in BILLS)
+    assert set(order[: len(BILLS)]) == set(BILLS)
 
 
-def test_a_document_close_in_meaning_but_far_below_the_best_is_left_out(
+def test_named_utility_bills_are_returned(app_client: TestClient, titles: dict[str, str]) -> None:
+    found = {title for title, _ in hits(app_client, titles, 'utility bill')}
+
+    assert {'Utility bill', 'Scan 0042'} <= found
+
+
+def test_unrelated_documents_are_excluded_for_utility_bill(
     app_client: TestClient, titles: dict[str, str]
 ) -> None:
     found = {title for title, _ in hits(app_client, titles, 'utility bill')}
 
-    # the Electricity bill's cosine is above T_STRONG, but more than DELTA below the Utility bill's
-    assert found == {'Utility bill', 'Scan 0042', LETTER}
+    assert not {'Passport', 'Tax return'} & found
+
+
+@pytest.mark.xfail(
+    strict=True,
+    reason='Relative semantic cutoff omits Electricity bill for utility bill; see docs/DESIGN.md section 9',
+)
+def test_electricity_bill_is_returned_for_utility_bill(
+    app_client: TestClient, titles: dict[str, str]
+) -> None:
+    found = {title for title, _ in hits(app_client, titles, 'utility bill')}
+
+    assert 'Electricity bill' in found
+
+
+@pytest.mark.parametrize('q', ['address proof', 'utility bill'])
+@pytest.mark.xfail(
+    strict=True,
+    reason='Body mentions give a review letter bill matches and address-proof tags; see README Limits',
+)
+def test_letter_merely_mentioning_a_bill_is_excluded(
+    app_client: TestClient, titles: dict[str, str], q: str
+) -> None:
+    found = {title for title, _ in hits(app_client, titles, q)}
+
+    assert LETTER not in found

@@ -161,6 +161,10 @@ research) always fail. Every other number above is the same in `results/`.
   "written blind" and "open datasets" are the rows from outside the research.
 - `codex-mixed` expects 200 and `[]` for an empty `q`, while the API answers 422: h23 and h24 of
   `tests/integration/test_http_cases.py` are expected failures (55 of the 57 HTTP checks pass).
+- Five search cases are strict expected failures: the omitted electricity bill, a review letter returned for
+  two bill/address-proof queries, and proof of delivery returned for two address-proof queries. Together with
+  the two HTTP cases, integration tests have seven expected failures; see [README Limits](../README.md#limits)
+  and [DESIGN section 9](../docs/DESIGN.md#9-considered-and-not-built).
 - For future tuning, split the set by whole suites, not by query: otherwise spellings of one query land in both
   halves.
 - Adding phrases from failed queries to the concept map would fit the map to this test set; new phrases come from
