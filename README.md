@@ -1,5 +1,8 @@
 # Nevis Search API
 
+**Deployed copy:** https://d5db1cnp9cksolkc8ki5.fovt0b64.apigw.yandexcloud.net/docs (Swagger UI; HTTP basic auth,
+credentials sent separately). [How to try it](#try-the-deployed-copy).
+
 A REST service that stores wealth-management clients and their documents and searches both through one endpoint.
 FastAPI and PostgreSQL 18 (pgvector, pg_trgm, unaccent); a local embedding model is baked into the image, so after
 the first build everything runs offline and without any API key. Claude enrichment at upload is optional.
