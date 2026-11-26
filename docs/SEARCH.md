@@ -21,7 +21,9 @@ Both kinds are fetched with `limit` each, merged, sorted by score, type and id, 
 |---|---|---|
 | 0.5 and above | the query's words are in the record, or in the document's tags | `exact`, `lexical`, `concept` |
 | 0.2 to 0.5 | a strong semantic match, or a typo | `semantic`, `fuzzy` |
-| below 0.2 | a weak semantic guess, or a client typo found only in the description (at most 0.245) | `semantic`, `fuzzy` |
+| below 0.2 | a weak semantic guess, or a weak typo match | `semantic`, `fuzzy` |
+
+A client typo found only in the description scores at most 0.245, so it can fall on either side of 0.2.
 
 For confident results, drop `semantic` items below 0.2.
 

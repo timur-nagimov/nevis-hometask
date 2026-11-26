@@ -1,6 +1,6 @@
 """The documents quote only what the repository prints.
 
-- eval/README.md's quality cells are cells of eval/results/ (the output of eval/run_testset.py);
+- the quality cells of README.md and eval/README.md are cells of eval/results/ (eval/run_testset.py's output);
 - docs/SEARCH.md's cosine table is eval/results/cosines.md (the output of eval/cosine_table.py);
 - the README's transcripts are copied from docs/demo-transcript.txt (the output of scripts/demo.sh);
 - relative links in README.md, every docs/*.md and eval/README.md resolve;
@@ -58,12 +58,13 @@ def test_relative_links_resolve(path: Path) -> None:
             assert (path.parent / target).exists(), f'{path.relative_to(ROOT)}: broken link {target}'
 
 
-def test_quality_cells_are_runner_output() -> None:
+@pytest.mark.parametrize(('doc', 'min_rows'), [('README.md', 3), ('eval/README.md', 6)])
+def test_quality_cells_are_runner_output(doc: str, min_rows: int) -> None:
     with_concepts = _runner_cells('with-concepts.txt')
     no_concepts = _runner_cells('no-concepts.txt')
-    text = (ROOT / 'eval' / 'README.md').read_text(encoding='utf-8')
+    text = (ROOT / doc).read_text(encoding='utf-8')
     rows = _table_lines(_between(text, 'quality'))[2:]  # after the header and its separator
-    assert len(rows) >= 6, 'the quality table needs at least six rows'
+    assert len(rows) >= min_rows, f'the quality table of {doc} needs at least {min_rows} rows'
     for row in rows:
         label, with_map, without_map = _cells(row)
         assert with_map in with_concepts, f'{label}: {with_map!r} is not in eval/results/with-concepts.txt'

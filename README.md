@@ -1,8 +1,8 @@
 # Nevis Search API
 
 A REST service that stores wealth-management clients and their documents and searches both through one endpoint.
-It uses FastAPI and PostgreSQL 18 (pgvector, pg_trgm, unaccent). The image includes local embeddings: offline after
-the first build, without a key; Claude is optional at upload.
+FastAPI and PostgreSQL 18 (pgvector, pg_trgm, unaccent); a local embedding model is baked into the image, so after
+the first build everything runs offline and without any API key. Claude enrichment at upload is optional.
 
 ## Run it
 
@@ -17,9 +17,9 @@ docker compose --profile test run --rm --no-deps tests    # unit and integration
 - **First build.** Downloads: images from docker.io and ghcr.io, packages from PyPI, the embedding model (92 MB,
   pinned revision and sha256) from huggingface.co. Measured: 46 s on fresh GitHub Actions x86_64; later starts take
   seconds. For a model mirror: `docker compose build --build-arg HF_ENDPOINT=<mirror URL>`.
-- **Port.** The API answers on http://127.0.0.1:8000 only. For another port:
-  `docker compose down && API_PORT=8001 docker compose up -d` and `API_PORT=8001 scripts/demo.sh`, or set `API_PORT`
-  in `.env` (see `.env.example`) and export it for the scripts. The database publishes no port.
+- **Port.** The API answers on http://127.0.0.1:8000 only; for another, set `API_PORT`
+  (`docker compose down && API_PORT=8001 docker compose up -d`, then `API_PORT=8001 scripts/demo.sh`, or `.env`).
+  The database publishes no port.
 - **API description.** http://127.0.0.1:8000/docs requires cdn.jsdelivr.net;
   [docs/openapi.json](docs/openapi.json) works offline.
 - **Reset.** `docker compose down -v` stops everything and deletes the database volume. `scripts/demo.sh` creates
@@ -137,7 +137,7 @@ $ curl -s 'http://127.0.0.1:8000/search?q=address%20proof' | python3 -m json.too
 ```
 <!-- transcript:end -->
 
-No answer → an empty list.
+`chocolate cake recipe` → an empty list.
 
 <!-- transcript:start -->
 ```console
@@ -148,18 +148,35 @@ $ curl -s 'http://127.0.0.1:8000/search?q=chocolate%20cake%20recipe' | python3 -
 
 ## How it works
 
-Clients: substrings in name/e-mail/description, then a typo tier.
-Documents: one SQL statement with literal, typo and semantic legs; scores in bands.
-At upload, the concept map gives utility bills `proof of address` tags: embeddings alone rank the bill last
-for `address proof` (passport 0.25, tax return 0.19, bill 0.14).
-Summaries are extractive; Claude is optional.
-[Search rules](docs/SEARCH.md) · [Design](docs/DESIGN.md).
+- **Clients:** every query word is a substring of the name, e-mail or description (`exact`); if no client matches,
+  typo matches by trigrams (`fuzzy`).
+- **Documents:** one SQL statement: literal full-text matches, typo matches on titles and concept phrases, and the
+  meaning of embedded fragments. Score bands: 0.5 and above, words found; 0.2 to 0.5, meaning or a typo; below 0.2,
+  a weak guess.
+- **Concept map:** at upload, 30 concepts tag documents, so a utility bill carries `proof of address`. Embeddings
+  alone rank the bill last for `address proof` (passport 0.25, tax return 0.19, bill 0.14).
+- **Summary:** the document's first sentences, up to 300 characters; Claude can write it instead.
+
+Details: [search rules](docs/SEARCH.md) and [design decisions](docs/DESIGN.md).
 
 ## Measured quality
 
-With the map, Claude off: strict pass **1,323/1,887 (70%)**; required by the assignment **544/621 (88%)**;
-first-10 precision/recall/F1 **0.80/0.74/0.766**.
-Strict pass requires all expected results, no wrong results and correct ordering.
+On the 1,887 queries of `testset/`, Claude off:
+
+<!-- quality:start -->
+| | With the concept map (shipped) | Without the concept map |
+|---|---|---|
+| Strict pass, all 1,887 queries | 1323/1887 (70 %) | 1328/1887 (70 %) |
+| … required by the assignment's text (621) | 544/621 (88 %) | 547/621 (88 %) |
+| First 10: precision | 0.80 | 0.82 |
+| First 10: recall | 0.74 | 0.69 |
+| First 10: F1 | 0.766 | 0.747 |
+| `NevisWealth`, strict, all its queries in the test set | 16/16 | 16/16 |
+| `address proof`, strict, all its queries in the test set | 0/10 | 0/10 |
+<!-- quality:end -->
+
+Strict pass: every expectation of the query holds (results, no wrong ones, order). `address proof` finds the bills
+but passes none of its ten queries strictly.
 [Full results and qualifications](eval/README.md#measured-quality).
 
 ## API
@@ -187,16 +204,16 @@ Errors: `application/problem+json` (RFC 9457); 503 with `Retry-After`.
 
 ## How LLMs were used
 
-No runtime LLM by default: local `mdbr-leaf-ir` (Apache-2.0), nothing leaves the machine.
-Optional Claude Haiku receives titles/text, adds summaries/tags at upload (86 documents: p50 2.1 s, p95 3.6 s,
-$0.0003/document); [enable it](docs/ENRICHMENT.md).
-I used AI agents throughout development. Claude Code researched, designed and wrote most code test-first;
-Codex wrote enrichment parts and final review fixes (18 commits), and reviewed code.
-Separate agents reviewed the design.
-Agents wrote 10 suites (6 blind, Codex/Claude), built 8 from open datasets and drafted the map.
-Scripts reproduce quality/cosine tables. CI docs tests compare quality cells and the cosine table with stored
-`eval/results/`, without recomputing relevance, compare transcripts with captured output, and check links and run
-instructions. Image builds require a model self-check. Design-time numbers predate the code.
+**At run time** no LLM is called by default: vectors come from the local `mdbr-leaf-ir` model (Apache-2.0), and nothing
+leaves the machine. Claude Haiku is optional: at upload it reads each title and text and writes the summary and tags
+(86 documents: p50 2.1 s, p95 3.6 s, $0.0003 per document); [how to enable it](docs/ENRICHMENT.md).
+
+**During development** I used AI agents throughout. Claude Code researched, designed and wrote most of the code
+test-first; Codex wrote parts of the Claude enrichment and the review fixes (18 commits) and reviewed the code;
+separate agents reviewed the design. Agents wrote 10 test suites (Codex and Claude wrote 6 of them blind), built 8
+from open datasets and drafted the concept map.
+Scripts reproduce the quality and cosine tables; CI keeps every quoted cell and transcript equal to the stored
+outputs, without recomputing relevance. Image builds require a model self-check. Design-time numbers predate the code.
 
 ## Repository map
 
