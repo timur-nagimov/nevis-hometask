@@ -36,16 +36,46 @@ podman-compose 1.4 cannot pass a variable by name, so run on the host with
 The timing above and both committed result files are for Claude off.
 
 The outputs on the shipped code are committed: [results/with-concepts.txt](results/with-concepts.txt) and
-[results/no-concepts.txt](results/no-concepts.txt). The README's quality table quotes only these files. This prints
-nothing when a new run gives the same numbers:
+[results/no-concepts.txt](results/no-concepts.txt). The [measured quality table](#measured-quality) quotes only
+these files. This prints nothing when a new run gives the same numbers:
 
 ```bash
 diff <(grep '^|' eval/results/with-concepts.txt) \
      <(docker compose --profile test run --rm --no-deps -T tests python -m eval.run_testset | grep '^|')
 ```
 
-`docker compose --profile test run --rm --no-deps tests python -m eval.cosine_table` prints the README's
-three-document cosine table ([results/cosines.md](results/cosines.md)).
+`docker compose --profile test run --rm --no-deps tests python -m eval.cosine_table` prints the
+[three-document cosine table](../docs/SEARCH.md#why-there-is-a-concept-map) ([results/cosines.md](results/cosines.md)).
+
+## Measured quality
+
+Both columns come from `eval/results/`: the shipped code with and without the concept map, with Claude off.
+
+<!-- quality:start -->
+| | With the concept map (shipped) | Without the concept map |
+|---|---|---|
+| Strict pass, all 1,887 queries | 1323/1887 (70 %) | 1328/1887 (70 %) |
+| … written by Codex and Claude without seeing the design (400) | 255/400 (64 %) | 259/400 (65 %) |
+| … built from open datasets (951) | 640/951 (67 %) | 642/951 (68 %) |
+| … required by the assignment's text (621) | 544/621 (88 %) | 547/621 (88 %) |
+| First 10: precision | 0.80 | 0.82 |
+| First 10: recall | 0.74 | 0.69 |
+| First 10: F1 | 0.766 | 0.747 |
+| Answerable queries with a relevant result in the first 10 | 0.86 | 0.84 |
+| Queries without an answer that return nothing (230) | 0.67 (154/230) | 0.68 (156/230) |
+| `NevisWealth`, strict, all its queries in the test set | 16/16 | 16/16 |
+| `address proof`, strict, all its queries in the test set | 0/10 | 0/10 |
+<!-- quality:end -->
+
+Strict pass requires every expected result, no wrong results and correct ordering; see
+[what the tables mean](#what-the-tables-mean) for the per-query rules and exceptions.
+The map trades precision and strict passes for recall, making `address proof` find bills. That query never passes
+strictly: bills are missed and documents merely mentioning proof or address also return
+(see [limits](../docs/LIMITS.md)). [DESIGN](../docs/DESIGN.md#7-evaluation) compares the strict pass with
+Elasticsearch and Meilisearch. [Claude at upload](#claude-at-upload) compares quality with enrichment enabled.
+
+Under load: `/search` p95 21 ms and `/health` p95 5 ms while 16 parallel uploads send the 86 documents of the
+`existing-documents-86` suite (6 CPUs, `NEVIS_EMBED_THREADS=4`, podman on an Apple M3 Pro); idle `/search` p95 9 ms.
 
 ## Rejected search variants
 
@@ -69,9 +99,8 @@ the repository.
 Measured on 2026-11-24 with `claude-haiku-5-5`:
 
 - Live test against the real API (tests/live): 4 passed after the prompt was hardened; before that, 2 of the 3 prompt-injection cases failed (one summary quoted an embedded instruction, one followed a fake System line), and the prompt now tells the model to leave such text out of every field.
-- Upload latency, 86 documents of testset/suites/existing-documents-86.json posted one after another (eval/post_latency.py), API process on an Apple M3 Pro: option off p50 32 ms, p95 153 ms, max 171 ms, summaries extractive 86; option on p50 2109 ms, p95 3645 ms, max 3968 ms, summaries llm 86, no fallback.
-- Cost: 87 calls (86 uploads plus the start-up warm-up) used 148,635 input and 24,604 output tokens, about $0.027 in all, about $0.0003 per document at $0.10 / $0.50 per million tokens.
-- Where it was measured: on this corporate network the Anthropic API resolves to IPv6 addresses only and the podman containers have IPv4 only, so the measurements with the option on ran the same code on the host (uv run) against the project database; in containers here every call falls back with connection_error. On a normal network the containers reach the API.
+
+[Upload latency, cost and network details](../docs/ENRICHMENT.md) cover the 86-document measurement.
 
 **Claude-on quality:** Claude raises recall in the first 10 and barely moves strict pass, while losing four
 `required` queries. Both runs used the same runner and host, with the concept map on:
@@ -163,7 +192,7 @@ research) always fail. Every other number above is the same in `results/`.
   `tests/integration/test_http_cases.py` are expected failures (55 of the 57 HTTP checks pass).
 - Five search cases are strict expected failures: the omitted electricity bill, a review letter returned for
   two bill/address-proof queries, and proof of delivery returned for two address-proof queries. Together with
-  the two HTTP cases, integration tests have seven expected failures; see [README Limits](../README.md#limits)
+  the two HTTP cases, integration tests have seven expected failures; see [search limits](../docs/LIMITS.md)
   and [DESIGN section 9](../docs/DESIGN.md#9-considered-and-not-built).
 - For future tuning, split the set by whole suites, not by query: otherwise spellings of one query land in both
   halves.

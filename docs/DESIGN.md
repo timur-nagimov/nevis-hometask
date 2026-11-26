@@ -68,8 +68,9 @@ Result rules compared (design-time, 86 documents, a 38-entry draft of the map):
 ## 6. The concept map
 
 `app/data/concepts.yaml` models documents accepted as evidence (utility bill → proof of address), unknown to
-embeddings (README's cosine table). Entries have `concept` (tag), `triggers` (query phrasings, searched with tags),
-`expands_to` (accepted documents) and optional `sources`. Concepts and `expands_to` match stemmed phrases, skipping
+embeddings ([cosine table](SEARCH.md#why-there-is-a-concept-map)). Entries have `concept` (tag),
+`triggers` (query phrasings, searched with tags), `expands_to` (accepted documents) and optional `sources`.
+Concepts and `expands_to` match stemmed phrases, skipping
 those starting or ending with stop words. Only matches in titles or documents up to 200 words enter the embedded tags
 fragment; long letters mentioning a bill once get tagged but rank below bills for `address proof`.
 An LLM drafted 120 entries from general UK wealth-management knowledge, cut to 30 by keeping these relations and
