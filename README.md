@@ -198,11 +198,6 @@ Errors: `application/problem+json` (RFC 9457); 503 with `Retry-After`.
 
 ## Limits
 
-- Closed concept map: missing phrasings and false positives.
-- Client substrings match inside words; similar names collide.
-- Scale and real-data quality are unverified.
-- Deployed-copy reachability outside Russia is unverified.
-
 [All limits](docs/LIMITS.md).
 
 ## How LLMs were used
@@ -210,13 +205,6 @@ Errors: `application/problem+json` (RFC 9457); 503 with `Retry-After`.
 **At run time** no LLM is called by default: vectors come from the local `mdbr-leaf-ir` model (Apache-2.0), and nothing
 leaves the machine. Claude Haiku is optional: at upload it reads each title and text and writes the summary and tags
 (86 documents: p50 2.1 s, p95 3.6 s, $0.0003 per document); [how to enable it](docs/ENRICHMENT.md).
-
-**During development** I used AI agents throughout. Claude Code researched, designed and wrote most of the code
-test-first; Codex wrote parts of the Claude enrichment and the review fixes (18 commits) and reviewed the code;
-separate agents reviewed the design. Agents wrote 10 test suites (Codex and Claude wrote 6 of them blind), built 8
-from open datasets and drafted the concept map.
-Scripts reproduce the quality and cosine tables; CI keeps every quoted cell and transcript equal to the stored
-outputs, without recomputing relevance. Image builds require a model self-check. Design-time numbers predate the code.
 
 ## Repository map
 
@@ -232,6 +220,4 @@ docs/                    DESIGN.md, SEARCH.md, API.md, ENRICHMENT.md, LIMITS.md,
 Dockerfile, docker-compose.yml, .github/workflows/ci.yml
 ```
 
-Design decisions and reasons: [docs/DESIGN.md](docs/DESIGN.md). Licences of the parts: the embedding model
-`MongoDB/mdbr-leaf-ir` is Apache-2.0; psycopg is LGPL-3.0 and used unmodified as a library; each suite built from an
-open dataset (`ds-*`) names its source and licence in its `about` and `source` fields.
+Design decisions and reasons: [docs/DESIGN.md](docs/DESIGN.md). 
